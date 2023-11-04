@@ -91,9 +91,14 @@ margin-right: 10px;
     color: var(--primary-color);
 }
 .deals__prices h4{
-width: 70%;
 font-size: .8em;
 color: var(--font-color-other);
+}
+
+.deals__bt-add{
+    margin-top: 20px;
+    width: 100%;
+   align-items: center;
 }
 
 .deals__time{
@@ -202,7 +207,6 @@ align-items: flex-end;
     padding: 0;
     transform: translateX(-80px);
     justify-content: center;
-
 }
 
 .deals__footers-text{
@@ -215,9 +219,9 @@ font-size: 1.5em;
 }
 
 .deals__footers-btn{
-   
     position: relative;
 }
+
 
 .deals__footers-text p{
     font-size: .7em;
@@ -289,6 +293,12 @@ font-size: 1.5em;
         top: 0px;
         left: 0px;
     }
+   .deals__bt-add .btn,
+    .deals__prices h2,
+    .deals__prices h4
+    {
+        margin: 0 auto;
+    } 
 
 }
 

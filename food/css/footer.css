@@ -159,6 +159,7 @@ color:var( --font-color-other);
         justify-content: flex-start;
         
         }
+
         
         .footer__card-body{
             display: flex;
@@ -168,16 +169,23 @@ color:var( --font-color-other);
             padding: 20px;
             border-radius: 10%;
             align-self: center;
-            background-color: var(--primary-color);
             margin: 0 auto;
             justify-content: flex-start;
         }
+
+        .footer__about{
+            justify-content: flex-start;
+            align-items: center;
+        }
+    
+        .footer__opcion{
+            justify-content: flex-start;
+            align-items: center;
+        }
         
         .footer__card p{
-        color: var(--font-color-reverse);
-        font-size: .9em;
-        font-weight: bold;
-        margin: 0;
+        font-size: .8em;
+
         }
         
         .card__logo{
