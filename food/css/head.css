@@ -1,9 +1,15 @@
 header{
     width: 70%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     height: 80px;
-    justify-content: space-between;
-    align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     background-color: var(--theme-color);
 }
 .head__logo{
@@ -15,9 +21,13 @@ header{
     z-index: 999;
 }
 .main-nav__list{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     list-style: none;
-    justify-content: space-evenly;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
 }
 .main-nav__item{
     margin: 0 5px;
@@ -45,12 +55,19 @@ header{
 }
 
 .main-nav__link:hover::after{
-animation: item-nav-animation-hover 3s ease-in-out infinite;
+-webkit-animation: item-nav-animation-hover 3s ease-in-out infinite;
+        animation: item-nav-animation-hover 3s ease-in-out infinite;
 }
 
 .main-nav__link:focus::after{
     width: 100%;
     /* animation: item-nav-animation-focus 2s ease 0s infinite normal forwards; */
+}
+
+@-webkit-keyframes item-nav-animation-hover{
+    0% {width: 0%;}
+    50%{width: 100%;}
+    100%{width: 0%;}
 }
 
 @keyframes item-nav-animation-hover{
@@ -59,10 +76,16 @@ animation: item-nav-animation-hover 3s ease-in-out infinite;
     100%{width: 0%;}
 }
 
+@-webkit-keyframes item-nav-animation-focus{
+    0% {-webkit-transform: scale(1);transform: scale(1);}
+    50%{-webkit-transform: scale(1.1);transform: scale(1.1);}
+    100%{-webkit-transform: scale(1);transform: scale(1);}
+}
+
 @keyframes item-nav-animation-focus{
-    0% {transform: scale(1);}
-    50%{transform: scale(1.1);}
-    100%{transform: scale(1);}
+    0% {-webkit-transform: scale(1);transform: scale(1);}
+    50%{-webkit-transform: scale(1.1);transform: scale(1.1);}
+    100%{-webkit-transform: scale(1);transform: scale(1);}
 }
 .head__shop-icon{
     position: relative;
@@ -96,7 +119,11 @@ animation: item-nav-animation-hover 3s ease-in-out infinite;
     position: relative;
     cursor: pointer;
     width: 175px;
+    -webkit-transition: -webkit-transform 1s ease 0s;
+    transition: -webkit-transform 1s ease 0s;
+    -o-transition: transform 1s ease 0s;
     transition: transform 1s ease 0s;
+    transition: transform 1s ease 0s, -webkit-transform 1s ease 0s;
 }
 
 .btn::after{
@@ -120,32 +147,55 @@ animation: item-nav-animation-hover 3s ease-in-out infinite;
 #check{
 display: none;
 }
-@keyframes btn-animation-border{
+@-webkit-keyframes btn-animation-border{
     0%{
-        transform: rotate(0);
+        -webkit-transform: rotate(0);
+                transform: rotate(0);
     }
     50%{
-        transform: rotate(-4deg);
+        -webkit-transform: rotate(-4deg);
+                transform: rotate(-4deg);
     }
 
     100%{
-        transform: rotate(10); 
+        -webkit-transform: rotate(10);
+                transform: rotate(10); 
+    }
+}
+@keyframes btn-animation-border{
+    0%{
+        -webkit-transform: rotate(0);
+                transform: rotate(0);
+    }
+    50%{
+        -webkit-transform: rotate(-4deg);
+                transform: rotate(-4deg);
+    }
+
+    100%{
+        -webkit-transform: rotate(10);
+                transform: rotate(10); 
     }
 }
 
 
 
 .btn:hover {
-    transform: scale(1.03);
+    -webkit-transform: scale(1.03);
+        -ms-transform: scale(1.03);
+            transform: scale(1.03);
 }
 .btn:hover::after {
-    animation: btn-animation-border 3s ease-in-out infinite;
+    -webkit-animation: btn-animation-border 3s ease-in-out infinite;
+            animation: btn-animation-border 3s ease-in-out infinite;
 }
 @media(max-width: 1200px){
 
     header{
         width: 95%;
-        justify-content: space-between;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
     }
 
 
@@ -154,11 +204,18 @@ display: none;
 
 @media(max-width: 950px){
     .main-nav__list{
-        flex-direction: column;
-        justify-content: space-evenly;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-box-pack: space-evenly;
+            -ms-flex-pack: space-evenly;
+                justify-content: space-evenly;
         width: 100%;
         height: 300px;
-        align-items: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
         left: 0;
         top: 0;
         padding: 0;
@@ -172,13 +229,17 @@ display: none;
         height: 100%;
         top: 0;
         left: 0;
+        -webkit-transition: .2s;
+        -o-transition: .2s;
         transition: .2s;
-        clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
+        -webkit-clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
+                clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
         background-color: transparent;
         margin-top: 80px;
         }
         #check:checked + .main-nav{
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+            -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
         }
 
     .head__menu-icon{
