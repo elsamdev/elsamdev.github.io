@@ -31,7 +31,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: var(--theme-color);
     width: var(--width-body);
     max-width: var(--width-max-body);
     margin: 0;
