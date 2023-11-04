@@ -96,6 +96,7 @@ animation: item-nav-animation-hover 3s ease-in-out infinite;
     position: relative;
     cursor: pointer;
     width: 175px;
+    transition: transform 1s ease 0s;
 }
 
 .btn::after{
@@ -119,7 +120,7 @@ animation: item-nav-animation-hover 3s ease-in-out infinite;
 #check{
 display: none;
 }
-@keyframes btn-animation{
+@keyframes btn-animation-border{
     0%{
         transform: rotate(0);
     }
@@ -132,8 +133,13 @@ display: none;
     }
 }
 
+
+
+.btn:hover {
+    transform: scale(1.03);
+}
 .btn:hover::after {
-    animation: btn-animation 3s ease-in-out infinite;
+    animation: btn-animation-border 3s ease-in-out infinite;
 }
 @media(max-width: 1200px){
 

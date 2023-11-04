@@ -37,6 +37,7 @@ font-size: .5em;
 font-weight: bold;
 margin: 0;
 }
+
 .card__logo{
     width: 100px;
     margin: 0 0 10px 0;
@@ -135,12 +136,10 @@ color:var( --font-color-other);
         width: 50%;
         justify-content: center;
         align-items: center;
-
     }
 
     .footer__Newsletter{
         width: 50%;
- 
         align-items: center;
     }
     .footer_form{
@@ -148,30 +147,59 @@ color:var( --font-color-other);
     }
 }
 
-@media(max-width: 500px){
+@media(max-width: 650px){
+
+
 
 
     .footer__card{
         width: 100%;
-
-    }
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        
+        }
+        
+        .footer__card-body{
+            display: flex;
+            flex-direction: column;
+            width: auto;
+            height: auto;
+            padding: 20px;
+            border-radius: 10%;
+            align-self: center;
+            background-color: var(--primary-color);
+            margin: 0 auto;
+            justify-content: flex-start;
+        }
+        
+        .footer__card p{
+        color: var(--font-color-reverse);
+        font-size: .9em;
+        font-weight: bold;
+        margin: 0;
+        }
+        
+        .card__logo{
+            width: 300px;
+            margin: 0 0 10px 0;
+        }
+        .footer__patner{
+            width: 200px;
+            margin: 20px 0 0 0;
+        }
     .footer__about{
 
-        width: 100%;
+        width: 50%;
 
-     
     }
 
     .footer__opcion{
-  
-        width: 100%;
-
-
+        width: 50%;
     }
 
     .footer__Newsletter{
         width: 100%;
-
     }
     .footer_form{
         width: 100%;
