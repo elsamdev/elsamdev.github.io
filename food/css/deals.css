@@ -125,6 +125,7 @@ align-items: flex-end;
 }
 
 .deals__footers{
+    z-index: 0;
     display: flex;
     justify-content: space-evenly;
     width: 100%;
@@ -134,6 +135,7 @@ align-items: flex-end;
     padding: 0;
     border-radius: 40px;
     position: relative;
+   
 }
 
 .deals__footers::after{
@@ -145,6 +147,7 @@ align-items: flex-end;
     border-radius: 40px;
     top: 10px;
     left: 10px;
+
 }
 
 .deals__galery{
@@ -154,6 +157,7 @@ align-items: flex-end;
     width: 60%;
     transform: translateX(-80px);
     padding: 30px;
+    
 }
 
 
@@ -190,6 +194,7 @@ align-items: flex-end;
 }
 
 .deals__footers-text{
+    z-index: 1;
     display: flex;
     flex-direction: column;
     width: 40%;
@@ -207,6 +212,11 @@ align-items: flex-end;
 .deals__footers-text h1{
 font-size: 1.5em;
 
+}
+
+.deals__footers-btn{
+   
+    position: relative;
 }
 
 .deals__footers-text p{
