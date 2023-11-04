@@ -55,7 +55,7 @@ header{
 }
 
 .main-nav__link:hover::after{
--webkit-animation: item-nav-animation-hover 3s ease-in-out infinite;
+        -webkit-animation: item-nav-animation-hover 3s ease-in-out infinite;
         animation: item-nav-animation-hover 3s ease-in-out infinite;
 }
 
@@ -240,6 +240,38 @@ display: none;
         #check:checked + .main-nav{
             -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
                     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .main-nav__item{
+            display: flex;
+            width: 100%;
+        }
+
+        .main-nav__link{
+           width: 100%;
+           text-align: center;
+           transition: background-color 0.5s ease;
+        }
+        .main-nav__link::after{
+            content: "";
+            width: 0%;
+            height: 3px;
+            background: transparent;
+            position: absolute;
+            right: 0;
+            bottom: -10px;
+           
+        }
+        .main-nav__link:hover{
+            color: var(--theme-color-reverse) !important;
+            background-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .main-nav__link:focus{
+            color: var(--font-color) !important;
+            background-color: var(--secondary-color);
+            transform: scale(1.3);
         }
 
     .head__menu-icon{
