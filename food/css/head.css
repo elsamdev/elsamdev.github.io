@@ -157,6 +157,7 @@ display: none;
         top: 0;
         padding: 0;
         background-color: rgba(244,247,252,.9);
+        margin-top: -20px;
     }
 
     .main-nav{
