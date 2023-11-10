@@ -47,28 +47,23 @@ margin-top: 20px;
 
 }
 
-.video__play button{
+.video__play-button-stars{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
     text-align: start;
     padding: 10px;
     border-radius: 15px;
     border: none;
     background-color: var( --secondary-color);
-}
-
-.video__play button a{
     color: var(--font-color);
-    margin: 0;
     font-weight: bold;
-    font-size: 1em;
-    }
 
+}
 .video__icon-stars{
 display: -webkit-inline-box;
 display: -ms-inline-flexbox;
@@ -83,8 +78,7 @@ display: inline-flex;
         -ms-flex-align: center;
             align-items: center;
     margin-left: 40px;
-    
-
+    cursor: pointer;
 }
 .video__play span{
     font-size: 80px;

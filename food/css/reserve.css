@@ -256,6 +256,7 @@ color: var(--font-color-other);
    font-weight: bold;
    -ms-flex-item-align: center;
        align-self: center;
+       cursor: pointer;
 }
 
 .reserve__icon{

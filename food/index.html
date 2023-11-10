@@ -23,7 +23,7 @@
 <body>
 <div class="body">
     <header>
-        <img src="img/logo.png" class="head__logo">
+        <img alt="Elsamdev restorant project" src="img/logo.png" class="head__logo">
         <input type="checkbox"  id="check" value="">
         <nav class="main-nav">  
             <ul class="main-nav__list">
@@ -51,13 +51,13 @@
         <h1 class="reserve__title reserve__title-yellow">Best Restaurant</h1>
         <p class="reserve__subtitle">ARRIVING FROM PARIS IN 1986</p>
         <div class="reserve__input-container">
-            <select name="" class="form_style reserve__select-food">
+            <select name="form select reserve" class="form_style reserve__select-food">
                 <option value="pabellon">Pabellon con las mejores delicateces de la casa</option>
                 <option value="Arepas" selected>Arepas</option>
                 <option value="Torta Fria">Torta Fria</option>
               </select>
-            <input type="date" name="" class="form_style reserve__date">
-            <input type="time" name="" id="" class="form_style reserve__time">
+            <input type="date" name="date" class="form_style reserve__date">
+            <input type="time" name="time" class="form_style reserve__time">
               
         </div>
         <button class="btn reserve__form-button">Reserve a Table</button>
@@ -73,7 +73,7 @@
             <div class="reserve__images-2">
                 <button class="reserve__images-button"><span class="reserve__icon material-symbols-outlined">
                     local_shipping
-                    </span> <p>Free Delivery <br> 7 Days a Week</p></button>
+                    </span> Free Delivery <br> 7 Days a Week</button>
                <div class="img images__pabellon">
                 <button class="reserve__img-button-play reserve__img-button-play-2">
                     <div class="reserve__img-button-icon"></div>
@@ -303,17 +303,15 @@
     <h4 class="video__subtitle">THANKS FOR WATCH VIDEO</h4>
     <h1 class="video__title">Highlighting Its Unique Features and Experiencies</h1>
     <div class="video__play">
-        <button><a>14 Years <br> Experiencie</a>
+        <div class="video__play-button-stars">14 Years <br> Experiencie
             <div class="video__icon-stars">
                 <img src="img/star-icon.png" alt="">
                 <img src="img/star-icon.png" alt="">
                 <img src="img/star-icon.png" alt="">
                 <img src="img/star-icon.png" alt="">
-                <img src="img/star-icon.png" alt="">
-                
+                <img src="img/star-icon.png" alt=""> 
             </div>
-        
-        </button>
+        </div>
    
         <div class="video__play-button"> 
             <span class="material-symbols-outlined">
@@ -407,15 +405,15 @@
     </div>
 </div>
 <div class="reservation__form-container">
-        <select name="" class="form_style reservation__select">
+        <select name="select reservation form" class="form_style reservation__select">
             <option value="guest" selected>No of Guest</option>
             <option value="other">other</option>
             <option value="other">other</option>
         </select>
-        <input type="text" placeholder="Complete Name" name="" class="form_style reservation__input-size reservation__name">
-        <input type="text" name="" placeholder="Phone No" value=""  id="" class="form_style reservation__input-size reservation__phone">
-        <input type="date" name="" placeholder="Date" value=""  class="form_style reservation__input-size reservation__date">
-        <input type="time" name="" placeholder="Time" class="form_style reservation__input-size reservation__time">
+        <input type="text" placeholder="Complete Name" name="name reservation form" class="form_style reservation__input-size reservation__name">
+        <input type="text" name="phone reservation form" placeholder="Phone No" value="" class="form_style reservation__input-size reservation__phone">
+        <input type="date" name="date reservation form" placeholder="Date" value=""  class="form_style reservation__input-size reservation__date">
+        <input type="time" name="time reservation form" placeholder="Time" class="form_style reservation__input-size reservation__time">
 </div>
 </div>
 <div class="reservation__footer">
@@ -437,7 +435,7 @@
         <div class="footer__about">
             <h2 class="footer__menu-title">About</h2>
             <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="information" class="checkbox"><label for="information"  class="footer__items"><a>Information</a></label>
+                <li><input type="checkbox" name="check menu-show/hide" id="information" class="checkbox"><label for="information"  class="footer__items"><a>Information</a></label>
                 <ul class="footer__menu-interior">
                     <li><a href="#" class="footer__items">level 2</a></li>
                     <li><a href="#" class="footer__items">level 2</a></li>
@@ -446,17 +444,7 @@
                 </li>
             </ul>
             <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="special" class="checkbox"><label for="special"  class="footer__items"><a>Special Dish</a></label>
-                <ul class="footer__menu-interior">
-                    <li><a href="#" class="footer__items">level 2</a></li>
-                    <li><a href="#" class="footer__items">level 2</a></li>
-                    <li><a href="#" class="footer__items">level 2</a></li>
-                </ul>
-                </li>
-            </ul>
-
-            <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="footer__reservation" class="checkbox"><label for="footer__reservation"  class="footer__items"><a>Reservation</a></label>
+                <li><input type="checkbox" name="check menu-show/hide" id="special" class="checkbox"><label for="special"  class="footer__items"><a>Special Dish</a></label>
                 <ul class="footer__menu-interior">
                     <li><a href="#" class="footer__items">level 2</a></li>
                     <li><a href="#" class="footer__items">level 2</a></li>
@@ -466,7 +454,17 @@
             </ul>
 
             <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="footer__contact" class="checkbox"><label for="footer__contact"  class="footer__items"><a>Contact &nbsp&nbsp&nbsp </a></label>
+                <li><input type="checkbox" name="check menu-show/hide" id="footer__reservation" class="checkbox"><label for="footer__reservation"  class="footer__items"><a>Reservation</a></label>
+                <ul class="footer__menu-interior">
+                    <li><a href="#" class="footer__items">level 2</a></li>
+                    <li><a href="#" class="footer__items">level 2</a></li>
+                    <li><a href="#" class="footer__items">level 2</a></li>
+                </ul>
+                </li>
+            </ul>
+
+            <ul class="footer__menu">
+                <li><input type="checkbox" name="check menu-show/hide" id="footer__contact" class="checkbox"><label for="footer__contact"  class="footer__items"><a>Contact &nbsp&nbsp&nbsp </a></label>
                 <ul class="footer__menu-interior">
                     <li><a href="#" class="footer__items">level 2</a></li>
                     <li><a href="#" class="footer__items">level 2</a></li>
@@ -479,7 +477,7 @@
         <div class="footer__opcion">
             <h2 class="footer__menu-title">Menu</h2>
             <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="steaks" class="checkbox"><label for="steaks"  class="footer__items"><a>Steaks</a></label>
+                <li><input type="checkbox" name="check menu-show/hide" id="steaks" class="checkbox"><label for="steaks"  class="footer__items"><a>Steaks</a></label>
                 <ul class="footer__menu-interior">
                     <li><a href="#" class="footer__items">level 2</a></li>
                     <li><a href="#" class="footer__items">level 2</a></li>
@@ -488,17 +486,7 @@
                 </li>
             </ul>
             <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="burgers" class="checkbox"><label for="burgers"  class="footer__items"><a>Burgers</a></label>
-                <ul class="footer__menu-interior">
-                    <li><a href="#" class="footer__items">level 2</a></li>
-                    <li><a href="#" class="footer__items">level 2</a></li>
-                    <li><a href="#" class="footer__items">level 2</a></li>
-                </ul>
-                </li>
-            </ul>
-
-            <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="coctails" class="checkbox"><label for="coctails"  class="footer__items"><a>Coctails</a></label>
+                <li><input type="checkbox" name="check menu-show/hide" id="burgers" class="checkbox"><label for="burgers"  class="footer__items"><a>Burgers</a></label>
                 <ul class="footer__menu-interior">
                     <li><a href="#" class="footer__items">level 2</a></li>
                     <li><a href="#" class="footer__items">level 2</a></li>
@@ -508,7 +496,17 @@
             </ul>
 
             <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="barbq" class="checkbox"><label for="barbq"  class="footer__items"><a>Bar B Q</a></label>
+                <li><input type="checkbox" name="check menu-show/hide" id="coctails" class="checkbox"><label for="coctails"  class="footer__items"><a>Coctails</a></label>
+                <ul class="footer__menu-interior">
+                    <li><a href="#" class="footer__items">level 2</a></li>
+                    <li><a href="#" class="footer__items">level 2</a></li>
+                    <li><a href="#" class="footer__items">level 2</a></li>
+                </ul>
+                </li>
+            </ul>
+
+            <ul class="footer__menu">
+                <li><input type="checkbox" name="check menu-show/hide" id="barbq" class="checkbox"><label for="barbq"  class="footer__items"><a>Bar B Q</a></label>
                 <ul class="footer__menu-interior">
                     <li><a href="#" class="footer__items">level 2</a></li>
                     <li><a href="#" class="footer__items">level 2</a></li>
@@ -519,7 +517,7 @@
 
             
             <ul class="footer__menu">
-                <li><input type="checkbox" name="" id="desserts" class="checkbox"><label for="desserts"  class="footer__items"><a>Desserts</a></label>
+                <li><input type="checkbox" name="check menu-show/hide" id="desserts" class="checkbox"><label for="desserts"  class="footer__items"><a>Desserts</a></label>
                 <ul class="footer__menu-interior">
                     <li><a href="#" class="footer__items">level 2</a></li>
                     <li><a href="#" class="footer__items">level 2</a></li>
