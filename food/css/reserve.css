@@ -122,15 +122,15 @@ color: var(--font-color-other);
     border: none;
     background-color: var(--primary-color);
     -webkit-box-shadow: 10px 10px 200px 80px rgba(0,0,0,0.75);
-            box-shadow: 10px 10px 200px 80px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 200px 80px rgba(0,0,0,0.75);
     position: relative;
     cursor: pointer;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
 
 }
 
@@ -144,12 +144,12 @@ color: var(--font-color-other);
 }
 
 .images__arepa:focus-within{
-    -webkit-animation: Anim__arepa 25s ease .2s infinite normal forwards;
-            animation: Anim__arepa 25s ease .2s infinite normal forwards; 
+    -webkit-animation: 25s ease .2s infinite normal forwards  Anim__arepa;
+            animation:  25s ease .2s infinite normal forwards Anim__arepa; 
 }
 .reserve__img-button-play:focus{
--webkit-animation: btn-off 1s ease 0s 1 normal forwards;
-        animation: btn-off 1s ease 0s 1 normal forwards;
+-webkit-animation:  1s ease 0s 1 normal forwards btn-off;
+        animation:  1s ease 0s 1 normal forwards btn-off;
 }
 
 
