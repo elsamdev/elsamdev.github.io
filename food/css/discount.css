@@ -398,6 +398,7 @@ position: relative;
     }
 
 
+
 }
 
 @media(max-width: 650px){
@@ -409,6 +410,7 @@ position: relative;
         -webkit-box-direction: normal;
             -ms-flex-direction: column;
                 flex-direction: column;
+                margin: 0;
     }
    
     .discounts__img-1{
@@ -434,8 +436,8 @@ position: relative;
     .discounts_title-content2{
         width: 100%;
         font-size: 1.7em;
-       
         text-align: center;
+        margin-top: 0;
     }
     .discounts__content2{
         -webkit-box-orient: vertical;
@@ -443,7 +445,6 @@ position: relative;
             -ms-flex-direction: column;
                 flex-direction: column;
     }
-
 
 
     .discount__list-item{
