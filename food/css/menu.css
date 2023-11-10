@@ -129,7 +129,7 @@ margin: 10px 0;
             justify-content: space-between;
 }
 .solutions__1{
- width: 30%;
+ width: 40%;
 }
 
 .solutions__1 h4{
@@ -139,11 +139,11 @@ margin: 10px 0;
    }
 
    .solutions__1 h1{
-   font-size: 2em;
+   font-size: 3em;
    margin: 0;
    }
 .solution__2{
-    width: 30%; 
+    width: 40%; 
     color: var(--font-color-other);
 }
 
@@ -216,6 +216,10 @@ width: 95%;
 }
 .solutions__1{
     width: 45%;
+}
+
+.solutions__1 h1{
+    font-size: 2em;
 }
 .solution__2{
     width: 45%;
