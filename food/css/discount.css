@@ -308,10 +308,16 @@ position: relative;
 }
 
 .discount__list{
-    -ms-flex-item-align: center;
-        align-self: center;
+    display: flex;
+    flex-direction: column;
     width: 30%;
-    list-style-image: url("../img/icon-pal.png");
+
+}
+
+.discount__list-ul{
+    -ms-flex-item-align: center;
+    align-self: center;
+    list-style-image: url("../img/icon-pal.png"); 
 }
 .discount__list-item{
     font-size: .6em;
@@ -320,7 +326,8 @@ position: relative;
 }
 
 .discount__list-btn{
-    margin: 10px 0;
+    margin: auto;
+    min-width: 170px;
 }
 
 .sponsors{
