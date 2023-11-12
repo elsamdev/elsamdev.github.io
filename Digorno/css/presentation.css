@@ -1,0 +1,47 @@
+.presentation{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: var(--size-just);
+}
+
+.presentation__text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.presentation__text h1{
+    font-weight: bold;
+    font-size: 3.6em;
+    margin: 0;
+}
+
+.presentation__text p{
+margin: 0;
+}
+
+.presentation__image{
+    display: flex;
+    justify-content: center;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1000 1000%22 xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3ClinearGradient id=%22b%22 gradientTransform=%22rotate(-75 .5 .5)%22%3E%3Cstop offset=%220%25%22 stop-color=%22%23f02581%22%2F%3E%3Cstop offset=%22100%25%22 stop-color=%22%23ffae42%22%2F%3E%3C%2FlinearGradient%3E%3CclipPath id=%22a%22%3E%3Cpath fill=%22currentColor%22 d=%22M814.5 570.5Q694 641 669.5 794t-135 46.5Q424 734 270 756.5t-156-117q-2-139.5 66-231T307 202q59-115 164.5-27T629 316q52 53 179 118.5t6.5 136Z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg clip-path=%22url(%23a)%22%3E%3Cpath fill=%22url(%23b)%22 d=%22M814.5 570.5Q694 641 669.5 794t-135 46.5Q424 734 270 756.5t-156-117q-2-139.5 66-231T307 202q59-115 164.5-27T629 316q52 53 179 118.5t6.5 136Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: repeat;
+}
+
+.presentation__image img{
+   width: 80%;
+}
+
+@media (min-width: 992px) {
+    .presentation{
+        flex-direction: row;
+    }
+    .presentation__text{
+        align-items: flex-start;
+    }
+
+}
