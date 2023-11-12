@@ -51,11 +51,14 @@ footer{
     cursor: pointer;
     font-size: 2em !important;
 }
+@media (min-width: 1120px) {
+    :root{
+        --size-just: 80%;
+     }
+}
 
 @media (min-width: 992px) {
- :root{
-    --size-just: 80%;
- }
+
 
  .container{
     display: flex;

@@ -6,7 +6,7 @@ justify-content: space-between;
 .header__logo{
 display: flex;
 gap: 5px;
-
+cursor: pointer;
 }
 .header__logo img{
     height: 70px;
@@ -46,7 +46,28 @@ transition: .5s;
     clip-path: inset(0 0 0 0);
 }
 
+.header__logo-mobile{
+    display: flex;
+    gap: 5px;
+    padding: 20px;
+    cursor: pointer;
+    }
+    .header__logo-mobile img{
+        height: 70px;
+        width: auto;
+        margin: auto 0;
+    }
+    
+    .header__logo-mobile h1{
+        font-size: 2em;
+        margin: auto 0;
+        color: var(--text-color-reverse);
+    }
 
+    .header__dp-menu-close{
+        color: var(--text-color-reverse);
+        float: right;
+    }
 .header__menu-container{
     position: absolute;
     background-color: #f36e5d;
@@ -59,17 +80,24 @@ transition: .5s;
     display: flex;
     flex-direction: column;
     gap: 30px;
-    margin: 0;
 }
 
 .header__menu li{
-border-bottom: solid 3px var(--third-color);
-
+border-bottom: solid 1px var(--third-color);
 }
+
+
 .header__menu a{
-    color: var(--text-color);
+    color: var(--text-color-reverse);
     font-weight: bold;
     text-decoration: none;
+    transition: all .2s ;
+}
+
+.header__menu a:hover,
+.header__menu a:focus{
+font-size: 1.2em;
+color: rgb(255, 236, 236);
 }
 .header__button{
     z-index: 1;
