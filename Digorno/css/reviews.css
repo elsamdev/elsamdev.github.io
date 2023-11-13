@@ -1,0 +1,111 @@
+.reviews{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    align-items: center;
+    gap: 5px;
+}
+.reviews__photo{
+order: 2;
+width: 100%;
+height: 300px;
+background-color: blueviolet;
+}
+.reviews__text{
+    order: 1;
+ max-width: 700px;
+ text-align: center;
+}
+.review__card{
+order: 3;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+width: 100%;
+height: 170px;
+border-radius: 10px;
+background-color: rgb(255, 104, 3);
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='500' height='500' preserveAspectRatio='none' viewBox='0 0 500 500'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1036%26quot%3b)' fill='none'%3e%3cpath d='M399.431%2c150.721C416.277%2c150.892%2c432.425%2c141.595%2c439.883%2c126.489C446.684%2c112.713%2c440.148%2c97.365%2c432.292%2c84.162C424.676%2c71.363%2c414.313%2c59.099%2c399.431%2c58.506C383.685%2c57.878%2c369.618%2c67.724%2c361.697%2c81.348C353.733%2c95.047%2c352.804%2c111.763%2c360.376%2c125.683C368.295%2c140.243%2c382.858%2c150.553%2c399.431%2c150.721' fill='rgba(255%2c 255%2c 255%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M-80.97 221.63 a146.56 146.56 0 1 0 293.12 0 a146.56 146.56 0 1 0 -293.12 0z' fill='rgba(255%2c 255%2c 255%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M300.426%2c497.624C330.637%2c495.818%2c357.113%2c478.575%2c371.919%2c452.179C386.393%2c426.375%2c385.621%2c395.819%2c372.365%2c369.369C357.386%2c339.482%2c333.824%2c310.991%2c300.426%2c309.532C265.055%2c307.987%2c234.437%2c331.922%2c216.713%2c362.571C198.965%2c393.262%2c193.741%2c431.579%2c212.419%2c461.713C230.31%2c490.577%2c266.528%2c499.65%2c300.426%2c497.624' fill='rgba(255%2c 255%2c 255%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M360.45 37.63 a109.26 109.26 0 1 0 218.52 0 a109.26 109.26 0 1 0 -218.52 0z' fill='rgba(255%2c 255%2c 255%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M368.13%2c105.347C392.783%2c105.976%2c415.645%2c91.853%2c427.582%2c70.273C439.161%2c49.341%2c437.65%2c23.388%2c424.53%2c3.386C412.538%2c-14.896%2c389.967%2c-21.449%2c368.13%2c-20.366C348.296%2c-19.383%2c331.118%2c-8.338%2c320.651%2c8.537C309.496%2c26.521%2c304.395%2c48.365%2c313.714%2c67.366C324.153%2c88.652%2c344.43%2c104.742%2c368.13%2c105.347' fill='rgba(255%2c 255%2c 255%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M44.131%2c442.635C77.894%2c445.69%2c112.336%2c427.95%2c127.731%2c397.746C142.11%2c369.536%2c128.135%2c337.52%2c111.41%2c310.635C95.892%2c285.69%2c73.503%2c262.758%2c44.131%2c263.356C15.504%2c263.939%2c-5.708%2c287.698%2c-18.562%2c313.283C-30.015%2c336.079%2c-27.944%2c361.711%2c-16.818%2c384.668C-3.711%2c411.71%2c14.202%2c439.927%2c44.131%2c442.635' fill='rgba(255%2c 255%2c 255%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1036'%3e%3crect width='500' height='500' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cstyle%3e %40keyframes float1 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-10px%2c 0)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float1 %7b animation: float1 5s infinite%3b %7d %40keyframes float2 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-5px%2c -5px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float2 %7b animation: float2 4s infinite%3b %7d %40keyframes float3 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(0%2c -10px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float3 %7b animation: float3 6s infinite%3b %7d %3c/style%3e%3c/defs%3e%3c/svg%3e");
+background-size: cover;
+background-repeat: no-repeat;
+padding: 30px;
+
+}
+
+.review__card *{
+color: white;
+margin: 0;
+font-weight: 500;
+}
+
+.review__card h5{
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+.review__card span{
+    font-size: .8em;
+    margin-top: -15px;
+}
+
+@media (min-width: 768px) {
+    .reviews{
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: normal;
+        margin-bottom: 200px ;
+    }
+    .reviews__photo{
+        order: 1;
+    width: 600px;
+    height: 400px;
+    background-color: blueviolet;
+    }
+    .reviews__text{
+        text-align: start;
+     order: 2;
+    }
+    .review__card{
+        order: 3;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 450px;
+    height: 200px;
+    padding: 30px;
+    bottom: -80px;
+    right: 200px;
+    }
+    
+    .review__card *{
+    color: white;
+    margin: 0;
+    font-weight: 500;
+    }
+    
+    .review__card h5{
+        font-weight: 700;
+        font-size: 1.1em;
+    }
+    
+    .review__card span{
+        font-size: .8em;
+        margin-top: -15px;
+    }
+}
+
+@media (min-width: 992px) {
+    .review__card{
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 550px;
+        height: 230px;
+        padding: 30px;
+        bottom: -80px;
+        right: 200px;
+        }
+}
