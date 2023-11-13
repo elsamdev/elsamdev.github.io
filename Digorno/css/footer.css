@@ -1,0 +1,172 @@
+.footer__container {
+    width: var(--size-just);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 50px 0;
+    
+}
+.footer__container *{
+    color: var(--text-color-reverse);
+}
+.footer__aboutus{
+    width: 100%;
+}
+.footer__title{
+    font-weight: 800;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.footer__aboutus p{
+    text-align: center;
+}
+
+
+.footer__subscribe{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+}
+
+.footer__subscribe input{
+color: black;
+font-size: .8em;
+margin-left: 5px;
+border: none;
+outline: none;
+border-radius: 3px 0 0 3px ;
+text-align: center;
+}
+
+
+.footer__subscribe button{
+ background-image: var(--button-orange-gradient);
+ border: none;
+ border-radius: 0px 3px 3px 0px;
+transition: transform .2s;
+}
+.footer__subscribe button:focus,
+.footer__subscribe button:hover{
+transform: scale(1.03);
+}
+
+.footer__menus{
+    width: 100%;
+}
+
+.footer__list-container{
+    display: flex;
+    gap: 70px;
+    justify-content: center;
+}
+
+.footer__list{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    list-style-type: none;
+    list-style-position: inside;
+    padding-left: 0;
+}
+
+.footer__list a{
+font-weight: bold;
+font-size: .7;
+}
+.footer_social-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.footer__social{
+    width: 100%;
+}
+.footer__social-icons{
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.footer__social-icons div{
+background-color: aqua;
+width: 20%;
+height: 50px;
+
+}
+
+.footer__contacts{
+    text-align: center;
+}
+.footer__contacts h5{
+    font-weight: bold;
+    font-size: .7;
+}
+
+.footer__contacts p{
+    font-size: .7;
+}
+.footer__footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+.footer__logo{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    border-top: dotted 1px var(--primary-color);
+    }
+    .footer__logo img{
+        height: 70px;
+        width: auto;
+    }
+    
+    .footer__logo h1{
+        color: var(--text-color-reverse);
+        
+    }
+
+    .footer__footer {
+        width: 100%;
+    }
+
+
+    .copyright{
+        color: var(--text-color-reverse);
+        margin: auto;
+    }
+
+
+
+    @media (min-width: 576px) {
+        
+        .footer__aboutus{
+            width: 50%;
+        }
+        .footer__menus{
+            width: 50%;
+        
+        }
+    }
+
+    @media (min-width: 768px) {
+
+     
+        .footer__aboutus{
+            width: 30%;
+        }
+        .footer__menus{
+            width: 30%;
+        
+        }
+        .footer__social{
+            width: 30%;
+        }
+    }

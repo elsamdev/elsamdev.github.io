@@ -63,7 +63,6 @@ main{
 }
 footer{
     background-color: var(--footer-color);
-    height: 200px;
     width: var(--size-full);
 }
 
