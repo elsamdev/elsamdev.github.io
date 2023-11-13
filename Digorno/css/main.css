@@ -55,8 +55,11 @@ header{
 }
 
 main{
+    display: flex;
+    flex-direction: column;
     width: var(--size-just);
     max-width: var(--max-width);
+    gap: 30px;
 }
 footer{
     background-color: var(--footer-color);
