@@ -5,11 +5,14 @@
 
 .process__image{
 width: 100%;
+
+
 }
 .process__img{
     width: 100%;
     height: 400px;
     background-color: #eef1ff;
+    margin-top:50px;
 }
 
 .process__text{
