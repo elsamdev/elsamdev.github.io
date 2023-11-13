@@ -79,6 +79,15 @@ footer{
     font-size: .8em;
 }
 /* */
+
+* h2{
+    font-size: 2em;
+    font-weight:800;
+}
+* h4{
+    font-weight: bold;
+    font-size: 1.5em;
+}
 @media (min-width: 1120px) {
     :root{
         --size-just: 80%;
