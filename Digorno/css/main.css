@@ -1,6 +1,6 @@
 :root{
     --theme-color: white;
-    --theme-color-secondary: #f8f9fe; 
+    --theme-color-secondary: #f0f2fc; 
     --text-color: #252525;
     --text-color-reverse: white;
     --text-color-secondary: #f13778;
@@ -10,8 +10,8 @@
     --footer-color: #1d262d;
     --button-orange-gradient: linear-gradient(129deg, rgba(222,56,122,1) 0%, rgba(252,139,83,1) 100%);
     --button-green-gradient: linear-gradient(129deg, rgba(36,191,183,1) 0%, rgba(66,229,150,1) 100%);
-    --size-just: 95vw;
-    --size-full: 100vw;
+    --size-just: 95%;
+    --size-full: 100%;
     /* Fin vars */
 
     
@@ -22,10 +22,13 @@
     color: var(--text-color);
     font-family: 'Montserrat', sans-serif;
 }
-.container{
+
+body{
     display: flex;
     flex-direction: column;
-    width: 100vw;
+    align-items: center;
+    width: 100%;
+    height: auto;
     background-color: var(--theme-color);
     gap: 10px;
 }
@@ -38,18 +41,20 @@
     background-size: contain;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
+    width: 100%;
 }
 header{
-    width: var(--size-just);
-    margin: 0 auto;
+    width: 100%;
     border-bottom: 3px solid #edeef3;
     background-color: var(--theme-color-secondary);
+    width: var(--size-just);
 }
 
 main{
     width: var(--size-just);
-    margin: 0 auto;
+    
 }
 footer{
     background-color: var(--footer-color);
@@ -76,15 +81,12 @@ footer{
 /* */
 @media (min-width: 1120px) {
     :root{
-        --size-just: 80vw;
+        --size-just: 80%;
      }
 }
 
 @media (min-width: 992px) {
 
 
- .container{
-    display: flex;
-    gap: 20px;
-}
+
 }

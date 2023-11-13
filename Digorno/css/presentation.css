@@ -1,9 +1,9 @@
 .presentation{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     margin: 0 auto;
-    width: var(--size-just);
-    background-color: #409fe3;  
+    width: 100%;
     gap: 30px;  
 }
 
@@ -36,15 +36,16 @@ margin: 0;
 
 .presentation__image img{
 width: 80%;
-
+padding: 50px 20px;
 }
 
 @media (min-width: 992px) {
     .presentation{
         flex-direction: row;
+        justify-content: flex-end;
     }
     .presentation__image{
-     width: 45%;
+     width: 38.5%;
     }
     .presentation__text{
         align-items: flex-start;
