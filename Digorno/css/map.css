@@ -8,7 +8,7 @@
 text-align: center;
 }
 .map__numbers{
-    z-index: 1;
+z-index: 1;
 display: flex;
 justify-content: space-between;
 text-align: center;
@@ -19,7 +19,7 @@ background-position: center;
 background-repeat: no-repeat;
 }
 .map__numbers-style h3{
-font-size: 2em;
+font-size: 1.5em;
 color: var(--text-color-secondary);
 margin: 0;
 padding: 0;
@@ -27,6 +27,7 @@ padding: 0;
 
 .map__numbers-style p{
     font-weight: 500;
+    font-size: .8em;
     margin: 0;
     padding: 0;
     }
@@ -49,4 +50,16 @@ margin: 0 auto ;
 
 .map__card p{
 font-size: .8em;
+}
+
+@media (min-width: 576px) {
+
+    .map__numbers-style h3{
+        font-size: 2em;
+
+        }
+        
+        .map__numbers-style p{
+            font-size: 1em;
+            }
 }

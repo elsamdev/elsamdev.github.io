@@ -4,7 +4,7 @@
     justify-content: center;
     margin: 0 auto;
     width: 95%;
-    gap: 30px;  
+    gap: 30px;
 }
 
 .presentation__text{
@@ -35,24 +35,44 @@ margin: 0;
 }
 
 .presentation__image img{
-width: 80%;
-padding: 50px 20px;
+width: 100%;
+padding: 100px 20px;
 }
+
+
+
 @media (min-width: 1120px) {
     .presentation{
         flex-direction: row;
         justify-content: flex-end;
+        width: 100%;
     }
-    .presentation__image{
-     width: 38.5%;
-    }
+
     .presentation__text{
         align-items: flex-start;
+        width: 40%;
+    }
+    .presentation__image{
         width: 50%;
+        padding: 20px 0;
+       }
+
+}
+
+
+@media (min-width: 1450px) {
+    .presentation__text{
+        width: 38%;
     }
 }
 
-@media (min-width: 992px) {
-
-
+@media (min-width: 1550px) {
+    .presentation__text{
+        width: 37%;
+    }
+}
+@media (min-width: 1750px) {
+    .presentation__text{
+        width: 30%;
+    }
 }
