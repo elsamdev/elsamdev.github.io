@@ -83,22 +83,27 @@ font-size: .7;
     flex-direction: column;
 }
 
+
+
+
 .footer__social{
     width: 100%;
 }
 .footer__social-icons{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     gap: 4px;
 }
 
-.footer__social-icons div{
-background-color: aqua;
-width: 20%;
-height: 50px;
-
+.footer__social-icons i{
+    font-size: 3em;
+    cursor: pointer;
+    transition: all .5s;
 }
 
+.footer__social-icons i:hover{
+    color:#fcd8bf ;
+}
 .footer__contacts{
     text-align: center;
 }
@@ -154,9 +159,45 @@ height: 50px;
             width: 50%;
         
         }
+        .footer__title{
+
+            text-align: start;
+        }
+        .footer__aboutus p{
+            text-align: start;
+        }
+        .footer__subscribe{
+            justify-content: flex-start;
+            }
+
+            .footer__list-container{
+                justify-content: flex-start;
+            }
+            .footer__contacts{
+                text-align: start;
+            }
     }
 
+    @media (max-width: 630px) and (min-width: 576px){
+        .footer__subscribe{
+            width: 100%;
+            height: 50px;
+        }
+        
+        .footer__subscribe input{
+        font-size: .7em;
+        margin-left: 5px;
+        text-align: center;
+        }
+        
+        
+        .footer__subscribe button{
+            font-size: .8em;
+        }
+
+    }
     @media (min-width: 768px) {
+ 
 
      
         .footer__aboutus{

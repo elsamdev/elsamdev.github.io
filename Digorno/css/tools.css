@@ -6,11 +6,23 @@
 }
 .tools__patners{
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(100px, 3fr));
+grid-template-columns: repeat(auto-fit, minmax(150px, 3fr));
 gap: 10px;
 width: 98%;
-text-align: center;
-font-weight: bold;
+
+}
+.patner{
+    display: flex;
+    justify-content: flex-start;
+    gap: 3px;
+    }
+.patner a{
+    font-weight: bold;
+    margin: auto 0;
+
+    }
+.tools__patner-img{
+    height: 50px;
 }
 .tools__body{
 display: grid;

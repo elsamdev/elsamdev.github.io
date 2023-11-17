@@ -64,10 +64,22 @@ transition: .5s;
         margin: auto 0;
         color: var(--text-color-reverse);
     }
+    .header__dp-menu,
+    .header__dp-search{
+        font-size: 2em;
+        cursor: pointer;
+        color: var(--text-color);
+    }
+
+    .header__dp-search{
+        font-size: 1.5em;
+    }
 
     .header__dp-menu-close{
         color: var(--text-color-reverse);
         float: right;
+        font-size: 2em;
+        cursor: pointer;
     }
 .header__menu-container{
     position: absolute;
@@ -75,7 +87,7 @@ transition: .5s;
     height: 100vh;
     width: 300px;
     left: 0;
-
+    overflow: hidden;
 }
 .header__menu ul{
     display: flex;
@@ -85,21 +97,26 @@ transition: .5s;
 
 .header__menu li{
 border-bottom: solid 1px var(--third-color);
+transition: all .2s ;
 }
 
+.header__menu li:hover,
+.header__menu li:focus{
+transform: scale(1.2);
+}
 
 .header__menu a{
     color: var(--text-color-reverse);
     font-weight: bold;
     text-decoration: none;
-    transition: all .2s ;
+
 }
 
-.header__menu a:hover,
+/* .header__menu a:hover,
 .header__menu a:focus{
-font-size: 1.2em;
+font-size: 20px;
 color: rgb(255, 236, 236);
-}
+} */
 .header__button{
     z-index: 1;
     padding: 10px 20px;
@@ -147,13 +164,37 @@ transform: scale(1.1);
         .header__menu-desktop a{
             color: var(--text-color);
             font-weight: bold;
-            transition: transform .4s;
+        }
+        .header__menu-desktop li{
+            transition: transform  .4s ease 0s;
+            position: relative;
         }
 
-        .header__menu-desktop a:hover,
-        .header__menu-desktop a:focus{
-        font-size: 1.2em;
+        .header__menu-desktop li::after{
+            content: "";
+            width: 0%;
+            height: 4px;
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            background-image: var(--button-orange-gradient);
+            transition: width .4s ease 0s;
+            border-radius: 1px;
+            opacity: .6;
         }
+        
+        .header__menu-desktop li:hover::after{
+            width: 100%;
+        }
+
+        .header__menu-desktop li:hover{
+        transform: scale(1.2);
+        }
+        
+        .header__menu-desktop li:focus{
+        transform: scale(1.2);
+        }
+
 
     .header__menu{
         display: none;
