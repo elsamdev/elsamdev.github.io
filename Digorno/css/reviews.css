@@ -23,8 +23,17 @@
 order: 2;
 width: 100%;
 height: 300px;
-background-color: blueviolet;
+background-image: url(../img/diseñador-web.bmp);
+background-size: cover;
+background-position: top;
 }
+
+/* .reviews__photo img{
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    } */
+    
 
 .reviews__photo-2{
     background-color: brown !important;
@@ -122,6 +131,13 @@ font-weight: 500;
     height: 400px;
     background-color: blueviolet;
     }
+
+    /* .reviews__photo img{
+        width: 600px;
+        height: 400px;
+        object-fit: cover;
+        object-position: top;
+        } */
     .reviews__text{
         text-align: start;
      order: 2;
