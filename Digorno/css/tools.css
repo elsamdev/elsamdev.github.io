@@ -3,7 +3,6 @@
     flex-direction: column;
     gap: 100px;
     width: 100%;
-    background-color: #1cc2ae;
 }
 .tools__patners{
 display: flex;
@@ -11,7 +10,7 @@ justify-content: space-between;
 flex-wrap: wrap;
 gap: 10px;
 width: 100%;
-background-color: #6950d2;
+
 }
 .patner{
     display: flex;
@@ -21,8 +20,12 @@ background-color: #6950d2;
 .patner a{
     font-weight: bold;
     margin: auto 0;
-
     }
+
+    .patner i{
+        font-weight: bold;
+        margin: auto 0;
+        }
 .tools__patner-img{
     height: 50px;
 }
