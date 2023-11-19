@@ -10,7 +10,6 @@ justify-content: space-between;
 flex-wrap: wrap;
 gap: 10px;
 width: 100%;
-
 }
 .patner{
     display: flex;
@@ -18,16 +17,13 @@ width: 100%;
     gap: 3px;
     }
 .patner a{
+    font-size: 2em;
     font-weight: bold;
     margin: auto 0;
     }
 
-    .patner i{
-        font-weight: bold;
-        margin: auto 0;
-        }
 .tools__patner-img{
-    height: 50px;
+    height: 2.3em;
 }
 .tools__body{
 display: grid;
@@ -96,5 +92,10 @@ margin-top: 20px;
             align-self: center;
         }
 
+        .tools__patners{
+
+            justify-content: space-evenly;
+
+            }
 }
 
