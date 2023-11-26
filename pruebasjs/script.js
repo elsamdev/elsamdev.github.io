@@ -6,12 +6,29 @@ let ganar = 0;
 const contenedor = document.getElementById("contenedor");
 const pNumeroDeIntentos = document.getElementById("intentos");
 
+
+
+window.onload = iniciarContador;
+
+var tiempoTotal = 60;
+
+function iniciarContador() {
+  document.getElementById('contador').innerHTML = tiempoTotal;
+  if(tiempoTotal==0){
+    console.log('Final');
+  }else{
+    tiempoTotal-=1;
+    setTimeout("iniciarContador()",1000);
+  }
+}
+
+
 for (let i= 0; i < arregloLetras.length; i++) {
     var input = document.createElement("input");
     input.type = "text";
     input.id = arregloLetras[i];
     input.className = "hola" ;
-    input.placeholder = i;
+   // input.placeholder = i;
     input.maxLength="1"
     contenedor.appendChild(input);
     console.log(arregloLetras[i]);
@@ -42,7 +59,7 @@ for (let g = 0; g < arregloLetras.length; g++) {
             console.log("respuesta falsa " + valor);
             inputs[g].style.backgroundColor = 'red';
             numeroDeIntentos--;
-            pNumeroDeIntentos.innerText = numeroDeIntentos;
+            pNumeroDeIntentos.innerText = "Te quedan " +numeroDeIntentos + " intentos";
             if (numeroDeIntentos <= 0){
                 mostrarAlerta("perdiste");
             }
