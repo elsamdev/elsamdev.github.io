@@ -6,31 +6,27 @@ let palabrasYDescripcion =[
   ["abuela","Sustantivo femenino. Madre del padre o de la madre."],
 ];
 
-let numPalabras = Math.floor(Math.random() * (palabrasYDescripcion.length + 1));
-let palabra = palabrasYDescripcion[numPalabras][0];
-let descripcion = palabrasYDescripcion[numPalabras][1];
-let arregloLetras = palabra.split("");
-let ganar = 0;
-const contenedor = document.getElementById("contenedor");
-const pNumeroDeIntentos = document.getElementById("intentos");
-const pDescripcion = document.getElementById("ayuda");
-pDescripcion.innerText = (descripcion);
-
 window.onload = iniciarContador;
-var tiempoTotal = 60;
-
-function iniciarContador() {
-  document.getElementById('contador').innerHTML = tiempoTotal;
-  if(tiempoTotal==0){
-    mostrarAlerta("perdiste");
-  }else{
-    tiempoTotal-=1;
-    setTimeout("iniciarContador()",1000);
-  }
+window.onload = seleccionPalabras;
+function iniciarTodo(){
+  reiniciarContador();
+  seleccionPalabras()
 }
+function seleccionPalabras(){
+  document.getElementById('contenedor').innerHTML = '';
+  let numPalabras = Math.floor(Math.random() * (palabrasYDescripcion.length));
+  console.log(numPalabras);
+  let palabra = palabrasYDescripcion[numPalabras][0];
+  let descripcion = palabrasYDescripcion[numPalabras][1];
+  let arregloLetras = palabra.split("");
+  let ganar = 0;
+  const contenedor = document.getElementById("contenedor");
+  const pNumeroDeIntentos = document.getElementById("intentos");
+  const pDescripcion = document.getElementById("ayuda");
+  pDescripcion.innerText = (descripcion);
 
 
-for (let i= 0; i < arregloLetras.length; i++) {
+  for (let i= 0; i < arregloLetras.length; i++) {
     var input = document.createElement("input");
     input.type = "text";
     input.id = arregloLetras[i];
@@ -39,7 +35,6 @@ for (let i= 0; i < arregloLetras.length; i++) {
     input.maxLength="1"
     contenedor.appendChild(input);
     console.log(arregloLetras[i]);
-    
 }
 
 let numeroDeIntentos = arregloLetras.length * 2;
@@ -73,6 +68,33 @@ for (let g = 0; g < arregloLetras.length; g++) {
         }
     });
 }
+}
+
+
+
+
+var tiempoTotal = 60;
+
+function reiniciarContador(){
+  if (tiempoTotal>0){
+    tiempoTotal = 60;
+  }else{
+    tiempoTotal = 60;
+    contador = setInterval(iniciarContador, 1000)
+  }
+}
+function iniciarContador(time) {
+  if(tiempoTotal > 0){
+    document.getElementById('contador').innerHTML = tiempoTotal;
+    tiempoTotal--;
+  }else{
+    mostrarAlerta("perdiste");
+    clearInterval(contador);
+  }
+}
+contador = setInterval(iniciarContador, 1000)
+
+
 
 
 function mostrarAlerta(resultadoFinal) {
