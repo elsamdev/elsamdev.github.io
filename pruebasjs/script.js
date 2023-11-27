@@ -1,21 +1,28 @@
+let palabrasYDescripcion =[
+  ["horrible","es muy feo o desagradable"],
+  ["conducir","Llevar un vehículo personas o cosas de un sitio a otro"],
+  ["cambiar","Dejar una cosa o situación para tomar otra"],
+  ["cafe","bebida que se obtiene mediante el percolado de agua caliente a través de los granos tostados y molidos de los frutos de una planta"],
+  ["abuela","Sustantivo femenino. Madre del padre o de la madre."],
+];
 
-
-let palabra = "samuel";
-let arregloLetras = palabra.split("")
+let numPalabras = Math.floor(Math.random() * (palabrasYDescripcion.length + 1));
+let palabra = palabrasYDescripcion[numPalabras][0];
+let descripcion = palabrasYDescripcion[numPalabras][1];
+let arregloLetras = palabra.split("");
 let ganar = 0;
 const contenedor = document.getElementById("contenedor");
 const pNumeroDeIntentos = document.getElementById("intentos");
-
-
+const pDescripcion = document.getElementById("ayuda");
+pDescripcion.innerText = (descripcion);
 
 window.onload = iniciarContador;
-
 var tiempoTotal = 60;
 
 function iniciarContador() {
   document.getElementById('contador').innerHTML = tiempoTotal;
   if(tiempoTotal==0){
-    console.log('Final');
+    mostrarAlerta("perdiste");
   }else{
     tiempoTotal-=1;
     setTimeout("iniciarContador()",1000);
@@ -46,7 +53,7 @@ for (let g = 0; g < arregloLetras.length; g++) {
         var valor = this.value;
         console.log("Valor ingresado: " + valor + " " + letraArreglo);
         // Realizar aquí las acciones que deseas hacer cuando se ingresa un valor en el input
-        if (valor == letraArreglo){
+        if (valor.localeCompare == letraArreglo.localeCompare){
             console.log("respuesta verdadera " + valor);
             inputs[g].style.backgroundColor = 'green';
             inputs[g].readOnly = "true"
