@@ -113,6 +113,7 @@ function mostrarAlerta(resultadoFinal) {
     botonCerrar.addEventListener("click", function() {
       // Remover la alerta al hacer clic en el botón de cerrar
       overlay.parentNode.removeChild(overlay);
+      iniciarTodo();
     });
     
     // Agregar los elementos a la alerta
