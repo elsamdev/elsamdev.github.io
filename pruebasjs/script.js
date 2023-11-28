@@ -12,15 +12,7 @@ const arregloTeclado = [
   ["z","x","c","v","b","n","m"],
 ];
 
-console.log(arregloTeclado[0].length);
-
-
-
-
 window.onload = iniciarTodo;
-
-
-
 
 function iniciarTodo(){
   reiniciarContador();
@@ -31,7 +23,7 @@ const contenedor = document.getElementById("contenedor");
 const pNumeroDeIntentos = document.getElementById("intentos");
 const pDescripcion = document.getElementById("ayuda");
 const teclado = document.getElementById("teclado");
-pDescripcion.innerText = (descripcion);
+
 function seleccionPalabras(){
 
   document.getElementById('contenedor').innerHTML = '';
@@ -41,7 +33,7 @@ function seleccionPalabras(){
   let descripcion = palabrasYDescripcion[numPalabras][1];
   let arregloLetras = palabra.split("");
   let ganar = 0;
-
+  pDescripcion.innerText = (descripcion);
 
 
   for (let i= 0; i < arregloLetras.length; i++) {
@@ -95,14 +87,30 @@ function rellenarTeclado(){
     for (let g = 0; g < arregloTeclado[i].length; g++) {
       const nuevaTecla = document.createElement("button");
       nuevaTecla.textContent = (arregloTeclado[i][g]);
+      nuevaTecla.className = "teclaTeclado";
       teclado.appendChild(nuevaTecla);
     }
     const salto = document.createElement("br");
     teclado.appendChild(salto);
   }
 }
+rellenarTeclado();
+//-------------------------------------------
+let teclaTeclado = document.querySelectorAll(".teclaTeclado");
+console.log("Este es el megatex: " + teclaTeclado.length);
 
+function manejarClic() {
+  console.log("¡Has hecho clic en un botón!");
+  // Agrega aquí el código que deseas ejecutar cuando se hace clic en el botón
+}
 
+function agregarEventosBotones() {
+  teclaTeclado.forEach(function(boton) {
+    boton.addEventListener("click", manejarClic);
+  });
+}
+// Llamar a la función para agregar los eventos a los botones
+agregarEventosBotones();
 
 var tiempoTotal = 60;
 
@@ -114,7 +122,7 @@ function reiniciarContador(){
     contador = setInterval(iniciarContador, 1000)
   }
 }
-function iniciarContador(time) {
+function iniciarContador() {
   if(tiempoTotal > 0){
     document.getElementById('contador').innerHTML = tiempoTotal;
     tiempoTotal--;

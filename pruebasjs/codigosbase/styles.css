@@ -1,0 +1,139 @@
+:root{
+    --theme-primary: white;
+    --theme-secondary: rgb(58, 77, 83);
+    --text-color: white;
+    --color-all: #8BC34A;
+}
+
+*{
+    box-sizing: border-box;
+    color: var(--text-color);
+    padding: 0;
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+}
+
+.body{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 1200px;
+    height: 100%;
+    margin: auto ;
+    background-color:  var( --theme-secondary); 
+}
+
+.slider{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+
+
+.slider__container{
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    width: 300%;
+    margin: auto;
+    gap: 20px;
+    /* transform: translateX(-33.33333333333333%);  */
+    transition: all .5s ease;
+}
+
+.slider__container-card{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 50px;
+    gap: 80px;
+    background-color: #34495E ;
+    border-radius: 50px;
+    box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.33);
+    margin:auto;
+}
+
+
+.slider__person{
+    order: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    bottom: 10px;
+    left: 0;
+    /* background-color: rgba(0, 0, 0, .5); */
+    gap: 30px;
+    border-radius: 3px;
+    width: 70%;
+}
+
+.slider__image{
+    order: 2;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: auto;
+}
+.slider__nombre{
+
+}
+.slider__descripcion{
+
+}
+.slider__skills{
+display: flex;
+justify-content: flex-start;
+gap: 10px;
+}
+
+.slider__skills p{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    background-color: var(--color-all);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 10px;
+    transition: transform .2s;
+    box-shadow: 5px -1px 5px 0px #443850;
+    color:var(--text-color);
+}
+
+.slider__skills i{
+    color: var(--text-color);
+}
+
+.slider__skills p:hover{
+    transform: scale(1.05);
+}
+
+.slider__punto{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    padding: 20px 0;
+}
+
+.slider__punto span{
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50px;
+    box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.33);
+    cursor: pointer;
+    transition: all .5s;
+}
+
+.slider__punto span:hover{
+transform: scale(1.02);
+}
+
+.activo{
+    background-color: var(--color-all) !important; 
+    width: 200px !important;
+}
