@@ -6,13 +6,34 @@ let palabrasYDescripcion =[
   ["abuela","Sustantivo femenino. Madre del padre o de la madre."],
 ];
 
-window.onload = iniciarContador;
-window.onload = seleccionPalabras;
+const arregloTeclado = [
+  ["q","w","e","r","t","y","u","i","o","p"],
+  ["a","s","d","f","g","h","j","k","l","ñ"],
+  ["z","x","c","v","b","n","m"],
+];
+
+console.log(arregloTeclado[0].length);
+
+
+
+
+window.onload = iniciarTodo;
+
+
+
+
 function iniciarTodo(){
   reiniciarContador();
-  seleccionPalabras()
+  seleccionPalabras();
+  rellenarTeclado();
 }
+const contenedor = document.getElementById("contenedor");
+const pNumeroDeIntentos = document.getElementById("intentos");
+const pDescripcion = document.getElementById("ayuda");
+const teclado = document.getElementById("teclado");
+pDescripcion.innerText = (descripcion);
 function seleccionPalabras(){
+
   document.getElementById('contenedor').innerHTML = '';
   let numPalabras = Math.floor(Math.random() * (palabrasYDescripcion.length));
   console.log(numPalabras);
@@ -20,10 +41,7 @@ function seleccionPalabras(){
   let descripcion = palabrasYDescripcion[numPalabras][1];
   let arregloLetras = palabra.split("");
   let ganar = 0;
-  const contenedor = document.getElementById("contenedor");
-  const pNumeroDeIntentos = document.getElementById("intentos");
-  const pDescripcion = document.getElementById("ayuda");
-  pDescripcion.innerText = (descripcion);
+
 
 
   for (let i= 0; i < arregloLetras.length; i++) {
@@ -69,7 +87,20 @@ for (let g = 0; g < arregloLetras.length; g++) {
     });
 }
 }
+///////////////////////////////////////
 
+function rellenarTeclado(){
+  document.getElementById('teclado').innerHTML = '';
+  for (let i = 0; i < arregloTeclado.length; i++) {
+    for (let g = 0; g < arregloTeclado[i].length; g++) {
+      const nuevaTecla = document.createElement("button");
+      nuevaTecla.textContent = (arregloTeclado[i][g]);
+      teclado.appendChild(nuevaTecla);
+    }
+    const salto = document.createElement("br");
+    teclado.appendChild(salto);
+  }
+}
 
 
 
@@ -109,6 +140,7 @@ function mostrarAlerta(resultadoFinal) {
     mensaje.textContent = resultadoFinal;
     
     var botonCerrar = document.createElement("button");
+    botonCerrar.className = "buttonAlert"
     botonCerrar.textContent = "Cerrar";
     botonCerrar.addEventListener("click", function() {
       // Remover la alerta al hacer clic en el botón de cerrar
