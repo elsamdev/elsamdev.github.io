@@ -138,3 +138,23 @@ back2.onclick = function() {
     radeon2.textContent = "2";
     radeon3.textContent = "3";
 }
+
+
+//////////////////////////tabs ///////////////////
+
+const tab__item = document.querySelectorAll(".tab__item");
+const tab__body= document.querySelectorAll(".tab__body");
+
+console.log(tab__item.length)
+
+tab__item.forEach((cadaTabs, i)=>{
+    let posicion = [i];
+    tab__item[i].onclick = function(){
+        tab__item.forEach((cadaColorTabs, i)=>{
+            tab__item[i].style.backgroundColor = "#8BC34A";
+            tab__body[i].style.display = "none";
+        });
+        tab__body[i].style.display = "block";
+        tab__item[i].style.backgroundColor = "#3A4D53";
+    }
+});
