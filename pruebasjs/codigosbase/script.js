@@ -38,6 +38,12 @@ skills.forEach( (cadaSkill, i)=> {
 
 cerrarModal.addEventListener('click', function(){
     modal.style.display = "none";
+    radeon1.textContent = "1";
+    radeon2.textContent = "2";
+    radeon3.textContent = "3";
+    steperBoddy1.style.left = "200px";
+    steperBoddy2.style.left = "650px";
+    steperBoddy3.style.left = "650px";
 });
 
 ///////// Acordeon  //////////////
@@ -71,3 +77,64 @@ abrirCerrarAcordeo.forEach( (cadaTitulo, i)=> {
     })
 
 });
+
+
+//////////////////// steppers /////////////////
+
+const radeon1 = document.getElementById("stepper__radeon-1");
+const radeon2 = document.getElementById("stepper__radeon-2");
+const radeon3 = document.getElementById("stepper__radeon-3");
+const steperBoddy1 = document.getElementById("stepper__stepper-1");
+const steperBoddy2 = document.getElementById("stepper__stepper-2");
+const steperBoddy3 = document.getElementById("stepper__stepper-3");
+const next1 = document.getElementById("next1");
+const next2 = document.getElementById("next2");
+const next3 = document.getElementById("next3");
+const back1 = document.getElementById("back1");
+const back2 = document.getElementById("back2");
+const iconcheck = document.createElement("i");
+const iconcheck2 = document.createElement("i");
+const iconcheck3 = document.createElement("i");
+iconcheck.className = "fa-solid fa-check fa-1x stepper__check";
+iconcheck2.className = "fa-solid fa-check fa-1x stepper__check";
+iconcheck3.className = "fa-solid fa-check fa-1x stepper__check";
+
+next1.onclick = function() {
+    steperBoddy1.style.left = "-650px";
+    steperBoddy2.style.left = "200px";
+    radeon2.classList.add ("stepper__radeon-pass");
+    radeon1.textContent = "";
+    radeon1.appendChild(iconcheck);
+}
+
+next2.onclick = function() {
+    steperBoddy2.style.left = "-650px";
+    steperBoddy3.style.left = "200px";
+    radeon3.classList.add ("stepper__radeon-pass");
+    radeon2.textContent = "";
+    radeon2.appendChild(iconcheck2);
+}
+
+next3.onclick = function() {
+    // steperBoddy1.style.left = "-650px";
+    // steperBoddy2.style.left = "200px";
+    radeon3.textContent = "";
+    radeon3.appendChild(iconcheck3);
+}
+
+
+back1.onclick = function() {
+    steperBoddy1.style.left = "200px";
+    steperBoddy2.style.left = "-650px";
+    radeon2.classList.remove ("stepper__radeon-pass");
+    radeon1.textContent = "1";
+}
+
+
+back2.onclick = function() {
+    steperBoddy2.style.left = "200px";
+    steperBoddy3.style.left = "-650px";
+    radeon3.classList.remove ("stepper__radeon-pass");
+    radeon2.textContent = "2";
+    radeon3.textContent = "3";
+}

@@ -20,7 +20,7 @@
     width: 1200px;
     height: 100%;
     margin: auto ;
-    background-color: aquamarine;
+   
 }
 
 .slider{
@@ -91,6 +91,10 @@ justify-content: flex-start;
 gap: 10px;
 }
 
+.slider__skills-item{
+    width: 80px;
+    max-width: 80px;
+}
 .slider__skills p{
     display: flex;
     gap: 5px;
@@ -102,6 +106,8 @@ gap: 10px;
     transition: transform .2s;
     box-shadow: 5px -1px 5px 0px #443850;
     color:var(--text-color);
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .slider__skills i{
@@ -140,48 +146,6 @@ transform: scale(1.02);
 }
 
 
-.modal{
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    transition: all 3s ease;
-}
-.modal__container{
-    display: flex;
-    flex-direction: column;
-    width: 500px;
-    height: 300px;
-    margin: 15% auto;
-    background: #e0e0e0;
-    box-shadow:  20px 20px 60px #bebebe,
-                 -20px -20px 60px #ffffff;
-    border-radius: 50px;
-    padding: 50px;
-    position: relative;
-}
-.modal__header{
-    height: 50px;
-    border-radius: 20px 0 0 0 ;
-}
-.modal__titulo{
-color: black;
-}
-.modal__cerrar{
-position: absolute;
-top: 5%;
-right: 5%;
-color: red;
-cursor: pointer;
-}
-.modal__body p{
-color: black;
-}
 
 
 /*           acordeon         */
@@ -213,8 +177,128 @@ cursor: pointer;
     color: #8BC34A;
 }
 .acordeon__body{
-/* display: none; */
+display: none; 
 overflow: hidden;
 max-height: 0;
 transition: all .3s ease;
+}
+
+
+
+
+
+/*  Modal   */
+
+.modal{
+    /* display: none; */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    transition: all 3s ease;
+    overflow: hidden;
+}
+.modal__container{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 600px;
+    margin: 15% auto;
+    background: #e0e0e0;
+    box-shadow:  20px 20px 60px #bebebe,
+                 -20px -20px 60px #ffffff;
+    border-radius: 50px;
+    padding: 50px;
+    position: relative;
+    overflow: hidden;
+}
+.modal__header{
+    height: 50px;
+    border-radius: 20px 0 0 0 ;
+}
+.modal__titulo{
+color: black;
+}
+.modal__cerrar{
+position: absolute;
+top: 5%;
+right: 5%;
+color: red;
+cursor: pointer;
+}
+.modal__body{
+    position: relative;
+}
+.modal__body p{
+color: black;
+}
+
+/*                    stepper                  */
+.stepper{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.steppers__buttons{
+    z-index: 2;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+}
+.stepper__radeon{
+    z-index: 2;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    border: solid 30px rgba(156, 206, 247, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+
+
+.stepper__radeon{
+    font-size: 60px;
+    color: black;
+    font-weight: 900;
+}
+.stepper__radeon-pass{
+    background: rgba(87, 196, 87, 0.3);
+}
+
+
+
+.stepper__stepper{
+    position: absolute;
+    top: 250px;
+    transition: all 1s ease;
+}
+#stepper__stepper-1{
+    left: 200px;
+}
+#stepper__stepper-2{
+    left: 650px;
+}
+#stepper__stepper-3{
+    left: 650px;
+}
+
+.stepper__button{
+    width: 100px;
+    height: 50px;
+    border-radius: 50px;
+    color: #ffffff;
+    background-color: #34495E;
+    cursor: pointer
+}
+
+.stepper__check{
+    color: black;
 }
