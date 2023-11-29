@@ -190,7 +190,7 @@ transition: all .3s ease;
 /*  Modal   */
 
 .modal{
-    /* display: none;  */
+    display: none;  
     position: fixed;
     z-index: 1;
     left: 0;
@@ -301,4 +301,18 @@ color: black;
 
 .stepper__check{
     color: black;
+}
+
+
+.tabs{
+    background-color: var(--theme-primary);
+}
+.tab__header{
+
+}
+.tab__menu{
+
+}
+.tab__body{
+
 }
