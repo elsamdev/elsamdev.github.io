@@ -142,19 +142,43 @@ back2.onclick = function() {
 
 //////////////////////////tabs ///////////////////
 
-const tab__item = document.querySelectorAll(".tab__item");
-const tab__body= document.querySelectorAll(".tab__body");
+const tabItem = document.querySelectorAll(".tab__item");
+const tabBody= document.querySelectorAll(".tab__body");
+tabBody[0].style.display = "block";
+tabItem[0].style.backgroundColor = "#3A4D53";
 
-console.log(tab__item.length)
-
-tab__item.forEach((cadaTabs, i)=>{
+tabItem.forEach((cadaTabs, i)=>{
     let posicion = [i];
-    tab__item[i].onclick = function(){
-        tab__item.forEach((cadaColorTabs, i)=>{
-            tab__item[i].style.backgroundColor = "#8BC34A";
-            tab__body[i].style.display = "none";
+    tabItem[i].onclick = function(){
+        tabItem.forEach((cadaColorTabs, i)=>{
+            tabItem[i].style.backgroundColor = "#8BC34A";
+            tabBody[i].style.display = "none";
         });
-        tab__body[i].style.display = "block";
-        tab__item[i].style.backgroundColor = "#3A4D53";
+        tabBody[i].style.display = "block";
+        tabItem[i].style.backgroundColor = "#3A4D53";
     }
 });
+
+
+////// galeria ///
+
+const imagenesGaleria = document.querySelectorAll(".galeria__imagen");
+const modalImg = document.getElementById("ver_foto");
+const modalContent = document.querySelector(".modal__img");
+const modalCerrarImage = document.querySelector(".modal__img-cerrar");
+function abrirModalImage(imagen,hacer){
+    modalImg.src = imagen;
+    modalContent.style.transform = hacer;
+}
+imagenesGaleria.forEach((cadaImagen, i) =>{
+    imagenesGaleria[i].onclick = function(){
+    imagen = imagenesGaleria[i].getAttribute("src");
+    console.log("imagen " + imagen);
+    abrirModalImage(imagen,"none");
+}
+})
+
+modalCerrarImage.onclick = function(){
+    abrirModalImage("","translateY(-100%)");
+   
+}
