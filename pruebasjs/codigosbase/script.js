@@ -24,7 +24,7 @@ skills.forEach( (cadaSkill, i)=> {
     skills[i].addEventListener(`click`,()=>{
         let posicion = i;
         console.log("Skills "+posicion);
-        modal.style.display = "block";
+        modal.style.transform = "translateY(0%)";
         
         // puntos.forEach ((cadaPunto , i)=>{
         //     puntos[i].classList.remove("activo")
@@ -34,9 +34,8 @@ skills.forEach( (cadaSkill, i)=> {
 
 });
 
-
-cerrarModal.addEventListener('click', function(){
-    modal.style.display = "none";
+function cerrarModalIn(){
+    modal.style.transform = "translateY(-200%)";
     radeon1.textContent = "1";
     radeon2.textContent = "2";
     radeon2.classList.remove("stepper__radeon-pass");
@@ -45,6 +44,10 @@ cerrarModal.addEventListener('click', function(){
     steperBoddy1.style.transform = "translateX(0%)";
     steperBoddy2.style.transform = "translateX(200%)";
     steperBoddy3.style.transform = "translateX(200%)";
+    
+}
+cerrarModal.addEventListener('click', function(){
+    cerrarModalIn()
 });
 
 ///////// Acordeon  //////////////

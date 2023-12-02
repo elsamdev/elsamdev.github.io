@@ -193,7 +193,7 @@ transition: all .3s ease;
 /*  Modal   */
 
 .modal{
-    display: none;  
+    transform: translateY(-200%); 
     position: fixed;
     z-index: 1;
     left: 0;
@@ -202,7 +202,7 @@ transition: all .3s ease;
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
-    transition: all 3s ease;
+    transition: all 1s ease;
     overflow: hidden;
 }
 .modal__container{
