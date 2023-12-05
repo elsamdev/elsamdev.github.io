@@ -1,30 +1,27 @@
 const sliderContainer = document.querySelectorAll(".reviews__transition")
 const reviewsButtons = document.querySelectorAll(".reviews__buttons")
-
+let index = 0;
 // sliderContainer.forEach((slider, i) =>{
 // console.log (slider)
 
 
 // })
 
-document.addEventListener("DOMContentLoaded", function() {
-    
-    for (let i = 0; i < 3; i++){
-        sliderMove(i);
-        setInterval(3000);
-    }
+// document.addEventListener("DOMContentLoaded", function() {
+//     function repetir() {
+//         for (let index = 0; index < 3; index++) {
+           
+//             setTimeout(sliderMove(index), 3000)
+//         }
+//     }
+//     repetir()
+  
+// });
 
-})
-
-document.addEventListener("DOMContentLoaded", function() {
-    let i = 0;
-
-    function runSliderMove() {
-        sliderMove(i);
-        i = (i + 1) % 3; // Incrementa i y asegura que se mantenga dentro del rango de 0 a 2
-    }
-
-    setInterval(runSliderMove, 3000);
+reviewsButtons.forEach((button, v) => {
+    button.addEventListener("click", () => {
+        sliderMove(v);
+    });
 });
 
 
