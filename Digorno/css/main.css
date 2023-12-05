@@ -59,6 +59,7 @@ main{
     width: var(--size-just);
     max-width: var(--max-width);
     gap: 30px;
+    overflow: hidden;
 }
 footer{
     background-color: var(--footer-color);
