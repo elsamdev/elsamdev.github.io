@@ -26,8 +26,5 @@ reviewsButtons.forEach((buttonSlider, i)=>{
             sliderContainer[i-1].style.transform = "translatex(400%)";
             sliderContainer[i-2].style.transform = "translatex(400%)";
         }
-        
-        
-        
     })
 })
