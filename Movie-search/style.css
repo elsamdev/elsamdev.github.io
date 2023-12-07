@@ -27,28 +27,34 @@ body{
     box-shadow: 1.2em 2em 3em rgba(0, 0, 0, 0.2);
 }
 
+
 .search-container{
     display: grid;
     grid-template-columns: 9fr 3fr;
     gap: 1.2em;
 }
 
-.search-container input, .search-container button{
+.search-group{
+   position: relative;
+}
+.search-group input, .search-container button{
     font-size: 0.9em;
     outline: none;
     border-radius: 0.3em;
 }
 
-.search-container input{
+.search-group input{
     background-color: transparent;
     border: 1px solid #a0a0a0;
     color: #fff;
     padding: 0.7em;
+    width: 100%;
 }
 
-.search-container input:focus{
+.search-group input:focus{
     border-color: #fff;
 }
+
 
 .search-container button{
     background-color: #ffb92a;
@@ -136,6 +142,40 @@ p{
     text-align: center;
 }
 
+.search-minis{
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    position: absolute;
+    top: 80%;
+    transition: height 1s ease;
+    gap: 5px;
+    
+}
+.preview-search{
+display: flex;
+flex-direction: row;
+}
+.preview-search-elements{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    padding: 15px 10px;
+    
+}
+.preview-search-elements img{
+max-height: 24px;
+max-width: 24px;
+}
+
+.preview-search-elements h2{
+    font-size: 16px;
+    width: 100%;
+    }
 @media screen and (max-width: 600px ) {
     .container{
         font-size: 14px;
