@@ -20,7 +20,7 @@ body{
     padding: 3em 1.8em;
     background-color: #1e293b;
     position: absolute;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -300%);
     top: 50%;
     left: 50%;
     border-radius: 0.6em;
@@ -63,9 +63,27 @@ body{
 }
 
 #result{
+    display: flex;
     color: #fff;
+    position: relative;
 }
 
+
+
+
+.movies-containers{
+    max-width: 25.5em;
+    position: absolute;
+    background-color: #1e293b;
+    border: 3px solid white;
+    font-size: 16px;
+    width: 90vw;
+    height: 500px;
+    padding: 3em 1.8em;
+    border-radius: 0.6em;
+    box-shadow: 1.2em 2em 3em rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
 .info{
     position: relative;
     display: grid;
@@ -128,6 +146,8 @@ h2{
 h3{
     font-weight: 500;
     margin-top: 1.2em;
+    max-width: 200px;
+    
 }
 
 p{
@@ -136,6 +156,12 @@ p{
     line-height: 1.8em;
     text-align: justify;
     color: #a0a0a0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Establece el número máximo de líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   
 }
 
 .msg{
