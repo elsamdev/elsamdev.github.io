@@ -213,8 +213,9 @@ function calcularPosciciones(numero){
 
   for (let i = numeroActual ; i <= queryitemsSlider.length -1; i++) {
     console.log(inicialUpnPorcentaje+ " inicialUpnPorcentaje")
-    queryitemsSlider[i].style.transform = `translateX(${inicialUpnPorcentaje}%)  scale(${sizeUp}`;
     queryitemsSlider[i].style.zIndex = countIndexRight;
+    queryitemsSlider[i].style.transform = `translateX(${inicialUpnPorcentaje}%)  scale(${sizeUp}`;
+    
     inicialUpnPorcentaje = inicialUpnPorcentaje + cantidadMayorActual;
     countIndexRight--;
     sizeUp = sizeUp - 0.1;
@@ -284,4 +285,4 @@ let getMovieS = (numeroActual, ) =>{
 
 
 };
-// movieNameRef.addEventListener("input", getMovieS);
+movieNameRef.addEventListener("input", getMovie);
