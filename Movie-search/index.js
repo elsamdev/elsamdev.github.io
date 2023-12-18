@@ -286,3 +286,4 @@ let getMovieS = (numeroActual, ) =>{
 
 };
 movieNameRef.addEventListener("input", getMovie);
+
