@@ -45,7 +45,7 @@ fetch("products.json")
       }
 
       // Mostrar el número de productos
-      numProductsElement.textContent = `Número de zapatos: ${productsContainer.children.length}`;
+      numProductsElement.textContent = `Articulos Mostrados: ${productsContainer.children.length}`;
       setupLightbox();
     };
 
@@ -79,16 +79,51 @@ fetch("products.json")
     // Cargar todos los productos al cargar la página por primera vez
     filterProducts("", "");
 
-    // Evento para filtrar los productos al seleccionar una categoría
-    categorySelect.addEventListener("change", (event) => {
-      const title = searchInput.value;
-      filterProducts(event.target.value, title);
+    // // Evento para filtrar los productos al seleccionar una categoría
+    // categorySelect.addEventListener("change", (event) => {
+    //   const title = searchInput.value;
+    //   filterProducts(event.target.value, title);
       
-    });
+    // });
+
+// Seleccionar la list
+    // Seleccionar la lista
+const listaCategory = document.getElementById("category2");
+let categoria = ""
+listaCategory.addEventListener("click", (event) => {
+  // Obtener el elemento "a" que se ha hecho clic
+  const aSeleccionado = event.target;
+
+  // Si se ha hecho clic en un "a"
+  if (aSeleccionado.tagName === "A") {
+    // Obtener el valor del "a"
+    const valorSeleccionado = aSeleccionado.textContent;
+
+    // Guardar el valor en una variable
+    const categoriaSeleccionada = valorSeleccionado;
+    
+    // Mostrar la variable en la consola para confirmar
+    console.log(categoriaSeleccionada);
+
+    if (categoriaSeleccionada == "Para Hombre"){
+       categoria = "hombre"
+    } else  if (categoriaSeleccionada == "Para Mujer"){
+      categoria = "mujer"
+    } else{
+      categoria = ""
+    } 
+    console.log(categoria);
+
+    const title = searchInput.value;
+    filterProducts(categoria, title);
+  }
+});
+
+
 
     // Evento para filtrar los productos al escribir en el campo de búsqueda
     searchInput.addEventListener("input", (event) => {
-      const category = categorySelect.value;
+      const category = categoria;
       const title = event.target.value;
       filterProducts(category, title);
       
@@ -108,7 +143,6 @@ fetch("products.json")
       const image = card.querySelector('.product-card img'); // Corregir la clase del selector
       const title = card.querySelector('h2');
       const button = card.querySelector('.whatsapp-button');
-      const whatsappLink = button.getAttribute('data-whatsapp');
   
       image.addEventListener('click', () => {
         const imageUrl = image.src;
@@ -132,4 +166,5 @@ fetch("products.json")
   }
   
   // Llamar a la función inicialmente
- 
+ // Seleccionar la lista
+

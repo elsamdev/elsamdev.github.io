@@ -10,6 +10,8 @@
 </head>
 <body>
 
+  
+
   <div id="lightbox" class="lightbox">
     <div class="lightbox-content">
       <img id="lightbox-image" src="" alt="">
@@ -22,23 +24,36 @@
   </div>
 
   <div class="container">
-    <h1>Catalogo Completo</h1>
-    <h2 id="num-products"></h2>
-    
-    <div class="filter">
-      <label for="search-input">Buscar por título</label>
-      <input type="text" id="search-input">
+    <div class="logo">
+      <img src="logo shoes.png" alt="" id="logo">
     </div>
+    <!-- <h1>Catalogo Completo</h1> -->
+
     
-    <div class="filter">
+    <!-- <div class="filter">
       <label for="category">Filtrar hombre o mujer</label>
       <select id="category">
         <option value="">Todos</option>
-        <option value="hombre">hombre</option>
-        <option value="mujer">mujer</option>
+        <option value="hombre">Para Hombre</option>
+        <option value="mujer">Para Mujer</option>
       </select>
+    </div> -->
+
+    <div class="filter2">
+      <ul id="category2">
+        <li value=""><a value="" href="#">Todos</a></li>
+        <li value="hombre"><a value="hombre" href="#">Para Hombre</a></li>
+        <li value="mujer"><a value="mujer" href="#">Para Mujer</a></l>
+      </ul>
     </div>
     
+        
+    <div class="filter">
+      <label for="search-input"></label>
+      <input type="text" id="search-input" placeholder="Buscar...">
+    </div>
+
+    <h2 id="num-products"></h2>
     <div class="products" id="products-container">
       
     </div>
