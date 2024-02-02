@@ -34,7 +34,10 @@ const loadProducts = () => {
 
 // Función para cargar más productos
 const loadMoreProducts = () => {
-  const remainingProducts = allProducts.slice(loadedProductsCount, loadedProductsCount + productsPerLoad);
+  const remainingProducts = allProducts.slice(
+    loadedProductsCount,
+    loadedProductsCount + productsPerLoad
+  );
   remainingProducts.forEach((product) => {
     createProductCard(product);
   });
@@ -83,7 +86,9 @@ const createProductCard = (product) => {
   const button = document.createElement("button");
   button.classList.add("whatsapp-button");
   button.addEventListener("click", () => {
-    const message = encodeURIComponent(`Quiero más información del modelo: ${product.title}`);
+    const message = encodeURIComponent(
+      `Quiero más información del modelo: ${product.title}`
+    );
     const url = `https://wa.me/13213287507?text=${message}`;
     window.open(url);
   });
@@ -103,9 +108,12 @@ categorySelect.addEventListener("change", filterProducts);
 searchInput.addEventListener("input", filterProducts);
 
 // Evento para cargar más productos cuando se alcanza el final de la página
-window.addEventListener("scroll", () => {
+const handleScroll = () => {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
   if (scrollTop + clientHeight >= scrollHeight - 5) {
     loadMoreProducts();
   }
-});
+};
+
+window.addEventListener("scroll", handleScroll);
+window.addEventListener("touchmove", handleScroll);
