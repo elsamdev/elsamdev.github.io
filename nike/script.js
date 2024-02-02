@@ -7,24 +7,37 @@ const numProductsElement = document.getElementById("num-products");
 // Obtener el select de filtrar por categoría
 const categorySelect = document.getElementById("category");
 
+// Obtener el campo de texto para buscar por título
+const searchInput = document.getElementById("search-input");
+
 // Obtener los datos de los productos desde el archivo JSON
 fetch("products.json")
   .then((response) => response.json())
   .then((data) => {
-    // Filtrar por categoría
-    const filterProducts = (category) => {
+    // Filtrar por categoría y título
+    const filterProducts = (category, title) => {
       productsContainer.innerHTML = ""; // Limpiar el contenedor de productos
 
-      // Mostrar todos los productos si no se selecciona ninguna categoría
-      if (category === "") {
+      // Mostrar todos los productos si no se selecciona ninguna categoría y no se ingresa un título
+      if (category === "" && title === "") {
         data.forEach((product) => {
           createProductCard(product);
         });
       } else {
-        // Mostrar solo los productos de la categoría seleccionada
-        const filteredProducts = data.filter((product) =>
-          product.category.includes(category)
-        );
+        // Filtrar por categoría
+        let filteredProducts = data;
+        if (category !== "") {
+          filteredProducts = filteredProducts.filter((product) =>
+            product.category.includes(category)
+          );
+        }
+        
+        // Filtrar por título
+        if (title !== "") {
+          filteredProducts = filteredProducts.filter((product) =>
+            product.title.toLowerCase().includes(title.toLowerCase())
+          );
+        }
 
         filteredProducts.forEach((product) => {
           createProductCard(product);
@@ -53,7 +66,7 @@ fetch("products.json")
       button.classList.add("whatsapp-button");
       button.addEventListener("click", () => {
         const message = encodeURIComponent(`Quiero más información del modelo: ${product.title}`);
-        const url = `https://wa.me/1234?text=${message}`;
+        const url = `https://wa.me/13213287507?text=${message}`;
         window.open(url);
       });
       button.innerHTML = '<i class="fab fa-whatsapp"></i> Consultar por modelo';
@@ -63,10 +76,18 @@ fetch("products.json")
     };
 
     // Cargar todos los productos al cargar la página por primera vez
-    filterProducts("");
+    filterProducts("", "");
 
     // Evento para filtrar los productos al seleccionar una categoría
     categorySelect.addEventListener("change", (event) => {
-      filterProducts(event.target.value);
+      const title = searchInput.value;
+      filterProducts(event.target.value, title);
+    });
+
+    // Evento para filtrar los productos al escribir en el campo de búsqueda
+    searchInput.addEventListener("input", (event) => {
+      const category = categorySelect.value;
+      const title = event.target.value;
+      filterProducts(category, title);
     });
   });
