@@ -46,6 +46,7 @@ fetch("products.json")
 
       // Mostrar el número de productos
       numProductsElement.textContent = `Número de zapatos: ${productsContainer.children.length}`;
+      setupLightbox();
     };
 
     // Función para crear una tarjeta de producto
@@ -82,6 +83,7 @@ fetch("products.json")
     categorySelect.addEventListener("change", (event) => {
       const title = searchInput.value;
       filterProducts(event.target.value, title);
+      
     });
 
     // Evento para filtrar los productos al escribir en el campo de búsqueda
@@ -89,5 +91,45 @@ fetch("products.json")
       const category = categorySelect.value;
       const title = event.target.value;
       filterProducts(category, title);
+      
     });
   });
+
+  function setupLightbox() {
+    const productCards = document.querySelectorAll('.product-card');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxButton = document.getElementById('lightbox-button');
+    const closeButton = document.getElementById('close-button');
+    
+  
+    productCards.forEach((card) => {
+      const image = card.querySelector('.product-card img'); // Corregir la clase del selector
+      const title = card.querySelector('h2');
+      const button = card.querySelector('.whatsapp-button');
+      const whatsappLink = button.getAttribute('data-whatsapp');
+  
+      image.addEventListener('click', () => {
+        const imageUrl = image.src;
+        const imageTitle = title.textContent;
+        lightboxImage.src = imageUrl;
+        lightboxTitle.textContent = imageTitle;
+        lightboxButton.innerHTML = button.innerHTML;
+        
+        lightboxButton.addEventListener("click", () => {
+          const message = encodeURIComponent(`Quiero más información del modelo: ${title.textContent}`);
+          const url = `https://wa.me/13213287507?text=${message}`;
+          window.open(url);
+        });
+        lightbox.style.display = 'flex';
+      });
+    });
+  
+    closeButton.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+  }
+  
+  // Llamar a la función inicialmente
+ 

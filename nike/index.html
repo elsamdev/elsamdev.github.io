@@ -9,6 +9,18 @@
   <title>Catalogo Completo</title>
 </head>
 <body>
+
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+      <img id="lightbox-image" src="" alt="">
+      <div class="image-details">
+        <h2 id="lightbox-title"></h2>
+        <button id="lightbox-button" class="whatsapp-button"></button>
+      </div>
+      <button id="close-button" class="close-button"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+
   <div class="container">
     <h1>Catalogo Completo</h1>
     <h2 id="num-products"></h2>
@@ -21,7 +33,7 @@
     <div class="filter">
       <label for="category">Filtrar hombre o mujer</label>
       <select id="category">
-        <option value="">All</option>
+        <option value="">Todos</option>
         <option value="hombre">hombre</option>
         <option value="mujer">mujer</option>
       </select>
