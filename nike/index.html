@@ -1,17 +1,32 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Página de productos Nike">
-    <title>Productos Nike</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/26a1d075a0.js" crossorigin="anonymous"></script>
+  <title>Catalogo Completo</title>
 </head>
 <body>
-    <h1>Productos Nike</h1>
-    <div class="grid-container" id="product-grid"></div>
+  <div class="container">
+    <h1>Catalogo Completo</h1>
+    <h2 id="num-products"></h2>
+   
+    <div class="filter">
+      <label for="category">Filter by category:</label>
+      <select id="category">
+        <option value="">All</option>
+        <option value="hombre">hombre</option>
+        <option value="mujer">mujer</option>
+      </select>
+    </div>
+    
+    <div class="products" id="products-container">
+      
+    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
