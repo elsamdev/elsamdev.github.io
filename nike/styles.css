@@ -40,6 +40,8 @@ h2 {
 .logo{
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 #logo{
   width: 80px;
@@ -275,6 +277,12 @@ h2 {
 
   .product-card h2 {
     font-size: 18px;
+  }
+
+  #category2 {
+   width: 100%;
+   display: flex;
+   justify-content: space-around;
   }
 
   #category2 li a{
