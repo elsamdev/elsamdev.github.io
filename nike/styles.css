@@ -249,10 +249,10 @@ h2 {
 
 }
 
- #category2 li a:hover {
+ /* #category2 li a:hover {
   border-bottom: 2px solid #f37021;
   
-}
+} */
 
 #category2 li a:focus {
   outline: none;
@@ -268,7 +268,8 @@ h2 {
   transition: width 0.3s ease;
 }
 
-#category2 li a:hover::after{
+#category2 li a:hover::after,
+#category2 li a:focus::after {
   width: 100%;
 }
 
