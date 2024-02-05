@@ -460,17 +460,17 @@ h2 {
   border-radius: 5px;
   cursor: pointer;
 }
-
+#thumbnails-containerbox {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap; /* Agrega flex-wrap para permitir envolver los thumbnails en múltiples líneas */
+}
 @media (max-width: 768px) {
   #carousel-container {
     width: 100%;
   }
-  #thumbnails-containerbox {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    flex-wrap: wrap; /* Agrega flex-wrap para permitir envolver los thumbnails en múltiples líneas */
-  }
+
 
   #thumbnails {
     justify-content: center; /* Centrar los thumbnails en dispositivos móviles */

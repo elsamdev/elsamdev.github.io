@@ -2545,19 +2545,6 @@
     ]
   },
   {
-    "id": "cySbjYu",
-    "title": "Nike React HyperSet",
-    "realPrice": "$135",
-    "discountPrice": "Sin oferta",
-    "offertNum": "Sin oferta",
-    "productLink": "https://www.nike.com/t/react-hyperset-indoor-court-shoes-dkQgjQ/CI2955-100",
-    "images": [],
-    "thumbnail": [],
-    "category": [
-      "mujer"
-    ]
-  },
-  {
     "id": "Vmfip9p",
     "title": "Nike Zoom Challenge",
     "realPrice": "$120",
@@ -8097,21 +8084,7 @@
       "hombre"
     ]
   },
-  {
-    "id": "auwA6",
-    "title": "Converse x Martine Ali Chuck 70 De Luxe Wedge",
-    "realPrice": "$160",
-    "discountPrice": "Sin oferta",
-    "offertNum": "Sin oferta",
-    "productLink": "https://www.nike.com/t/converse-x-martine-ali-chuck-70-de-luxe-wedge-shoes-KRLcRX/A08650C-001",
-    "images": [
-      "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/0de7edf5-e674-407b-8b9d-08ace4a76d3c/converse-x-martine-ali-chuck-70-de-luxe-wedge-shoes-KRLcRX.png"
-    ],
-    "thumbnail": [],
-    "category": [
-      "hombre"
-    ]
-  },
+
   {
     "id": "rAkip",
     "title": "Nike Air More Uptempo",
