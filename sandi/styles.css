@@ -442,7 +442,7 @@ li {
    }
 
   .menu-items{
-    height: 100%;
+    height: auto;
     border-radius: 10px;
   }
   .close-btn, .menu {
