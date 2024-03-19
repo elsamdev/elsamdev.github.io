@@ -18,7 +18,7 @@ window.addEventListener('scroll', function() {
     var scrollProgress = (scrollTop / (documentHeight - windowHeight)) * 100;
     var radius = 20;
     var circleLength = 2 * Math.PI * radius; // 2 * pi * r
-    var offset = circleLength - (circleLength * scrollProgress / 101);
+    var offset = circleLength - (circleLength * scrollProgress / 100);
     document.querySelector('.progress-bar-circle').style.strokeDashoffset = offset;
   });
 
