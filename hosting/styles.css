@@ -231,7 +231,7 @@ height: auto;
   align-items: center;
   gap: 40px;
   padding: 200px 0 50px 0 ;
-  background-image: url('/oooscillate.svg'), linear-gradient(to bottom, #007bff, #0056b3);
+  background-image: url('oooscillate.svg'), linear-gradient(to bottom, #007bff, #0056b3);
   background-size: cover, auto;
   background-repeat: no-repeat;
   background-position: center;
