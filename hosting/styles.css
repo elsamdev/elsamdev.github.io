@@ -417,7 +417,6 @@ text-align: center;
 
 .plans_date{
   display: flex;
-  gap: 10px;
   background-color: #003369;
   padding: 5px;
   border-radius: 20px;
@@ -435,7 +434,7 @@ font-size: 14px;
 .plans_date button.plans_date_active{
   background-color: #007bff;
   border-radius: 20px;
-  
+  transition: background-color 0.5s ease;
   }
 .plans_card_save {
   display: flex;

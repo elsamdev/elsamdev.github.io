@@ -52,3 +52,21 @@ seeMoreFeatures.addEventListener('click', function(event) {
   
 });
 
+const planButtons = document.querySelectorAll(".plans_date button");
+
+planButtons.forEach(button => {
+  button.addEventListener("click", () => {
+
+    planButtons.forEach(btn => {
+      btn.classList.remove("plans_date_active");
+    });
+    
+    button.classList.add("plans_date_active");
+  });
+});
+
+
+
+
+
+
