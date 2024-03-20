@@ -33,3 +33,22 @@ document.getElementById( "close_nav" ).addEventListener( 'click' ,function(event
 	event.stopPropagation();
   document.getElementById('nav').classList.remove('active-nav');
 });
+
+
+const seeMoreFeatures = document.querySelector('.see-more-features');
+const ulElement = document.querySelector('.plans_card ul');
+
+seeMoreFeatures.addEventListener('click', function(event) {
+  event.preventDefault();
+  if (seeMoreFeatures.textContent === 'See More Features') {
+    ulElement.classList.add('plans_card_active');
+    seeMoreFeatures.innerHTML = 'Less Features';
+    seeMoreFeatures.style.color = 'rgb(255, 179, 64)';
+  } else {
+    ulElement.classList.remove('plans_card_active');
+    seeMoreFeatures.innerHTML = 'See More Features';
+    seeMoreFeatures.style.color = 'black';
+  }
+  
+});
+

@@ -374,6 +374,7 @@ max-width: 400px;
   background-color: rgb(192, 224, 252);
   border-radius: 50%;
 }
+
 .features_card h3{
   font-size: 24px;
   cursor: pointer;
@@ -387,7 +388,198 @@ color: black;
 max-width: 400px;
 }
 
+/* plans */
 
+.plans{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.plans_card{
+  display: flex;
+  align-items: center;
+}
+
+.plans h2{
+  font-size: 28px;
+  text-align: center;
+  font-weight: 900;
+  }
+
+.plans p{
+width: 300px;
+font-size: 18px;
+font-weight: 0;
+text-align: center;
+}
+
+.plans_date{
+  display: flex;
+  gap: 10px;
+  background-color: #003369;
+  padding: 5px;
+  border-radius: 20px;
+}
+
+.plans_date button{
+color: white;
+border: none;
+cursor: pointer;
+background-color: transparent;
+padding: 7px 20px;
+font-size: 14px;
+}
+
+.plans_date button.plans_date_active{
+  background-color: #007bff;
+  border-radius: 20px;
+  
+  }
+.plans_card_save {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+.plans_card_save label{
+ margin-left: 10px;
+ background-color: #d6eaff;
+ padding: 5px 15px;
+ border-radius: 20px;
+ font-size: 14px;
+ font-weight: 600;
+}
+
+.plans_card_total{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 200px;
+}
+
+.plans_card_total::after{
+content: "$";
+font-size: 20px;
+position: absolute;
+left: 0;
+top: -10px;
+}
+.plans_card_total h3{
+font-size: 32px;
+}
+
+.plans_card_total h3 span{
+  font-size: 18px;
+  font-weight: 0;
+}
+
+
+.add_to_card{
+  font-size: 18px;
+  align-self: center;
+  width: 240px;
+  height: 40px;
+  cursor: pointer;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+}
+
+.add_to_card:hover{
+  background-color: #ffb108;
+}
+
+.plans_card{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: white;
+  border: 1px solid  transparent;
+  padding: 30px;
+  border-radius: 10px;
+  transition: border 0.5s ease;
+  position: relative;
+}
+
+.plans_card:hover{
+  border: 1px solid  #1a09ff;
+  transition: border 0.5s ease;
+}
+.plans_card ul {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 250px;
+  overflow: hidden;
+}
+
+.plans_card ul.plans_card_active {
+  max-height: none;
+  
+}
+
+.see-more{
+  position: absolute;
+  display: flex;
+  gap: 20px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+.see-more a {
+  font-size: 20px;
+}
+
+
+
+.see-more-features:hover {
+  color: rgb(255, 179, 64);
+}
+
+/* .see-more-features:hover ~ .plans_card ul {
+  max-height: none;
+} */
+
+.plans_card ul li{
+  display: flex;
+  gap: 5px;
+}
+
+.plans_card ul li p{
+  display: flex;
+  align-self: flex-start;
+}
+
+.plans_card .icon-question {
+  position: relative;
+  display: inline-block;
+}
+
+.plans_card  .icon-question::before {
+  content: attr(info);
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  transform: translateX(-95%) translateY(100%);
+  padding: 10px;
+  background-color: rgba(19, 43, 255, 0.8);
+  color: #fff;
+  font-size: 14px;
+  width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 3px;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.plans_card .icon-question:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
 
 @media (min-width: 1025px) {
   .icon-menu {
