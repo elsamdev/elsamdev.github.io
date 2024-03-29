@@ -1,0 +1,71 @@
+.sam-icon{
+    display: flex;
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.sam-icon-medium{
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.sam-icon-small{
+    display: flex;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.menu-burger {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIuNSIgZD0iTTMgNmgxOE0zIDEyaDE4TTMgMThoMTgiLz48L3N2Zz4=);
+cursor: pointer;
+}
+
+.arrow-top {
+background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik0xMyAxOHYtNmg1bC02LTdsLTYgN2g1djZ6Ii8+PC9zdmc+);
+}
+
+.menu-exit {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTIwMi44MyAxOTcuMTdhNCA0IDAgMCAxLTUuNjYgNS42NkwxMjggMTMzLjY2bC02OS4xNyA2OS4xN2E0IDQgMCAwIDEtNS42Ni01LjY2TDEyMi4zNCAxMjhMNTMuMTcgNTguODNhNCA0IDAgMCAxIDUuNjYtNS42NkwxMjggMTIyLjM0bDY5LjE3LTY5LjE3YTQgNCAwIDEgMSA1LjY2IDUuNjZMMTMzLjY2IDEyOFoiLz48L3N2Zz4=);
+}
+
+.list-show {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMzIgMzIiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzMzMzMzMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiIGQ9Ik0zMCAxMkwxNiAyNEwyIDEyIi8+PC9zdmc+);
+    cursor: pointer;
+}
+
+.list-show-white {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMzAgMTJMMTYgMjRMMiAxMiIvPjwvc3ZnPg==);
+    cursor: pointer;
+   
+}
+
+.icon-question {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI1NiAyNTYiPjxwYXRoIGZpbGw9IiMzMzMzMzMiIGQ9Ik0xMzggMTgwYTEwIDEwIDAgMSAxLTEwLTEwYTEwIDEwIDAgMCAxIDEwIDEwTTEyOCA3NGMtMjEgMC0zOCAxNS4yNS0zOCAzNHY0YTYgNiAwIDAgMCAxMiAwdi00YzAtMTIuMTMgMTEuNjYtMjIgMjYtMjJzMjYgOS44NyAyNiAyMnMtMTEuNjYgMjItMjYgMjJhNiA2IDAgMCAwLTYgNnY4YTYgNiAwIDAgMCAxMiAwdi0yLjQyYzE4LjExLTIuNTggMzItMTYuNjYgMzItMzMuNThjMC0xOC43NS0xNy0zNC0zOC0zNG0xMDIgNTRBMTAyIDEwMiAwIDEgMSAxMjggMjZhMTAyLjEyIDEwMi4xMiAwIDAgMSAxMDIgMTAybS0xMiAwYTkwIDkwIDAgMSAwLTkwIDkwYTkwLjEgOTAuMSAwIDAgMCA5MC05MCIvPjwvc3ZnPg==);
+    cursor: pointer;  
+}
+
+.icon-cross {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZGMyNjI2IiBkPSJtOC4zODIgMTcuMDI1bC0xLjQwNy0xLjRMMTAuNTkzIDEyTDYuOTc1IDguNEw4LjM4MiA3TDEyIDEwLjYxNUwxNS41OTMgN0wxNyA4LjRMMTMuMzgyIDEyTDE3IDE1LjYyNWwtMS40MDcgMS40TDEyIDEzLjQxeiIvPjwvc3ZnPg==);
+     
+}
+
+.icon-check {
+   
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNjVhMzBkIiBkPSJtMTAgMTYuNGwtNC00TDcuNCAxMWwyLjYgMi42TDE2LjYgN0wxOCA4LjR6Ii8+PC9zdmc+);
+}
+
+.list-show-more {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjMzMzMzMzIiBkPSJtMTIgMTUuNjMybDguOTY4LTQuNzQ4bC0uOTM2LTEuNzY4TDEyIDEzLjM2OEwzLjk2OCA5LjExNmwtLjkzNiAxLjc2OHoiLz48L3N2Zz4=);
+    cursor: pointer;
+  
+}
+
+.list-show-less {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjMzMzMzMzIiBkPSJtMTIgOC4zNjlsOC45NjggNC43NDdsLS45MzYgMS43NjhMMTIgMTAuNjMybC04LjAzMiA0LjI1MmwtLjkzNi0xLjc2OHoiLz48L3N2Zz4=);
+    cursor: pointer;
+}
