@@ -580,6 +580,37 @@ font-size: 32px;
   visibility: visible;
 }
 
+/* Performance */
+.perfonmance{
+display: flex;
+}
+
+.performance_left_container{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.performance_left_container p{
+font-size: 18px;
+}
+.performance_left_button_container{
+display: flex;
+flex-direction: column;
+
+gap: 10px;
+}
+.performance_left_button_container a{
+  display: flex;
+  align-items: center;
+border: 1px solid rgba(107, 107, 253, 0.596);
+width: 300px;
+height: 45px;
+padding: 0 10px;
+border-radius: 3px;
+font-size: 18px;
+font-weight: 900;
+}
+
 @media (min-width: 1025px) {
   .icon-menu {
     display: none;
