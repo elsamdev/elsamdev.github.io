@@ -35,6 +35,36 @@ document.getElementById( "close_nav" ).addEventListener( 'click' ,function(event
 });
 
 
+const sliderH3 = document.querySelector(".slider h3");
+const slideTrack = document.querySelector(".slider .slide-track");
+
+const options = {
+  root: null,
+  rootMargin: "0px",
+  threshold: 0.5
+};
+
+const observer = new IntersectionObserver(function(entries, observer) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Elemento está visible en el viewport
+      sliderH3.classList.add("animate");
+      slideTrack.classList.add("animate");
+    } else {
+      // Elemento ya no está visible en el viewport
+      sliderH3.classList.remove("animate");
+      slideTrack.classList.remove("animate");
+    }
+  });
+}, options);
+
+observer.observe(sliderH3);
+
+window.addEventListener("resize", function() {
+  // Reiniciar la observación si cambia el tamaño de la ventana
+  observer.observe(sliderH3);
+  observer.observe(slideTrack);
+});
 
 
 
