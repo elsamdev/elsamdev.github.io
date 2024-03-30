@@ -34,40 +34,27 @@ document.getElementById( "close_nav" ).addEventListener( 'click' ,function(event
   document.getElementById('nav').classList.remove('active-nav');
 });
 
+// ///  *      animaciones al scroll               * /// ///
+// Seleccionar todos los elementos con la clase "anima_on"
+const elementos = document.querySelectorAll('.anima_on');
 
-const sliderH3 = document.querySelector(".slider h3");
-const slideTrack = document.querySelector(".slider .slide-track");
-
-const options = {
-  root: null,
-  rootMargin: "0px",
-  threshold: 0.5
-};
-
+// Crear una instancia de IntersectionObserver
 const observer = new IntersectionObserver(function(entries, observer) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // Elemento está visible en el viewport
-      sliderH3.classList.add("animate");
-      slideTrack.classList.add("animate");
+      entry.target.classList.add('animate'); // Agregar la nueva clase cuando el elemento esté visible en la ventana
     } else {
-      // Elemento ya no está visible en el viewport
-      sliderH3.classList.remove("animate");
-      slideTrack.classList.remove("animate");
+      entry.target.classList.remove('animate'); // Quitar la nueva clase cuando el elemento se oculte de la ventana
     }
   });
-}, options);
-
-observer.observe(sliderH3);
-
-window.addEventListener("resize", function() {
-  // Reiniciar la observación si cambia el tamaño de la ventana
-  observer.observe(sliderH3);
-  observer.observe(slideTrack);
 });
 
+// Observar cada elemento
+elementos.forEach(elemento => {
+  observer.observe(elemento);
+});
 
-
+// ///  *      animaciones al scroll  fin          * /// ///
 
 
 
