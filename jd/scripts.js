@@ -35,35 +35,8 @@ document.getElementById( "close_nav" ).addEventListener( 'click' ,function(event
 });
 
 
-const seeMoreFeatures = document.querySelector('.see-more-features');
-const ulElement = document.querySelector('.plans_card ul');
 
-seeMoreFeatures.addEventListener('click', function(event) {
-  event.preventDefault();
-  if (seeMoreFeatures.textContent === 'See More Features') {
-    ulElement.classList.add('plans_card_active');
-    seeMoreFeatures.innerHTML = 'Less Features';
-    seeMoreFeatures.style.color = 'rgb(255, 179, 64)';
-  } else {
-    ulElement.classList.remove('plans_card_active');
-    seeMoreFeatures.innerHTML = 'See More Features';
-    seeMoreFeatures.style.color = 'black';
-  }
-  
-});
 
-const planButtons = document.querySelectorAll(".plans_date button");
-
-planButtons.forEach(button => {
-  button.addEventListener("click", () => {
-
-    planButtons.forEach(btn => {
-      btn.classList.remove("plans_date_active");
-    });
-    
-    button.classList.add("plans_date_active");
-  });
-});
 
 
 

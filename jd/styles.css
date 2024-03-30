@@ -80,24 +80,27 @@ button:hover::after {
   border: none;
 }
 
-.todo{
-    background-color: rgb(147, 147, 255);
-    width: 100%;
-    height: 3500px;
-  }
+
 
 #home{
   display: flex;
   flex-direction: column;
     width: 100%;
     max-width: var(--max-width);
-    background-color: rgb(63, 53, 150);
+    background-color: white;
     position: relative;
     /* overflow: hidden; */
     gap: 40px;
+    
 }
 
+#home *{
+  color: black;
+}
 
+.home_styles{
+  padding: 30px var(--paddig);
+}
 
 .head {
     display: flex;
@@ -408,6 +411,7 @@ font-size: 30px;
   z-index: 2;
   position: relative;
 }
+
 .banner_img_wd{
   width: 200px;
   position: absolute;
@@ -434,17 +438,21 @@ font-size: 30px;
     transform: translateX(calc(-250px * 7));
   }
 }
+
 .slider {
-/*   background: white;
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125); */
-  height: 150px;
+  display: flex;
+  flex-direction: column;
   margin: auto;
   overflow: hidden;
   position: relative;
-  width: 960px;
+  width: 100%;
+}
+
+.slider h3{
+ padding: var(--paddig);
+ text-align: center;
 }
 .slider::before, .slider::after {
-/*   background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%); */
   content: "";
   height: 100px;
   position: absolute;
@@ -456,19 +464,21 @@ font-size: 30px;
   top: 0;
   transform: rotateZ(180deg);
 }
+
 .slider::before {
   left: 0;
   top: 0;
 }
+
 .slider .slide-track {
-  animation: scroll 40s linear infinite;
+  animation: scroll 30s linear infinite;
   display: flex;
-  width: calc(250px * 14);
+  gap: 50px;
+  width: calc(150px * 14);
 }
+
 .slider .slide {
-  height: 100px;
-  width: 250px;
-  padding-left: 20px;
+  width: 150px;
 }
 
 @media (min-width: 1025px) {
