@@ -578,7 +578,7 @@ font-size: 30px;
 .example_jobs_explain_card{
   width: 100%;
   height: auto;
-  border-radius: 1px;
+  border-radius: 3px;
   border: 1px solid rgb(233, 233, 233);
   padding: 20px;
   display: flex;
