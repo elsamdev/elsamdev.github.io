@@ -36,7 +36,7 @@ document.getElementById( "close_nav" ).addEventListener( 'click' ,function(event
 
 // ///  *      animaciones al scroll               * /// ///
 // Seleccionar todos los elementos con la clase "anima_on"
-const elementos = document.querySelectorAll('.anima_on');
+const elementosAnimation = document.querySelectorAll('.anima_on');
 
 // Crear una instancia de IntersectionObserver
 const observer = new IntersectionObserver(function(entries, observer) {
@@ -50,13 +50,33 @@ const observer = new IntersectionObserver(function(entries, observer) {
 });
 
 // Observar cada elemento
-elementos.forEach(elemento => {
+elementosAnimation.forEach(elemento => {
   observer.observe(elemento);
 });
 
 // ///  *      animaciones al scroll  fin          * /// ///
 
 
-
-
-
+const botonesExamples = document.querySelectorAll(".example_jobs_card_buttoms_container a");
+const exampleContainer = document.querySelectorAll(".example_jobs_container");
+exampleContainer[0].style.display = "flex";
+botonesExamples[0].classList.add('example_buttoms_active');
+botonesExamples.forEach((botonesExample,t) => {
+  botonesExample.addEventListener("click", function(e) {
+    e.preventDefault();
+    
+    // Quitar la clase 'active' de todos los botones
+    botonesExamples.forEach((boton, i) => {
+      boton.classList.remove('example_buttoms_active');
+      exampleContainer[i].style.display = "none";
+    });
+    
+    // Agregar la clase 'active' al botón clickeado
+    this.classList.add('example_buttoms_active');
+    exampleContainer[t].style.display = "flex";
+    console.log("entro");
+    
+    // Si el atributo data-target existe en el elemento clickeado
+    // const target = e.target.dataset.target;
+  });
+});

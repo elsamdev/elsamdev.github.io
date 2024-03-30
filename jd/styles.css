@@ -547,8 +547,8 @@ font-size: 30px;
   font-weight: 600;
 }
 
-.example_jobs_card_buttoms_container a:focus{
-  background-color: var(--primary-color);
+.example_buttoms_active{
+  background-color: var(--primary-color) !important;
   color: white !important;
 }
 
@@ -613,13 +613,16 @@ font-weight: 500;
     font-size: 14px;
     }
 
-
+    .example_jobs_container {
+      display: none;
+      flex-direction: column;
+    }
 
 
 
 @media screen and (min-width:950px) {
   .example_jobs_container {
-    display: flex;
+    /* display: flex; */
     flex-direction: row; 
     gap: 50px;
   }
