@@ -596,14 +596,39 @@ font-size: 30px;
 .example_jobs_explain_card:hover{
 transform: scale(1.01);
 background-color: white;
+-webkit-box-shadow: -1px 1px 1px 1px rgba(227,227,227,0.7);
+-moz-box-shadow: -1px 1px 1px 1px rgba(227,227,227,0.7);
+box-shadow: -1px 1px 1px 1px rgba(227,227,227,0.7);
 }
 
-.example_jobs_explain_card img{
-background-color: #0056b3;
-width: 85px;
-height: 85px;
-border-radius: 50%;
+.example_jobs_card_img_container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  min-width: 85px;
+  min-height: 85px;
+  border-radius: 50%;
 }
+
+.bg_color_1{
+  background-color: #e9deff;
+}
+
+.bg_color_2{
+  background-color: #f8dfde;
+}
+
+
+.bg_color_3{
+  background-color: #d6ebe7;
+}
+
+
+.example_jobs_card_img_container img{
+padding: 15px;
+}
+
 
 .example_jobs_tex_card_container{
   display: flex;
@@ -701,11 +726,6 @@ color: #676879 !important;
     flex-direction: row;
   }
 
-  .example_jobs_explain_card img{
-    min-width: 85px;
-    min-height: 85px;
-    border-radius: 50%;
-    }
     .example_jobs_tex_card_container{
       justify-content: center;
     }
