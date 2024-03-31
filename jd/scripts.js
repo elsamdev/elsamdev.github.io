@@ -38,7 +38,7 @@ document.getElementById( "close_nav" ).addEventListener( 'click' ,function(event
 // Seleccionar todos los elementos con la clase "anima_on"
 const elementosAnimation = document.querySelectorAll('.anima_on');
 
-// Crear una instancia de IntersectionObserver
+// Crear una instancia de IntersectionObserver con configuración personalizada
 const observer = new IntersectionObserver(function(entries, observer) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -47,7 +47,7 @@ const observer = new IntersectionObserver(function(entries, observer) {
       entry.target.classList.remove('animate'); // Quitar la nueva clase cuando el elemento se oculte de la ventana
     }
   });
-});
+}, { threshold: 0.15 }); // Solo activar la animación cuando al menos el 50% del elemento esté visible
 
 // Observar cada elemento
 elementosAnimation.forEach(elemento => {
@@ -69,7 +69,7 @@ botonesExamples.forEach((botonesExample,t) => {
     botonesExamples.forEach((boton, i) => {
       boton.classList.remove('example_buttoms_active');
       exampleContainer[i].style.display = "none";
-    });
+    },);
     
     // Agregar la clase 'active' al botón clickeado
     this.classList.add('example_buttoms_active');
