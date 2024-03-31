@@ -706,6 +706,9 @@ color: #676879 !important;
     min-height: 85px;
     border-radius: 50%;
     }
+    .example_jobs_tex_card_container{
+      justify-content: center;
+    }
 }
 
 
