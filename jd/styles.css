@@ -82,7 +82,14 @@ button:hover::after {
   border: none;
 }
 
-
+.subtitle{
+  font-size: 27px;
+  text-align: center;
+  max-width: 100%;
+  opacity: 0;
+  top: 200px;
+  transition: var(--trasition);
+ }
 
 #home{
   display: flex;
@@ -390,7 +397,7 @@ font-size: 30px;
     font-weight: 600;
     background-color:  rgba(255, 255, 255, 0.08);
     border-radius: 20px;
-    padding: 8px 10px;
+    padding: 8px 30px;
   }
 
   .banner_buttons_container{
@@ -472,7 +479,7 @@ font-size: 30px;
   text-align: center;
   position: relative;
   opacity: 0;
-  top: 100px;
+  transform: translate3d(0,100px,0);
   transition: var(--trasition);
 }
 
@@ -504,7 +511,6 @@ font-size: 30px;
   overflow: hidden;
   max-width: var(--max-width);
   width: 100%;
-
 }
 
 .maged_2{
@@ -512,20 +518,13 @@ font-size: 30px;
   font-weight: 400;
   background-color:  rgb(241, 241, 241);
   padding: 8px 10px;
-  color: var(--button-bg-color-secondary) !important;
+  color: var(--primary-color) !important;
   opacity: 0;
   top: 200px;
   transition: var(--trasition);
 }
 
-.example_jobs h2{
- font-size: 27px;
- text-align: center;
- max-width: 100%;
- opacity: 0;
- top: 200px;
- transition: var(--trasition);
-}
+
 
 .example_jobs_card_buttoms_container{
   margin: 50px 0;
@@ -618,6 +617,7 @@ font-weight: 500;
 
   .example_jobs_explain_card p{
     font-size: 14px;
+    color: #676879 !important;
     }
 
     .example_jobs_container {
@@ -625,8 +625,52 @@ font-weight: 500;
       flex-direction: column;
     }
 
+       /* Process */
 
+.process{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  max-width: var(--max-width);
+  width: 100%;
+  gap: 20px;
+}
 
+.process_card{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.process_card h3{
+font-size: 24px;
+transform: translate3d(-100px,0,100px);
+opacity: 0;
+transition: var(--trasition);
+}
+
+.process_card p{
+font-size: 14px;
+color: #676879 !important;
+transform: translate3d(-100px,0,100px);
+opacity: 0;
+transition: var(--trasition);
+}
+
+.maged_3{
+  font-size:14px !important;
+  font-weight: 400;
+  background-color:  rgb(241, 241, 241);
+  padding: 8px 10px;
+  color: var(--primary-color) !important;
+  opacity: 0;
+  transform: translate3d(-50px,0,50px);
+  transition: var(--trasition);
+}
 @media screen and (min-width:950px) {
   .example_jobs_container {
     /* display: flex; */
@@ -772,9 +816,10 @@ color: white;
   right: 0 !important;
   bottom:  0 !important;
   opacity: 1 !important;
-  translate: none;
-  rotate: none;
-  scale: none;
-  transform: translate(0px);
+  translate: none  !important;
+  rotate: none  !important;
+  scale: none  !important;
+  transform: translate(0) !important;
+
   transition: var(--trasition);
 }
