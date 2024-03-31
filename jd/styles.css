@@ -358,6 +358,7 @@ button:hover::after {
   margin-top: 120px;
   padding: var(--paddig);
   max-width: var(--max-width);
+ 
 }
 
 
@@ -415,19 +416,22 @@ font-size: 30px;
 .banner_end{
   position: relative;
   display: flex;
-  width: 100%;
-  
+  align-items: center;
+  justify-content: center;
+  width: auto;
 }
 
 .banner_img_man{
   z-index: 2;
   position: relative;
+
 }
 
 .banner_img_wd{
   width: 200px;
   position: absolute;
   left: 20px;
+  top: 0;
   z-index: 1;
   animation: rotate 20s linear infinite;
 }
@@ -601,7 +605,10 @@ height: 85px;
 border-radius: 50%;
 }
 
-
+.example_jobs_tex_card_container{
+  display: flex;
+  flex-direction: column;
+}
 
 .example_jobs_explain_card h4{
 font-size: 18px;
@@ -727,6 +734,15 @@ color: white;
   padding-top: 50px;
 }
 
+.banner_end{
+  justify-content: flex-end;
+  width: auto;
+}
+
+.banner_start{
+
+  width: 50%;
+}
 .features {
   display: grid;
   gap: 20px;
