@@ -38,6 +38,26 @@ position: relative;
 background-color: black;
 height: auto;
 }
+
+
+/* Firefox */
+html {
+  scrollbar-color: var(--primary-color) var(--button-bg-color-secondary);
+  scrollbar-width: thin;
+}
+
+/* WebKit and Chromiums */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: var(--button-bg-color-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
 body{
   display: flex;
   flex-direction: column;
@@ -865,3 +885,5 @@ color: white;
 
   transition: var(--trasition);
 }
+
+
