@@ -82,3 +82,50 @@ botonesExamples.forEach((botonesExample,t) => {
 });
 
 
+//////////////////// Banner  /////////////
+
+const bannerItems = document.querySelectorAll('.banner_items');
+const bannerItemsRight = document.querySelectorAll('.banner_items .banner_end');
+const bannerItemsLeft = document.querySelectorAll('.banner_items .banner_start');
+
+bannerItems[0].style.display = "flex";
+bannerItemsRight[0].classList.add('animate');
+bannerItemsLeft[0].classList.add('animate');
+
+let currentBannerIndex = 0;
+let animationInterval;
+
+function mostrarSiguienteBanner() {
+    [...bannerItemsRight, ...bannerItemsLeft].forEach((element) => {
+        element.classList.remove('animate');
+    });
+
+    setTimeout(() => {
+        bannerItems[currentBannerIndex].style.display = 'none';
+        currentBannerIndex++;
+        if (currentBannerIndex >= bannerItems.length) {
+            currentBannerIndex = 0;
+        }
+        bannerItems[currentBannerIndex].style.display = 'flex';
+        setTimeout(() => {
+            [...bannerItemsRight, ...bannerItemsLeft].forEach((element) => {
+                element.classList.add('animate');
+            });
+        }, 300); // Agrega un retraso de 0.3 segundos (300 milisegundos)
+    }, 300); // Agrega un retraso de 0.3 segundos (300 milisegundos)
+}
+
+function detenerAnimacion() {
+    clearInterval(animationInterval);
+}
+
+function reiniciarAnimacion() {
+    animationInterval = setInterval(mostrarSiguienteBanner, 4000); // Cambia el tiempo en milisegundos según tus necesidades
+}
+
+animationInterval = setInterval(mostrarSiguienteBanner, 4000); // Comienza la animación
+
+bannerItems.forEach((element) => {
+    element.addEventListener('mouseover', detenerAnimacion);
+    element.addEventListener('mouseout', reiniciarAnimacion);
+});

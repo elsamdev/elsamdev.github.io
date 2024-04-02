@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enviar Notificaciones Push con Firebase</title>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>
+</head>
+<body>
+    <h1>Enviar Notificaciones Push</h1>
+    <button id="btnPermiso">Solicitar Permiso</button>
+    <button onclick="registrarDispositivo()">Registrar Dispositivo</button>
+    <button onclick="enviarNotificacion()">Enviar Notificación</button>
+    <button onclick="eliminarDispositivo()">Eliminar dispositivo</button>
+    <script src="firebase-config.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

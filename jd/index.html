@@ -36,6 +36,7 @@
             <li><a href="#home">Home</a> </li>
             <li><a href="#pages">Pages</a></li>
             <li><a href="#contact">Contacts</a></li>
+            </li>
         </ul>
 
         <button class="get_started_button"><p>Contactanos</p></button>
@@ -61,15 +62,23 @@
             <li><a href="#home">Home</a> </li>
             <li><a href="#pages">Pages</a></li>
             <li><a href="#contact">Contacts</a></li>
+            <li><a href="#servicios">Servicios <i class="sam-icon-small list-show-white"></i></a>
+                <ul class="nav_pc_options">
+                    <li><a href="#software">Software y Webs</a></li>
+                    <li><a href="#camaras">Cámaras de seguridad</a></li>
+                    <li><a href="#inteligentes">Casas inteligentes</a></li>
+                </ul>
         </ul>
         <div id="open_nav" class="icon-menu sam-icon menu-burger"></div>
-         <button class="login-button"><p>Contactanos!</p></button> 
+         <button class="login-button"><p>Contactanos</p></button> 
         
     </nav>
+    
 
 </div>
 
 <div class="banner">
+    <!-- Banner software -->
     <div class="banner_items">
     <div class="banner_start">
         <p class="maged">Soluciones personalizadas para tu negocio</p>
@@ -78,7 +87,7 @@
             alcanzar tus objetivos comerciales de manera eficiente.</p>
         <div class="banner_buttons_container">
             <button class=""><p>Contactanos</p></button>
-            <button class="get_started_button_bgoff"><p>Conoce más</p></button>
+          <a  href="#software"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>  
         </div>
     
     </div>
@@ -88,6 +97,48 @@
         <img class="banner_img_man" src="banner__vps__image.svg" alt="VPS Image">
     </div>
 </div>
+
+<!-- cámaras de seguridad -->
+<div class="banner_items">
+    <div class="banner_start">
+        <p class="maged">Instalación de cámaras de seguridad</p>
+        <h1>Seguridad completa con cámaras de vanguardia</h1>
+        <p>Te ofrecemos soluciones de seguridad integrales para proteger tu 
+            hogar o negocio, con cámaras de última generación y sistemas de vigilancia </p>
+        <div class="banner_buttons_container">
+            <button class=""><p>Contactanos</p></button>
+            <a href="#camaras" ><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
+        </div>
+    
+    </div>
+
+    <div class="banner_end">
+        <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd">
+        <img class="banner_img_man" src="banner__vps__image.svg" alt="VPS Image">
+    </div>
+</div>
+
+<!-- casas inteligentes -->
+<div class="banner_items">
+    <div class="banner_start">
+        <p class="maged">Instalación de casas inteligentes</p>
+        <h1>Control total desde la palma de tu mano</h1>
+        <p>Convertimos tu hogar en un espacio inteligente y conectado, donde 
+            podrás controlar todo desde la palma de tu mano.</p>
+        <div class="banner_buttons_container">
+            <button class=""><p>Contactanos</p></button>
+            <a   href="#inteligentes"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
+        </div>
+    
+    </div>
+
+    <div class="banner_end">
+        <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd">
+        <img class="banner_img_man" src="banner__vps__image.svg" alt="VPS Image">
+    </div>
+</div>
+
+
 </div>
 
 <section id="home">
@@ -120,7 +171,7 @@
     </div>
 </div>
 
-<div class="home_styles_grey">
+<div id="software" class="home_styles_grey">
     <div class="example_jobs">
     <div class="maged maged_2 anima_on">Proyectos Finalizados</div>
     <h2 class="subtitle anima_on">Diseño de Software y Aplicaciones a Medida para Tus Necesidades</h2>
