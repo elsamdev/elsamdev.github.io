@@ -103,14 +103,7 @@ button:hover::after {
   border: none;
 }
 
-.subtitle{
-  font-size: 27px;
-  text-align: center;
-  max-width: 100%;
-  opacity: 0;
-  top: 200px;
-  transition: var(--trasition);
- }
+
 
 #home{
   display: flex;
@@ -207,6 +200,7 @@ button:hover::after {
     opacity: 1;
     transition: transform  0.3s ease, opacity  0.3s ease;
   }
+ 
 
   #nav_pc{
     display: flex;
@@ -324,11 +318,17 @@ button:hover::after {
     margin-top: 40px;
   }
 
-  .menu li{
+  .menu > ul{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .menu > li{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     width:  100%;
+    position: relative;
   }
 
   /* .menu li:not(:first-child) {
@@ -340,6 +340,25 @@ button:hover::after {
   .menu li a{
     font-size: 18px;
     font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;  
+  }
+
+
+  .nav_options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 0;
+    padding-left: 20px;
+    overflow: hidden;
+    transition: max-height 1s ease;
+  }
+  
+  .menu > li a:focus + .nav_options {
+    max-height: 500px; /* Ajusta este valor según tus necesidades */
   }
 
   .icon-exit {
@@ -786,12 +805,26 @@ font-weight: 500;
   margin-top: 20px;
 }
 
-.process_card h3{
+.process_card_text{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.process_card img{
+  width: 100%;
+  border-radius: 5px;
+  max-width: 600px;
+}
+
+.process_card_text h3{
 font-size: 24px;
 margin: 20px 0;
 }
 
-.process_card p{
+.process_card_text p{
 font-size: 14px;
 color: #676879 !important;
 }
@@ -823,6 +856,63 @@ color: #676879 !important;
   opacity: 0;
   transition: var(--trasition);
 }
+
+
+.subtitle{
+  font-size: 27px;
+  text-align: center;
+  max-width: 100%;
+  opacity: 0;
+  top: 200px;
+  transition: var(--trasition);
+ }
+
+ .subtitle_p{
+  font-size: 16px;
+  text-align: start;
+  max-width: 100%;
+  opacity: 0;
+  top: 200px;
+  transition: var(--trasition);
+ }
+
+ .subtitle_p_2 {
+  font-size: 16px;
+  text-align: start;
+  max-width: 100%;
+  opacity: 0;
+  top: 200px;
+  transition: var(--transition);
+  background-color: var(--button-bg-color-secondary);
+  color: #ffffff !important;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  }
+
+  .process_card_footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    /* background-color: var(--primary-color); */
+    background-image: url('oooscillate.svg'), linear-gradient(to bottom, var(--primary-color), var(--primary-color));
+    padding: 20px;
+    border-radius: 30px;
+    gap: 10px;
+    width: 100%;
+  }
+  .process_card_footer *{
+    color: white !important;
+  }
+
+  .process_card_footer button{
+    width: 300px;
+  }
+
+  .process_card_footer p{
+
+  }
 @media screen and (min-width:950px) {
   .example_jobs_container {
     /* display: flex; */
@@ -842,6 +932,18 @@ color: #676879 !important;
 
     .example_jobs_tex_card_container{
       justify-content: center;
+    }
+
+    .process_card_container{
+    display: flex;
+    flex-direction: column;
+      gap: 100px;
+    }
+
+    .process_card{
+      display: flex;
+      flex-direction: row;
+      gap: 50px;
     }
 }
 

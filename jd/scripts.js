@@ -31,8 +31,12 @@ document.getElementById( "open_nav" ).addEventListener( 'click' ,function(event)
 
 document.getElementById( "close_nav" ).addEventListener( 'click' ,function(event){
 	event.stopPropagation();
-  document.getElementById('nav').classList.remove('active-nav');
+  closeNav()
 });
+
+function closeNav(){
+  document.getElementById('nav').classList.remove('active-nav');
+}
 
 // ///  *      animaciones al scroll               * /// ///
 // Seleccionar todos los elementos con la clase "anima_on"

@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    
-    
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
@@ -33,9 +33,15 @@
         <div class="nav_container">
         <img src="logo-2.png" alt="" class="logo_head logo_nav">
         <ul class="menu">
-            <li><a href="#home">Home</a> </li>
-            <li><a href="#pages">Pages</a></li>
-            <li><a href="#contact">Contacts</a></li>
+            <li><a onclick="closeNav()" href="#home">Home</a> </li>
+            <li><a onclick="closeNav()" href="#pages">Pages</a></li>
+            <li><a onclick="closeNav()" href="#contact">Contacts</a></li>
+            <li><a href="#servicios">Servicios <i class="sam-icon-small list-show-white"></i></a>
+                <ul class="nav_options">
+                    <li><a onclick="closeNav()" href="#software">Software y Webs</a></li>
+                    <li><a onclick="closeNav()" href="#camaras">Cámaras de seguridad</a></li>
+                    <li><a onclick="closeNav()" href="#inteligentes">Casas inteligentes</a></li>
+                </ul>
             </li>
         </ul>
 
@@ -70,10 +76,10 @@
                 </ul>
         </ul>
         <div id="open_nav" class="icon-menu sam-icon menu-burger"></div>
-         <button class="login-button"><p>Contactanos</p></button> 
-        
+         <button class="login-button"><p>Contactanos</p></button>
+
     </nav>
-    
+
 
 </div>
 
@@ -83,13 +89,13 @@
     <div class="banner_start">
         <p class="maged">Soluciones personalizadas para tu negocio</p>
         <h1>Potencia tu negocio con software a medida</h1>
-        <p>Con nuestra experiencia y conocimientos, creamos software a medida que te permite optimizar tus operaciones y 
+        <p>Con nuestra experiencia y conocimientos, creamos software a medida que te permite optimizar tus operaciones y
             alcanzar tus objetivos comerciales de manera eficiente.</p>
         <div class="banner_buttons_container">
             <button class=""><p>Contactanos</p></button>
-          <a  href="#software"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>  
+          <a  href="#software"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
         </div>
-    
+
     </div>
 
     <div class="banner_end">
@@ -103,13 +109,13 @@
     <div class="banner_start">
         <p class="maged">Instalación de cámaras de seguridad</p>
         <h1>Seguridad completa con cámaras de vanguardia</h1>
-        <p>Te ofrecemos soluciones de seguridad integrales para proteger tu 
+        <p>Te ofrecemos soluciones de seguridad integrales para proteger tu
             hogar o negocio, con cámaras de última generación y sistemas de vigilancia </p>
         <div class="banner_buttons_container">
             <button class=""><p>Contactanos</p></button>
             <a href="#camaras" ><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
         </div>
-    
+
     </div>
 
     <div class="banner_end">
@@ -123,13 +129,13 @@
     <div class="banner_start">
         <p class="maged">Instalación de casas inteligentes</p>
         <h1>Control total desde la palma de tu mano</h1>
-        <p>Convertimos tu hogar en un espacio inteligente y conectado, donde 
+        <p>Convertimos tu hogar en un espacio inteligente y conectado, donde
             podrás controlar todo desde la palma de tu mano.</p>
         <div class="banner_buttons_container">
             <button class=""><p>Contactanos</p></button>
             <a   href="#inteligentes"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
         </div>
-    
+
     </div>
 
     <div class="banner_end">
@@ -142,7 +148,7 @@
 </div>
 
 <section id="home">
-    <div class="home_styles">    
+    <div class="home_styles">
     <div class="slider">
         <h3 class="anima_on">Manejamos mas de 20 distintos tipos de lenguajes y framework</h3>
         <div class="slide-track anima_on">
@@ -183,12 +189,12 @@
         <a href="#">Software de gestión de proyectos</a>
     </div>
 
-   
+
 
     <!-- administrativo -->
     <div class="example_jobs_container">
         <div class="example_jobs_container_left anima_on">
-       <img class="" src="img/works-img1.png" alt=""> 
+       <img class="" src="img/works-img1.png" alt="">
     </div>
 
     <div class="example_jobs_container_right">
@@ -201,7 +207,7 @@
             <p>Gestiona inventarios, pedidos y genera informes de ventas de manera eficiente.</p>
         </div>
         </div>
-         
+
         <div class="example_jobs_explain_card anima_on">
             <div class="example_jobs_card_img_container bg_color_2">
                 <img src="img/icon/browser-svgrepo-com.svg" alt="">
@@ -220,13 +226,13 @@
             <p>Integra tu sistema con API externas para una comunicación fluida y automatizada.</p>
         </div>
         </div>
-     </div> 
+     </div>
     </div>
 
  <!-- informativa -->
  <div class="example_jobs_container">
     <div class="example_jobs_container_left anima_on">
-   <img class="" src="img/informativa.jpg" alt=""> 
+   <img class="" src="img/informativa.jpg" alt="">
 </div>
 
 <div class="example_jobs_container_right">
@@ -239,7 +245,7 @@
         <p>Página web atractiva que muestra servicios y testimonios de clientes satisfechos.</p>
     </div>
     </div>
-     
+
     <div class="example_jobs_explain_card anima_on">
         <div class="example_jobs_card_img_container bg_color_2">
              <img src="img/icon/responsive-tablet-svgrepo-com.svg" alt="">
@@ -259,15 +265,15 @@
         <p>Aumenta tu presencia en los motores de búsqueda con una página web optimizada para SEO.</p>
     </div>
     </div>
- </div> 
+ </div>
 </div>
 
         <!-- ventas -->
         <div class="example_jobs_container">
             <div class="example_jobs_container_left anima_on">
-           <img class="" src="img/ventas.jpg" alt=""> 
+           <img class="" src="img/ventas.jpg" alt="">
         </div>
-    
+
         <div class="example_jobs_container_right">
             <div class="example_jobs_explain_card anima_on">
                 <div class="example_jobs_card_img_container bg_color_1">
@@ -278,7 +284,7 @@
                 <p>Atrae a más clientes y aumenta tus ingresos con un software de comercio electrónico personalizado.</p>
             </div>
             </div>
-             
+
             <div class="example_jobs_explain_card anima_on">
                 <div class="example_jobs_card_img_container bg_color_2">
                     <img src="img/icon/responsive-devices-svgrepo-com.svg" alt="">
@@ -297,15 +303,15 @@
                 <p>Ofrece a tus clientes una variedad de métodos de pago confiables y fáciles de usar.</p>
             </div>
             </div>
-         </div> 
+         </div>
         </div>
 
                 <!-- móvil -->
                 <div class="example_jobs_container">
                     <div class="example_jobs_container_left anima_on">
-                   <img class="" src="img/apk.jpg" alt=""> 
+                   <img class="" src="img/apk.jpg" alt="">
                 </div>
-            
+
                 <div class="example_jobs_container_right">
                     <div class="example_jobs_explain_card anima_on">
                         <div class="example_jobs_card_img_container bg_color_1">
@@ -316,7 +322,7 @@
                         <p> Explora nuestro menú y realiza pedidos con solo unos pocos toques en tu dispositivo móvil.</p>
                     </div>
                     </div>
-                     
+
                     <div class="example_jobs_explain_card anima_on">
                         <div class="example_jobs_card_img_container bg_color_2">
                             <img src="img/icon/web-design-svgrepo-com.svg" alt="">
@@ -335,15 +341,15 @@
                         <p>Recibe notificaciones sobre promociones especiales y actualizaciones del estado de tu pedido.</p>
                     </div>
                     </div>
-                 </div> 
+                 </div>
                 </div>
 
                 <!-- gestión de proyectos -->
                 <div class="example_jobs_container">
                     <div class="example_jobs_container_left anima_on">
-                   <img class="" src="img/example_job_1.jpg" alt=""> 
+                   <img class="" src="img/example_job_1.jpg" alt="">
                 </div>
-            
+
                 <div class="example_jobs_container_right">
                     <div class="example_jobs_explain_card anima_on">
                         <div class="example_jobs_card_img_container bg_color_1">
@@ -354,7 +360,7 @@
                         <p>Organiza tareas, asigna recursos y haz un seguimiento del progreso en un solo lugar</p>
                     </div>
                     </div>
-                     
+
                     <div class="example_jobs_explain_card anima_on">
                         <div class="example_jobs_card_img_container bg_color_2">
                             <img src="img/icon/businesswoman-svgrepo-com.svg" alt="">
@@ -373,15 +379,19 @@
                         <p> Simplifica la gestión de proyectos y optimiza el rendimiento de tu equipo.</p>
                     </div>
                     </div>
-                 </div> 
+                 </div>
                 </div>
-
+                <div class="process_card_footer">
+                    <p class="">En general, las cámaras de seguridad pueden ser una excelente manera de mejorar la seguridad de tu hogar y darte tranquilidad mental.</p>
+                    <button><p>Solicitar Presupuesto</p></button>
+                </div>
 </div>
 </div>
 
-<div class="home_styles">
+<div id="camaras" class="home_styles">
 <div class="process">
-    <div class="maged maged_3 anima_on">Proceso</div>
+
+    <!-- <div class="maged maged_3 anima_on">Proceso</div>
     <h2 class="subtitle anima_on">Proceso Creativo: Desde la Idea Hasta el Software Perfecto</h2>
     <div class="process_card_container">
         <div class="process_card process_card_l">
@@ -426,11 +436,64 @@
             <p class="anima_on">Ofrecemos mantenimiento y soporte continuo.</p>
             <p class="anima_on">Estamos aquí para ayudarte con cualquier problema o consulta que tengas.</p>
         </div>
+    </div> -->
+
+    <div class="maged maged_3 anima_on">Cámaras de Seguridad</div>
+    <h2 class="subtitle anima_on">Confía en los Expertos: Instalación de Cámaras de Seguridad para Hogares, Negocios y Empresas</h2>
+    <p class="subtitle_p anima_on">En JD Tech tenemos la cámara web perfecta para ti, nos encargamos de brindarte seguridad las 24 horas del día, Protege tu hogar, negocio o empresa con la tecnología más avanzada.
+    </p>
+    <p class="subtitle_p_2 anima_on"> Beneficios de tener un servicio de CCTV:</p>
+       
+    <div class="process_card_container">
+
+        <div class="process_card process_card_l">
+            <img src="img/imagen de prueba.jpg" alt="">
+            <div class="process_card_text">
+            <div class="maged maged_3 anima_on">Protege</div>
+            <h3 class="anima_on">Protección y vigilancia las 24 horas del día: </h3>
+            <p class="anima_on">Con las cámaras tendrás monitoreo a cualquier hora del día que puede ayudarte a disuadir a los ladrones en caso de robo, también pueden ser útiles para detectar fallos de seguridad, accidentes laborales, absentismo laboral </p>
+        </div>   
+        </div>
+
+        <div class="process_card process_card_r">
+            
+            <div class="process_card_text">
+            <div class="maged maged_3 anima_on">Resguarda</div>
+            <h3 class="anima_on">Monitoreo en tiempo real</h3>
+            <p class="anima_on">Desde un celular o computadora con servicio de internet podrás visualizar en tiempo real todo lo que sucede en tu hogar o negocio. </p>
+        </div>
+        <img src="img/imagen de prueba.jpg" alt="">
+        </div>
+
+        <div class="process_card process_card_l">
+            <img src="img/imagen de prueba.jpg" alt="">
+            <div class="process_card_text">
+            <div class="maged maged_3 anima_on ">Seguimiento</div>
+            <h3 class="anima_on">Grabación de eventos</h3>
+            <p class="anima_on">Las cámaras de seguridad son tus ojos y oídos en casa, capturando tanto video como audio de lo que sucede a tu alrededor. Estas grabaciones pueden ser fundamentales como evidencia en caso de un robo u otro delito, brindándote una tranquilidad invaluable.</p>
+        </div>
     </div>
 
+        <div class="process_card process_card_r">
 
+            <div class="process_card_text">
+            <div class="maged maged_3 anima_on">Avisos de actividad</div>
+            <h3 class="anima_on">Alertas de movimiento</h3>
+            <p class="anima_on">Además de su función de grabación, las cámaras de seguridad también ofrecen una característica inteligente: la detección de movimiento. Esto significa que, en caso de cualquier actividad inusual, recibirás alertas instantáneas en tu teléfono inteligente o computadora. Mantén el control total de tu hogar y estarás siempre al tanto de lo que sucede, incluso cuando no estés presente.</p>
+        </div>
+        <img src="img/imagen de prueba.jpg" alt="">
+        </div>
+
+        </div>
+        <div class="process_card_footer">
+            <p class="">En general, las cámaras de seguridad pueden ser una excelente manera de mejorar la seguridad de tu hogar y darte tranquilidad mental.</p>
+            <button><p>Solicitar Presupuesto</p></button>
+        </div>
+        
+
+    </div>
 </div>
-</div>
+
 
 
 <a href="#" class="border_icon">
