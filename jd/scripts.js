@@ -223,3 +223,14 @@ window.addEventListener('resize', manejarCambioDeTamano);
 
 // // Ejecutar la función al cargar la página
 // manejarCambioDeTamano();
+
+
+
+
+/////////////// enviar msj ws////////
+
+function enviarMensajeWhatsApp() {
+  var numeroTelefono = "573002248137"; // Reemplaza con tu número de teléfono
+  var url = "https://api.whatsapp.com/send?phone=" + numeroTelefono;
+  window.open(url, "_blank");
+}
