@@ -152,7 +152,6 @@ ocultar_inteligente();
 function ocultar_inteligente() {
   smartPostContainers.forEach(container => {
     container.style.display = 'none';
-    console.log(container)
   });
 }
 
@@ -205,8 +204,16 @@ function revertirEstilos(card) {
 function manejarCambioDeTamano() {
   ocultar_inteligente();
   if (window.innerWidth >= 950) {
+    
+    inteligentesCards.forEach(card => {
+      revertirEstilos(card); // Revertir los estilos de todas las cards
+    });
     aplicarEstilos(inteligentesCards[0], 0);
   } else {
+    
+    inteligentesCards.forEach(card => {
+      revertirEstilos(card); // Revertir los estilos de todas las cards
+    });
     aplicarEstilos(inteligentesCards[0], 0);
   }
 }
