@@ -139,21 +139,6 @@ bannerItems.forEach((element) => {
 
 //////////////////////// casas inteligentes ///////////
 
-const cards = document.querySelectorAll(".inteligentes_card");
-
-cards.forEach(card => {
-  const icon = card.querySelector("i[class^='sam-icon smart_']");
-
-  card.addEventListener("focus", function() {
-    const className = icon.className;
-    icon.className = className + "_invert";
-  });
-
-  card.addEventListener("blur", function() {
-    const className = icon.className;
-    icon.className = className.replace("_invert", "");
-  });
-});
 
 
 
@@ -161,32 +146,73 @@ cards.forEach(card => {
 // Obtén los elementos necesarios
 const smartPostContainers = document.querySelectorAll('.smart_post_container');
 const inteligentesCards = document.querySelectorAll('.inteligentes_card');
-ocultar_inteligente()
-// Recorre los botones y agrega el evento de clic
-inteligentesCards.forEach((card, index) => {
+const inteligentesRight = document.querySelectorAll('.inteligentes_container_right');
+ocultar_inteligente();
+
+function ocultar_inteligente() {
+  smartPostContainers.forEach(container => {
+    container.style.display = 'none';
+    console.log(container)
+  });
+}
+
+inteligentesCards.forEach((card, i) => {
   card.addEventListener('click', () => {
-    // Oculta todos los elementos de smart_post_container
-    ocultar_inteligente()
-
-    // Muestra el elemento correspondiente al botón clicado
-    smartPostContainers[index].style.display = 'block';
-
     // Quita la clase "active" de todos los botones
     inteligentesCards.forEach(card => {
-      card.classList.remove('active');
+      revertirEstilos(card); // Revertir los estilos de todas las cards
     });
 
-    // Agrega la clase "active" al botón clicado
-    card.classList.add('active');
+    ocultar_inteligente();
+
+    aplicarEstilos(card, i); 
   });
 });
 
 // Mostrar el primer elemento por defecto
-smartPostContainers[0].style.display = 'block';
 
-function ocultar_inteligente(){
-  smartPostContainers.forEach(container => {
-    container.style.display = 'none';
-  });
+aplicarEstilos(inteligentesCards[0], 0);
+
+
+
+function aplicarEstilos(card, i) {
+
+  if (window.innerWidth >= 950) {
+
+  } else {
+    i=i+4
+  }
+  smartPostContainers[i].style.display = 'block';
+  const icon = card.querySelector("i[class^='sam-icon smart_']");
+  card.style.backgroundColor = 'var(--primary-color)'; // Cambiar el color de fondo de la card
+  const className = icon.className;
+  icon.className = className + "_invert"; // Agregar clase para invertir el icono
+  card.querySelector('p').style.color = 'white';
+  card.querySelector('.inteligentes_card_icon_container').style.border = '4px solid white';
 }
 
+function revertirEstilos(card) {
+  const icon = card.querySelector("i[class^='sam-icon smart_']");
+  card.style.backgroundColor = ''; // Restablecer el color de fondo de la card
+  const className = icon.className;
+  icon.className = className.replace("_invert", ""); // Quitar clase para invertir el icono
+  card.querySelector('p').style.color = 'black';
+  card.querySelector('.inteligentes_card_icon_container').style.border = '4px solid var(--primary-color)';
+}
+
+
+
+function manejarCambioDeTamano() {
+  ocultar_inteligente();
+  if (window.innerWidth >= 950) {
+    aplicarEstilos(inteligentesCards[0], 0);
+  } else {
+    aplicarEstilos(inteligentesCards[0], 0);
+  }
+}
+
+// // Agregar el evento resize al objeto window
+window.addEventListener('resize', manejarCambioDeTamano);
+
+// // Ejecutar la función al cargar la página
+// manejarCambioDeTamano();
