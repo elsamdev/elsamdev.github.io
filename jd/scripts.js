@@ -133,3 +133,60 @@ bannerItems.forEach((element) => {
     element.addEventListener('mouseover', detenerAnimacion);
     element.addEventListener('mouseout', reiniciarAnimacion);
 });
+
+
+
+
+//////////////////////// casas inteligentes ///////////
+
+const cards = document.querySelectorAll(".inteligentes_card");
+
+cards.forEach(card => {
+  const icon = card.querySelector("i[class^='sam-icon smart_']");
+
+  card.addEventListener("focus", function() {
+    const className = icon.className;
+    icon.className = className + "_invert";
+  });
+
+  card.addEventListener("blur", function() {
+    const className = icon.className;
+    icon.className = className.replace("_invert", "");
+  });
+});
+
+
+
+
+// Obtén los elementos necesarios
+const smartPostContainers = document.querySelectorAll('.smart_post_container');
+const inteligentesCards = document.querySelectorAll('.inteligentes_card');
+ocultar_inteligente()
+// Recorre los botones y agrega el evento de clic
+inteligentesCards.forEach((card, index) => {
+  card.addEventListener('click', () => {
+    // Oculta todos los elementos de smart_post_container
+    ocultar_inteligente()
+
+    // Muestra el elemento correspondiente al botón clicado
+    smartPostContainers[index].style.display = 'block';
+
+    // Quita la clase "active" de todos los botones
+    inteligentesCards.forEach(card => {
+      card.classList.remove('active');
+    });
+
+    // Agrega la clase "active" al botón clicado
+    card.classList.add('active');
+  });
+});
+
+// Mostrar el primer elemento por defecto
+smartPostContainers[0].style.display = 'block';
+
+function ocultar_inteligente(){
+  smartPostContainers.forEach(container => {
+    container.style.display = 'none';
+  });
+}
+
