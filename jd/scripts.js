@@ -1,11 +1,13 @@
+var header = document.querySelector('.head');
 window.addEventListener('scroll', function() {
-    var header = document.querySelector('.head');
+
     var scrollPosition = window.scrollY;
   
+    window.requestAnimationFrame(handleScroll);
+
     if (scrollPosition > 0) {
       header.classList.add('scroll');
       document.querySelector('.border_icon').classList.add('border_icon_disable');
-      console.log("hola")
     } else {
       document.querySelector('.border_icon').classList.remove('border_icon_disable');
       header.classList.remove('scroll');
@@ -22,7 +24,41 @@ window.addEventListener('scroll', function() {
     document.querySelector('.progress-bar-circle').style.strokeDashoffset = offset;
   });
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+  
+  document.querySelector('.scroll-to-top-button').addEventListener('click', scrollToTop);
 
+  var scrolling = false;
+  var scrollTimeout;
+  
+  function handleScroll() {
+    var currentScrollPosition = window.scrollY;
+  
+    if (!scrolling) {
+      scrolling = true;
+      console.log('Scrolling started');
+      header.classList.add('hidden');
+    }
+  
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      scrolling = false;
+      console.log('Scrolling stopped');
+      header.classList.remove('hidden');
+    }, 200);
+  }
+
+  window.addEventListener('wheel', function() {
+    window.requestAnimationFrame(handleScroll);
+  });
+
+
+  /////////////////////////////////////////////
 
 document.getElementById( "open_nav" ).addEventListener( 'click' ,function(event){
 	event.stopPropagation();
