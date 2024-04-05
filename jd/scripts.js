@@ -190,6 +190,7 @@ function ocultar_inteligente() {
 inteligentesCards.forEach((card, i) => {
   card.addEventListener('click', (event) => {
     event.preventDefault();
+    eliminarAnimacionSmart(i)
     // Quita la clase "active" de todos los botones
     inteligentesCards.forEach(card => {
       revertirEstilos(card); // Revertir los estilos de todas las cards
@@ -226,7 +227,34 @@ function revertirEstilos(card) {
   card.querySelector('.inteligentes_card_icon_container').style.border = '4px solid var(--primary-color)';
 }
 
-
+function eliminarAnimacionSmart(i) {
+  const smartContainers = document.querySelectorAll('.smart_post_container');
+  
+  smartContainers.forEach((container, index) => {
+    const animateSmartImg = container.querySelectorAll('.animate_img');
+    const animateSmartText = container.querySelectorAll('.animate_text');
+    
+    if (index === i) {
+      animateSmartImg.forEach((element, idx) => {
+        setTimeout(() => {
+          element.classList.add('animate');
+        }, idx * 100); // Agrega un retraso de 500 ms por cada elemento
+      });
+      animateSmartText.forEach((element, idx) => {
+        setTimeout(() => {
+          element.classList.add('animate');
+        }, idx * 100); // Agrega un retraso de 500 ms por cada elemento
+      });
+    } else {
+      animateSmartImg.forEach(element => {
+        element.classList.remove('animate');
+      });
+      animateSmartText.forEach(element => {
+        element.classList.remove('animate');
+      });
+    }
+  });
+}
 
 
 // // Ejecutar la función al cargar la página
