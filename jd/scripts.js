@@ -168,11 +168,7 @@ bannerItems.forEach((element) => {
 
 
 
-
 //////////////////////// casas inteligentes ///////////
-
-
-
 
 
 // Obtén los elementos necesarios
@@ -242,7 +238,7 @@ function eliminarAnimacionSmart(i) {
       });
       animateSmartText.forEach((element, idx) => {
         setTimeout(() => {
-          element.classList.add('animate');
+          element.classList.add('animater');
         }, idx * 100); // Agrega un retraso de 500 ms por cada elemento
       });
     } else {
