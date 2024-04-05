@@ -31,7 +31,9 @@ window.addEventListener('scroll', function() {
     });
   }
   
-  document.querySelector('.scroll-to-top-button').addEventListener('click', scrollToTop);
+  document.querySelectorAll('.scroll-to-top-button').forEach(function(button) {
+    button.addEventListener('click', scrollToTop);
+  });
 
   var scrolling = false;
   var scrollTimeout;
