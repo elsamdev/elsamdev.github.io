@@ -188,7 +188,8 @@ function ocultar_inteligente() {
 }
 
 inteligentesCards.forEach((card, i) => {
-  card.addEventListener('click', () => {
+  card.addEventListener('click', (event) => {
+    event.preventDefault();
     // Quita la clase "active" de todos los botones
     inteligentesCards.forEach(card => {
       revertirEstilos(card); // Revertir los estilos de todas las cards
@@ -207,12 +208,6 @@ aplicarEstilos(inteligentesCards[0], 0);
 
 
 function aplicarEstilos(card, i) {
-
-  if (window.innerWidth >= 950) {
-
-  } else {
-    i=i+4
-  }
   smartPostContainers[i].style.display = 'block';
   const icon = card.querySelector("i[class^='sam-icon smart_']");
   card.style.backgroundColor = 'var(--primary-color)'; // Cambiar el color de fondo de la card
@@ -233,25 +228,6 @@ function revertirEstilos(card) {
 
 
 
-function manejarCambioDeTamano() {
-  ocultar_inteligente();
-  if (window.innerWidth >= 950) {
-    
-    inteligentesCards.forEach(card => {
-      revertirEstilos(card); // Revertir los estilos de todas las cards
-    });
-    aplicarEstilos(inteligentesCards[0], 0);
-  } else {
-    
-    inteligentesCards.forEach(card => {
-      revertirEstilos(card); // Revertir los estilos de todas las cards
-    });
-    aplicarEstilos(inteligentesCards[0], 0);
-  }
-}
-
-// // Agregar el evento resize al objeto window
-window.addEventListener('resize', manejarCambioDeTamano);
 
 // // Ejecutar la función al cargar la página
 // manejarCambioDeTamano();
