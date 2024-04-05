@@ -1,4 +1,7 @@
 var header = document.querySelector('.head');
+var scrolling = false;
+var scrollTimeout;
+
 window.addEventListener('scroll', function() {
 
     var scrollPosition = window.scrollY;
@@ -8,11 +11,24 @@ window.addEventListener('scroll', function() {
     if (scrollPosition > 0) {
       header.classList.add('scroll');
       document.querySelector('.border_icon').classList.add('border_icon_disable');
+
+      if (!scrolling) {
+        scrolling = true;
+        header.classList.add('hidden');
+      }
+    
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function() {
+        scrolling = false;
+        header.classList.remove('hidden');
+      }, 200);
+
     } else {
       document.querySelector('.border_icon').classList.remove('border_icon_disable');
       header.classList.remove('scroll');
     }
 
+    
     
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     var windowHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -22,41 +38,6 @@ window.addEventListener('scroll', function() {
     var circleLength = 2 * Math.PI * radius; // 2 * pi * r
     var offset = circleLength - (circleLength * scrollProgress / 100);
     document.querySelector('.progress-bar-circle').style.strokeDashoffset = offset;
-  });
-
-  function scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }
-  
-  document.querySelectorAll('.scroll-to-top-button').forEach(function(button) {
-    button.addEventListener('click', scrollToTop);
-  });
-
-  var scrolling = false;
-  var scrollTimeout;
-  
-  function handleScroll() {
-    var currentScrollPosition = window.scrollY;
-  
-    if (!scrolling) {
-      scrolling = true;
-      console.log('Scrolling started');
-      header.classList.add('hidden');
-    }
-  
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(function() {
-      scrolling = false;
-      console.log('Scrolling stopped');
-      header.classList.remove('hidden');
-    }, 200);
-  }
-
-  window.addEventListener('wheel', function() {
-    window.requestAnimationFrame(handleScroll);
   });
 
 
