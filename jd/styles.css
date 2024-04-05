@@ -575,7 +575,7 @@ font-size: 30px;
 .banner_img_man{
   z-index: 2;
   position: relative;
-
+  width: 90%;
 }
 
 .banner_img_wd{
