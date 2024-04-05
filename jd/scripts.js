@@ -14,12 +14,14 @@ window.addEventListener('scroll', function() {
 
       if (!scrolling) {
         scrolling = true;
+        console.log('Scrolling started');
         header.classList.add('hidden');
       }
     
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(function() {
         scrolling = false;
+        console.log('Scrolling stopped');
         header.classList.remove('hidden');
       }, 200);
 
@@ -39,6 +41,16 @@ window.addEventListener('scroll', function() {
     var offset = circleLength - (circleLength * scrollProgress / 100);
     document.querySelector('.progress-bar-circle').style.strokeDashoffset = offset;
   });
+
+ 
+
+
+  
+  function handleScroll() {
+    var currentScrollPosition = window.scrollY;
+  }
+
+
 
 
   /////////////////////////////////////////////
@@ -61,21 +73,22 @@ function closeNav(){
 // Seleccionar todos los elementos con la clase "anima_on"
 const elementosAnimation = document.querySelectorAll('.anima_on');
 
-// Crear una instancia de IntersectionObserver con configuración personalizada
-const observer = new IntersectionObserver(function(entries, observer) {
+// Función para manejar la intersección de los elementos
+function handleIntersection(entries, observer) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('animate'); // Agregar la nueva clase cuando el elemento esté visible en la ventana
     } else {
-      entry.target.classList.remove('animate'); // Quitar la nueva clase cuando el elemento se oculte de la ventana
+      // entry.target.classList.remove('animate'); // Quitar la nueva clase cuando el elemento se oculte de la ventana
     }
   });
-}, { threshold: 0.15 }); // Solo activar la animación cuando al menos el 50% del elemento esté visible
+}
+
+// Crear una instancia de IntersectionObserver con configuración personalizada y la función de intersección
+const observer = new IntersectionObserver(handleIntersection, { threshold: 0.15 }); // Solo activar la animación cuando al menos el 90% del elemento esté visible
 
 // Observar cada elemento
-elementosAnimation.forEach(elemento => {
-  observer.observe(elemento);
-});
+elementosAnimation.forEach(elemento => observer.observe(elemento));
 
 // ///  *      animaciones al scroll  fin          * /// ///
 

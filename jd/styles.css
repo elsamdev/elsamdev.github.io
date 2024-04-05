@@ -189,7 +189,7 @@ button:hover::after {
     transform: translate(-50%, -50%);
   }
 
-  #nav{
+  #nav {
     position: fixed;
     left: 0;
     top: 0;
@@ -199,15 +199,16 @@ button:hover::after {
     transform: scaleX(0%);
     transform-origin: left center;
     opacity: 0;
-    transition: transform  0.3s ease, opacity  0.3s ease;
-    z-index: 9999;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition-delay: 0.1s; /* Agregar un retraso a la transición para que la animación de entrada sea suave */
+    z-index: 9999999;
     padding: 0 35px;
   }
-
-  #nav.active-nav{
+  
+  #nav.active-nav {
     transform: scaleX(100%);
     opacity: 1;
-    transition: transform  0.3s ease, opacity  0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
  
 
@@ -321,10 +322,11 @@ button:hover::after {
     flex-direction: column;
     width:100%;
     gap: 10px;
+    margin-top: 50px;
   }
 
   .logo_nav{
-    margin-top: 40px;
+    margin-top: 25px;
   }
 
   .menu > ul{
@@ -376,7 +378,7 @@ button:hover::after {
     height: 20px;
     cursor: pointer;
     right: 20px;
-    top: 20px;
+    top: 30px;
   }
 
   .show-more-list {
