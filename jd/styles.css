@@ -44,6 +44,7 @@ height: auto;
 html {
   scrollbar-color: var(--primary-color) var(--button-bg-color-secondary);
   scrollbar-width: thin;
+  scroll-behavior: smooth;
 }
 
 /* WebKit and Chromiums */
