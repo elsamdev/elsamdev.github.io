@@ -111,12 +111,10 @@ button:hover::after {
   display: flex;
   flex-direction: column;
     width: 100%;
-    
     background-color: white;
     position: relative;
     /* overflow: hidden; */
     gap: 40px;
-    
 }
 
 #home *{
@@ -1232,9 +1230,14 @@ color: white !important;
 
 
   footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
-    height: 400px;
     background:black;
+    padding: 30px 10px 30px 10px;
+    text-align: center;
+    gap: 40px;
   }
 
   .footer_head{
@@ -1250,7 +1253,6 @@ color: white !important;
     opacity: 0;
     top: 200px;
     transition: var(--trasition);
-    margin-bottom: 40px;
   }
 
 
@@ -1278,10 +1280,24 @@ color: white !important;
     transition: var(--trasition);
  
   }
+
+  .footer_body{
+    margin-top: 50px;
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    border-radius: 20px;
+  }
+
 @media (min-width:950px) {
   .banner{
     height: 900px;
   }
+
+  .subtitle{
+    font-size: 32px !important;
+   }
+  
   .example_jobs_container {
     /* display: flex; */
     flex-direction: row; 
@@ -1391,6 +1407,10 @@ color: white !important;
   .banner{
     height: 600px;
   }
+
+  .subtitle{
+    font-size: 42px !important;
+   }
 
   .icon-menu {
     display: none;
