@@ -11,7 +11,7 @@ window.addEventListener('scroll', function() {
     if (scrollPosition > 0) {
       header.classList.add('scroll');
       document.querySelector('.border_icon').classList.add('border_icon_disable');
-
+      document.querySelector('.social_floating').classList.add('social_floating_disable');
       if (!scrolling) {
         scrolling = true;
         console.log('Scrolling started');
@@ -27,6 +27,7 @@ window.addEventListener('scroll', function() {
 
     } else {
       document.querySelector('.border_icon').classList.remove('border_icon_disable');
+      document.querySelector('.social_floating').classList.remove('social_floating_disable');
       header.classList.remove('scroll');
     }
 
@@ -267,4 +268,6 @@ function enviarMensajeWhatsApp() {
   window.open(url, "_blank");
 }
 
+
+/////formlario de contacto ////////////////
 
