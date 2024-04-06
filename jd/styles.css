@@ -1237,8 +1237,47 @@ color: white !important;
     background:black;
   }
 
+  .footer_head{
+    text-align: center;
+    max-width: 100%;
+
+  }
+
+  .footer_head h2{
+    font-size: 27px;
+    text-align: center;
+    max-width: 100%;
+    opacity: 0;
+    top: 200px;
+    transition: var(--trasition);
+    margin-bottom: 40px;
+  }
 
 
+  .footer_head > p{
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    text-align: center;
+    max-width: 100%;
+    opacity: 0;
+    top: 200px;
+    transition: var(--trasition);
+    margin-bottom: 20px;
+  }
+
+  .footer_head > p img{
+
+  }
+
+  .footer_head > button{
+    opacity: 0;
+    top: 200px;
+    transition: var(--trasition);
+ 
+  }
 @media (min-width:950px) {
   .banner{
     height: 900px;
