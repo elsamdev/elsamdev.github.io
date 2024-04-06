@@ -494,16 +494,14 @@ button:hover::after {
 }
 
 .social_floating a {
-  background-color: rgb(161, 161, 255);
+  background-color: #433ce7;
   border-radius: 10px;
-  width: 60px;
-  transition: width 0.3s ease, transform 0.3s ease;
-  transform-origin: left;
+  transition: width 1s ease-out;
+  padding: 5px;
 }
 
 .social_floating a:hover {
-  width: 80px;
-  transform: scaleX(1);
+  width: 60px;
 }
 /* finborder sociales */
 
