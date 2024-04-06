@@ -857,6 +857,12 @@ color: #676879 !important;
 }
 .process_card_l .maged_3{
   transform: translate3d(-50px,0,50px);
+  transition: var(--trasition);
+}
+
+.process_card_l .img_l{
+  transform: translate3d(50px,0,50px);
+  transition: var(--trasition);
 }
 
 .process_card_r .maged_3{
@@ -874,6 +880,10 @@ color: #676879 !important;
   transition: var(--trasition);
 }
 
+.process_card_r .img_r{
+  transform: translate3d(-50px,0,50px);
+  transition: var(--trasition);
+}
 
 .subtitle{
   font-size: 27px;
@@ -920,6 +930,7 @@ color: #676879 !important;
     width: 100%;
     margin-top: 60px;
   }
+  
   .process_card_footer *{
     color: white !important;
   }
