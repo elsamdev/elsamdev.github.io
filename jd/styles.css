@@ -211,6 +211,15 @@ button:hover::after {
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
  
+  .social_nav{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .social_nav_container{
+    display: flex;
+    gap: 20px;
+  }
 
   #nav_pc{
     display: flex;
