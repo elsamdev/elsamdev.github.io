@@ -100,7 +100,7 @@ botonesExamples[0].classList.add('example_buttoms_active');
 botonesExamples.forEach((botonesExample,t) => {
   botonesExample.addEventListener("click", function(e) {
     e.preventDefault();
-    
+    document.querySelector(".clicke").style.display = "none";
     // Quitar la clase 'active' de todos los botones
     botonesExamples.forEach((boton, i) => {
       boton.classList.remove('example_buttoms_active');
@@ -266,3 +266,5 @@ function enviarMensajeWhatsApp() {
   var url = "https://api.whatsapp.com/send?phone=" + numeroTelefono;
   window.open(url, "_blank");
 }
+
+
