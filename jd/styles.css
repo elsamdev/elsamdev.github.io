@@ -711,7 +711,7 @@ font-size: 30px;
 
 
 .example_jobs_card_buttoms_container{
-  margin: 50px 0;
+  margin: 10px 0;
   background-color: white;
   width: 100%;
   display: flex;
@@ -1299,6 +1299,10 @@ color: white !important;
   }
   .social_floating {
     right: 20px;
+  }
+
+  .example_jobs_card_buttoms_container{
+    margin: 50px 0;
   }
   .subtitle{
     font-size: 32px !important;
