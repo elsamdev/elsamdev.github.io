@@ -150,10 +150,15 @@ let animationInterval;
 function limpiarBannerActual() {
 
 
-  [...bannerItemsRight, ...bannerItemsLeft, ...dotItem].forEach((element) => {
+  [...bannerItemsRight, ...bannerItemsLeft].forEach((element) => {
     element.classList.remove('animate');
-    element.classList.remove('active');
+    
   });
+ 
+  dotItem.forEach((item) => {
+    item.classList.remove('active');
+  });
+  
   setTimeout(() => {
   bannerItems.forEach((item) => {
     item.style.display = 'none';
@@ -162,10 +167,12 @@ function limpiarBannerActual() {
 
 function mostrarBanner(chc){
   dotItem[chc].classList.add('active');
+
   bannerItems[chc].style.display = "flex";
+
     setTimeout(() => {
      [...bannerItemsRight, ...bannerItemsLeft].forEach((element) => {
-                element.classList.add('animate');
+          element.classList.add('animate');
       });
     }, 300); 
 }
@@ -175,9 +182,7 @@ function mostrarBanner(chc){
 function mostrarSiguienteBanner() {
   limpiarBannerActual()
 
-
     setTimeout(() => {
-        
         currentBannerIndex++;
         if (currentBannerIndex >= bannerItems.length) {
             currentBannerIndex = 0;
@@ -208,9 +213,15 @@ dotItem.forEach((dot, index) => {
     // currentBannerIndex = index;
     // mostrarSiguienteBanner();
     currentBannerIndex = index
+    detenerAnimacion()
     console.log(currentBannerIndex)
     limpiarBannerActual()
-    mostrarBanner(index)
+
+    setTimeout(() => {
+      mostrarBanner(currentBannerIndex)
+
+  }, 300);
+    
   });
 });
 
