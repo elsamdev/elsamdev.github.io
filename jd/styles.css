@@ -424,7 +424,7 @@ button:hover::after {
     align-items: center;
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 5px;
     border: 2px solid #433ce7;
     border-radius: 50%;
     height: 50px;
@@ -449,7 +449,6 @@ button:hover::after {
     position: fixed;
     top: 0;
     left: 0;
-  
     transition: width 0.3s ease;
   }
 
@@ -486,7 +485,7 @@ button:hover::after {
   align-items: flex-end;
   gap: 10px;
   top: 50%;
-  right: 20px;
+  right: 5px;
   z-index: 999;
   opacity: 0;
   transform: translateX(100px);
@@ -1294,6 +1293,13 @@ color: white !important;
     height: 900px;
   }
 
+  .border_icon{
+    bottom: 20px;
+    right: 20px;
+  }
+  .social_floating {
+    right: 20px;
+  }
   .subtitle{
     font-size: 32px !important;
    }
