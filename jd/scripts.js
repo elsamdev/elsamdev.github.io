@@ -124,17 +124,33 @@ botonesExamples.forEach((botonesExample,t) => {
 const bannerItems = document.querySelectorAll('.banner_items');
 const bannerItemsRight = document.querySelectorAll('.banner_items .banner_end');
 const bannerItemsLeft = document.querySelectorAll('.banner_items .banner_start');
+const dotContainer = document.querySelector(".dot_container");
+
+function createDots(numDots) {
+  dotContainer.innerHTML = "";
+  for (let i = 0; i < numDots; i++) {
+    const dot = document.createElement("span");
+    dot.classList.add("dot");
+    dotContainer.appendChild(dot);
+  }
+}
+// crear los dots
+createDots(bannerItems.length);
+const dotItem = document.querySelectorAll('.dot');
+dotItem[0].classList.add('active');
+
 
 bannerItems[0].style.display = "flex";
 bannerItemsRight[0].classList.add('animate');
 bannerItemsLeft[0].classList.add('animate');
 
-let currentBannerIndex = 0;
+let currentBannerIndex = 1;
 let animationInterval;
 
 function mostrarSiguienteBanner() {
-    [...bannerItemsRight, ...bannerItemsLeft].forEach((element) => {
+    [...bannerItemsRight, ...bannerItemsLeft, ...dotItem].forEach((element) => {
         element.classList.remove('animate');
+        element.classList.remove('active');
     });
 
     setTimeout(() => {
@@ -144,6 +160,7 @@ function mostrarSiguienteBanner() {
             currentBannerIndex = 0;
         }
         bannerItems[currentBannerIndex].style.display = 'flex';
+        dotItem[currentBannerIndex].classList.add('active');
         setTimeout(() => {
             [...bannerItemsRight, ...bannerItemsLeft].forEach((element) => {
                 element.classList.add('animate');
@@ -167,7 +184,12 @@ bannerItems.forEach((element) => {
     element.addEventListener('mouseout', reiniciarAnimacion);
 });
 
-
+dotItem.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    // currentBannerIndex = index;
+    // mostrarSiguienteBanner();
+  });
+});
 
 //////////////////////// casas inteligentes ///////////
 
