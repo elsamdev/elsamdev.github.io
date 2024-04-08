@@ -769,7 +769,7 @@ font-size: 30px;
   background-color: #f6f5fe;
   padding: 7px 20px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -1343,6 +1343,9 @@ color: white !important;
     margin-top: 120px;
   }
   
+  .example_jobs_card_buttoms_container a{
+    font-size: 14px;
+  }
 
   .border_icon{
     bottom: 20px;
