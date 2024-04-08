@@ -536,7 +536,7 @@ button:hover::after {
   justify-content: center;
   align-items: center;
   gap: 30px;
-  margin-top: 120px;
+  margin-top: 80px;
   padding: var(--paddig);
   max-width: var(--max-width);
  
@@ -1332,6 +1332,15 @@ color: white !important;
     height: 900px;
   }
 
+  .banner_items{
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: none;
+    padding-top: 50px;
+    margin-top: 120px;
+  }
+  
+
   .border_icon{
     bottom: 20px;
     right: 20px;
@@ -1534,12 +1543,6 @@ color: white;
   display: block;
 }
 
-.banner_items{
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: none;
-  padding-top: 50px;
-}
 
 .banner_end{
   justify-content: flex-end;
