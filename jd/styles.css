@@ -701,11 +701,10 @@ font-size: 30px;
   border-radius: 50%;
   display: inline-block;
   margin: 0 7px;
-  transition: transform 0.3s ease;
   position: relative;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.7s ease;
 }
 
 .dot.active {
