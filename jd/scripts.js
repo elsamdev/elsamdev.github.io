@@ -327,5 +327,46 @@ function enviarMensajeWhatsApp() {
 
 /////formlario de contacto ////////////////
 
-/////////////red biometrico//////////////
+/////////////biometrico//////////////
 
+var acordeones = document.querySelectorAll('.biometric_acordeon');
+var contenidos = document.querySelectorAll('.acordeon_content');
+
+function resetAcordeones() {
+  acordeones.forEach(function(acordeon) {
+    acordeon.querySelector('.sam-icon-medium').classList.remove('resta_icon');
+    acordeon.querySelector('.sam-icon-medium').classList.remove('active');
+  });
+
+  contenidos.forEach(function(contenido) {
+    contenido.classList.remove('active');
+  });
+}
+
+acordeones.forEach(function(acordeon, index) {
+  var contenido = contenidos[index];
+  var restaIcon = acordeon.querySelector('.sam-icon-medium.resta_icon');
+  
+  if (restaIcon && restaIcon.classList.contains('resta_icon')) {
+    restaIcon.addEventListener('click', function(event) {
+      event.stopPropagation();
+      resetAcordeones();
+    });
+    console.log("resta");
+  } else {
+    acordeon.addEventListener('click', function() {
+      var contenido = contenidos[index];
+      
+      if (contenido.classList.contains('active')) {
+        resetAcordeones();
+        
+      } else {
+        resetAcordeones();
+        
+        contenido.classList.add('active');
+        this.querySelector('.sam-icon-medium').classList.add('resta_icon');
+        this.querySelector('.sam-icon-medium').classList.add('active');
+      }
+    });
+  }
+});

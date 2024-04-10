@@ -1036,7 +1036,7 @@ button:hover::after {
 }
 
 
-/*  redbiometry  */
+/*  REDES  */
 .home_styles_redes{
   background-color: #414141;
 }
@@ -1045,18 +1045,17 @@ button:hover::after {
   color: white !important;
 }
 
-.redbio_container {
+.red_container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-
   max-width: var(--max-width);
   width: 100%;
   gap: 20px;
 }
 
-.redes_container {
+.redes_card_container {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -1065,31 +1064,131 @@ button:hover::after {
   transition: transform 0.3s ease;
 }
 
-.redes_container:hover {
+.redes_card_container:hover {
   transform: scale(1.1);
 }
 
-.redes_container h3 {
+.redes_card_container h3 {
   font-size: 20px;
 }
 
-.redes_container p {
+.redes_card_container p {
   font-size: 16px;
   margin-bottom: 20px;
 }
 
+.redes_l{
+transform: translate3d(-100px, 0, 50px);
+opacity: 0;
+transition: var(--trasition);
+
+}
+
+.redes_r{
+  transform: translate3d(100px, 0, 50px);
+  opacity: 0;
+  transition: var(--trasition);
+  }
 @media screen and (min-width: 768px) {
-  .redbio_container {
+  .red_container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
   }
   
-  .redes_container {
+  .redes_card_container {
     max-width: 400px;
     width: 30%;
   }
+}
+
+/* BIOMETRIC */
+
+.biometric_container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: var(--max-width);
+  width: 100%;
+  gap: 20px;
+}
+
+.biometric_container > h2 {
+  text-align: start;
+}
+
+.biometric_content_container{
+display: flex;
+flex-direction: column;
+gap: 40px;
+}
+
+.biometric_acordeon {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px dotted grey;
+}
+
+.biometric_acordeon_text {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px 0;
+  width: 100%;
+  cursor: pointer;
+  align-items: center;
+}
+
+.biometric_acordeon_text > h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.acordeon_content > p {
+  margin: 0;
+  font-size: 14px;
+  color: #414141 !important;
+  padding-bottom: 30px;
+}
+
+.biometric_acordeon_text > i {
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.biometric_acordeon_text > i.active {
+  background-color: var(--button-bg-color-secondary);
+}
+
+.acordeon_content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s;
+}
+
+.acordeon_content.active {
+  max-height: 500px; 
+
+}
+
+@media (min-width: 768px) {
+  .biometric_content_container{
+    flex-direction: row;
+    }
+
+    .biometric_acordeon_l{
+      max-width: 500px;
+    }
+
+}
+
+@media (min-width: 992px) {
+
+
 }
 /* smart */
 .inteligentes {
