@@ -359,12 +359,9 @@ acordeones.forEach(function(acordeon, index) {
       
       if (contenido.classList.contains('active')) {
         resetAcordeones();
-        
       } else {
         resetAcordeones();
-        
         contenido.classList.add('active');
-        
         this.querySelector('.sam-icon-medium').classList.add('resta_icon');
         this.querySelector('.sam-icon-medium').classList.add('active');
       }
