@@ -1077,6 +1077,10 @@ button:hover::after {
   margin-bottom: 20px;
 }
 
+.redes_card_container > i{
+/* background-color: #6e24ff; */
+}
+
 .redes_l{
 transform: translate3d(-100px, 0, 50px);
 opacity: 0;
