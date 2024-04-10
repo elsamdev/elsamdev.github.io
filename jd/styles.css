@@ -1161,7 +1161,7 @@ gap: 40px;
 }
 
 .biometric_acordeon_text > i.active {
-  background-color: var(--button-bg-color-secondary);
+  background-color: #d6d4fb;
 }
 
 .acordeon_content {
