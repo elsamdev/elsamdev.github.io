@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,649 +8,746 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
 
 
-<!-- favicon -->
-<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-<link rel="manifest" href="favicon/site.webmanifest">
-<link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
-<!-- favicon -->
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <!-- favicon -->
 
     <title>JD TECHNOLOGY</title>
 </head>
+
 <body>
     <nav id="nav">
         <div id="close_nav" class="icon-exit sam-icon menu-exit"></div>
         <div class="nav_container">
-        <img src="logo-2.png" alt="" class="logo_head logo_nav">
-        <ul class="menu">
-            <li><a href="#" onclick="closeNav()" >Home</a> </li>
-            <li><a onclick="closeNav()" href="#pages">Pages</a></li>
-            <li><a onclick="closeNav()" href="#form_contacto">Contacto</a></li>
-            <!-- <li><a onclick="closeNav()" href="#contact">Contacts</a></li> -->
-            <li><a href="#servicios">Servicios <i class="sam-icon-small list-show-white"></i></a>
-                <ul class="nav_options">
-                    <li><a onclick="closeNav()" href="#software">Software y Webs</a></li>
-                    <li><a onclick="closeNav()" href="#camaras">Cámaras de seguridad</a></li>
-                    <li><a onclick="closeNav()" href="#inteligentes">Casas inteligentes</a></li>
-                </ul>
-            </li>
-        </ul>
+            <img src="logo-2.png" alt="" class="logo_head logo_nav">
+            <ul class="menu">
+                <li><a href="#" onclick="closeNav()">Home</a> </li>
+                <li><a onclick="closeNav()" href="#pages">Pages</a></li>
+                <li><a onclick="closeNav()" href="#form_contacto">Contacto</a></li>
+                <!-- <li><a onclick="closeNav()" href="#contact">Contacts</a></li> -->
+                <li><a href="#servicios">Servicios <i class="sam-icon-small list-show-white"></i></a>
+                    <ul class="nav_options">
+                        <li><a onclick="closeNav()" href="#software">Software y Webs</a></li>
+                        <li><a onclick="closeNav()" href="#camaras">Cámaras de seguridad</a></li>
+                        <li><a onclick="closeNav()" href="#inteligentes">Casas inteligentes</a></li>
+                    </ul>
+                </li>
+            </ul>
 
-        <button class="get_started_button" onclick="enviarMensajeWhatsApp()"><p>Contactanos</p></button>
+            <button class="get_started_button" onclick="enviarMensajeWhatsApp()">
+                <p>Contactanos</p>
+            </button>
 
-        <div class="contact_info">
-            <h2>Contact Info</h2>
-            <p>+57 (300) 2248137</p>
-            <p>JDTechnology09@gmail.com</p>
-        </div>
+            <div class="contact_info">
+                <h2>Contact Info</h2>
+                <p>+57 (300) 2248137</p>
+                <p>JDTechnology09@gmail.com</p>
+            </div>
 
-        <!-- <div class="contact_info">
+            <!-- <div class="contact_info">
             <h2>Our Location</h2>
             <p>55 East Birchwood Ave.Brooklyn, </p>
             <p>New York 11201,United States</p>
         </div> -->
 
-        <div class="social_nav">
-            <div class="contact_info">
-                <h2>Redes Sociales</h2>
-            </div>
-            <div class="social_nav_container">
-                <a class="facebook" href="https://www.facebook.com/JDTech09"><i class="sam-icon facebook_icon"></i></a>
-                <a onclick="enviarMensajeWhatsApp()" class="whatsapp" href=""><i class="sam-icon whatsapp_icon"></i></a>
-                <a  class="instagram" href=""><i class="sam-icon instagram_icon"></i></a>
+            <div class="social_nav">
+                <div class="contact_info">
+                    <h2>Redes Sociales</h2>
+                </div>
+                <div class="social_nav_container">
+                    <a class="facebook" href="https://www.facebook.com/JDTech09"><i
+                            class="sam-icon facebook_icon"></i></a>
+                    <a onclick="enviarMensajeWhatsApp()" class="whatsapp" href=""><i
+                            class="sam-icon whatsapp_icon"></i></a>
+                    <a class="instagram" href=""><i class="sam-icon instagram_icon"></i></a>
+                </div>
             </div>
         </div>
-    </div>
     </nav>
 
     <div class="head">
-    <nav id="nav_pc">
-        <img src="logo-2.png" alt="" class="logo_head">
-        <ul class="menu_pc">
-            <li><a href="#" >Home</a> </li>
-            <li><a href="#pages">Pages</a></li>
-            <li><a href="#form_contacto">Contacto</a></li>
-            <li><a href="#servicios">Servicios <i class="sam-icon-small list-show-white"></i></a>
-                <ul class="nav_pc_options">
-                    <li><a href="#software">Software y Webs</a></li>
-                    <li><a href="#camaras">Cámaras de seguridad</a></li>
-                    <li><a href="#inteligentes">Casas inteligentes</a></li>
-                </ul>
-        </ul>
-        <div id="open_nav" class="icon-menu sam-icon menu-burger"></div>
-         <button class="login-button" onclick="enviarMensajeWhatsApp()"><p>Contactanos</p></button>
+        <nav id="nav_pc">
+            <img src="logo-2.png" alt="" class="logo_head">
+            <ul class="menu_pc">
+                <li><a href="#">Home</a> </li>
+                <li><a href="#pages">Pages</a></li>
+                <li><a href="#form_contacto">Contacto</a></li>
+                <li><a href="#servicios">Servicios <i class="sam-icon-small list-show-white"></i></a>
+                    <ul class="nav_pc_options">
+                        <li><a href="#software">Software y Webs</a></li>
+                        <li><a href="#camaras">Cámaras de seguridad</a></li>
+                        <li><a href="#inteligentes">Casas inteligentes</a></li>
+                    </ul>
+            </ul>
+            <div id="open_nav" class="icon-menu sam-icon menu-burger"></div>
+            <button class="login-button" onclick="enviarMensajeWhatsApp()">
+                <p>Contactanos</p>
+            </button>
 
-    </nav>
-
-
-</div>
-
-<div class="banner">
-    <!-- Banner software -->
-    <div class="banner_items">
-    <div class="banner_start">
-        <p class="maged">Soluciones personalizadas para tu negocio</p>
-        <h1>Potencia tu negocio con software a medida</h1>
-        <p>Con nuestra experiencia y conocimientos, creamos software a medida que te permite optimizar tus operaciones y
-            alcanzar tus objetivos comerciales de manera eficiente.</p>
-        <div class="banner_buttons_container">
-            <button class="" onclick="enviarMensajeWhatsApp()"><p>Contactanos</p></button>
-          <a  href="#software"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
-        </div>
-
-    </div>
-
-    <div class="banner_end">
-        <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
-        <img class="banner_img_man" src="img/software.png" alt="VPS Image">
-    </div>
-</div>
-
-<!-- cámaras de seguridad -->
-<div class="banner_items">
-    <div class="banner_start">
-        <p class="maged">Instalación de cámaras de seguridad</p>
-        <h1>Seguridad completa con cámaras de vanguardia</h1>
-        <p>Te ofrecemos soluciones de seguridad integrales para proteger tu
-            hogar o negocio, con cámaras de última generación y sistemas de vigilancia </p>
-        <div class="banner_buttons_container">
-            <button class="" onclick="enviarMensajeWhatsApp()"><p>Contactanos</p></button>
-            <a href="#camaras" ><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
-        </div>
-
-    </div>
-
-    <div class="banner_end">
-        <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
-        <img class="banner_img_man" src="img/camera.png" alt="VPS Image">
-    </div>
-</div>
-
-<!-- casas inteligentes -->
-<div class="banner_items">
-    <div class="banner_start">
-        <p class="maged">Instalación de casas inteligentes</p>
-        <h1>Control total desde la palma de tu mano</h1>
-        <p>Convertimos tu hogar en un espacio inteligente y conectado, donde
-            podrás controlar todo desde la palma de tu mano.</p>
-        <div class="banner_buttons_container">
-            <button class="" onclick="enviarMensajeWhatsApp()"><p>Contactanos</p></button>
-            <a   href="#inteligentes"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
-        </div>
-
-    </div>
-
-    <div class="banner_end">
-        <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
-        <img class="banner_img_man" src="img/smart.png" alt="VPS Image">
-    </div>
-</div>
-
-<!-- sistemas biometricos -->
-<div class="banner_items">
-    <div class="banner_start">
-        <p class="maged">Control de acceso seguro y eficiente</p>
-        <h1>Protege tu empresa con sistemas biométricos</h1>
-        <p>Instalamos sistemas biométricos avanzados para un control de 
-            acceso seguro y preciso utilizando 
-            reconocimiento facial y huella dactilar.</p>
-        <div class="banner_buttons_container">
-            <button class="" onclick="enviarMensajeWhatsApp()"><p>Contactanos</p></button>
-            <a   href="#inteligentes"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
-        </div>
-
-    </div>
-
-    <div class="banner_end">
-        <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
-        <img class="banner_img_man" src="img/biometric.png" alt="VPS Image">
-    </div>
-</div>
-
-
-<!-- redes -->
-<div class="banner_items">
-    <div class="banner_start">
-        <p class="maged">Conectividad sin límites</p>
-        <h1>Redes confiables y escalables para tu negocio</h1>
-        <p>Instalamos y mantenemos redes confiables y escalables, adaptadas a tus 
-            necesidades operativas, ya sea cableadas o inalámbricas.</p>
-        <div class="banner_buttons_container">
-            <button class="" onclick="enviarMensajeWhatsApp()"><p>Contactanos</p></button>
-            <a   href="#inteligentes"><button class="get_started_button_bgoff"><p>Conoce más</p></button></a>
-        </div>
-
-    </div>
-
-    <div class="banner_end">
-        <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
-        <img class="banner_img_man" src="img/redes.png" alt="VPS Image">
-    </div>
-</div>
-
-<div class="dot_container">
-
-</div>
-</div>
-
-<section id="home">
-    <div class="home_styles">
-    <!-- <div class="slider">
-        <h3 class="anima_on">Manejamos mas de 20 distintos tipos de lenguajes y framework</h3>
-        <div class="slide-track anima_on">
-            <div class="slide">
-                <img src="brands/webstorm.svg"  />
-            </div>
-        <div class="slide">
-                <img src="brands/django.svg"  />
-            </div>
-        <div class="slide">
-                <img src="brands/ceylon.svg" />
-            </div>
-        <div class="slide">
-                <img src="brands/handlebars.svg"  />
-            </div>
-        <div class="slide">
-                <img src="brands/vagrant.svg"  />
-            </div>
-            <div class="slide">
-                <img src="brands/webstorm.svg"  />
-            </div>
-        <div class="slide">
-                <img src="brands/django.svg"  />
-            </div>
-        </div> -->
-
+        </nav>
 
 
     </div>
-</div>
 
-<div id="software" class="home_styles_grey">
-    <div class="example_jobs">
-    <div class="maged maged_2 anima_on">Proyectos Finalizados</div>
-    <h2 class="subtitle anima_on">Diseño de Software y Aplicaciones a Medida para Tus Necesidades</h2>
-    <div class="example_jobs_card_buttoms_container anima_on">
-        <a href="#">Sistema administrativo</a>
-        <a href="#">Web informativa <i class="clicke sam-icon click_hand"></i></a>
-        <a href="#">Software de ventas</a>
-        <a href="#">Aplicación móvil</a>
-        <a href="#">Software de gestión de proyectos</a>
-    </div>
-
-
-
-    <!-- administrativo -->
-    <div class="example_jobs_container">
-        <div class="example_jobs_container_left anima_on">
-       <img class="" src="img/works-img1.png" alt="">
-    </div>
-
-    <div class="example_jobs_container_right">
-        <div class="example_jobs_explain_card anima_on">
-            <div class="example_jobs_card_img_container bg_color_1">
-                <img class="" src="img/icon/bar-chart-graph-svgrepo-com.svg" alt="">
-             </div><img src="" alt="">
-            <div class="example_jobs_tex_card_container">
-            <h4>Simplifica tus operaciones logísticas</h4>
-            <p>Gestiona inventarios, pedidos y genera informes de ventas de manera eficiente.</p>
-        </div>
-        </div>
-
-        <div class="example_jobs_explain_card anima_on">
-            <div class="example_jobs_card_img_container bg_color_2">
-                <img src="img/icon/browser-svgrepo-com.svg" alt="">
-           </div>
-            <div class="example_jobs_tex_card_container">
-            <h4>Interfaz intuitiva y personalizable</h4>
-            <p>Accede y analiza datos fácilmente con una interfaz adaptable a tus necesidades.</p>
-        </div>
-        </div>
-        <div class="example_jobs_explain_card anima_on">
-            <div class="example_jobs_card_img_container bg_color_3">
-                <img src="img/icon/internet-svgrepo-com.svg" alt="">
-            </div>
-            <div class="example_jobs_tex_card_container">
-            <h4>Conexiones sin problemas</h4>
-            <p>Integra tu sistema con API externas para una comunicación fluida y automatizada.</p>
-        </div>
-        </div>
-     </div>
-    </div>
-
- <!-- informativa -->
- <div class="example_jobs_container">
-    <div class="example_jobs_container_left anima_on">
-   <img class="" src="img/informativa.jpg" alt="">
-</div>
-
-<div class="example_jobs_container_right">
-    <div class="example_jobs_explain_card anima_on">
-        <div class="example_jobs_card_img_container bg_color_1">
-            <img class="" src="img/icon/service-icon1.svg" alt="">
-         </div>
-        <div class="example_jobs_tex_card_container">
-        <h4>Destaca tu empresa</h4>
-        <p>Página web atractiva que muestra servicios y testimonios de clientes satisfechos.</p>
-    </div>
-    </div>
-
-    <div class="example_jobs_explain_card anima_on">
-        <div class="example_jobs_card_img_container bg_color_2">
-             <img src="img/icon/responsive-tablet-svgrepo-com.svg" alt="">
-        </div>
-        <div class="example_jobs_tex_card_container">
-        <h4>Diseño moderno y atractivo</h4>
-        <p>Descubre una experiencia visualmente impresionante y una navegación intuitiva.</p>
-    </div>
-    </div>
-
-    <div class="example_jobs_explain_card anima_on">
-        <div class="example_jobs_card_img_container bg_color_3">
-        <img src="img/icon/web-search-svgrepo-com.svg" alt="">
-    </div>
-        <div class="example_jobs_tex_card_container">
-        <h4>Mejora tu visibilidad</h4>
-        <p>Aumenta tu presencia en los motores de búsqueda con una página web optimizada para SEO.</p>
-    </div>
-    </div>
- </div>
-</div>
-
-        <!-- ventas -->
-        <div class="example_jobs_container">
-            <div class="example_jobs_container_left anima_on">
-           <img class="" src="img/ventas.jpg" alt="">
-        </div>
-
-        <div class="example_jobs_container_right">
-            <div class="example_jobs_explain_card anima_on">
-                <div class="example_jobs_card_img_container bg_color_1">
-                    <img class="" src="img/icon/cart-add-sales-svgrepo-com.svg" alt="">
-                 </div>
-                <div class="example_jobs_tex_card_container">
-                <h4>Impulsa tus ventas en línea</h4>
-                <p>Atrae a más clientes y aumenta tus ingresos con un software de comercio electrónico personalizado.</p>
-            </div>
-            </div>
-
-            <div class="example_jobs_explain_card anima_on">
-                <div class="example_jobs_card_img_container bg_color_2">
-                    <img src="img/icon/responsive-devices-svgrepo-com.svg" alt="">
-               </div>
-                <div class="example_jobs_tex_card_container">
-                <h4>Diseño atractivo y responsive</h4>
-                <p>Crea una experiencia de compra agradable en cualquier dispositivo.</p>
-            </div>
-            </div>
-            <div class="example_jobs_explain_card anima_on">
-                <div class="example_jobs_card_img_container bg_color_3">
-                    <img src="img/icon/payment-method-bank-svgrepo-com.svg" alt="">
+    <div class="banner">
+        <!-- Banner software -->
+        <div class="banner_items">
+            <div class="banner_start">
+                <p class="maged">Soluciones personalizadas para tu negocio</p>
+                <h1>Potencia tu negocio con software a medida</h1>
+                <p>Con nuestra experiencia y conocimientos, creamos software a medida que te permite optimizar tus
+                    operaciones y
+                    alcanzar tus objetivos comerciales de manera eficiente.</p>
+                <div class="banner_buttons_container">
+                    <button class="" onclick="enviarMensajeWhatsApp()">
+                        <p>Contactanos</p>
+                    </button>
+                    <a href="#software"><button class="get_started_button_bgoff">
+                            <p>Conoce más</p>
+                        </button></a>
                 </div>
-                <div class="example_jobs_tex_card_container">
-                <h4>Pagos seguros y convenientes</h4>
-                <p>Ofrece a tus clientes una variedad de métodos de pago confiables y fáciles de usar.</p>
+
             </div>
+
+            <div class="banner_end">
+                <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
+                <img class="banner_img_man" src="img/software.png" alt="VPS Image">
             </div>
-         </div>
         </div>
+
+        <!-- cámaras de seguridad -->
+        <div class="banner_items">
+            <div class="banner_start">
+                <p class="maged">Instalación de cámaras de seguridad</p>
+                <h1>Seguridad completa con cámaras de vanguardia</h1>
+                <p>Te ofrecemos soluciones de seguridad integrales para proteger tu
+                    hogar o negocio, con cámaras de última generación y sistemas de vigilancia </p>
+                <div class="banner_buttons_container">
+                    <button class="" onclick="enviarMensajeWhatsApp()">
+                        <p>Contactanos</p>
+                    </button>
+                    <a href="#camaras"><button class="get_started_button_bgoff">
+                            <p>Conoce más</p>
+                        </button></a>
+                </div>
+
+            </div>
+
+            <div class="banner_end">
+                <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
+                <img class="banner_img_man" src="img/camera.png" alt="VPS Image">
+            </div>
+        </div>
+
+        <!-- casas inteligentes -->
+        <div class="banner_items">
+            <div class="banner_start">
+                <p class="maged">Instalación de casas inteligentes</p>
+                <h1>Control total desde la palma de tu mano</h1>
+                <p>Convertimos tu hogar en un espacio inteligente y conectado, donde
+                    podrás controlar todo desde la palma de tu mano.</p>
+                <div class="banner_buttons_container">
+                    <button class="" onclick="enviarMensajeWhatsApp()">
+                        <p>Contactanos</p>
+                    </button>
+                    <a href="#inteligentes"><button class="get_started_button_bgoff">
+                            <p>Conoce más</p>
+                        </button></a>
+                </div>
+
+            </div>
+
+            <div class="banner_end">
+                <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
+                <img class="banner_img_man" src="img/smart.png" alt="VPS Image">
+            </div>
+        </div>
+
+        <!-- sistemas biometricos -->
+        <div class="banner_items">
+            <div class="banner_start">
+                <p class="maged">Control de acceso seguro y eficiente</p>
+                <h1>Protege tu empresa con sistemas biométricos</h1>
+                <p>Instalamos sistemas biométricos avanzados para un control de
+                    acceso seguro y preciso utilizando
+                    reconocimiento facial y huella dactilar.</p>
+                <div class="banner_buttons_container">
+                    <button class="" onclick="enviarMensajeWhatsApp()">
+                        <p>Contactanos</p>
+                    </button>
+                    <a href="#inteligentes"><button class="get_started_button_bgoff">
+                            <p>Conoce más</p>
+                        </button></a>
+                </div>
+
+            </div>
+
+            <div class="banner_end">
+                <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
+                <img class="banner_img_man" src="img/biometric.png" alt="VPS Image">
+            </div>
+        </div>
+
+
+        <!-- redes -->
+        <div class="banner_items">
+            <div class="banner_start">
+                <p class="maged">Conectividad sin límites</p>
+                <h1>Redes confiables y escalables para tu negocio</h1>
+                <p>Instalamos y mantenemos redes confiables y escalables, adaptadas a tus
+                    necesidades operativas, ya sea cableadas o inalámbricas.</p>
+                <div class="banner_buttons_container">
+                    <button class="" onclick="enviarMensajeWhatsApp()">
+                        <p>Contactanos</p>
+                    </button>
+                    <a href="#inteligentes"><button class="get_started_button_bgoff">
+                            <p>Conoce más</p>
+                        </button></a>
+                </div>
+
+            </div>
+
+            <div class="banner_end">
+                <!-- <img class="banner_img_wd" src="banner__vps__image-sm1.svg" alt="VPS Image wd"> -->
+                <img class="banner_img_man" src="img/redes.png" alt="VPS Image">
+            </div>
+        </div>
+
+        <div class="dot_container">
+
+        </div>
+    </div>
+
+    <section id="home">
+        <div class="home_styles home_styles_redes">
+ 
+        <div class="redbio_container">
+                <h2 class="subtitle anima_on">Soluciones de Conectividad y Redes Personalizadas para Negocios y Hogares Modernos</h2>
+            <div class="redes_container">
+                <i class="sam-icon-medium instagram_icon"></i>
+                <h3>Soluciones a medida</h3>
+                <p>Nuestro enfoque centrado en el cliente garantiza que obtengas resultados que satisfagan tus objetivos y requisitos únicos.</p>
+            </div>
+
+            <div class="redes_container">
+                <i class="sam-icon-medium instagram_icon"></i>
+              <h3>Conectividad sin límites</h3>
+              <p>Optimizamos tu infraestructura de red para una comunicación eficiente entre dispositivos.</p>
+            </div>
+            
+            <div class="redes_container">
+                <i class="sam-icon-medium instagram_icon"></i>
+              <h3>Máxima velocidad</h3>
+              <p>Gestionamos la configuración para garantizar una conexión rápida y estable.</p>
+            </div>
+            
+            <div class="redes_container">
+                <i class="sam-icon-medium instagram_icon"></i>
+              <h3>Seguridad garantizada</h3>
+              <p>Implementamos medidas de seguridad para proteger tus datos y dispositivos.</p>
+            </div>
+            
+            <div class="redes_container">
+                <i class="sam-icon-medium instagram_icon"></i>
+              <h3>Soporte experto</h3>
+              <p>Nuestro equipo técnico está disponible para brindarte asistencia personalizada.</p>
+            </div>
+
+            <div class="redes_container">
+                <i class="sam-icon-medium instagram_icon"></i>
+                <h3>Precios competitivos</h3> 
+                <p>Nuestro objetivo es brindarte el mejor valor por tu 
+                    inversión, sin comprometer la calidad ni el servicio que recibes.</p>
+            </div>
+
+          </div>
+        </div>
+        </div>
+
+        <div id="software" class="home_styles_grey">
+            <div class="example_jobs">
+                <div class="maged maged_2 anima_on">Proyectos Finalizados</div>
+                <h2 class="subtitle anima_on">Diseño de Software y Aplicaciones a Medida para Tus Necesidades</h2>
+                <div class="example_jobs_card_buttoms_container anima_on">
+                    <a href="#">Sistema administrativo</a>
+                    <a href="#">Web informativa <i class="clicke sam-icon click_hand"></i></a>
+                    <a href="#">Software de ventas</a>
+                    <a href="#">Aplicación móvil</a>
+                    <a href="#">Software de gestión de proyectos</a>
+                </div>
+
+
+
+                <!-- administrativo -->
+                <div class="example_jobs_container">
+                    <div class="example_jobs_container_left anima_on">
+                        <img class="" src="img/works-img1.png" alt="">
+                    </div>
+
+                    <div class="example_jobs_container_right">
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_1">
+                                <img class="" src="img/icon/bar-chart-graph-svgrepo-com.svg" alt="">
+                            </div><img src="" alt="">
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Simplifica tus operaciones logísticas</h4>
+                                <p>Gestiona inventarios, pedidos y genera informes de ventas de manera eficiente.</p>
+                            </div>
+                        </div>
+
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_2">
+                                <img src="img/icon/browser-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Interfaz intuitiva y personalizable</h4>
+                                <p>Accede y analiza datos fácilmente con una interfaz adaptable a tus necesidades.</p>
+                            </div>
+                        </div>
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_3">
+                                <img src="img/icon/internet-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Conexiones sin problemas</h4>
+                                <p>Integra tu sistema con API externas para una comunicación fluida y automatizada.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- informativa -->
+                <div class="example_jobs_container">
+                    <div class="example_jobs_container_left anima_on">
+                        <img class="" src="img/informativa.jpg" alt="">
+                    </div>
+
+                    <div class="example_jobs_container_right">
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_1">
+                                <img class="" src="img/icon/service-icon1.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Destaca tu empresa</h4>
+                                <p>Página web atractiva que muestra servicios y testimonios de clientes satisfechos.</p>
+                            </div>
+                        </div>
+
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_2">
+                                <img src="img/icon/responsive-tablet-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Diseño moderno y atractivo</h4>
+                                <p>Descubre una experiencia visualmente impresionante y una navegación intuitiva.</p>
+                            </div>
+                        </div>
+
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_3">
+                                <img src="img/icon/web-search-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Mejora tu visibilidad</h4>
+                                <p>Aumenta tu presencia en los motores de búsqueda con una página web optimizada para
+                                    SEO.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ventas -->
+                <div class="example_jobs_container">
+                    <div class="example_jobs_container_left anima_on">
+                        <img class="" src="img/ventas.jpg" alt="">
+                    </div>
+
+                    <div class="example_jobs_container_right">
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_1">
+                                <img class="" src="img/icon/cart-add-sales-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Impulsa tus ventas en línea</h4>
+                                <p>Atrae a más clientes y aumenta tus ingresos con un software de comercio electrónico
+                                    personalizado.</p>
+                            </div>
+                        </div>
+
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_2">
+                                <img src="img/icon/responsive-devices-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Diseño atractivo y responsive</h4>
+                                <p>Crea una experiencia de compra agradable en cualquier dispositivo.</p>
+                            </div>
+                        </div>
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_3">
+                                <img src="img/icon/payment-method-bank-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Pagos seguros y convenientes</h4>
+                                <p>Ofrece a tus clientes una variedad de métodos de pago confiables y fáciles de usar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- móvil -->
                 <div class="example_jobs_container">
                     <div class="example_jobs_container_left anima_on">
-                   <img class="" src="img/apk.jpg" alt="">
-                </div>
-
-                <div class="example_jobs_container_right">
-                    <div class="example_jobs_explain_card anima_on">
-                        <div class="example_jobs_card_img_container bg_color_1">
-                            <img class="" src="img/icon/fast-food-gastronomy-3-svgrepo-com.svg" alt="">
-                         </div>
-                        <div class="example_jobs_tex_card_container">
-                        <h4>Realiza pedidos de comida fácilmente</h4>
-                        <p> Explora nuestro menú y realiza pedidos con solo unos pocos toques en tu dispositivo móvil.</p>
-                    </div>
+                        <img class="" src="img/apk.jpg" alt="">
                     </div>
 
-                    <div class="example_jobs_explain_card anima_on">
-                        <div class="example_jobs_card_img_container bg_color_2">
-                            <img src="img/icon/web-design-svgrepo-com.svg" alt="">
-                       </div>
-                        <div class="example_jobs_tex_card_container">
-                        <h4>Diseño intuitivo y atractivo</h4>
-                        <p>Disfruta de una interfaz de usuario atractiva y fácil de usar que te hará querer pedir más.</p>
-                    </div>
-                    </div>
-                    <div class="example_jobs_explain_card anima_on">
-                        <div class="example_jobs_card_img_container bg_color_3">
-                            <img src="img/icon/notification-svgrepo-com.svg" alt="">
+                    <div class="example_jobs_container_right">
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_1">
+                                <img class="" src="img/icon/fast-food-gastronomy-3-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Realiza pedidos de comida fácilmente</h4>
+                                <p> Explora nuestro menú y realiza pedidos con solo unos pocos toques en tu dispositivo
+                                    móvil.</p>
+                            </div>
                         </div>
-                        <div class="example_jobs_tex_card_container">
-                        <h4>Mantente informado en tiempo real</h4>
-                        <p>Recibe notificaciones sobre promociones especiales y actualizaciones del estado de tu pedido.</p>
+
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_2">
+                                <img src="img/icon/web-design-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Diseño intuitivo y atractivo</h4>
+                                <p>Disfruta de una interfaz de usuario atractiva y fácil de usar que te hará querer
+                                    pedir más.</p>
+                            </div>
+                        </div>
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_3">
+                                <img src="img/icon/notification-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Mantente informado en tiempo real</h4>
+                                <p>Recibe notificaciones sobre promociones especiales y actualizaciones del estado de tu
+                                    pedido.</p>
+                            </div>
+                        </div>
                     </div>
-                    </div>
-                 </div>
                 </div>
 
                 <!-- gestión de proyectos -->
                 <div class="example_jobs_container">
                     <div class="example_jobs_container_left anima_on">
-                   <img class="" src="img/ejemplobo.jpg" alt="">
-                </div>
-
-                <div class="example_jobs_container_right">
-                    <div class="example_jobs_explain_card anima_on">
-                        <div class="example_jobs_card_img_container bg_color_1">
-                            <img class="" src="img/icon/settings-gear-svgrepo-com.svg" alt="">
-                         </div>
-                        <div class="example_jobs_tex_card_container">
-                        <h4>Gestiona proyectos de manera eficiente</h4>
-                        <p>Organiza tareas, asigna recursos y haz un seguimiento del progreso en un solo lugar</p>
-                    </div>
+                        <img class="" src="img/ejemplobo.jpg" alt="">
                     </div>
 
-                    <div class="example_jobs_explain_card anima_on">
-                        <div class="example_jobs_card_img_container bg_color_2">
-                            <img src="img/icon/businesswoman-svgrepo-com.svg" alt="">
+                    <div class="example_jobs_container_right">
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_1">
+                                <img class="" src="img/icon/settings-gear-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Gestiona proyectos de manera eficiente</h4>
+                                <p>Organiza tareas, asigna recursos y haz un seguimiento del progreso en un solo lugar
+                                </p>
+                            </div>
                         </div>
-                        <div class="example_jobs_tex_card_container">
-                        <h4>Colabora y comunícate mejor</h4>
-                        <p>Fomenta la colaboración entre tu equipo y mejora la comunicación con herramientas integradas.</p>
-                    </div>
-                    </div>
-                    <div class="example_jobs_explain_card anima_on">
-                        <div class="example_jobs_card_img_container bg_color_3">
-                            <img src="img/icon/cost-effective-productive-svgrepo-com.svg" alt="">
+
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_2">
+                                <img src="img/icon/businesswoman-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Colabora y comunícate mejor</h4>
+                                <p>Fomenta la colaboración entre tu equipo y mejora la comunicación con herramientas
+                                    integradas.</p>
+                            </div>
                         </div>
-                        <div class="example_jobs_tex_card_container">
-                        <h4>Aumenta la productividad</h4>
-                        <p> Simplifica la gestión de proyectos y optimiza el rendimiento de tu equipo.</p>
+                        <div class="example_jobs_explain_card anima_on">
+                            <div class="example_jobs_card_img_container bg_color_3">
+                                <img src="img/icon/cost-effective-productive-svgrepo-com.svg" alt="">
+                            </div>
+                            <div class="example_jobs_tex_card_container">
+                                <h4>Aumenta la productividad</h4>
+                                <p> Simplifica la gestión de proyectos y optimiza el rendimiento de tu equipo.</p>
+                            </div>
+                        </div>
                     </div>
-                    </div>
-                 </div>
                 </div>
                 <div class="process_card_footer">
-                    <p class="">Desarrollamos software personalizado para satisfacer las necesidades específicas de tu empresa o negocio.</p>
-                    <button onclick="enviarMensajeWhatsApp()"><p>Solicitar Presupuesto</p></button>
+                    <p class="">Desarrollamos software personalizado para satisfacer las necesidades específicas de tu
+                        empresa o negocio.</p>
+                    <button onclick="enviarMensajeWhatsApp()">
+                        <p>Solicitar Presupuesto</p>
+                    </button>
                 </div>
-</div>
-</div>
-
-<div id="camaras" class="home_styles">
-<div class="process">
-
-    <div class="maged maged_3 anima_on">Cámaras de Seguridad</div>
-    <h2 class="subtitle anima_on">Confía en los Expertos: Instalación de Cámaras de Seguridad para Hogares, Negocios y Empresas</h2>
-    <p class="subtitle_p anima_on">En JD Tech tenemos la cámara web perfecta para ti, nos encargamos de brindarte seguridad las 24 horas del día, Protege tu hogar, negocio o empresa con la tecnología más avanzada.
-    </p>
-    <p class="subtitle_p_2 anima_on"> Beneficios de tener un servicio de CCTV:</p>
-       
-    <div class="process_card_container">
-
-        <div class="process_card process_card_l">
-            <img class="img_l anima_on" src="img/smart/Protección y vigilancia las 24 horas del día.jpg" alt="">
-            <div class="process_card_text">
-            <div class="maged maged_3 anima_on">Protege</div>
-            <h3 class="anima_on">Protección y vigilancia las 24 horas del día: </h3>
-            <p class="anima_on">Con las cámaras tendrás monitoreo a cualquier hora del día que puede ayudarte a disuadir a los ladrones en caso de robo, también pueden ser útiles para detectar fallos de seguridad, accidentes laborales, absentismo laboral </p>
-        </div>   
+            </div>
         </div>
 
-        <div class="process_card process_card_r">
-            
-            <div class="process_card_text">
-            <div class="maged maged_3 anima_on">Resguarda</div>
-            <h3 class="anima_on">Monitoreo en tiempo real</h3>
-            <p class="anima_on">Desde un celular o computadora con servicio de internet podrás visualizar en tiempo real todo lo que sucede en tu hogar o negocio. </p>
-        </div>
-        <img class="img_r anima_on"  src="img/smart/Monitoreo en tiempo real.jpg" alt="">
+        <div id="camaras" class="home_styles">
+            <div class="process">
+
+                <div class="maged maged_3 anima_on">Cámaras de Seguridad</div>
+                <h2 class="subtitle anima_on">Confía en los Expertos: Instalación de Cámaras de Seguridad para Hogares,
+                    Negocios y Empresas</h2>
+                <p class="subtitle_p anima_on">En JD Tech tenemos la cámara web perfecta para ti, nos encargamos de
+                    brindarte seguridad las 24 horas del día, Protege tu hogar, negocio o empresa con la tecnología más
+                    avanzada.
+                </p>
+                <p class="subtitle_p_2 anima_on"> Beneficios de tener un servicio de CCTV:</p>
+
+                <div class="process_card_container">
+
+                    <div class="process_card process_card_l">
+                        <img class="img_l anima_on" src="img/smart/Protección y vigilancia las 24 horas del día.jpg"
+                            alt="">
+                        <div class="process_card_text">
+                            <div class="maged maged_3 anima_on">Protege</div>
+                            <h3 class="anima_on">Protección y vigilancia las 24 horas del día: </h3>
+                            <p class="anima_on">Con las cámaras tendrás monitoreo a cualquier hora del día que puede
+                                ayudarte a disuadir a los ladrones en caso de robo, también pueden ser útiles para
+                                detectar fallos de seguridad, accidentes laborales, absentismo laboral </p>
+                        </div>
+                    </div>
+
+                    <div class="process_card process_card_r">
+
+                        <div class="process_card_text">
+                            <div class="maged maged_3 anima_on">Resguarda</div>
+                            <h3 class="anima_on">Monitoreo en tiempo real</h3>
+                            <p class="anima_on">Desde un celular o computadora con servicio de internet podrás
+                                visualizar en tiempo real todo lo que sucede en tu hogar o negocio. </p>
+                        </div>
+                        <img class="img_r anima_on" src="img/smart/Monitoreo en tiempo real.jpg" alt="">
+                    </div>
+
+                    <div class="process_card process_card_l">
+                        <img class="img_l anima_on" src="img/smart/Grabacion de eventos.jpg" alt="">
+                        <div class="process_card_text">
+                            <div class="maged maged_3 anima_on ">Seguimiento</div>
+                            <h3 class="anima_on">Grabación de eventos</h3>
+                            <p class="anima_on">Las cámaras de seguridad son tus ojos y oídos en casa, capturando tanto
+                                video como audio de lo que sucede a tu alrededor. Estas grabaciones pueden ser
+                                fundamentales como evidencia en caso de un robo u otro delito, brindándote una
+                                tranquilidad invaluable.</p>
+                        </div>
+                    </div>
+
+                    <div class="process_card process_card_r">
+
+                        <div class="process_card_text">
+                            <div class="maged maged_3 anima_on">Avisos de actividad</div>
+                            <h3 class="anima_on">Alertas de movimiento</h3>
+                            <p class="anima_on">Además de su función de grabación, las cámaras de seguridad también
+                                ofrecen una característica inteligente: la detección de movimiento. Esto significa que,
+                                en caso de cualquier actividad inusual, recibirás alertas instantáneas en tu teléfono
+                                inteligente o computadora. Mantén el control total de tu hogar y estarás siempre al
+                                tanto de lo que sucede, incluso cuando no estés presente.</p>
+                        </div>
+                        <img class="img_r anima_on" src="img/smart/Alertas de movimiento.jpg" alt="">
+                    </div>
+
+                </div>
+                <div class="process_card_footer">
+                    <p class="">Te ofrecemos soluciones de seguridad integrales para proteger tu hogar o negocio, con
+                        cámaras de última generación y sistemas de vigilancia 24/7.</p>
+                    <button onclick="enviarMensajeWhatsApp()">
+                        <p>Solicitar Presupuesto</p>
+                    </button>
+                </div>
+
+
+            </div>
         </div>
 
-        <div class="process_card process_card_l">
-            <img class="img_l anima_on" src="img/smart/Grabacion de eventos.jpg" alt="">
-            <div class="process_card_text">
-            <div class="maged maged_3 anima_on ">Seguimiento</div>
-            <h3 class="anima_on">Grabación de eventos</h3>
-            <p class="anima_on">Las cámaras de seguridad son tus ojos y oídos en casa, capturando tanto video como audio de lo que sucede a tu alrededor. Estas grabaciones pueden ser fundamentales como evidencia en caso de un robo u otro delito, brindándote una tranquilidad invaluable.</p>
-        </div>
-    </div>
+        <div id="inteligentes" class="home_styles_grey">
+            <div class="inteligentes">
+                <div class="maged maged_3 anima_on">Casas Inteligentes</div>
+                <h2 class="subtitle anima_on">¿Estás listo para convertir tu hogar en un espacio más inteligente?</h2>
+                <div class="inteligentes_container">
+                    <div id="inteligentes_container_left" class="inteligentes_container_left">
 
-        <div class="process_card process_card_r">
-
-            <div class="process_card_text">
-            <div class="maged maged_3 anima_on">Avisos de actividad</div>
-            <h3 class="anima_on">Alertas de movimiento</h3>
-            <p class="anima_on">Además de su función de grabación, las cámaras de seguridad también ofrecen una característica inteligente: la detección de movimiento. Esto significa que, en caso de cualquier actividad inusual, recibirás alertas instantáneas en tu teléfono inteligente o computadora. Mantén el control total de tu hogar y estarás siempre al tanto de lo que sucede, incluso cuando no estés presente.</p>
-        </div>
-        <img class="img_r anima_on" src="img/smart/Alertas de movimiento.jpg" alt="">
-        </div>
-
-        </div>
-        <div class="process_card_footer">
-            <p class="">Te ofrecemos soluciones de seguridad integrales para proteger tu hogar o negocio, con cámaras de última generación y sistemas de vigilancia 24/7.</p>
-            <button onclick="enviarMensajeWhatsApp()"><p>Solicitar Presupuesto</p></button>
-        </div>
-        
-
-    </div>
-</div>
-
-<div id="inteligentes" class="home_styles_grey">
-    <div class="inteligentes">
-        <div class="maged maged_3 anima_on">Casas Inteligentes</div>
-        <h2 class="subtitle anima_on">¿Estás listo para convertir tu hogar en un espacio más inteligente?</h2>
-            <div class="inteligentes_container">
-                <div id="inteligentes_container_left" class="inteligentes_container_left">
-                    
-                    <!-- <div class="smart_arrows_scroll">
+                        <!-- <div class="smart_arrows_scroll">
                         <i class="sam-icon smart_arow_left"></i> 
                         <i class="sam-icon smart_arow_right"></i>
                     </div> -->
-                    <div class="smart_post_container">
-                        <img src="img/lock.jpg" alt="" class="animate_img anima_on">
-                        <h4 class="animate_text anima_on">BIENVENIDO A LOS SISTEMAS DE CASAS INTELIGENTES</h4>
-                        <H3 class="animate_text anima_on">Seguridad y comodidad en tus manos</H3>
-                        <p class="animate_text anima_on">Nuestras cerraduras inteligentes te ofrecen una forma segura y conveniente de proteger tu hogar. Controla el acceso desde tu smartphone y olvídate de las llaves tradicionales. Mantén tu hogar seguro y accede fácilmente con solo un toque.</p>
+                        <div class="smart_post_container">
+                            <img src="img/lock.jpg" alt="" class="animate_img anima_on">
+                            <h4 class="animate_text anima_on">BIENVENIDO A LOS SISTEMAS DE CASAS INTELIGENTES</h4>
+                            <H3 class="animate_text anima_on">Seguridad y comodidad en tus manos</H3>
+                            <p class="animate_text anima_on">Nuestras cerraduras inteligentes te ofrecen una forma
+                                segura y conveniente de proteger tu hogar. Controla el acceso desde tu smartphone y
+                                olvídate de las llaves tradicionales. Mantén tu hogar seguro y accede fácilmente con
+                                solo un toque.</p>
 
-                    </div>
-                
-                    <div class="smart_post_container">
-                        <img class="animate_img anima_on" src="img/iluminacion.jpg" alt="">
-                        <h4 class="animate_text anima_on">BIENVENIDO A LOS SISTEMAS DE CASAS INTELIGENTES</h4>
-                        <H3 class="animate_text anima_on">Ambientes personalizados y eficientes</H3>
-                        <p class="animate_text anima_on">Descubre la magia de la iluminación inteligente. Crea ambientes personalizados, ajusta el brillo y el color de tus luces según tus preferencias. Ahorra energía con programación automatizada y controla todas tus luces desde cualquier lugar con tu dispositivo móvil.</p>
+                        </div>
+
+                        <div class="smart_post_container">
+                            <img class="animate_img anima_on" src="img/iluminacion.jpg" alt="">
+                            <h4 class="animate_text anima_on">BIENVENIDO A LOS SISTEMAS DE CASAS INTELIGENTES</h4>
+                            <H3 class="animate_text anima_on">Ambientes personalizados y eficientes</H3>
+                            <p class="animate_text anima_on">Descubre la magia de la iluminación inteligente. Crea
+                                ambientes personalizados, ajusta el brillo y el color de tus luces según tus
+                                preferencias. Ahorra energía con programación automatizada y controla todas tus luces
+                                desde cualquier lugar con tu dispositivo móvil.</p>
+                        </div>
+
+                        <div class="smart_post_container">
+                            <img class="animate_img anima_on" src="img/alertas.jpg" alt="">
+                            <h4 class="animate_text anima_on">BIENVENIDO A LOS SISTEMAS DE CASAS INTELIGENTES</h4>
+                            <H3 class="animate_text anima_on">Mantente conectado y seguro</H3>
+                            <p class="animate_text anima_on">Nuestras alertas inteligentes te mantienen informado en
+                                todo momento. Recibe notificaciones en tu dispositivo móvil cuando ocurra cualquier
+                                evento importante en tu hogar. Desde intrusiones hasta incendios, nuestras alertas
+                                inteligentes te brindan tranquilidad y te mantienen conectado con tu hogar en todo
+                                momento.</p>
+                        </div>
+
+                        <div class="smart_post_container">
+                            <img class="animate_img anima_on" src="img/energy.jpg" alt="">
+                            <h4 class="animate_text anima_on">BIENVENIDO A LOS SISTEMAS DE CASAS INTELIGENTES</h4>
+                            <H3 class="animate_text anima_on">Confort personalizado y ahorro energético</H3>
+                            <p class="animate_text anima_on">Controla la temperatura de tu hogar de forma inteligente.
+                                Nuestros sistemas de temperatura inteligente te permiten ajustar la temperatura según
+                                tus preferencias y programar horarios para maximizar el confort y ahorrar energía.
+                                Mantén tu hogar siempre a la temperatura perfecta, estés donde estés.</p>
+                        </div>
                     </div>
 
-                    <div class="smart_post_container">
-                        <img class="animate_img anima_on" src="img/alertas.jpg" alt="">
-                        <h4 class="animate_text anima_on">BIENVENIDO A LOS SISTEMAS DE CASAS INTELIGENTES</h4>
-                        <H3 class="animate_text anima_on">Mantente conectado y seguro</H3>
-                        <p class="animate_text anima_on">Nuestras alertas inteligentes te mantienen informado en todo momento. Recibe notificaciones en tu dispositivo móvil cuando ocurra cualquier evento importante en tu hogar. Desde intrusiones hasta incendios, nuestras alertas inteligentes te brindan tranquilidad y te mantienen conectado con tu hogar en todo momento.</p>
+                    <div class="inteligentes_container_right">
+
+                        <a id="smart_cerraduras" href="#smart_cerraduras" class="inteligentes_card">
+                            <div class="inteligentes_card_icon_container">
+                                <i class="sam-icon smart_lock"></i>
+                            </div>
+                            <p>Cerraduras</p>
+                        </a>
+
+                        <a id="smart_illuminacion" href="#smart_illuminacion" class="inteligentes_card">
+                            <div class="inteligentes_card_icon_container">
+                                <i class="sam-icon smart_bulb"></i>
+                            </div>
+                            <p>Iluminación</p>
+                        </a>
+
+
+                        <a id="smart_alertas" href="#smart_alertas" class="inteligentes_card">
+                            <div class="inteligentes_card_icon_container">
+                                <i class="sam-icon smart_phone"></i>
+                            </div>
+                            <p>Alertas</p>
+                        </a>
+
+
+
+                        <a id="smart_temperatura" href="#smart_temperatura" class="inteligentes_card">
+                            <div class="inteligentes_card_icon_container">
+                                <i class="sam-icon smart_temperature"></i>
+                            </div>
+                            <p>Temperatura</p>
+                        </a>
                     </div>
 
-                    <div class="smart_post_container">
-                        <img class="animate_img anima_on" src="img/energy.jpg" alt="">
-                        <h4 class="animate_text anima_on">BIENVENIDO A LOS SISTEMAS DE CASAS INTELIGENTES</h4>
-                        <H3 class="animate_text anima_on">Confort personalizado y ahorro energético</H3>
-                        <p class="animate_text anima_on">Controla la temperatura de tu hogar de forma inteligente. Nuestros sistemas de temperatura inteligente te permiten ajustar la temperatura según tus preferencias y programar horarios para maximizar el confort y ahorrar energía. Mantén tu hogar siempre a la temperatura perfecta, estés donde estés.</p>
-                    </div>
+
                 </div>
-
-                <div class="inteligentes_container_right">
-
-                    <a id="smart_cerraduras" href="#smart_cerraduras" class="inteligentes_card">
-                      <div class="inteligentes_card_icon_container">
-                        <i class="sam-icon smart_lock"></i>
-                      </div>
-                      <p>Cerraduras</p>
-                    </a>
-
-                    <a  id="smart_illuminacion"  href="#smart_illuminacion" class="inteligentes_card">
-                        <div class="inteligentes_card_icon_container">
-                          <i class="sam-icon smart_bulb"></i>
-                        </div>
-                        <p>Iluminación</p>
-                      </a>
-
-
-                      <a id="smart_alertas" href="#smart_alertas" class="inteligentes_card">
-                        <div class="inteligentes_card_icon_container">
-                          <i class="sam-icon smart_phone"></i>
-                        </div>
-                        <p>Alertas</p>
-                      </a>
-
-
-
-                      <a id="smart_temperatura"  href="#smart_temperatura" class="inteligentes_card">
-                        <div class="inteligentes_card_icon_container">
-                          <i class="sam-icon smart_temperature"></i>
-                        </div>
-                        <p>Temperatura</p>
-                      </a>
-                  </div>
-
-
-            </div>
-            <div class="process_card_footer">
-                <p class="">Te ofrecemos una mayor comodidad, eficiencia energética, seguridad y calidad de vida, simplifica tu vida y libera tiempo para las cosas que realmente importan.</p>
-                <button onclick="enviarMensajeWhatsApp()"><p>Solicitar Presupuesto</p></button>
+                <div class="process_card_footer">
+                    <p class="">Te ofrecemos una mayor comodidad, eficiencia energética, seguridad y calidad de vida,
+                        simplifica tu vida y libera tiempo para las cosas que realmente importan.</p>
+                    <button onclick="enviarMensajeWhatsApp()">
+                        <p>Solicitar Presupuesto</p>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="form_contacto" class="home_styles">
-        <div class="form_contacto">
-            <h2 class="subtitle anima_on">Formulario de contacto</h2>
+        <div id="form_contacto" class="home_styles">
+            <div class="form_contacto">
+                <h2 class="subtitle anima_on">Formulario de contacto</h2>
 
-            <form class="contact-form">
-                <input class="contact-form__name" type="text" id="nombre" placeholder="Nombre" required>
-                <div class="contact-form__group">
-                  <div class="contact-form__input--group">
-                    <input class="contact-form__input" type="email" id="correo" placeholder="Correo Electrónico" required>
-                    <input class="contact-form__input contact-form__input--right" type="tel" id="telefono" placeholder="Número de Teléfono" required>
-                  </div>
-                </div>
-                <div class="contact-form__group">
-                  <select class="contact-form__select" id="opciones">
-                    <option value="" disabled selected>Elige una opción</option>
-                    <option value="opcion1">Opción 1</option>
-                    <option value="opcion2">Opción 2</option>
-                    <option value="opcion3">Opción 3</option>
-                  </select>
-                </div>
-                <div class="contact-form__group">
-                  <textarea class="contact-form__textarea" id="mensaje" placeholder="Mensaje"></textarea>
-                </div>
-                <button class="contact-form__button" type="submit"><p>Enviar</p></button>
-              </form>
+                <form class="contact-form">
+                    <input class="contact-form__name" type="text" id="nombre" placeholder="Nombre" required>
+                    <div class="contact-form__group">
+                        <div class="contact-form__input--group">
+                            <input class="contact-form__input" type="email" id="correo" placeholder="Correo Electrónico"
+                                required>
+                            <input class="contact-form__input contact-form__input--right" type="tel" id="telefono"
+                                placeholder="Número de Teléfono" required>
+                        </div>
+                    </div>
+                    <div class="contact-form__group">
+                        <select class="contact-form__select" id="opciones">
+                            <option value="" disabled selected>Elige una opción</option>
+                            <option value="opcion1">Opción 1</option>
+                            <option value="opcion2">Opción 2</option>
+                            <option value="opcion3">Opción 3</option>
+                        </select>
+                    </div>
+                    <div class="contact-form__group">
+                        <textarea class="contact-form__textarea" id="mensaje" placeholder="Mensaje"></textarea>
+                    </div>
+                    <button class="contact-form__button" type="submit">
+                        <p>Enviar</p>
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>           
 
-<a class="border_icon" href="#">
-<div class="progress-bar">
+        <a class="border_icon" href="#">
+            <div class="progress-bar">
 
-</div>
+            </div>
 
-<i class="sam-icon arrow-top"></i>
-<svg height="100" width="100" xmlns="http://www.w3.org/2000/svg">
-    <circle class="progress-bar-circle" r="20" cx="50" cy="50" fill="transparent" stroke="#433ce7" stroke-width="10" opacity="1" />
-  </svg>
+            <i class="sam-icon arrow-top"></i>
+            <svg height="100" width="100" xmlns="http://www.w3.org/2000/svg">
+                <circle class="progress-bar-circle" r="20" cx="50" cy="50" fill="transparent" stroke="#433ce7"
+                    stroke-width="10" opacity="1" />
+            </svg>
 
 
-</a>
+        </a>
 
-<div class="social_floating">
-    <a class="facebook" href="https://www.facebook.com/JDTech09"><i class="sam-icon facebook_icon"></i></a>
-                <a onclick="enviarMensajeWhatsApp()" class="whatsapp" href=""><i class="sam-icon whatsapp_icon"></i></a>
-                <a  class="instagram" href=""><i class="sam-icon instagram_icon"></i></a>
-</div>
+        <div class="social_floating">
+            <a class="facebook" href="https://www.facebook.com/JDTech09"><i class="sam-icon facebook_icon"></i></a>
+            <a onclick="enviarMensajeWhatsApp()" class="whatsapp" href=""><i class="sam-icon whatsapp_icon"></i></a>
+            <a class="instagram" href=""><i class="sam-icon instagram_icon"></i></a>
+        </div>
 
-</section>
-<footer class="">
-    <div class="footer_head">
-        <h2 class="subtitle anima_on">Transformamos tus ideas en soluciones</h2>
-        <p class="anima_on">¡Obtén un presupuesto <img src="img/star-icon1.svg" alt=""> personalizado y sin compromiso!</p>
-        <button onclick="enviarMensajeWhatsApp()" class="anima_on"><p>Solicitar Presupuesto</p></button>
-    </div>
-    <div class="footer_body">
+    </section>
+    <footer class="">
+        <div class="footer_head">
+            <h2 class="subtitle anima_on">Transformamos tus ideas en soluciones</h2>
+            <p class="anima_on">¡Obtén un presupuesto <img src="img/star-icon1.svg" alt=""> personalizado y sin
+                compromiso!</p>
+            <button onclick="enviarMensajeWhatsApp()" class="anima_on">
+                <p>Solicitar Presupuesto</p>
+            </button>
+        </div>
+        <div class="footer_body">
 
-    </div>
+        </div>
 
-    <p>&copy; 2024 JD TECHNOLOGY. Todos los derechos reservados.</p>
-</footer>
+        <p>&copy; 2024 JD TECHNOLOGY. Todos los derechos reservados.</p>
+    </footer>
     <script src="scripts.js"></script>
 </body>
+
 </html>
