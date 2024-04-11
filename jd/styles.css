@@ -222,6 +222,7 @@ button:hover::after {
 
 .social_nav_container {
   display: flex;
+  flex-direction: row;
   gap: 20px;
 }
 
@@ -945,6 +946,7 @@ border-radius: 3px;
   justify-content: flex-start;
   align-items: flex-start;
   margin-top: 20px;
+  gap: 20px;
 }
 
 .process_card_text {
