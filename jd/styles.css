@@ -1924,3 +1924,7 @@ color: black;
     transform: scale(1);
   }
 }
+
+#labe_ocult{
+  display: none;
+}
