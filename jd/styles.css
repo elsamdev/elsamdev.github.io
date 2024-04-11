@@ -911,7 +911,7 @@ border-radius: 3px;
   flex-direction: column;
 }
 
-.example_jobs_explain_card h4 {
+.example_jobs_explain_card h2 {
   font-size: 18px;
   font-weight: 500;
 
