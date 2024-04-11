@@ -432,7 +432,12 @@ border-radius: 3px;
 
 .login-button {
   display: none;
+  width: 100px;
 }
+
+/* .login-button > p {
+  font-size: 12px !important;
+} */
 
 .get_started_button {
   width: 100%;
