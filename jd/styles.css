@@ -1081,6 +1081,7 @@ border-radius: 3px;
   align-items: center;
   gap: 10px;
   max-width: var(--max-width);
+  overflow: hidden;
   width: 100%;
   gap: 20px;
 }
@@ -1144,6 +1145,7 @@ transition: var(--trasition);
   flex-direction: column;
   align-items: flex-start;
   max-width: var(--max-width);
+  overflow: hidden;
   width: 100%;
   gap: 20px;
 }
