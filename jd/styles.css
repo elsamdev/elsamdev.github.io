@@ -83,6 +83,7 @@ button {
 button p {
   position: relative;
   z-index: 2;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 button::after {
@@ -435,9 +436,10 @@ border-radius: 3px;
   display: none;
 }
 
-/* .login-button > p {
+.login-button > p {
   font-size: 12px !important;
-} */
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+} 
 
 .get_started_button {
   width: 100%;
