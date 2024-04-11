@@ -1,35 +1,49 @@
 var header = document.querySelector('.head');
 var scrolling = false;
 var scrollTimeout;
+var footer = document.querySelector('footer');
 
 window.addEventListener('scroll', function() {
 
-    var scrollPosition = window.scrollY;
+  var scrollPosition = window.scrollY;
+  var footerPosition = footer.offsetTop;
   
-    window.requestAnimationFrame(handleScroll);
 
-    if (scrollPosition > 0) {
-      header.classList.add('scroll');
-      document.querySelector('.border_icon').classList.add('border_icon_disable');
-      document.querySelector('.social_floating').classList.add('social_floating_disable');
-      if (!scrolling) {
-        scrolling = true;
-        console.log('Scrolling started');
-        header.classList.add('hidden');
-      }
+  
+  if (scrollPosition >= footerPosition - 500) {
+    console.log('Se ha llegado al footer');
+    document.querySelector('.social_floating').classList.remove('social_floating_disable');
+    window.requestAnimationFrame(handleScroll); // Mover esta línea aquí
+  }else if (scrollPosition > 0 && scrollPosition <= footerPosition) {
+    window.requestAnimationFrame(handleScroll); // Mover esta línea aquí
     
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(function() {
-        scrolling = false;
-        console.log('Scrolling stopped');
-        header.classList.remove('hidden');
-      }, 200);
-
-    } else {
-      document.querySelector('.border_icon').classList.remove('border_icon_disable');
-      document.querySelector('.social_floating').classList.remove('social_floating_disable');
-      header.classList.remove('scroll');
+    header.classList.add('scroll');
+    document.querySelector('.border_icon').classList.add('border_icon_disable');
+    document.querySelector('.social_floating').classList.add('social_floating_disable');
+    if (!scrolling) {
+      scrolling = true;
+      // console.log('Scrolling started');
+      header.classList.add('hidden');
     }
+  
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      scrolling = false;
+      // console.log('Scrolling stopped');
+      header.classList.remove('hidden');
+    }, 200);
+  } else {
+    document.querySelector('.border_icon').classList.remove('border_icon_disable');
+    document.querySelector('.social_floating').classList.remove('social_floating_disable');
+    header.classList.remove('scroll');
+  }
+  
+
+
+  function handleScroll() {
+    var currentScrollPosition = window.scrollY;
+    // Aquí puedes realizar cualquier operación adicional que necesites en función del desplazamiento
+  }
 
     
     
@@ -41,15 +55,15 @@ window.addEventListener('scroll', function() {
     var circleLength = 2 * Math.PI * radius; // 2 * pi * r
     var offset = circleLength - (circleLength * scrollProgress / 100);
     document.querySelector('.progress-bar-circle').style.strokeDashoffset = offset;
+
+    console.log(footerPosition)
   });
 
  
 
 
   
-  function handleScroll() {
-    var currentScrollPosition = window.scrollY;
-  }
+
 
 
 
