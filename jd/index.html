@@ -40,15 +40,17 @@
             <ul class="menu">
                 <li><a href="#" onclick="closeNav()">Home</a> </li>
                 <li><a onclick="closeNav()" href="#pages">Pages</a></li>
-                <li><a onclick="closeNav()" href="#form_contacto">Contacto</a></li>
-                <!-- <li><a onclick="closeNav()" href="#contact">Contacts</a></li> -->
+
                 <li><a class="" href="#servicios">Servicios <i class="sam-icon-small suma_icon"></i></a>
                     <ul class="nav_options">
+                        <li><i class="sam-icon-small resta_icon"></i><a onclick="closeNav()" href="#biometrico">Sistemas Biometricos</a></li>
                         <li><i class="sam-icon-small resta_icon"></i><a onclick="closeNav()" href="#software">Software y Webs</a></li>
-                        <li><i class="sam-icon-small resta_icon"></i><a onclick="closeNav()" href="#camaras">Cámaras de seguridad</a></li>
-                        <li><i class="sam-icon-small resta_icon"></i><a onclick="closeNav()" href="#inteligentes">Casas inteligentes</a></li>
+                        <li><i class="sam-icon-small resta_icon"></i><a onclick="closeNav()" href="#redes">Instalación de Redes</a></li>
+                        <li><i class="sam-icon-small resta_icon"></i><a onclick="closeNav()" href="#camaras">Cámaras de Seguridad</a></li>
+                        <li><i class="sam-icon-small resta_icon"></i><a onclick="closeNav()" href="#inteligentes">Casas Inteligentes</a></li>
                     </ul>
                 </li>
+                <li><a onclick="closeNav()" href="#form_contacto">Contacto</a></li>
             </ul>
 
             <button class="get_started_button" onclick="enviarMensajeWhatsApp()">
@@ -61,11 +63,6 @@
                 <p>JDTechnology09@gmail.com</p>
             </div>
 
-            <!-- <div class="contact_info">
-            <h2>Our Location</h2>
-            <p>55 East Birchwood Ave.Brooklyn, </p>
-            <p>New York 11201,United States</p>
-        </div> -->
 
             <div class="social_nav">
                 <div class="contact_info">
@@ -91,7 +88,9 @@
                 <li><a href="#form_contacto">Contacto</a></li>
                 <li><a href="#servicios">Servicios <i class="sam-icon-small list-show-white"></i></a>
                     <ul class="nav_pc_options">
+                        <li><a href="#biometrico">Sistemas Biometricos</a></li>
                         <li><a href="#software">Software y Webs</a></li>
+                        <li><a href="#redes">Instalación de Redes</a></li>
                         <li><a href="#camaras">Cámaras de seguridad</a></li>
                         <li><a href="#inteligentes">Casas inteligentes</a></li>
                     </ul>
@@ -240,7 +239,7 @@
 
         
 
-        <div class="home_styles">
+        <div id="biometrico" class="home_styles">
 
             <div class="biometric_container">
                 <!-- <div class="maged maged_2 anima_on">Proyectos Finalizados</div> -->
@@ -513,7 +512,8 @@
                 </div>
             </div>
         </div>
-        <div class="home_styles home_styles_redes">
+
+        <div id="redes" class="home_styles home_styles_redes">
 
             <div class="red_container">
                 <h2 class="subtitle anima_on">Soluciones de Conectividad y Redes Personalizadas para Negocios y Hogares
@@ -798,6 +798,43 @@
             </button>
         </div>
         <div class="footer_body">
+
+                <div class="footer-section">
+                  <h3 class="footer-title">Sobre nosotros</h3>
+                  <p>Somos especialistas en software, páginas web, cámaras de seguridad, casas inteligentes, redes y sistemas biométricos.</p>
+                </div>
+
+                <div class="footer-section">
+                  <h3 class="footer-title">Servicios</h3>
+                  <ul class="footer-links">
+                    <li><a href="#biometrico">Sistemas Biometricos</a></li>
+                    <li><a href="#software">Software y Webs</a></li>
+                    <li><a href="#redes">Instalación de Redes</a></li>
+                    <li><a href="#camaras">Cámaras de seguridad</a></li>
+                    <li><a href="#inteligentes">Casas inteligentes</a></li>
+                  </ul>
+                </div>
+
+                <div class="footer-section">
+                  <h3 class="footer-title">Contáctanos</h3>
+                  <p>Teléfono: +57 (300) 2248137</p>
+                  <p>Email: JDTechnology09@gmail.com</p>
+
+             
+                  <div class="social_nav">
+                    <div class="contact_info">
+                    <h3 class="footer-title">Redes Sociales</h3>
+                    </div>
+                    <div class="social_nav_container">
+                        <a class="facebook" href="https://www.facebook.com/JDTech09"><i
+                                class="sam-icon-great facebook_icon_dark"></i></a>
+                        <a onclick="enviarMensajeWhatsApp()" class="whatsapp" href=""><i
+                                class="sam-icon-great whatsapp_icon_dark"></i></a>
+                        <a class="instagram" href=""><i class="sam-icon-great instagram_icon_dark"></i></a>
+                    </div>
+                </div>
+
+                </div>
 
         </div>
 
