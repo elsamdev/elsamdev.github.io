@@ -437,8 +437,7 @@ border-radius: 3px;
 }
 
 .login-button > p {
-  font-size: 12px !important;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 } 
 
 .get_started_button {
