@@ -1,0 +1,83 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Rowdies", sans-serif;
+}
+
+html,body{
+    background-color: #30090e;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("img/bg.jpg");
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+    border: 10px solid #97091a;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    min-height: 800px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container::before,
+.container::after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border: 5px solid rgb(255, 255, 255); /* Color del segundo borde */
+}
+
+.container::after {
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border: 1px solid #f0d882;
+}
+
+.bg_coins{
+    position: absolute;
+    width: 400px;
+    top: 0;
+}
+
+.tiger_img{
+    z-index: 3;
+    position: absolute;
+    width: 300px;
+    bottom: -150px;
+    left:-50px;
+}
+
+.bg_center_container{
+    z-index: 2;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg_center{
+    width: 400px;
+}
