@@ -1,0 +1,154 @@
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+    
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    position: relative;
+}
+
+button {
+    font-size: 24px;
+    font-weight: 600;
+    color: #450537;
+    width: 200px;
+    height: 50px;
+    background: linear-gradient(#e7deb4, #e5a730);
+    border: 1px solid #d19113;
+    border-bottom-width: 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    animation: button_animation 2s ease 0s infinite  normal forwards;
+}
+
+@keyframes button_animation {
+	0% {
+		animation-timing-function: ease-out;
+		transform: scale(1);
+		transform-origin: center center;
+	}
+
+	10% {
+		animation-timing-function: ease-in;
+		transform: scale(0.91);
+	}
+
+	17% {
+		animation-timing-function: ease-out;
+		transform: scale(0.98);
+	}
+
+	33% {
+		animation-timing-function: ease-in;
+		transform: scale(0.87);
+	}
+
+	45% {
+		animation-timing-function: ease-out;
+		transform: scale(1);
+	}
+}
+
+
+
+
+  
+  .pcoin_rain_img {
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    transition: 0.3s;
+  }
+  
+  .pcoin_rain_img:nth-child(1) {
+    left: -300px;
+    animation-name: rain;
+    animation-duration: 1.7s;
+    animation-iteration-count: infinite;
+  }
+  
+  .pcoin_rain_img:nth-child(2) {
+    left: 200px;
+    animation-name: rain;
+    animation-duration: 1.7s;
+    animation-iteration-count: infinite;
+  }
+  
+  .pcoin_rain_img:nth-child(3) {
+    left: 170px;
+    animation-name: rain;
+    animation-duration: 1.7s;
+    animation-iteration-count: infinite;
+  }
+  
+  .pcoin_rain_img:nth-child(4) {
+    left: 270px;
+    animation-name: rain;
+    animation-duration: 1.7s;
+
+    animation-iteration-count: infinite;
+  }
+  
+  .pcoin_rain_img:nth-child(5) {
+    left: 370px;
+    animation-name: rain;
+    animation-duration: 1.7s;
+    animation-iteration-count: infinite;
+  }
+  
+  .pcoin_rain_img:nth-child(6) {
+    left: 470px;
+    animation-name: rain;
+    animation-duration: 1.7s;
+    animation-iteration-count: infinite;
+  }
+  
+  .pcoin_rain_img:nth-child(7) {
+    left: 570px;
+    animation-name: rain;
+    animation-duration: 1.7s;
+    animation-iteration-count: infinite;
+  }
+  
+  .pcoin_rain_img:nth-child(8) {
+    left: 670px;
+    animation-name: rain;
+    animation-duration: 1.7s;
+    animation-iteration-count: infinite;
+  }
+  
+  
+  
+  @keyframes rain {
+    0% {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(400px);
+    }
+  }
