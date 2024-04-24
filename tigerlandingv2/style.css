@@ -73,11 +73,69 @@ body {
 .bg_center_container{
     z-index: 2;
     display: flex;
-    width: 100%;
+    width: auto;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .bg_center{
     width: 400px;
 }
+
+.button_container{
+position: absolute;
+bottom: 150px;
+}
+
+.bg_center_container button {
+    z-index: 3;
+    position: relative;
+    width: 130px;
+    height: 70px;
+    background-image: radial-gradient(circle at center, #FF0000, #ac1010);
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 900;
+    box-shadow: 0px -1px 25px 8px rgba(172,16,16,0.75);
+    -webkit-box-shadow: 0px -1px 25px 8px rgba(172,16,16,0.75);
+    -moz-box-shadow: 0px -1px 25px 8px rgba(172,16,16,0.75);
+    border: none;
+    margin: 3px;
+    padding: 0;
+    border-radius: 3px;
+    cursor: pointer;
+    animation: shadowEffect 1s infinite alternate;
+  }
+  
+  .bg_center_container button::before {
+    content: "";
+    position: absolute;
+    width: 90%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #FFFFFF;
+    z-index: 4;
+    border-radius: 3px;
+  }
+
+
+  @keyframes shadowEffect {
+    0% {
+        box-shadow: 0px -1px 25px -10px rgba(172,16,16,0.75);
+        -webkit-box-shadow: 0px -1px 25px -10px rgba(172,16,16,0.75);
+        -moz-box-shadow: 0px -1px 25px -10px rgba(172,16,16,0.75);
+    }
+    50% {
+        box-shadow: 0px -1px 25px -3px rgba(172,16,16,0.75);
+        -webkit-box-shadow: 0px -1px 25px -3px rgba(172,16,16,0.75);
+        -moz-box-shadow: 0px -1px 25px -3px rgba(172,16,16,0.75);
+    }
+    100% {
+        box-shadow: 0px -1px 25px 4px rgba(172,16,16,0.75);
+        -webkit-box-shadow: 0px -1px 25px 4px rgba(172,16,16,0.75);
+        -moz-box-shadow: 0px -1px 25px 4px rgba(172,16,16,0.75);
+    }
+  }
