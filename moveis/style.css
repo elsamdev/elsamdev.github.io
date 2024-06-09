@@ -633,3 +633,36 @@ main {
         width: 50%;
     }
 }
+
+
+.logo_header,
+.nav-links {
+    opacity: 0;
+    transform: translateX(-200px);
+    /* Deslocamento inicial */
+    transition: all 0.5s ease-in-out;
+}
+
+.marquee-wrapper {
+    opacity: 0;
+    /* Deslocamento inicial */
+    transition: all 0.5s ease-in-out;
+}
+
+.contain_header,
+.contact_header_pc {
+    opacity: 0;
+    transform: translateX(200px);
+    /* Deslocamento inicial */
+    transition: all 0.5s ease-in-out;
+}
+
+.logo_header.show,
+.nav-links.show,
+.contain_header.show,
+.contact_header_pc.show,
+.marquee-wrapper.show {
+    opacity: 1;
+    transform: translateX(0);
+    /* Posição final */
+}

@@ -13,3 +13,55 @@ menuToggle.addEventListener('click', () => {
 });
 
 
+
+
+
+
+
+const counters = document.querySelectorAll('.counter');
+const countersFast = document.querySelectorAll('.counter_fast');
+
+// Função para animar os contadores
+function animateCounter(counter) {
+  const target = parseInt(counter.getAttribute('data-target'));
+  const startingValue = 0;
+  const duration = 2000; // Duração da animação em milissegundos
+  const counterAnimation = setInterval(() => {
+    const currentValue = parseInt(counter.textContent);
+    if (currentValue < target) {
+      counter.textContent = currentValue + 1;
+    } else {
+      clearInterval(counterAnimation);
+      if (counter.classList.contains('counter')) {
+        counter.textContent += '+'; // Adiciona "+" para contadores "counter"
+      } else if (counter.classList.contains('counter_fast')) {
+        counter.textContent += 'k'; // Adiciona "k" para contadores "counter_fast"
+      }
+    }
+  }, duration / (target - startingValue));
+}
+
+// Observa a seção para iniciar a animação
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Inicia a animação dos contadores
+      counters.forEach(animateCounter);
+      countersFast.forEach(animateCounter);
+      observer.disconnect(); // Desativa o observador após a animação iniciar
+    }
+  });
+}, { threshold: 0.5 }); // Ativa a animação quando 50% da seção estiver visível
+
+observer.observe(document.querySelector('.second_section_right')); // Observa a seção
+
+
+const logo = document.querySelector('.logo_header');
+const containHeader = document.querySelector('.contain_header');
+const contactoHeader = document.querySelector('.contact_header_pc');
+const carousel = document.querySelector('.marquee-wrapper');
+carousel.classList.add('show');
+contactoHeader.classList.add('show');
+logo.classList.add('show');
+navLinks.classList.add('show');
+containHeader.classList.add('show');
