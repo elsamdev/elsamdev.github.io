@@ -25,7 +25,7 @@ const countersFast = document.querySelectorAll('.counter_fast');
 function animateCounter(counter) {
   const target = parseInt(counter.getAttribute('data-target'));
   const startingValue = 0;
-  const duration = 2000; // Duração da animação em milissegundos
+  const duration = 1000; // Duração da animação em milissegundos
   const counterAnimation = setInterval(() => {
     const currentValue = parseInt(counter.textContent);
     if (currentValue < target) {
