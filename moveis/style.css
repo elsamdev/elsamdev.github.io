@@ -118,14 +118,12 @@ nav {
 
 
 .logo_header {
-    width: 150px;
+    width: 100px;
 }
 
 
 
-.logo_header {
-    width: 80px;
-}
+
 
 nav i {
     color: var(--primary-color);
@@ -679,7 +677,7 @@ main {
     }
 
     .logo_header {
-        width: 100px;
+        width: 150px;
     }
 
     .nav-links li {
