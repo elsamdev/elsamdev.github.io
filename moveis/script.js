@@ -65,3 +65,24 @@ contactoHeader.classList.add('show');
 logo.classList.add('show');
 navLinks.classList.add('show');
 containHeader.classList.add('show');
+
+
+// Selecciona todos los elementos con la clase 'animated'
+const elementosAnimables = document.querySelectorAll('.animated');
+
+// Crea una función para manejar la animación
+const handleIntersection = (entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show'); // Agrega la clase 'show' al elemento
+      // Desconecta el observador para este elemento
+      entry.target.removeEventListener('intersection', handleIntersection); 
+    }
+  });
+};
+
+// Crea un IntersectionObserver para cada elemento
+elementosAnimables.forEach(elemento => {
+  const observer = new IntersectionObserver(handleIntersection, { threshold: 0.1 });
+  observer.observe(elemento);
+});

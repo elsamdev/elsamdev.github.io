@@ -425,8 +425,8 @@ main {
 }
 
 .second_section {
-    background: -webkit-gradient(linear, left top, right top, color-stop(50%, white), color-stop(50%, var(--primary-color)));
     background: -o-linear-gradient(left, white 50%, var(--primary-color) 50%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(50%, white), color-stop(50%, var(--primary-color)));
     background: linear-gradient(to right, white 50%, var(--primary-color) 50%);
     display: -webkit-box;
     display: -ms-flexbox;
@@ -845,4 +845,22 @@ main {
     -ms-transform: translateX(0);
     transform: translateX(0);
     /* Posição final */
+}
+
+
+.animated {
+    opacity: 0;
+    -webkit-transform: translateY(20px);
+    -ms-transform: translateY(20px);
+    transform: translateY(20px);
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.animated.show {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
 }
