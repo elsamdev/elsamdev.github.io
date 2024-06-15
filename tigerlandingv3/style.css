@@ -1,0 +1,172 @@
+@import url(https://fonts.googleapis.com/css?family=Exo+2:200i);
+
+:root {
+    /* Base font size */
+    font-size: 10px;
+
+    /* Set neon color */
+    --neon-text-color: rgb(255, 0, 0);
+    --neon-border-color: #08f;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+}
+
+html {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body {
+    background-color: #000000;
+    font-family: 'Exo 2', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+div {
+    position: relative;
+}
+
+.principal {
+    width: 100%;
+    max-width: 700px;
+}
+
+.button,
+.click,
+h1,
+h2 {
+    position: absolute;
+}
+
+.button {
+    width: 100%;
+    max-width: 250px;
+    bottom: 1px;
+    left: 50%;
+    cursor: pointer;
+    animation: button 1.5s infinite alternate;
+    z-index: 10;
+}
+
+@keyframes button {
+
+    0%,
+    100% {
+        transform: scale(1.05) translate(-50%, -50%);
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    50% {
+        transform: scale(1) translate(-50%, -50%);
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+.click {
+    bottom: 10px;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 50px;
+    max-height: 50px;
+}
+
+h1,
+h2 {
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 400px;
+    max-height: 50px;
+    font-size: 3rem;
+    font-weight: 200;
+    font-style: italic;
+    color: #f8c3c3;
+    text-transform: uppercase;
+    animation: flicker 1.5s infinite alternate;
+}
+
+h1::-moz-selection,
+h2::-moz-selection {
+    background-color: var(--neon-border-color);
+    color: var(--neon-text-color);
+}
+
+h1::selection,
+h2::selection {
+    background-color: var(--neon-border-color);
+    color: var(--neon-text-color);
+}
+
+h1:focus,
+h2:focus {
+    outline: none;
+}
+
+@keyframes flicker {
+
+    0%,
+    19%,
+    21%,
+    23%,
+    25%,
+    54%,
+    56%,
+    100% {
+
+        text-shadow:
+            -0.2rem -0.2rem 1rem #fff,
+            0.2rem 0.2rem 1rem #fff,
+            0 0 2rem var(--neon-text-color),
+            0 0 4rem var(--neon-text-color),
+            0 0 6rem var(--neon-text-color),
+            0 0 8rem var(--neon-text-color),
+            0 0 10rem var(--neon-text-color);
+
+    }
+
+    20%,
+    24%,
+    55% {
+        text-shadow: none;
+        box-shadow: none;
+    }
+}
+
+h2 {
+    top: 40px;
+    left: 90%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    max-height: 50px;
+    font-size: 2rem;
+}
+
+@media (min-width: 700px) {
+    h1 {
+        font-size: 4rem;
+        top: 60px;
+    }
+
+    h2 {
+        font-size: 4rem;
+        top: 90px;
+    }
+
+    .button {
+
+        max-width: 350px;
+        bottom: 30px;
+    }
+}
