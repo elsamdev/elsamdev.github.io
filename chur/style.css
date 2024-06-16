@@ -80,7 +80,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #ffffff;
-    gap: 20px;
+    gap: 40px;
 }
 
 
@@ -89,8 +89,7 @@ body {
     justify-content: center;
     align-items: center;
     /* Color de fondo */
-
-    font-size: 28px;
+    font-size: 80px;
 }
 
 .points p {
@@ -99,7 +98,7 @@ body {
     align-items: center;
     /* Color de fondo */
 
-    font-size: 24px;
+    font-size: 60px;
 }
 
 .slider-container {
@@ -113,6 +112,7 @@ body {
     background-image: linear-gradient(to right, #f0f0f0 33.33%, #e0e0e0 33.33%, #e0e0e0 66.66%, #d0d0d0 66.66%);
     overflow-x: hidden;
     overflow-y: hidden;
+    gap: 4px;
 }
 
 .slide {
@@ -141,7 +141,7 @@ body {
     color: #d0d0d0;
     cursor: pointer;
     transition: all 0.3s ease;
-    border-left: 1px solid #ffffff;
+    /* border-left: 1px solid #ffffff; */
 }
 
 .slide button:active {
@@ -158,8 +158,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #81e2fa;
-    border-left: 1px solid #000000;
+    background-color: #9381fa;
+    /* border-left: 1px solid #000000; */
 }
 
 .slide:hover {
