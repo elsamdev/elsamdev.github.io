@@ -1,0 +1,208 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Asegura que el body ocupe toda la altura de la pantalla */
+    background-color: #f0f0f0;
+    /* Color de fondo */
+}
+
+.principal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+
+}
+
+
+.juego {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 45vh;
+    background-color: #000000;
+    position: relative;
+
+}
+
+.juego button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 160px;
+    background-color: #ffffff;
+    /* Color de fondo */
+    border: none;
+    font-size: 120px;
+    color: #ffffff;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    color: #000000;
+    transition: all 0.3s ease;
+}
+
+.juego button:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #103469;
+    color: rgb(202, 63, 63);
+    transition: all 0.3s ease;
+}
+
+
+.points {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 10vh;
+    background-color: #ffffff;
+    /* Color de fondo */
+    padding: 0 10px;
+}
+
+.points .coins {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    gap: 20px;
+}
+
+
+.points i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Color de fondo */
+
+    font-size: 28px;
+}
+
+.points p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Color de fondo */
+
+    font-size: 24px;
+}
+
+.slider-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    max-width: 100%;
+    height: 45vh;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-image: linear-gradient(to right, #f0f0f0 33.33%, #e0e0e0 33.33%, #e0e0e0 66.66%, #d0d0d0 66.66%);
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.slide {
+    flex: 0 0 calc(100% / 3);
+    min-width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    scroll-snap-align: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    /* Transición suave al pasar el mouse */
+    /* background-color: #ffffff; */
+    position: relative;
+}
+
+.slide button {
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: none;
+    font-size: 42px;
+    background-color: #000000;
+    color: #d0d0d0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 1px solid #ffffff;
+}
+
+.slide button:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    color: black;
+    transition: all 0.3s ease;
+}
+
+.slide i {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #81e2fa;
+    border-left: 1px solid #000000;
+}
+
+.slide:hover {
+    transform: scale(1.1);
+    /* Aumenta el tamaño al pasar el mouse */
+}
+
+/* 
+.slider-container::before,
+.slider-container::after {
+    content: '';
+    flex: 0 0 calc(100% / 3);
+  
+    min-width: 150px;
+
+} */
+
+.slide:not(.active) {
+    /* Estilos para los slides que NO están activos (no centrados) */
+    transform: scale(1);
+    /* Tamaño más pequeño */
+    /* opacity: 0.7; */
+    /* Opacidad reducida */
+}
+
+.slide.active {
+    /* Estilos para el slide activo (centrado) */
+    transform: scale(1);
+    /* Tamaño más grande */
+    opacity: 1;
+    /* Opacidad completa */
+}
+
+/* Estilos para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .slide {
+        flex: 0 0 50%;
+        min-width: 100px;
+    }
+
+    .slider-container::before,
+    .slider-container::after {
+        flex: 0 0 50%;
+        min-width: 100px;
+    }
+}
