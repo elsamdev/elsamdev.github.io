@@ -160,6 +160,7 @@
       align-items: center;
       color: rgb(0, 0, 0);
       font-size: 24px;
+      background-color: #654eb2;
     }
 
     .content {
@@ -398,6 +399,20 @@
         // Verificar si el carrusel está al final
         flecha.classList.remove('arrow-right');
         flecha.classList.add('arrow-left');
+      }
+    });
+
+    // Evento de clic en la flecha
+    flecha.addEventListener('click', function () {
+      // Obtener el índice actual del carrusel
+      let currentIndex = flkty.selectedIndex;
+
+      // Si el carrusel está al final, mover al inicio
+      if (currentIndex === flkty.cells.length - 1) {
+        flkty.select(0); // Seleccionar la primera celda
+      } else {
+        // Si el carrusel está al inicio, mover al final
+        flkty.select(flkty.cells.length - 1); // Seleccionar la última celda
       }
     });
 
