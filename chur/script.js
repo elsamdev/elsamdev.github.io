@@ -60,7 +60,18 @@ sliderContainer.addEventListener('touchmove', (e) => {
     easing: 'cubic-bezier(0.95, 0, 0.05, 1)' // Función cubic-bezier para un movimiento rápido al inicio y lento al final
   });
   startScroll = sliderContainer.scrollLeft;
+  const slidess = document.querySelectorAll('.slide i');
+  // Agregar efecto elástico al final de la animación
+  setTimeout(() => { // Usar setTimeout para esperar a que termine la animación
+    slidess.forEach((slidess) => {
+      slidess.classList.add('elastic');
+        setTimeout(() => { // Usar setTimeout para eliminar la clase después del efecto
+          slidess.classList.remove('elastic');
+        }, 500); // Ajusta la duración del efecto
+    });
+}, 500); // Ajusta la duración de la animación del slider
 });
+
 
 // Quitamos el evento click de los botones dentro de los slides
 // slides.forEach((slide, index) => {
