@@ -70,20 +70,7 @@
       align-items: center;
     }
 
-    .button-crown {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 20px;
-      min-height: 100%;
-      border: 1px solid #f10303;
-      cursor: pointer;
-    }
 
-    .icon-crown {
-      width: 10px;
-      height: 10px;
-    }
 
     .recursos {
       display: flex;
@@ -107,6 +94,11 @@
       /* Bordes redondeados */
       border: 1px solid #f10303;
       padding: 1px;
+    }
+
+    .recursos-item.active {
+      background-color: #f10303;
+      color: white;
     }
 
     .recursos-item svg {
@@ -146,6 +138,10 @@
       max-height: 47vh;
     }
 
+    .content {
+      width: 100%;
+    }
+
     .carousel-cell {
       width: 33.33%;
       /* 100% / 3 */
@@ -182,7 +178,6 @@
     .action-button {
       position: absolute;
       padding: 20px 21px;
-
       background-color: #f1f1f1;
       border: none;
 
@@ -207,6 +202,7 @@
       justify-content: center;
       align-items: center;
       padding: 35px 25px;
+      width: 100%;
       background-color: #000000;
       color: #fff;
       font-weight: bold;
@@ -253,17 +249,6 @@
   </div>
   <div class="coin">
     <div class="coins">
-      <div class="button-crown">
-        <svg class="icon-crown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-          <g fill="#ffffff">
-            <path
-              d="m216.71 99.73l-15.6 93.59a8 8 0 0 1-7.89 6.68H62.78a8 8 0 0 1-7.89-6.68l-15.6-93.59h.08a19.8 19.8 0 0 0 9.22-4.16L88 144l32-73.65a20 20 0 0 0 15.92 0L168 144l39.39-48.48a19.8 19.8 0 0 0 9.22 4.16Z"
-              opacity=".2" />
-            <path
-              d="M248 80a28 28 0 1 0-51.12 15.77l-26.79 33L146 73.4a28 28 0 1 0-36.06 0l-24.03 55.34l-26.79-33a28 28 0 1 0-26.6 12L47 194.63A16 16 0 0 0 62.78 208h130.44A16 16 0 0 0 209 194.63l14.47-86.85A28 28 0 0 0 248 80M128 40a12 12 0 1 1-12 12a12 12 0 0 1 12-12M24 80a12 12 0 1 1 12 12a12 12 0 0 1-12-12m169.22 112H62.78l-13.92-83.48L81.79 149a8 8 0 0 0 6.21 3a8 8 0 0 0 1.08-.07a8 8 0 0 0 6.26-4.74l29.3-67.4a27 27 0 0 0 6.72 0l29.3 67.4a8 8 0 0 0 6.26 4.74a8 8 0 0 0 1.08.07a8 8 0 0 0 6.21-3l32.93-40.52ZM220 92a12 12 0 1 1 12-12a12 12 0 0 1-12 12" />
-          </g>
-        </svg>
-      </div>
       <div class="recursos">
 
         <div class="soldados recursos-item">
@@ -388,18 +373,34 @@
 
     });
     let flecha = document.querySelector('.fa-solid.fa-arrow-right.recursos-flecha.recursos-item');
-
+    addActiveToRecursosItem(0);
     // Evento para cuando el carrusel cambia de posición
     flkty.on('change', function (index) {
       // Verificar si el carrusel está al inicio
       if (index === 0) {
+        addActiveToRecursosItem(0);
         flecha.classList.remove('arrow-left');
         flecha.classList.add('arrow-right');
       } else if (index === flkty.cells.length - 1) {
+        addActiveToRecursosItem(2);
         // Verificar si el carrusel está al final
         flecha.classList.remove('arrow-right');
         flecha.classList.add('arrow-left');
+      } else if (index === 1) {
+        console.log('item 1')
+        addActiveToRecursosItem(0);
       }
+      else if (index === 2) {
+        console.log('item 2')
+        addActiveToRecursosItem(0);
+      } else if (index === 3) {
+        console.log('item 3')
+        addActiveToRecursosItem(1);
+      } else if (index === 4) {
+        console.log('item 4')
+
+      }
+
     });
 
     // Evento de clic en la flecha
@@ -416,6 +417,21 @@
       }
     });
 
+    function removeActiveFromAllRecursosItems() {
+      const recursosItems = document.querySelectorAll('.recursos-item');
+      recursosItems.forEach(item => {
+        item.classList.remove('active');
+      });
+    }
+
+    function addActiveToRecursosItem(position) {
+      removeActiveFromAllRecursosItems(); // Primero, quita la clase 'active' de todos los elementos
+
+      const recursosItems = document.querySelectorAll('.recursos-item');
+      if (position >= 0 && position < recursosItems.length) {
+        recursosItems[position].classList.add('active');
+      }
+    }
   </script>
 </body>
 
