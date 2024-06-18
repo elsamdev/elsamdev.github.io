@@ -12,6 +12,7 @@ body {
     /* Asegura que el body ocupe toda la altura de la pantalla */
     background-color: #f0f0f0;
     /* Color de fondo */
+    padding: 80px 0;
 }
 
 .principal {
