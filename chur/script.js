@@ -4,7 +4,6 @@ const slides = document.querySelectorAll('.slide');
 let isDragging = false;
 let startX;
 let startScroll = 0;
-let timer = null;
 
 // Agregamos eventos de mouse y touch solo a los elementos .slide
 slides.forEach((slide) => {
@@ -39,18 +38,13 @@ sliderContainer.addEventListener('mousemove', (e) => {
   const x = e.pageX - sliderContainer.offsetLeft;
   const walk = (x - startX) * (e.pointerType === 'mouse' ? 3 : 1.5);
 
-  if (timer) {
-    clearTimeout(timer);
-  }
-
-  timer = setTimeout(() => {
-    const maxScroll = sliderContainer.scrollWidth - sliderContainer.clientWidth;
-    sliderContainer.scrollTo({
-      left: Math.max(0, Math.min(maxScroll, startScroll - walk)),
-      behavior: 'smooth'
-    });
-    startScroll = sliderContainer.scrollLeft;
-  }, 20); // retardio de 20ms
+  const maxScroll = sliderContainer.scrollWidth - sliderContainer.clientWidth;
+  sliderContainer.scrollTo({
+    left: Math.max(0, Math.min(maxScroll, startScroll - walk)),
+    behavior: 'smooth',
+    easing: 'cubic-bezier(0.95, 0, 0.05, 1)' // Función cubic-bezier para un movimiento rápido al inicio y lento al final
+  });
+  startScroll = sliderContainer.scrollLeft;
 });
 
 sliderContainer.addEventListener('touchmove', (e) => {
@@ -59,19 +53,13 @@ sliderContainer.addEventListener('touchmove', (e) => {
   const x = e.touches[0].pageX - sliderContainer.offsetLeft;
   const walk = (x - startX) * (e.pointerType === 'touch' ? 3 : 1.5);
 
-  if (timer) {
-    clearTimeout(timer);
-  }
-
-  timer = setTimeout(() => {
-    const maxScroll = sliderContainer.scrollWidth - sliderContainer.clientWidth;
-    sliderContainer.scrollTo({
-      left: Math.max(0, Math.min(maxScroll, startScroll - walk)),
-      behavior: 'smooth',
-      easing: 'cubic-bezier(0.86, 0, 0.07, 1)'
-    });
-    startScroll = sliderContainer.scrollLeft;
-  }, 20); // retardio de 20ms
+  const maxScroll = sliderContainer.scrollWidth - sliderContainer.clientWidth;
+  sliderContainer.scrollTo({
+    left: Math.max(0, Math.min(maxScroll, startScroll - walk)),
+    behavior: 'smooth',
+    easing: 'cubic-bezier(0.95, 0, 0.05, 1)' // Función cubic-bezier para un movimiento rápido al inicio y lento al final
+  });
+  startScroll = sliderContainer.scrollLeft;
 });
 
 // Quitamos el evento click de los botones dentro de los slides
