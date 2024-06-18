@@ -66,22 +66,37 @@
       height: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: flex-start;
+      justify-content: flex-end;
       align-items: center;
+
     }
 
 
 
     .recursos {
       display: flex;
+      position: relative;
       height: 100%;
       /* Para colocar los elementos en fila */
 
       /* Espacio entre los elementos */
+      background-color: #7ca5ff;
+      overflow: hidden;
+    }
+
+    .recurso-relleno {
+      content: "hola";
+      height: 100%;
+      width: 33.3%;
+      background-color: #8f0909;
+      color: white;
+      position: absolute;
+      left: 0;
     }
 
     .recursos-item {
       display: flex;
+      justify-content: flex-end;
       height: 100%;
       /* Para colocar el número y el ícono en fila */
       align-items: center;
@@ -94,10 +109,13 @@
       /* Bordes redondeados */
       border: 1px solid #f10303;
       padding: 1px;
+      position: relative;
     }
 
+
+
     .recursos-item.active {
-      background-color: #f10303;
+      /* background-color: #f10303; */
       color: white;
     }
 
@@ -250,7 +268,7 @@
   <div class="coin">
     <div class="coins">
       <div class="recursos">
-
+        <div class="recurso-relleno"></div>
         <div class="soldados recursos-item">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
             <g fill="#ffffff">
@@ -293,7 +311,7 @@
         </div>
       </div>
     </div>
-    <i class="fa-solid fa-arrow-right recursos-flecha recursos-item"></i>
+
   </div>
   <div class="carousel">
     <div class="carousel-cell">
@@ -373,32 +391,33 @@
 
     });
     let flecha = document.querySelector('.fa-solid.fa-arrow-right.recursos-flecha.recursos-item');
-    addActiveToRecursosItem(0);
+    const relleno = document.querySelector('.recurso-relleno');
+    let leftPosition = 0;
     // Evento para cuando el carrusel cambia de posición
     flkty.on('change', function (index) {
       // Verificar si el carrusel está al inicio
       if (index === 0) {
-        addActiveToRecursosItem(0);
+        relleno.style.left = leftPosition + '0%';
         flecha.classList.remove('arrow-left');
         flecha.classList.add('arrow-right');
       } else if (index === flkty.cells.length - 1) {
-        addActiveToRecursosItem(2);
+        relleno.style.left = leftPosition + '60%';
         // Verificar si el carrusel está al final
         flecha.classList.remove('arrow-right');
         flecha.classList.add('arrow-left');
       } else if (index === 1) {
         console.log('item 1')
-        addActiveToRecursosItem(0);
+        relleno.style.left = leftPosition + '20%';
       }
       else if (index === 2) {
         console.log('item 2')
-        addActiveToRecursosItem(0);
+        relleno.style.left = leftPosition + '40%';
       } else if (index === 3) {
         console.log('item 3')
-        addActiveToRecursosItem(1);
+        relleno.style.left = leftPosition + '60%';
       } else if (index === 4) {
         console.log('item 4')
-
+        relleno.style.left = leftPosition + '80%';
       }
 
     });
@@ -417,21 +436,7 @@
       }
     });
 
-    function removeActiveFromAllRecursosItems() {
-      const recursosItems = document.querySelectorAll('.recursos-item');
-      recursosItems.forEach(item => {
-        item.classList.remove('active');
-      });
-    }
 
-    function addActiveToRecursosItem(position) {
-      removeActiveFromAllRecursosItems(); // Primero, quita la clase 'active' de todos los elementos
-
-      const recursosItems = document.querySelectorAll('.recursos-item');
-      if (position >= 0 && position < recursosItems.length) {
-        recursosItems[position].classList.add('active');
-      }
-    }
   </script>
 </body>
 
