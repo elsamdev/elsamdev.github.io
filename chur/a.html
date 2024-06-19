@@ -394,6 +394,36 @@
         </div>
       </div>
     </div>
+    <div class="carousel-cell">
+      <div class="content">
+        <div class="icon">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div class="button">
+          <i class="fas fa-play"></i> Botón
+        </div>
+      </div>
+    </div>
+    <div class="carousel-cell">
+      <div class="content">
+        <div class="icon">
+          <i class="fas fa-heart"></i>
+        </div>
+        <div class="button">
+          <i class="fas fa-pause"></i> Botón
+        </div>
+      </div>
+    </div>
+    <div class="carousel-cell">
+      <div class="content">
+        <div class="icon">
+          <i class="fa-brands fa-free-code-camp"></i>
+        </div>
+        <div class="button">
+          <i class="fas fa-volume-up"></i> Botón
+        </div>
+      </div>
+    </div>
   </div>
 
 
@@ -410,7 +440,6 @@
       "prevNextButtons": false,
 
     });
-    let flecha = document.querySelector('.fa-solid.fa-arrow-right.recursos-flecha.recursos-item');
     const relleno = document.querySelector('.recurso-relleno');
     let leftPosition = 0;
     // Evento para cuando el carrusel cambia de posición
@@ -418,43 +447,25 @@
       // Verificar si el carrusel está al inicio
       if (index === 0) {
         relleno.style.left = leftPosition + '0%';
-        flecha.classList.remove('arrow-left');
-        flecha.classList.add('arrow-right');
+
       } else if (index === flkty.cells.length - 1) {
         relleno.style.left = leftPosition + '66.6%';
-        // Verificar si el carrusel está al final
-        flecha.classList.remove('arrow-right');
-        flecha.classList.add('arrow-left');
+
       } else if (index === 1) {
         console.log('item 1')
-        relleno.style.left = leftPosition + '20%';
+        relleno.style.left = leftPosition + '0%';
       }
-      else if (index === 2) {
-        console.log('item 2')
-        relleno.style.left = leftPosition + '23.3%';
-      } else if (index === 3) {
-        console.log('item 3')
+      else if (index === 4) {
+        console.log('mostrar 2')
         relleno.style.left = leftPosition + '33.3%';
-      } else if (index === 4) {
-        console.log('item 4')
+      } else if (index === 6) {
+        console.log('mostrar 4')
         relleno.style.left = leftPosition + '66.6%';
       }
 
     });
 
-    // Evento de clic en la flecha
-    flecha.addEventListener('click', function () {
-      // Obtener el índice actual del carrusel
-      let currentIndex = flkty.selectedIndex;
 
-      // Si el carrusel está al final, mover al inicio
-      if (currentIndex === flkty.cells.length - 1) {
-        flkty.select(0); // Seleccionar la primera celda
-      } else {
-        // Si el carrusel está al inicio, mover al final
-        flkty.select(flkty.cells.length - 1); // Seleccionar la última celda
-      }
-    });
 
 
   </script>
