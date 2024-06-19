@@ -130,6 +130,7 @@
       border: 1px solid #f10303;
       padding: 1px;
       position: relative;
+      cursor: pointer;
     }
 
 
@@ -149,16 +150,14 @@
       font-weight: 900;
     }
 
-    .recursos-flecha {
-      padding: 0 20px;
-    }
+
 
     .recursos-item .numero {
-      font-size: 10px;
+      font-size: 12px;
       /* Tamaño del número */
-      font-weight: bold;
       /* Estilo del número */
-      font-weight: 900;
+      font-weight: 300;
+      letter-spacing: 1px;
     }
 
     .icon-menu {
@@ -465,7 +464,26 @@
 
     });
 
+    document.querySelectorAll('.recursos-item').forEach((item, index) => {
+      item.addEventListener('click', () => {
+        let targetIndex;
+        if (index === 0) {
 
+          targetIndex = 1;
+          console.log(targetIndex)
+        } else if (index === 1) {
+          targetIndex = 4;
+          console.log(targetIndex)
+        } else if (index === 2) {
+          targetIndex = 6;
+          console.log(targetIndex)
+        }
+
+
+        // Mover el slider a la posición deseada
+        flkty.select(targetIndex);
+      });
+    });
 
 
   </script>
