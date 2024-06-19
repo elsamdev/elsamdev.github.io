@@ -123,6 +123,7 @@
     }
 
     .recursos-item {
+      min-width: 50px;
       display: flex;
       justify-content: flex-end;
       height: 100%;
@@ -365,19 +366,19 @@
           <div class="recurso-relleno"></div>
           <div class="soldados recursos-item">
             <img src="sword.png" alt="sword">
-            <p class="numero">999</p>
+            <p class="numero point-soldier">0</p>
           </div>
           <div class="comida recursos-item">
             <img src="sword.png" alt="sword">
-            <p class="numero">999</p>
+            <p class="numero point-food">999</p>
           </div>
           <div class="madera recursos-item">
             <img src="sword.png" alt="sword">
-            <p class="numero">999</p>
+            <p class="numero point-wood">300</p>
           </div>
           <div class="obrero recursos-item">
             <img src="sword.png" alt="sword">
-            <p class="numero">999</p>
+            <p class="numero point-slaves">600</p>
           </div>
         </div>
       </div>
@@ -610,6 +611,35 @@
       // Agregar la clase active al elemento actual
       document.querySelectorAll('.recursos-item')[btRecurso].classList.add('active');
     }
+
+    function changeNumberValue(element, targetValue, duration) {
+      const startValue = parseInt(element.textContent);
+      const increment = (targetValue - startValue) / (duration / 10);
+      let currentValue = startValue;
+
+      const interval = setInterval(function () {
+        currentValue += increment;
+        element.textContent = Math.round(currentValue);
+
+        if ((increment > 0 && currentValue >= targetValue) || (increment < 0 && currentValue <= targetValue)) {
+          element.textContent = targetValue;
+          clearInterval(interval);
+        }
+      }, 10);
+    }
+
+    const soldierNumber = document.querySelector('.point-soldier');
+    const foodNumber = document.querySelector('.point-food');
+    const woodNumber = document.querySelector('.point-wood');
+    const slavesNumber = document.querySelector('.point-slaves');
+    const actionButton = document.querySelector('.action-button');
+
+    actionButton.addEventListener('click', function () {
+      changeNumberValue(soldierNumber, 500, 2000); // Cambiar gradualmente a 500 en 2 segundos
+      changeNumberValue(foodNumber, 750, 2000); // Cambiar gradualmente a 750 en 1.5 segundos
+      changeNumberValue(woodNumber, 899, 2000); // Cambiar gradualmente a 1000 en 1 segundo
+      changeNumberValue(slavesNumber, 250, 2000); // Cambiar gradualmente a 250 en 2.5 segundos
+    });
 
   </script>
 </body>
