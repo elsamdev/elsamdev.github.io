@@ -103,6 +103,8 @@
       overflow: hidden;
     }
 
+
+
     .recurso-relleno {
       content: "hola";
       height: 100%;
@@ -128,16 +130,36 @@
       /* border-radius: 5px; */
       /* Bordes redondeados */
       border: 1px solid #f10303;
-      padding: 1px;
+      padding: 1px 5px;
       position: relative;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
 
 
     .recursos-item.active {
-      /* background-color: #f10303; */
+      /* background-color: #000000; */
+      /* Cambia el color de fondo */
+      border: 2px solid #ccc;
+      /* Agrega un borde */
       color: white;
+      transition: all 0.3s ease;
+    }
+
+    /* Estilos para el SVG dentro de .recursos-item.active */
+    .recursos-item.active svg {
+      width: 10px;
+      height: 10px;
+      transition: all 0.3s ease;
+    }
+
+    /* Estilos para el elemento .numero dentro de .recursos-item.active */
+    .recursos-item.active .numero {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
     }
 
     .recursos-item svg {
@@ -148,6 +170,7 @@
       margin-right: 2px;
       /* Espacio entre el número y el ícono */
       font-weight: 900;
+      transition: all 0.3s ease;
     }
 
 
@@ -158,6 +181,7 @@
       /* Estilo del número */
       font-weight: 300;
       letter-spacing: 1px;
+      transition: all 0.3s ease;
     }
 
     .icon-menu {
@@ -510,25 +534,25 @@
       item.addEventListener('click', () => {
         let targetIndex;
         if (index === 0) {
-
           targetIndex = 1;
-          console.log(targetIndex)
         } else if (index === 1) {
           targetIndex = 4;
-          console.log(targetIndex)
         } else if (index === 2) {
           targetIndex = 7;
-          console.log(targetIndex)
-        }
-        else if (index === 3) {
+        } else if (index === 3) {
           targetIndex = 11;
-          console.log(targetIndex)
         }
-
-
 
         // Mover el slider a la posición deseada
         flkty.select(targetIndex);
+
+        // Eliminar la clase active de todos los elementos
+        document.querySelectorAll('.recursos-item').forEach(item => {
+          item.classList.remove('active');
+        });
+
+        // Agregar la clase active al elemento actual
+        item.classList.add('active');
       });
     });
 
