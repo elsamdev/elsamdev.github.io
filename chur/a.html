@@ -314,51 +314,52 @@
       cursor: pointer;
       border-radius: 10px;
       border: #029357 solid 4px;
-      box-shadow: 0px 7px 0px #046d41, inset 0px 0px 0px 2px #2fd792;
-      transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
+      box-shadow: 0px 5px #046d41, inset 0px 0px 0px 2px #2fd792;
+      transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
 
     .button-yellow {
       border: #fec902 solid 4px;
-      box-shadow: 0px 7px 0px #be8d15, inset 0px 0px 0px 2px #fee15a;
+      box-shadow: 0px 5px #be8d15, inset 0px 0px 0px 2px #fee15a;
     }
 
     .button-blue {
       border: #1c9cd3 solid 4px;
-      box-shadow: 0px 7px 0px #2178a0, inset 0px 0px 0px 2px #41b8f7;
+      box-shadow: 0px 5px #2178a0, inset 0px 0px 0px 2px #41b8f7;
     }
 
     .button-black {
       border: var(--lightblack-color) solid 4px;
-      box-shadow: 0px 7px 0px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
+      box-shadow: 0px 5px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
     }
 
 
     .button-yellow:active {
-
-      box-shadow: 0px 0px 0px #be8d15, inset 0px 0px 0px 2px #fee15a;
+      box-shadow: none;
+      box-shadow: inset 0px 0px 0px 2px #fee15a;
     }
 
     .button-blue:active {
-
-      box-shadow: 0px 0px 0px #2178a0, inset 0px 0px 0px 2px #41b8f7;
+      box-shadow: none;
+      box-shadow: inset 0px 0px 0px 2px #41b8f7;
     }
 
     .button-black:active {
-
-      box-shadow: 0px 0px 0px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
+      box-shadow: none;
+      box-shadow: inset 0px 0px 0px 2px var(--ultralightblakc-color);
     }
 
     .button-green:active {
 
-      box-shadow: 0px 0px 0px #046d41, inset 0px 0px 0px 2px #2fd792;
+      box-shadow: none;
+      box-shadow: inset 0px 0px 0px 2px #2fd792;
     }
 
     .button:active {
-      transform: translate(0, 7px);
+      transform: translateY(7px);
 
       background-color: var(--maingray-color-reverse);
-      transition: all .2s cubic-bezier(0.19, 1, 0.22, 1);
+      transition: all .3 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
 
     .flickity-enabled.is-draggable .flickity-viewport .is-selected {
