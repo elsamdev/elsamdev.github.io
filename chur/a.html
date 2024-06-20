@@ -751,11 +751,13 @@
         navigation.style.display = 'flex';
         setTimeout(function () {
           navigation.style.height = '10%';
+          navigation.style.transform = 'scale(1)';
         }, 100)
         carousel.style.height = '90%';
       } else {
         console.log("hola");
         navigation.style.height = '0%';
+        navigation.style.transform = 'scale(0) ';
         setTimeout(function () {
           navigation.style.display = 'none';
         }, 500)
