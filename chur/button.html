@@ -10,42 +10,78 @@
 
 <body>
     <style>
-        .cuerpo {
-            width: 100px;
-            height: 100px;
+        body,
+        html {
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #d6dce8;
-            flex-direction: column;
+            overflow: hidden;
         }
 
-        button {
-            border: none;
-            outline: none;
-            background-color: #6c5ce7;
-            width: 90%;
-            height: 90%;
-            font-size: 12px;
-            font-weight: 700;
-            color: #fff;
-            border-radius: 5px;
-            transition: all ease 0.1s;
-            box-shadow: 0px 5px 0px 0px #a29bfe;
+        .navigation {
+            width: 100%;
+            height: 40%;
+            min-height: 10%;
+            background-color: #8c8;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
-        button:active {
-            transform: translateY(5px);
-            box-shadow: 0px 0px 0px 0px #a29bfe;
+        .handle {
+            width: 100%;
+            height: 10px;
+            background-color: white;
+            cursor: ns-resize;
+            position: absolute;
+            bottom: 0;
         }
     </style>
-    <div class="cuerpo">
-
-        <button class="button">
-            <i class="fas fa-play"></i> Botón
-        </button>
-
+    <div class="container">
+        <div class="navigation" id="myNavigation">
+            <div class="handle"></div>
+        </div>
     </div>
+
+    <script>
+        const navigation = document.getElementById('myNavigation');
+        const handle = document.querySelector('.handle');
+        let initialMouseY = 0;
+        let isDragging = false;
+
+        navigation.addEventListener('mousedown', mouseDownListener, true); // Escucha en el .handle
+        window.addEventListener('mouseup', mouseUpListener, true);
+
+        function mouseMoveListener(e) {
+            if (isDragging && e.clientY <= initialMouseY - 100) { // Hacia arriba (10px)
+                console.log('Mouse se movió 10px hacia arriba');
+                navigation.style.height = "40%";
+                initialMouseY = e.clientY;
+            } else if (isDragging && e.clientY >= initialMouseY + 100) { // Hacia abajo (10px)
+                console.log('Mouse se movió 10px hacia abajo');
+                navigation.style.height = "10%";
+                initialMouseY = e.clientY;
+            }
+
+
+        }
+
+        function mouseDownListener(e) {
+            initialMouseY = e.clientY;
+            isDragging = true;
+            window.addEventListener('mousemove', mouseMoveListener, true);
+        }
+
+        function mouseUpListener(e) {
+            isDragging = false;
+            window.removeEventListener('mousemove', mouseMoveListener, true);
+        }
+
+    </script>
 </body>
 
 </html>
