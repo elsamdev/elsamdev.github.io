@@ -810,13 +810,13 @@
     // Recorre cada contenedor de botón
     // Agrega un evento click a cada contenedor de botón
     buttonContainers.forEach(buttonContainer => {
-      buttonContainer.addEventListener("click", () => {
-        // Activa los eventos de arrastre solo una vez
-        navigation.addEventListener('mousedown', mouseDownListener, true); // Escucha en el .handle
-        navigation.addEventListener('touchstart', touchStartListener, true);
-        window.addEventListener('mouseup', mouseUpListener, true);
-        window.addEventListener('touchend', touchEndListener, true);
-      });
+
+      // Activa los eventos de arrastre solo una vez
+      buttonContainer.addEventListener('mousedown', mouseDownListener, true); // Escucha en el .handle
+      buttonContainer.addEventListener('touchstart', touchStartListener, true);
+      buttonContainer.addEventListener('mouseup', mouseUpListener, true);
+      buttonContainer.addEventListener('touchend', touchEndListener, true);
+
     });
     // Escucha eventos de mouse y touch en el elemento de navegación
     navigation.addEventListener('mousedown', mouseDownListener, true); // Escucha en el .handle
