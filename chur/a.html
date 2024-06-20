@@ -220,10 +220,12 @@
 
     .carousel {
       width: 100%;
-      height: 100%;
+
       margin: auto;
       scroll-snap-type: x mandatory;
-      max-height: 47vh;
+      height: 41vh;
+      background-color: var(--maingray-color);
+      transition: all 0.3s ease;
     }
 
     .content {
@@ -290,9 +292,8 @@
       width: 100%;
       height: 30%;
       display: flex;
-      flex-direction: column;
       justify-content: center;
-      align-items: center;
+
     }
 
     .button {
@@ -349,6 +350,53 @@
 
     .arrow-left {
       transform: rotate(180deg);
+    }
+
+    .navigation {
+      width: 100%;
+      height: 6vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background-color: var(--maingray-color);
+      transition: all 0.3s ease;
+    }
+
+    .navigation button {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 60%;
+      height: 60%;
+      border: none;
+      padding: 0px 20px;
+      background-color: var(--maingray-color);
+      color: var(--lightblack-color);
+      font-weight: 300;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 10px;
+      border: #989aaf solid 2px;
+      box-shadow: 0px 4px 0px #66687e, inset 0px 0px 0px 2px white;
+      transition-duration: .3s;
+    }
+
+
+    .navigation .navigation-center img {
+      height: 85% !important;
+    }
+
+    .navigation .navigation-left img {
+
+      height: 85% !important;
+    }
+
+    .navigation .navigation-right img {
+
+      height: 85% !important;
     }
   </style>
 </head>
@@ -538,7 +586,19 @@
     </div>
   </div>
 
+  <div class="navigation">
 
+    <button class="button navigation-left">
+      <img src="img/arrow-left.png" alt="">
+    </button>
+    <button class="button navigation-center">
+      <img src="img/center.png" alt="">
+    </button>
+    <button class="button navigation-right">
+      <img src="img/arrow-right.png" alt="">
+    </button>
+
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.pkgd.min.js"></script>
   <script>
     const carousel = document.querySelector('.carousel');
@@ -643,8 +703,23 @@
       changeNumberValue(foodNumber, 750, 2000); // Cambiar gradualmente a 750 en 1.5 segundos
       changeNumberValue(woodNumber, 899, 2000); // Cambiar gradualmente a 1000 en 1 segundo
       changeNumberValue(slavesNumber, 250, 2000); // Cambiar gradualmente a 250 en 2.5 segundos
+
+      toggleHeight(); // Llamar a la función para cambiar la altura de la barra de navegación y el carruseltoggleHeight);
     });
 
+
+    function toggleHeight() {
+      const navigation = document.querySelector('.navigation');
+      const carousel = document.querySelector('.carousel');
+
+      if (navigation.style.height === '0vh') {
+        navigation.style.height = '6vh';
+        carousel.style.height = '41vh';
+      } else {
+        navigation.style.height = '0vh';
+        carousel.style.height = '47vh';
+      }
+    }
   </script>
 </body>
 
