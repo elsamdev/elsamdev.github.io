@@ -753,6 +753,7 @@
           navigation.style.height = '10%';
           navigation.style.transform = 'scale(1)';
           navigation.style.opacity = '1';
+          navigation.style.transition = 'all 0.3s ease';
         }, 100)
         carousel.style.height = '90%';
       } else {
@@ -760,6 +761,7 @@
         navigation.style.height = '0%';
         navigation.style.transform = 'scale(0) ';
         navigation.style.opacity = '0';
+        navigation.style.transition = 'all 0.3s ease';
         setTimeout(function () {
           navigation.style.display = 'none';
         }, 500)
