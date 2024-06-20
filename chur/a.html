@@ -47,7 +47,10 @@
       box-sizing: border-box;
       padding: 0;
       margin: 0;
+    }
 
+    html {
+      height: 100vh;
     }
 
     body {
@@ -60,7 +63,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      height: 100%;
       overflow: hidden;
     }
 
@@ -798,11 +801,21 @@
 
 
 
-
+    const buttonContainers = document.querySelectorAll(".button-container");
 
     let initialMouseY = 0;
     let isDragging = false;
-
+    // Recorre cada contenedor de botón
+    // Agrega un evento click a cada contenedor de botón
+    buttonContainers.forEach(buttonContainer => {
+      buttonContainer.addEventListener("click", () => {
+        // Activa los eventos de arrastre solo una vez
+        navigation.addEventListener('mousedown', mouseDownListener, true); // Escucha en el .handle
+        navigation.addEventListener('touchstart', touchStartListener, true);
+        window.addEventListener('mouseup', mouseUpListener, true);
+        window.addEventListener('touchend', touchEndListener, true);
+      });
+    });
     // Escucha eventos de mouse y touch en el elemento de navegación
     navigation.addEventListener('mousedown', mouseDownListener, true); // Escucha en el .handle
     navigation.addEventListener('touchstart', touchStartListener, true);
