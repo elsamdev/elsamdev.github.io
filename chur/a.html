@@ -29,6 +29,7 @@
 
     :root {
       --maingray-color: #d6dce8;
+      --maingray-color-reverse: #c8cdd8;
       --main-color: #ee0451;
       --lightbg-color: #eef4f7;
       --yellow-color: #ffd400;
@@ -314,7 +315,7 @@
       border-radius: 10px;
       border: #029357 solid 4px;
       box-shadow: 0px 7px 0px #046d41, inset 0px 0px 0px 2px #2fd792;
-      transition-duration: .3s;
+      transition: all 0.3s ease;
     }
 
     .button-yellow {
@@ -332,11 +333,31 @@
       box-shadow: 0px 7px 0px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
     }
 
+
+    .button-yellow:active {
+
+      box-shadow: 0px 0px 0px #be8d15, inset 0px 0px 0px 2px #fee15a;
+    }
+
+    .button-blue:active {
+
+      box-shadow: 0px 0px 0px #2178a0, inset 0px 0px 0px 2px #41b8f7;
+    }
+
+    .button-black:active {
+
+      box-shadow: 0px 0px 0px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
+    }
+
+    .button-green:active {
+
+      box-shadow: 0px 0px 0px #046d41, inset 0px 0px 0px 2px #2fd792;
+    }
+
     .button:active {
-      transform: translate(3px, 3px);
-      ;
-      transition-duration: 0s;
-      /* Agrega esta línea para desactivar la transición en el estado :active */
+      transform: translate(3px, 5px);
+      transition-duration: .3s;
+      background-color: var(--maingray-color-reverse);
     }
 
     .flickity-enabled.is-draggable .flickity-viewport .is-selected {
@@ -699,10 +720,10 @@
     const actionButton = document.querySelector('.action-button');
 
     actionButton.addEventListener('click', function () {
-      changeNumberValue(soldierNumber, 500, 2000); // Cambiar gradualmente a 500 en 2 segundos
-      changeNumberValue(foodNumber, 750, 2000); // Cambiar gradualmente a 750 en 1.5 segundos
-      changeNumberValue(woodNumber, 899, 2000); // Cambiar gradualmente a 1000 en 1 segundo
-      changeNumberValue(slavesNumber, 250, 2000); // Cambiar gradualmente a 250 en 2.5 segundos
+      changeNumberValue(soldierNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 500 en 2 segundos
+      changeNumberValue(foodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 750 en 1.5 segundos
+      changeNumberValue(woodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 1000 en 1 segundo
+      changeNumberValue(slavesNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 250 en 2.5 segundos
 
       toggleHeight(); // Llamar a la función para cambiar la altura de la barra de navegación y el carruseltoggleHeight);
     });
@@ -719,6 +740,11 @@
         navigation.style.height = '0vh';
         carousel.style.height = '47vh';
       }
+    }
+
+
+    function generateRandomNumber() {
+      return Math.floor(Math.random() * 1000);
     }
   </script>
 </body>
