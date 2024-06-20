@@ -335,7 +335,6 @@
 
 
     .button-yellow:active {
-
       box-shadow: inset 0px 0px 0px 2px #fee15a;
     }
 
@@ -355,9 +354,8 @@
 
     .button:active {
       transform: translateY(5px);
-
       background-color: var(--maingray-color-reverse);
-      transition: all .3 cubic-bezier(0.000, 0.805, 0.000, 0.995);
+      transition: all 2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
 
     .flickity-enabled.is-draggable .flickity-viewport .is-selected {
@@ -402,7 +400,7 @@
       border-radius: 10px;
       border: #989aaf solid 2px;
       box-shadow: 0px 4px 0px #66687e, inset 0px 0px 0px 2px white;
-      transition-duration: .3s;
+      transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
 
 
@@ -418,6 +416,16 @@
     .navigation .navigation-right img {
 
       height: 85% !important;
+    }
+
+    .navigation button:active {
+      box-shadow: inset 0px 0px 0px 2px white;
+    }
+
+    .navigation button:active {
+      transform: translateY(5px);
+      background-color: var(--maingray-color-reverse);
+      transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
   </style>
 </head>
@@ -609,13 +617,13 @@
 
   <div class="navigation">
 
-    <button class="button navigation-left">
+    <button class="navigation-left">
       <img src="img/arrow-left.png" alt="">
     </button>
-    <button class="button navigation-center">
+    <button class="navigation-center">
       <img src="img/center.png" alt="">
     </button>
-    <button class="button navigation-right">
+    <button class=" navigation-right">
       <img src="img/arrow-right.png" alt="">
     </button>
 
@@ -644,22 +652,20 @@
       } else if (index === flkty.cells.length - 1) {
         relleno.style.left = leftPosition + '75%';
         estiloRecurso(3)
-      } else if (index === 1) {
+      } else if (index === 1 || index === 2 || index === 3) {
         console.log('item 1')
         relleno.style.left = leftPosition + '0%';
         estiloRecurso(0)
-      }
-      else if (index === 4) {
+      } else if (index === 4 || index === 5) {
         console.log('mostrar 2')
         relleno.style.left = leftPosition + '25%';
         estiloRecurso(1)
-      } else if (index === 7) {
+      } else if (index === 7 || index === 8) {
         console.log('mostrar 4')
         relleno.style.left = leftPosition + '50%';
         estiloRecurso(2)
       }
-
-      else if (index === 10) {
+      else if (index === 10 || index === 11) {
         console.log('mostrar 4')
         relleno.style.left = leftPosition + '75%';
         estiloRecurso(3)
