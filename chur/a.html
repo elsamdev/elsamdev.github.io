@@ -843,7 +843,7 @@
       const distanciaRebote = direccion === "abajo" ? -8 : 8;
       let velocidad = direccion === "abajo" ? -8 : 8;
       let gravedad = 0.5; // Gravedad más fuerte para un rebote más rápido
-      let posicion = 0;   // Comienza en la posición inicial
+      let posicion = direccion === "abajo" ? 30 : 4;
 
       function animar() {
         velocidad += gravedad;
