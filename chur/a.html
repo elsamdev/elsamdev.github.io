@@ -825,13 +825,13 @@
     window.addEventListener('touchend', touchEndListener, true);
 
     function mouseMoveListener(e) {
-      if (isDragging && e.clientY <= initialMouseY - 100) { // Hacia arriba (10px)
+      if (isDragging && e.clientY <= initialMouseY - 30) { // Hacia arriba (10px)
         console.log('Mouse se movió 10px hacia arriba');
         navigation.style.height = '10%';
         navigation.style.minHeight = '10%';
         navigationContainer.style.bottom = '0';
         initialMouseY = e.clientY;
-      } else if (isDragging && e.clientY >= initialMouseY + 100) { // Hacia abajo (10px)
+      } else if (isDragging && e.clientY >= initialMouseY + 30) { // Hacia abajo (10px)
         console.log('Mouse se movió 10px hacia abajo');
         navigation.style.height = '4%';
         navigation.style.minHeight = '4%';
@@ -841,13 +841,13 @@
     }
 
     function touchMoveListener(e) {
-      if (isDragging && e.touches[0].clientY <= initialMouseY - 100) { // Hacia arriba (10px)
+      if (isDragging && e.touches[0].clientY <= initialMouseY - 30) { // Hacia arriba (10px)
         console.log('Touch se movió 10px hacia arriba');
         navigation.style.height = '10%';
         navigation.style.minHeight = '10%';
         navigationContainer.style.bottom = '0';
         initialMouseY = e.touches[0].clientY;
-      } else if (isDragging && e.touches[0].clientY >= initialMouseY + 100) { // Hacia abajo (10px)
+      } else if (isDragging && e.touches[0].clientY >= initialMouseY + 30) { // Hacia abajo (10px)
         console.log('Touch se movió 10px hacia abajo');
         navigation.style.height = '4%';
         navigation.style.minHeight = '4%';
