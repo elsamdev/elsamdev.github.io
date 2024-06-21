@@ -314,7 +314,6 @@
       width: 90%;
       height: 85%;
       border: none;
-      padding: 0px 20px;
       background-color: var(--maingray-color);
       color: var(--lightblack-color);
       font-weight: 300;
@@ -404,7 +403,6 @@
       /* background-color: #180293; */
       position: relative;
       transition: all 0.3s ease;
-
     }
 
 
@@ -414,15 +412,22 @@
       height: 80px;
       max-height: 100%;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      gap: 10px;
-
       position: absolute;
       bottom: 0;
       transition: all 0.3s cubic-bezier(.47, 1.64, .41, .8);
     }
 
+    .navigation-button-container {
+      width: 33.33%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s cubic-bezier(.47, 1.64, .41, .8);
+    }
 
     .navigation-container button {
       position: relative;
@@ -430,7 +435,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      width: 31%;
+      width: 90%;
       height: 80%;
       border: none;
       background-color: var(--maingray-color);
@@ -468,6 +473,8 @@
       background-color: var(--maingray-color-reverse);
       transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
+
+    @media (min-width: 582px) {}
   </style>
 </head>
 
@@ -658,16 +665,21 @@
 
   <div class="navigation" id="Navigation">
     <div class="navigation-container">
-      <button class="navigation-left">
-
-        <img src="img/arrow-left.png" alt="">
-      </button>
-      <button class="navigation-center">
-        <img src="img/arrow-up.png" alt="">
-      </button>
-      <button class="navigation-right">
-        <img src="img/arrow-right.png" alt="">
-      </button>
+      <div class="navigation-button-container">
+        <button class="navigation-left">
+          <img src="img/arrow-left.png" alt="">
+        </button>
+      </div>
+      <div class="navigation-button-container">
+        <button class="navigation-center">
+          <img src="img/arrow-up.png" alt="">
+        </button>
+      </div>
+      <div class="navigation-button-container">
+        <button class="navigation-right">
+          <img src="img/arrow-right.png" alt="">
+        </button>
+      </div>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.pkgd.min.js"></script>
@@ -680,8 +692,7 @@
       "selectedAttraction": 0.06,
       "friction": 0.25,
       "pageDots": false,
-      "prevNextButtons": false,
-
+      "prevNextButtons": false
     });
     const relleno = document.querySelector('.recurso-relleno');
     let leftPosition = 0;
@@ -779,6 +790,7 @@
     const navigation = document.getElementById('Navigation');
     const navigationContainer = document.querySelector('.navigation-container');
     const buttonContainers = document.querySelectorAll('.button-container');
+    const buttonNav = document.querySelectorAll('.navigation-button-container');
     const buttonMain = document.querySelectorAll('.button');
 
     let initialY = 0;
