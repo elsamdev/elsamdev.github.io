@@ -882,15 +882,14 @@
       const dragDistance = Math.sqrt(moveVector.x * moveVector.x + moveVector.y * moveVector.y);
 
       if (dragDistance > 10) {
-        if (moveVector.y > 0) {
+        if (moveVector.y > 0 && navigation.style.height !== '4%') { // Arrastre hacia abajo solo si no está ya abajo
           console.log("Arrastre hacia abajo detectado:", moveVector);
           navigation.style.height = '4%';
           navigation.style.minHeight = '4%';
           navigationContainer.style.bottom = '-200px';
           buttonMain.forEach(button => reboteSuave(button, 'abajo'));
-        } else if (moveVector.y < 0) {
+        } else if (moveVector.y < 0 && navigation.style.height !== '10%') { // Arrastre hacia arriba solo si no está ya arriba
           console.log("Arrastre hacia arriba detectado:", moveVector);
-          // Aquí puedes agregar acciones específicas para arrastre hacia arriba
           navigation.style.height = '10%';
           navigation.style.minHeight = '10%';
           navigationContainer.style.bottom = '0';
@@ -898,6 +897,7 @@
         }
       }
     });
+
   </script>
 </body>
 
