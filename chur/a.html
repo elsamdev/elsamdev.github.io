@@ -833,8 +833,8 @@
         initialMouseY = e.clientY;
       } else if (isDragging && e.clientY >= initialMouseY + 100) { // Hacia abajo (10px)
         console.log('Mouse se movió 10px hacia abajo');
-        navigation.style.height = '2%';
-        navigation.style.minHeight = '2%';
+        navigation.style.height = '4%';
+        navigation.style.minHeight = '4%';
         navigationContainer.style.bottom = '-200px';
         initialMouseY = e.clientY;
       }
@@ -849,8 +849,8 @@
         initialMouseY = e.touches[0].clientY;
       } else if (isDragging && e.touches[0].clientY >= initialMouseY + 100) { // Hacia abajo (10px)
         console.log('Touch se movió 10px hacia abajo');
-        navigation.style.height = '2%';
-        navigation.style.minHeight = '2%';
+        navigation.style.height = '4%';
+        navigation.style.minHeight = '4%';
         navigationContainer.style.bottom = '-200px';
         initialMouseY = e.touches[0].clientY;
       }
