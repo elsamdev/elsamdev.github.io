@@ -842,7 +842,7 @@
     function reboteSuave(objeto, direccion = "abajo") {
       const distanciaRebote = direccion === "abajo" ? -8 : 8;
       let velocidad = direccion === "abajo" ? -8 : 8;
-      let gravedad = 0.5; // Gravedad más fuerte para un rebote más rápido
+      let gravedad = direccion === "abajo" ? 0.5 : 0.7; // Gravedad más fuerte para un rebote más rápido
       let posicion = direccion === "abajo" ? 30 : 4;
 
       function animar() {
