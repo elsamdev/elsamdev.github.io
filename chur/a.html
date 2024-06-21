@@ -779,7 +779,7 @@
     const navigation = document.getElementById('Navigation');
     const navigationContainer = document.querySelector('.navigation-container');
     const buttonContainers = document.querySelectorAll('.button-container');
-    const buttonMain = document.querySelector('.button');
+    const buttonMain = document.querySelectorAll('.button');
 
     let initialY = 0;
     let isDragging = false;
@@ -804,9 +804,11 @@
       navigationContainer.style.bottom = isUpward ? '0' : '-200px';
 
       if (isUpward) {
-        reboteSuave(buttonMain, 'arriba');
+        // Rebote hacia arriba para TODOS los botones
+        buttonMain.forEach(button => reboteSuave(button, 'arriba'));
       } else {
-        reboteSuave(buttonMain, 'abajo');
+        // Rebote hacia abajo para TODOS los botones
+        buttonMain.forEach(button => reboteSuave(button, 'abajo'));
       }
 
       initialY = currentY;
