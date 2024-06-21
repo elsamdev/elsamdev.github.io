@@ -300,7 +300,9 @@
       height: 30%;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
+      position: relative;
+      /* background-color: #2178a0; */
     }
 
     .button {
@@ -321,8 +323,17 @@
       border-radius: 10px;
       border: #029357 solid 4px;
       box-shadow: 0px 5px #046d41, inset 0px 0px 0px 2px #2fd792;
-      transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
+      /* transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995); */
+      /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
+
+      /* Transición con cubic-bezier para el rebote */
+      transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+      position: absolute;
+      top: -1px;
+      transform: translate(0);
     }
+
+
 
     .button-yellow {
       border: #fec902 solid 4px;
@@ -389,8 +400,8 @@
       justify-content: center;
       align-items: flex-start;
       gap: 10px;
-      /* background-color: var(--maingray-color); */
-      background-color: #180293;
+      background-color: var(--maingray-color);
+      /* background-color: #180293; */
       position: relative;
       transition: all 0.3s ease;
 
@@ -761,120 +772,101 @@
       changeNumberValue(foodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 750 en 1.5 segundos
       changeNumberValue(woodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 1000 en 1 segundo
       changeNumberValue(slavesNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 250 en 2.5 segundos
-      toggleHeight(); // Llamar a la función para cambiar la altura de la barra de navegación y el carruseltoggleHeight);
+
     });
 
+    ////// inicializando para hacer drag a la barra de navegación
     const navigation = document.getElementById('Navigation');
     const navigationContainer = document.querySelector('.navigation-container');
-    function toggleHeight() {
-      const carousel = document.querySelector('.carousel');
-      if (navigation.style.height === '0%') {
-        navigation.style.display = 'flex';
-        setTimeout(function () {
-          navigation.style.height = '10%';
-          navigation.style.minHeight = '10%';
-          navigationContainer.style.bottom = '0';
-          // navigation.style.transform = 'scale(1)';
-          // navigation.style.opacity = '1';
+    const buttonContainers = document.querySelectorAll('.button-container');
+    const buttonMain = document.querySelector('.button');
 
-        }, 10)
-        carousel.style.height = '90%';
-      } else {
-        console.log("hola");
-        navigation.style.height = '0%';
-        navigation.style.minHeight = '0%';
-        navigationContainer.style.bottom = '-90%';
-        // navigation.style.transform = 'scale(0) ';
-        // navigation.style.opacity = '0';
-
-        // setTimeout(function () {
-        //   navigation.style.display = 'none';
-        // }, 300)
-        carousel.style.height = '100%';
-      }
-    }
-
-
-    function generateRandomNumber() {
-      return Math.floor(Math.random() * 1000);
-    }
-
-
-
-    const buttonContainers = document.querySelectorAll(".button-container");
-
-    let initialMouseY = 0;
+    let initialY = 0;
     let isDragging = false;
-    // Recorre cada contenedor de botón
-    // Agrega un evento click a cada contenedor de botón
-    buttonContainers.forEach(buttonContainer => {
 
-      // Activa los eventos de arrastre solo una vez
-      buttonContainer.addEventListener('mousedown', mouseDownListener, true); // Escucha en el .handle
-      buttonContainer.addEventListener('touchstart', touchStartListener, true);
-      buttonContainer.addEventListener('mouseup', mouseUpListener, true);
-      buttonContainer.addEventListener('touchend', touchEndListener, true);
+    // Unified Event Handling
+    function handleInteraction(e) {
+      if (!isDragging) return;
 
+      const currentY = e.clientY || e.touches[0].clientY;
+      const deltaY = currentY - initialY;
+
+      if (Math.abs(deltaY) < 30) return; // Ignore small movements
+
+      const isUpward = deltaY < 0;
+
+      // Condiciones para evitar acciones repetidas
+      if (isUpward && navigation.style.height === '10%') return; // Ya está arriba
+      if (!isUpward && navigation.style.height === '4%') return;  // Ya está abajo
+
+      navigation.style.height = isUpward ? '10%' : '4%';
+      navigation.style.minHeight = navigation.style.height;
+      navigationContainer.style.bottom = isUpward ? '0' : '-200px';
+
+      if (isUpward) {
+        reboteSuave(buttonMain, 'arriba');
+      } else {
+        reboteSuave(buttonMain, 'abajo');
+      }
+
+      initialY = currentY;
+    }
+
+    function startDragging(e) {
+      initialY = e.clientY || e.touches[0].clientY;
+      isDragging = true;
+      window.addEventListener('mousemove', handleInteraction, true);
+      window.addEventListener('touchmove', handleInteraction, true);
+    }
+
+    function stopDragging() {
+      isDragging = false;
+      window.removeEventListener('mousemove', handleInteraction, true);
+      window.removeEventListener('touchmove', handleInteraction, true);
+    }
+
+    // Event Listeners
+    buttonContainers.forEach(container => {
+      container.addEventListener('mousedown', startDragging, true);
+      container.addEventListener('touchstart', startDragging, true);
     });
-    // Escucha eventos de mouse y touch en el elemento de navegación
-    navigation.addEventListener('mousedown', mouseDownListener, true); // Escucha en el .handle
-    navigation.addEventListener('touchstart', touchStartListener, true);
-    window.addEventListener('mouseup', mouseUpListener, true);
-    window.addEventListener('touchend', touchEndListener, true);
 
-    function mouseMoveListener(e) {
-      if (isDragging && e.clientY <= initialMouseY - 30) { // Hacia arriba (10px)
-        console.log('Mouse se movió 10px hacia arriba');
-        navigation.style.height = '10%';
-        navigation.style.minHeight = '10%';
-        navigationContainer.style.bottom = '0';
-        initialMouseY = e.clientY;
-      } else if (isDragging && e.clientY >= initialMouseY + 30) { // Hacia abajo (10px)
-        console.log('Mouse se movió 10px hacia abajo');
-        navigation.style.height = '4%';
-        navigation.style.minHeight = '4%';
-        navigationContainer.style.bottom = '-200px';
-        initialMouseY = e.clientY;
+    navigation.addEventListener('mousedown', startDragging, true);
+    navigation.addEventListener('touchstart', startDragging, true);
+    window.addEventListener('mouseup', stopDragging, true);
+    window.addEventListener('touchend', stopDragging, true);
+
+
+    function reboteSuave(objeto, direccion = "abajo") {
+      const distanciaRebote = direccion === "abajo" ? -8 : 8;
+      let velocidad = direccion === "abajo" ? -8 : 8;
+      let gravedad = 0.5; // Gravedad más fuerte para un rebote más rápido
+      let posicion = 0;   // Comienza en la posición inicial
+
+      function animar() {
+        velocidad += gravedad;
+        posicion += velocidad;
+
+        objeto.style.transform = `translateY(${posicion}px)`;
+
+        // Condiciones de rebote más precisas
+        if (posicion > 0) {
+          posicion = 0;
+          velocidad *= -0.7; // Reduce la velocidad después de cada rebote
+        }
+
+        // Continúa la animación mientras haya velocidad o esté rebotando
+        if (Math.abs(velocidad) > 0.1 || posicion < 0) {
+          requestAnimationFrame(animar);
+        }
       }
+
+      animar();
     }
 
-    function touchMoveListener(e) {
-      if (isDragging && e.touches[0].clientY <= initialMouseY - 30) { // Hacia arriba (10px)
-        console.log('Touch se movió 10px hacia arriba');
-        navigation.style.height = '10%';
-        navigation.style.minHeight = '10%';
-        navigationContainer.style.bottom = '0';
-        initialMouseY = e.touches[0].clientY;
-      } else if (isDragging && e.touches[0].clientY >= initialMouseY + 30) { // Hacia abajo (10px)
-        console.log('Touch se movió 10px hacia abajo');
-        navigation.style.height = '4%';
-        navigation.style.minHeight = '4%';
-        navigationContainer.style.bottom = '-200px';
-        initialMouseY = e.touches[0].clientY;
-      }
-    }
 
-    function mouseDownListener(e) {
-      initialMouseY = e.clientY;
-      isDragging = true;
-      window.addEventListener('mousemove', mouseMoveListener, true);
-    }
 
-    function touchStartListener(e) {
-      initialMouseY = e.touches[0].clientY;
-      isDragging = true;
-      window.addEventListener('touchmove', touchMoveListener, true);
-    }
 
-    function mouseUpListener(e) {
-      isDragging = false;
-      window.removeEventListener('mousemove', mouseMoveListener, true);
-    }
-
-    function touchEndListener(e) {
-      isDragging = false;
-      window.removeEventListener('touchmove', touchMoveListener, true);
-    }
   </script>
 </body>
 
