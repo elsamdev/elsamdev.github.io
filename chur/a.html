@@ -761,16 +761,14 @@
       changeNumberValue(foodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 750 en 1.5 segundos
       changeNumberValue(woodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 1000 en 1 segundo
       changeNumberValue(slavesNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 250 en 2.5 segundos
-
       toggleHeight(); // Llamar a la función para cambiar la altura de la barra de navegación y el carruseltoggleHeight);
     });
+
     const navigation = document.getElementById('Navigation');
     const navigationContainer = document.querySelector('.navigation-container');
     function toggleHeight() {
       const carousel = document.querySelector('.carousel');
-
       if (navigation.style.height === '0%') {
-
         navigation.style.display = 'flex';
         setTimeout(function () {
           navigation.style.height = '10%';
@@ -778,7 +776,7 @@
           navigationContainer.style.bottom = '0';
           // navigation.style.transform = 'scale(1)';
           // navigation.style.opacity = '1';
-          navigation.style.transition = 'all 0.3s ease';
+
         }, 10)
         carousel.style.height = '90%';
       } else {
@@ -788,10 +786,10 @@
         navigationContainer.style.bottom = '-90%';
         // navigation.style.transform = 'scale(0) ';
         // navigation.style.opacity = '0';
-        navigation.style.transition = 'all 0.3s ease';
-        setTimeout(function () {
-          navigation.style.display = 'none';
-        }, 300)
+
+        // setTimeout(function () {
+        //   navigation.style.display = 'none';
+        // }, 300)
         carousel.style.height = '100%';
       }
     }
