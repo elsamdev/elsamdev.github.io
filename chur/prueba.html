@@ -135,10 +135,29 @@
                 const touch = e.touches && e.touches[0];
                 const clientY = touch ? touch.clientY : e.clientY;
                 let newBottom = mouseYOffset - (window.innerHeight - clientY);
-                newBottom = Math.max(minBottom, Math.min(maxBottom, newBottom));
+                const bottomValue = getComputedStyle(caja1).bottom;
+                // Resistencia solo después de superar los límites
+                if (newBottom > minBottom || newBottom < -maxBottom) {
+                    const distanceFromMin = Math.max(0, newBottom - minBottom);
+                    const distanceFromMax = Math.max(0, -maxBottom - newBottom);
+                    const resistance = Math.max(distanceFromMin, distanceFromMax) * 0.9;
+
+                    if (newBottom > minBottom) {
+                        newBottom = Math.max(minBottom, Math.min(maxBottom, newBottom));
+                    } else {
+                        newBottom += resistance;
+                    }
+                }
+
+
+                // Imprime el valor en la consola
+
+
+
                 newBottom = -newBottom;
                 caja1.style.bottom = `${newBottom}px`;
             }
+
 
             function dirigirAlValorMasCercano() {
                 const currentBottom = parseInt(caja1.style.bottom);
