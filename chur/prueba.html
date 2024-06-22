@@ -42,6 +42,7 @@
             width: 100%;
             height: 100%;
             transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
         .caja1 {
@@ -53,6 +54,7 @@
             bottom: -160px;
             background-color: beige;
             opacity: .8;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
         #caja2 {
@@ -62,6 +64,7 @@
             position: relative;
             background-color: green;
             position: relative;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
         .caja-pequena {
@@ -72,7 +75,7 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            transition: bottom 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
         .caja85 {
@@ -82,6 +85,7 @@
             position: absolute;
             bottom: 0;
             left: 0;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
     </style>
 
@@ -91,6 +95,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const caja1 = document.getElementById('caja1');
             const caja2 = document.getElementById('caja2');
+            const cajaPequena = caja1.querySelector('.caja-pequena');
+            const caja85 = caja2.querySelector('.caja85');
             let mouseYOffset = 0;
             const minBottom = 0;
             const maxBottom = 160;
@@ -130,16 +136,20 @@
                 let targetBottom;
                 if (-currentBottom < midPoint) {
                     targetBottom = minBottom; // Más cerca del mínimo
-                    caja1.style.position = 'relative';  // Agregar transición suave
+                    caja1.style.position = 'relative';
+                    cajaPequena.style.bottom = '40px';
+                    caja85.style.bottom = '80px';
                 } else {
                     targetBottom = maxBottom; // Más cerca del máximo
-                    caja1.style.position = 'absolute';  // Agregar transición suave
+                    caja1.style.position = 'absolute';
+                    cajaPequena.style.bottom = '0';
+                    caja85.style.bottom = '30px';
                 }
                 targetBottom = -targetBottom
 
                 // Animar el movimiento hacia el valor más cercano (puedes ajustar la duración)
-                caja1.style.transition = 'transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);';
-                caja1.style.opacity = '1';  // Agregar transición suave
+                caja1.style.transition = 'all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);';
+                caja1.style.opacity = '1';
 
                 caja1.style.bottom = `${targetBottom}px`;
 
