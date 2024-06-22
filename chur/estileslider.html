@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background-color: beige;
+        }
+
+        .pantalla {
+            width: 100%;
+            height: 100%;
+            max-height: 70vh;
+            background-color: black;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background-color: beige;
+        }
+
+        .caja {
+            width: 100%;
+            height: 80px;
+            min-height: 80px;
+            max-height: 320px;
+            position: relative;
+            background-color: green;
+            overflow: hidden;
+            transition: height 0.5s ease-out;
+            cursor: ns-resize;
+            /* Cursor para indicar que se puede redimensionar verticalmente */
+        }
+
+        #caja2 {
+            border: 1px solid black;
+        }
+
+        .caja-pequena {
+            width: 60px;
+            height: 60px;
+            background-color: red;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: bottom 0.5s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pantalla"></div>
+    <div class="container">
+        <div id="caja2" class="caja"></div>
+        <div id="caja1" class="caja">
+            <div class="caja-pequena"></div>
+        </div>
+    </div>
+
+    <script>
+        const caja1 = document.getElementById('caja1');
+        const caja2 = document.getElementById('caja2');
+        const cajaPequena = caja1.querySelector('.caja-pequena');
+
+        let isDragging = false;
+        let startY = 0;
+        let startHeight = 80;
+        const minHeight = 80;
+        const maxHeight = 320;
+
+        function getPointerY(event) {
+            return event.touches ? event.touches[0].clientY : event.clientY;
+        }
+
+        function handlePointerDown(event) {
+            isDragging = true;
+            startY = getPointerY(event);
+            startHeight = caja1.offsetHeight;
+        }
+
+        function handlePointerMove(event) {
+            if (!isDragging) return;
+
+            const deltaY = event.clientY - startY;
+            let newHeight = startHeight - deltaY;
+
+            // Limitar la altura
+            newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+
+            caja1.style.height = newHeight + 'px';
+
+            // Parallax para la caja pequeña
+            const cajaPequenaBottom = (newHeight - minHeight) * 0.8 + 10;
+            cajaPequena.style.bottom = cajaPequenaBottom + 'px';
+        }
+
+        function handlePointerUp() {
+            isDragging = false;
+
+            // Ajustar a la posición más cercana al soltar (opcional)
+            const midpoint = (minHeight + maxHeight) / 2;
+            const newHeight = caja1.offsetHeight < midpoint ? minHeight : maxHeight;
+            caja1.style.height = newHeight + 'px';
+            cajaPequena.style.bottom = newHeight === maxHeight ? '310px' : '10px';
+        }
+
+        caja1.addEventListener('mousedown', handlePointerDown);
+        caja1.addEventListener('touchstart', handlePointerDown);
+        document.addEventListener('mousemove', handlePointerMove);
+        document.addEventListener('touchmove', handlePointerMove);
+        document.addEventListener('mouseup', handlePointerUp);
+        document.addEventListener('touchend', handlePointerUp);
+
+        caja2.addEventListener('mousedown', handlePointerDown);
+        caja2.addEventListener('touchstart', handlePointerDown);
+    </script>
+</body>
+
+</html>
