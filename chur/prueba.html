@@ -100,61 +100,80 @@
             let mouseYOffset = 0;
             const minBottom = 0;
             const maxBottom = 160;
-            caja2.addEventListener('mousedown', (e) => {
+            let isDragging = false; // Variable para rastrear si se está arrastrando
+
+            function handleStart(e) {
+                // Verificar si el clic/toque está dentro de caja1 o caja2
+                const target = e.target;
+                if (!caja1.contains(target) && !caja2.contains(target)) return; // Salir si no está dentro de ninguno
+
+                isDragging = true; // Indicar que se está arrastrando
                 caja1.style.transition = 'none';
                 caja1.style.opacity = '.9';
-                mouseYOffset = caja1.offsetHeight - (e.clientY - caja1.getBoundingClientRect().top);
-                document.addEventListener('mousemove', moverCaja1);
-            });
 
-            caja1.addEventListener('mousedown', (e) => {
-                caja1.style.transition = 'none';
-                caja1.style.opacity = '.9';
-                mouseYOffset = caja1.offsetHeight - (e.clientY - caja1.getBoundingClientRect().top);
-                document.addEventListener('mousemove', moverCaja1);
-            });
+                // Use correct touch coordinates if it's a touch event
+                const touch = e.touches && e.touches[0];
+                const clientY = touch ? touch.clientY : e.clientY;
+                mouseYOffset = caja1.offsetHeight - (clientY - caja1.getBoundingClientRect().top);
 
-            document.addEventListener('mouseup', () => {
+                document.addEventListener('mousemove', moverCaja1);
+                document.addEventListener('touchmove', moverCaja1);
+            }
+
+            function handleEnd(e) {
+                // Verificar si se estaba arrastrando antes de soltar
+                if (!isDragging) return;
+
+                isDragging = false; // Reiniciar el estado de arrastre
                 document.removeEventListener('mousemove', moverCaja1);
+                document.removeEventListener('touchmove', moverCaja1);
                 dirigirAlValorMasCercano();
-            });
+            }
 
             function moverCaja1(e) {
-
-
-                let newBottom = mouseYOffset - (window.innerHeight - e.clientY);
+                e.preventDefault();
+                const touch = e.touches && e.touches[0];
+                const clientY = touch ? touch.clientY : e.clientY;
+                let newBottom = mouseYOffset - (window.innerHeight - clientY);
                 newBottom = Math.max(minBottom, Math.min(maxBottom, newBottom));
-                newBottom = -newBottom
+                newBottom = -newBottom;
                 caja1.style.bottom = `${newBottom}px`;
             }
 
             function dirigirAlValorMasCercano() {
-                const currentBottom = parseInt(caja1.style.bottom); // Obtener el valor actual de bottom
+                const currentBottom = parseInt(caja1.style.bottom);
                 console.log(currentBottom)
-                const midPoint = maxBottom / 2; // Calcular el punto medio entre min y max
+                const midPoint = maxBottom / 2;
 
                 let targetBottom;
                 if (-currentBottom < midPoint) {
-                    targetBottom = minBottom; // Más cerca del mínimo
+                    targetBottom = minBottom;
                     caja1.style.position = 'relative';
                     cajaPequena.style.bottom = '40px';
                     caja85.style.bottom = '80px';
                 } else {
-                    targetBottom = maxBottom; // Más cerca del máximo
+                    targetBottom = maxBottom;
                     caja1.style.position = 'absolute';
                     cajaPequena.style.bottom = '0';
                     caja85.style.bottom = '30px';
                 }
                 targetBottom = -targetBottom
 
-                // Animar el movimiento hacia el valor más cercano (puedes ajustar la duración)
                 caja1.style.transition = 'all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);';
                 caja1.style.opacity = '1';
-
                 caja1.style.bottom = `${targetBottom}px`;
-
             }
+
+            caja2.addEventListener('mousedown', handleStart);
+            caja1.addEventListener('mousedown', handleStart);
+
+            caja2.addEventListener('touchstart', handleStart);
+            caja1.addEventListener('touchstart', handleStart);
+
+            document.addEventListener('mouseup', handleEnd);
+            document.addEventListener('touchend', handleEnd);
         });
+
 
 
     </script>
