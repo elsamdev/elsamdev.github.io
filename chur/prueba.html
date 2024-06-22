@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            background-color: green;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pantalla {
+            width: 100%;
+            height: 100%;
+            max-height: 70vh;
+            background-color: black;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+
+            width: 100%;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .caja1 {
+            width: 100%;
+            height: 200px;
+            min-height: 200px;
+            position: absolute;
+            left: 0;
+            bottom: -160px;
+            background-color: beige;
+            opacity: .8;
+        }
+
+        #caja2 {
+            width: 100%;
+            height: 100%;
+
+            position: relative;
+            background-color: green;
+            position: relative;
+        }
+
+        .caja-pequena {
+            width: 60px;
+            height: 60px;
+            background-color: red;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: bottom 0.3s ease;
+        }
+
+        .caja85 {
+            width: 100px;
+            height: 100px;
+            background-color: aquamarine;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const caja1 = document.getElementById('caja1');
+            const caja2 = document.getElementById('caja2');
+            let mouseYOffset = 0;
+            const minBottom = 0;
+            const maxBottom = 160;
+            caja2.addEventListener('mousedown', (e) => {
+                caja1.style.transition = 'none';
+                caja1.style.opacity = '.9';
+                mouseYOffset = caja1.offsetHeight - (e.clientY - caja1.getBoundingClientRect().top);
+                document.addEventListener('mousemove', moverCaja1);
+            });
+
+            caja1.addEventListener('mousedown', (e) => {
+                caja1.style.transition = 'none';
+                caja1.style.opacity = '.9';
+                mouseYOffset = caja1.offsetHeight - (e.clientY - caja1.getBoundingClientRect().top);
+                document.addEventListener('mousemove', moverCaja1);
+            });
+
+            document.addEventListener('mouseup', () => {
+                document.removeEventListener('mousemove', moverCaja1);
+                dirigirAlValorMasCercano();
+            });
+
+            function moverCaja1(e) {
+
+
+                let newBottom = mouseYOffset - (window.innerHeight - e.clientY);
+                newBottom = Math.max(minBottom, Math.min(maxBottom, newBottom));
+                newBottom = -newBottom
+                caja1.style.bottom = `${newBottom}px`;
+            }
+
+            function dirigirAlValorMasCercano() {
+                const currentBottom = parseInt(caja1.style.bottom); // Obtener el valor actual de bottom
+                console.log(currentBottom)
+                const midPoint = maxBottom / 2; // Calcular el punto medio entre min y max
+
+                let targetBottom;
+                if (-currentBottom < midPoint) {
+                    targetBottom = minBottom; // Más cerca del mínimo
+                    caja1.style.position = 'relative';  // Agregar transición suave
+                } else {
+                    targetBottom = maxBottom; // Más cerca del máximo
+                    caja1.style.position = 'absolute';  // Agregar transición suave
+                }
+                targetBottom = -targetBottom
+
+                // Animar el movimiento hacia el valor más cercano (puedes ajustar la duración)
+                caja1.style.transition = 'transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);';
+                caja1.style.opacity = '1';  // Agregar transición suave
+
+                caja1.style.bottom = `${targetBottom}px`;
+
+            }
+        });
+
+
+    </script>
+</head>
+
+<body>
+    <div class="pantalla"></div>
+    <div class="container">
+        <div id="caja2" class="caja2">
+            <div class="caja85"></div>
+        </div>
+    </div>
+    <div id="caja1" class="caja1">
+        <div class="caja-pequena"></div>
+    </div>
+</body>
+
+</html>

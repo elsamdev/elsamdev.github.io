@@ -50,7 +50,7 @@
 
             position: relative;
             /* Para posicionar la caja pequeña dentro */
-            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+            /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
         }
 
         #caja2 {
@@ -59,7 +59,7 @@
             border: 1px solid black;
             position: relative;
             background-color: green;
-            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+            /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
         }
 
         .caja-pequena {
@@ -74,7 +74,13 @@
             /* Centrar horizontalmente */
             transition: bottom 0.3s ease;
             /* Transición suave para el movimiento */
-            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+            /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
+        }
+
+        .caja85 {
+            width: 100px;
+            height: 100px;
+            background-color: aquamarine;
         }
     </style>
 </head>
@@ -83,7 +89,9 @@
     <div class="pantalla"></div>
     <div class="container">
 
-        <div id="caja2" class="caja2"></div>
+        <div id="caja2" class="caja2">
+            <div class="caja85"></div>
+        </div>
         <div id="caja1" class="caja">
             <div class="caja-pequena"></div>
         </div>
@@ -93,82 +101,66 @@
         const caja1 = document.getElementById('caja1');
         const caja2 = document.getElementById('caja2');
         const cajaPequena = caja1.querySelector('.caja-pequena');
-
         let isDragging = false;
-        let initialY = 0;
-        let currentSize1 = 80;
-        const minHeight = 80;
-        const maxHeight = 320;
+        let initialY, currentSize1 = 80;
+        const [minHeight, maxHeight] = [80, 320];
+        let displacement = 0;
+        let lastY = 0; // Variable para almacenar la posición inicial del mouse
 
-        function getPointerY(event) {
-            return event.touches ? event.touches[0].clientY : event.clientY;
-        }
+        let lastMoveTime = 0;
+        const throttleDelay = 0; // Aproximadamente 60fps
 
-        function handleDragStart(event) {
-            isDragging = true;
-            // caja1.style.transition = 'none';
-            // caja2.style.transition = 'none';
-            // cajaPequena.transition = 'none';
-            initialY = getPointerY(event);
-        }
-
-
-        function handleDrag(event) {
-            if (!isDragging) return;
-
-            const pointerY = getPointerY(event);
-
-            // Calcular el cambio en píxeles desde el último evento de arrastre
-            const deltaY = pointerY - initialY;
-
-            // Actualizar la posición inicial para el próximo evento
-            initialY = pointerY;
-
-            // Calcular la nueva altura sumando el delta a la altura actual
-            let newSize = currentSize1 - deltaY;
-
-            // Limitar el tamaño dentro del rango permitido
-            newSize = Math.max(minHeight, Math.min(maxHeight, newSize));
-
-            currentSize1 = newSize;
-            caja1.style.height = currentSize1 + 'px';
-
-            // Transición suave de la caja pequeña (opcional)
-            const cajaPequenaBottom = (currentSize1 - 80) * 2.9 - 60;
-            cajaPequena.style.bottom = cajaPequenaBottom + 'px';
-        }
-
-
-        function handleDragEnd() {
-            isDragging = false;
-            // caja1.style.transition = 'all 0.3s ease';
-            // caja2.style.transition = 'all 0.3s ease';
-            // cajaPequena.style.transition = 'transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);';
-            // Ajustar al punto más cercano al soltar
-            const midpoint = (minHeight + maxHeight) / 2;
-            if (currentSize1 < midpoint) {
-                currentSize1 = minHeight;
-            } else {
-                currentSize1 = maxHeight;
+        function handlePointer(event, action) {
+            if (action === 'move') {
+                const currentTime = Date.now();
+                if (currentTime - lastMoveTime >= throttleDelay) {
+                    lastMoveTime = currentTime;
+                } else {
+                    return; // Salimos si no ha pasado suficiente tiempo
+                }
             }
 
-            caja1.style.height = currentSize1 + 'px';
+            const getPointerY = (event) => event.touches?.[0].clientY ?? event.clientY;
 
-            // Ajustar la posición de la caja pequeña (opcional)
-            const cajaPequenaBottom = currentSize1 === maxHeight ? 310 : -60;
-            cajaPequena.style.bottom = cajaPequenaBottom + 'px';
+            switch (action) {
+                case 'down':
+                    isDragging = true;
+                    initialY = getPointerY(event);
+                    lastY = initialY; // Almacenamos la posición inicial del mouse
+                    break;
+                case 'move':
+                    if (!isDragging) return;
+                    const currentY = getPointerY(event);
+                    const deltaY = currentY - lastY; // Calculamos la diferencia vertical desde el punto inicial
+                    lastY = currentY; // Actualizamos la posición inicial del mouse
+
+                    if (deltaY > 0) {
+                        displacement -= deltaY; // Si el movimiento es hacia abajo, sumamos la diferencia
+                    } else {
+                        displacement += Math.abs(deltaY); // Si el movimiento es hacia arriba, restamos la diferencia
+                    }
+
+                    currentSize1 = Math.max(minHeight, Math.min(maxHeight, currentSize1 - deltaY));
+                    caja1.style.height = `${currentSize1}px`;
+                    console.log(`Desplazamiento: ${displacement}px`);
+                    break;
+                case 'up':
+                    isDragging = false;
+                    currentSize1 = currentSize1 < (minHeight + maxHeight) / 2 ? minHeight : maxHeight;
+                    caja1.style.height = `${currentSize1}px`;
+
+                    cajaPequena.style.bottom = currentSize1 === maxHeight ? '50px' : '-60px';
+
+                    console.log(`El mouse se movió ${displacement} píxeles verticalmente.`);
+                    displacement = 0; // Reiniciamos el desplazamiento vertical
+                    break;
+            }
         }
 
-        caja1.addEventListener('mousedown', handleDragStart);
-        caja1.addEventListener('touchstart', handleDragStart);
-        document.addEventListener('mousemove', handleDrag);
-        document.addEventListener('touchmove', handleDrag);
-        document.addEventListener('mouseup', handleDragEnd);
-        document.addEventListener('touchend', handleDragEnd);
-
-        caja2.addEventListener('mousedown', handleDragStart);
-        caja2.addEventListener('touchstart', handleDragStart);
-
+        ['mousedown', 'mousemove', 'mouseup'].forEach(e => {
+            caja1.addEventListener(e, (evt) => handlePointer(evt, e.replace('mouse', '')));
+            caja2.addEventListener(e, (evt) => handlePointer(evt, e.replace('mouse', '')));
+        });
     </script>
 
 </body>
