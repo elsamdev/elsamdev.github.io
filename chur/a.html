@@ -815,13 +815,7 @@
       navigation.style.minHeight = navigation.style.height;
       navigationContainer.style.bottom = isUpward ? '0' : '-200px';
 
-      // if (isUpward) {
-      //   // Rebote hacia arriba para TODOS los botones
-      //   buttonMain.forEach(button => reboteSuave(button, 'arriba'));
-      // } else {
-      //   // Rebote hacia abajo para TODOS los botones
-      //   buttonMain.forEach(button => reboteSuave(button, 'abajo'));
-      // }
+
 
       initialY = currentY;
     }
@@ -838,12 +832,25 @@
       window.removeEventListener('mousemove', handleInteraction, true);
       window.removeEventListener('touchmove', handleInteraction, true);
     }
+    flkty.on('dragMove', (event, pointer, moveVector) => {
+      const dragDistance = Math.sqrt(moveVector.x * moveVector.x + moveVector.y * moveVector.y);
 
-    // Event Listeners
-    // buttonContainers.forEach(container => {
-    //   container.addEventListener('mousedown', startDragging, true);
-    //   container.addEventListener('touchstart', startDragging, true);
-    // });
+      if (dragDistance > 1) {
+        if (moveVector.y > 0 && navigation.style.height !== '4%') { // Arrastre hacia abajo solo si no está ya abajo
+          console.log("Arrastre hacia abajo detectado:", moveVector);
+          navigation.style.height = '4%';
+          navigation.style.minHeight = '4%';
+          navigationContainer.style.bottom = '-50px';
+          buttonMain.forEach(button => reboteSuave(button, 'abajo'));
+        } else if (moveVector.y < 0 && navigation.style.height !== '10%') { // Arrastre hacia arriba solo si no está ya arriba
+          console.log("Arrastre hacia arriba detectado:", moveVector);
+          navigation.style.height = '10%';
+          navigation.style.minHeight = '10%';
+          navigationContainer.style.bottom = '0';
+          buttonMain.forEach(button => reboteSuave(button, 'arriba'));
+        }
+      }
+    });
 
     navigation.addEventListener('mousedown', startDragging, true);
     navigation.addEventListener('touchstart', startDragging, true);
@@ -878,25 +885,7 @@
       animar();
     }
 
-    flkty.on('dragMove', (event, pointer, moveVector) => {
-      const dragDistance = Math.sqrt(moveVector.x * moveVector.x + moveVector.y * moveVector.y);
 
-      if (dragDistance > 10) {
-        if (moveVector.y > 0 && navigation.style.height !== '4%') { // Arrastre hacia abajo solo si no está ya abajo
-          console.log("Arrastre hacia abajo detectado:", moveVector);
-          navigation.style.height = '4%';
-          navigation.style.minHeight = '4%';
-          navigationContainer.style.bottom = '-200px';
-          buttonMain.forEach(button => reboteSuave(button, 'abajo'));
-        } else if (moveVector.y < 0 && navigation.style.height !== '10%') { // Arrastre hacia arriba solo si no está ya arriba
-          console.log("Arrastre hacia arriba detectado:", moveVector);
-          navigation.style.height = '10%';
-          navigation.style.minHeight = '10%';
-          navigationContainer.style.bottom = '0';
-          buttonMain.forEach(button => reboteSuave(button, 'arriba'));
-        }
-      }
-    });
 
   </script>
 </body>
