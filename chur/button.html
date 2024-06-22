@@ -22,7 +22,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            max-width: 400px;
+
             background-color: beige;
         }
 
@@ -44,8 +44,8 @@
 
         .caja {
             width: 400px;
-            height: 0px;
-            min-height: 20px;
+            height: 40px;
+            min-height: 40px;
             border: 1px solid black;
             position: relative;
             /* Para posicionar la caja pequeña dentro */
@@ -96,57 +96,61 @@
 
         let isDragging = false;
         let initialY = 0;
-        let currentSize1 = 80; // Tamaño inicial de la caja 1
-        let currentSize2 = 80; // Tamaño inicial de la caja 2 
+        let currentSize1 = 80;
+        let currentSize2 = 80;
+
+        function getPointerY(event) {
+            return event.touches ? event.touches[0].clientY : event.clientY;
+        }
 
         function handleDragStart(event) {
             isDragging = true;
-            initialY = event.clientY;
+            initialY = getPointerY(event);
         }
 
         function handleDrag(event) {
             if (!isDragging) return;
 
-            const deltaY = event.clientY - initialY;
+            const deltaY = getPointerY(event) - initialY;
 
-            if (deltaY < 0) { // Arrastrando hacia arriba
-                currentSize1 = Math.min(80, currentSize1 - deltaY); // Aumenta caja1 hasta 160px
-                currentSize2 = Math.max(0, currentSize2 + deltaY);   // Disminuye caja2 hasta 0px
-            } else { // Arrastrando hacia abajo
-                currentSize1 = Math.max(0, currentSize1 - deltaY);   // Disminuye caja1 hasta 0px
-                currentSize2 = Math.min(80, currentSize2 + deltaY); // Aumenta caja2 hasta 160px
+            if (deltaY < 0) {
+                currentSize1 = Math.min(180, currentSize1 - deltaY);
+                currentSize2 = Math.max(0, currentSize2 + deltaY);
+            } else {
+                currentSize1 = Math.max(0, currentSize1 - deltaY);
+                currentSize2 = Math.min(180, currentSize2 + deltaY);
             }
-            console.log("currentSize1:", currentSize1)
-            caja1.style.height = currentSize1 + 'px';
-            // caja2.style.height = currentSize2 + 'px';
 
-            // Mover la caja pequeña (ajustar según tus necesidades)
-            const cajaPequenaBottom = currentSize1 === 80 ? 80 : 10; // Ejemplo de ajuste
+            caja1.style.height = currentSize1 + 'px';
+            const cajaPequenaBottom = currentSize1 >= 180 ? 180 : -40;
             cajaPequena.style.bottom = cajaPequenaBottom + 'px';
 
-            initialY = event.clientY;
+            initialY = getPointerY(event);
         }
 
         function handleDragEnd() {
             isDragging = false;
-            if (currentSize1 > 41) {
-                currentSize1 = 80; // Crecer hasta 80px
+            if (currentSize1 > 91) {
+                currentSize1 = 180;
             } else {
-                currentSize1 = 20; // Disminuir hasta 20px
+                currentSize1 = 20;
             }
 
-            // Aplicar el nuevo tamaño a caja1
             caja1.style.height = currentSize1 + 'px';
-
-            // Resto de tu lógica (por ejemplo, enviar al servidor)
             console.log("Drag end: Tamaños finales:", currentSize1, currentSize2);
         }
 
         caja1.addEventListener('mousedown', handleDragStart);
+        caja1.addEventListener('touchstart', handleDragStart);
+
         document.addEventListener('mousemove', handleDrag);
+        document.addEventListener('touchmove', handleDrag);
+
         document.addEventListener('mouseup', handleDragEnd);
+        document.addEventListener('touchend', handleDragEnd);
 
         caja2.addEventListener('mousedown', handleDragStart);
+        caja2.addEventListener('touchstart', handleDragStart);
 
     </script>
 
