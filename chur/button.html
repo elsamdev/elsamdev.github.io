@@ -9,8 +9,14 @@
             box-sizing: border-box
         }
 
-        body {
+        html {
             height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -123,6 +129,17 @@
 
         function handleDragEnd() {
             isDragging = false;
+            if (currentSize1 > 41) {
+                currentSize1 = 80; // Crecer hasta 80px
+            } else {
+                currentSize1 = 20; // Disminuir hasta 20px
+            }
+
+            // Aplicar el nuevo tamaño a caja1
+            caja1.style.height = currentSize1 + 'px';
+
+            // Resto de tu lógica (por ejemplo, enviar al servidor)
+            console.log("Drag end: Tamaños finales:", currentSize1, currentSize2);
         }
 
         caja1.addEventListener('mousedown', handleDragStart);
