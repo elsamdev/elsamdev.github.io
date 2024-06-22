@@ -104,18 +104,18 @@
             const deltaY = event.clientY - initialY;
 
             if (deltaY < 0) { // Arrastrando hacia arriba
-                currentSize1 = Math.min(160, currentSize1 - deltaY); // Aumenta caja1 hasta 160px
+                currentSize1 = Math.min(80, currentSize1 - deltaY); // Aumenta caja1 hasta 160px
                 currentSize2 = Math.max(0, currentSize2 + deltaY);   // Disminuye caja2 hasta 0px
             } else { // Arrastrando hacia abajo
                 currentSize1 = Math.max(0, currentSize1 - deltaY);   // Disminuye caja1 hasta 0px
-                currentSize2 = Math.min(160, currentSize2 + deltaY); // Aumenta caja2 hasta 160px
+                currentSize2 = Math.min(80, currentSize2 + deltaY); // Aumenta caja2 hasta 160px
             }
             console.log("currentSize1:", currentSize1)
             caja1.style.height = currentSize1 + 'px';
             // caja2.style.height = currentSize2 + 'px';
 
             // Mover la caja pequeña (ajustar según tus necesidades)
-            const cajaPequenaBottom = currentSize1 === 160 ? 140 : 10; // Ejemplo de ajuste
+            const cajaPequenaBottom = currentSize1 === 80 ? 80 : 10; // Ejemplo de ajuste
             cajaPequena.style.bottom = cajaPequenaBottom + 'px';
 
             initialY = event.clientY;
