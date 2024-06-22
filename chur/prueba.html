@@ -104,6 +104,7 @@
 
             function handleStart(e) {
                 // Verificar si el clic/toque está dentro de caja1 o caja2
+                console.log("arrastaste el click")
                 const target = e.target;
                 if (!caja1.contains(target) && !caja2.contains(target)) return; // Salir si no está dentro de ninguno
 
@@ -122,6 +123,7 @@
 
             function handleEnd(e) {
                 // Verificar si se estaba arrastrando antes de soltar
+                console.log("soltaste el click")
                 if (!isDragging) return;
 
                 isDragging = false; // Reiniciar el estado de arrastre
@@ -161,7 +163,7 @@
 
             function dirigirAlValorMasCercano() {
                 const currentBottom = parseInt(caja1.style.bottom);
-                console.log(currentBottom)
+                // console.log(currentBottom)
                 const midPoint = maxBottom / 2;
 
                 let targetBottom;
