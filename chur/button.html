@@ -150,12 +150,18 @@
             if (isDragging) {
                 let moveY = event.clientY - startY;
                 let dy = currentY - initialY;
-                let resistanceFactor = 1 + Math.abs(dy) / 100;
+
+                // Dynamic Resistance Factor
+                let resistanceFactor = 1;  // Base resistance
+                if (moveY > 0) {         // Moving downwards
+                    resistanceFactor += Math.abs(dy) / 2000; // Increased resistance for upwards movement
+                } else {                 // Moving upwards or stationary
+                    resistanceFactor += Math.abs(dy) / 100; // Original resistance for upwards movement
+                }
 
                 currentY += moveY / resistanceFactor;
                 startY = event.clientY;
 
-                // Prevent dragging below the initial position (translateY(0))
                 if (currentY > initialY) {
                     currentY = initialY;
                 }
