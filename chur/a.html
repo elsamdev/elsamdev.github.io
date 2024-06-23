@@ -410,10 +410,9 @@
       /* background-color: #180293; */
       position: absolute;
       bottom: -80px;
-      /* transform: translateY(80px); */
-
       transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
     }
+
 
 
     .navigation-container {
@@ -672,7 +671,7 @@
     </div>
   </div>
 
-  <div class="navigation" id="navigation">
+  <div class="navigation" id="navigation" style="transform: translateY(0px)">
     <div class="navigation-container">
       <div class="navigation-button-container">
         <button class="navigation-left">
@@ -795,14 +794,19 @@
 
     });
 
+    function generateRandomNumber() {
+      return Math.floor(Math.random() * 1000);
+    }
+
+
+
     ////// inicializando para hacer drag a la barra de navegación
-    const caja1 = document.getElementById('navigation');
+    const navigation = document.getElementById('navigation');
     const icon = document.querySelectorAll('.icon i');
     const buttonMain = document.querySelectorAll('.button');
     const buttonnav = document.querySelectorAll('.navigation-container button');
-    // const caja2 = document.getElementById('caja2');
-    // const caja85 = document.getElementById('caja85');
-    // const cajaPequena = document.getElementById('caja-pequena');
+
+
     let initialY = 80;
     let isDragging = false;
     let startY, currentY = initialY;
@@ -811,46 +815,33 @@
     const topPoint = 0;
     const bottomPoint = initialY;
 
-    function handleMouseDown(event) {
-      event.preventDefault();  // Esto asegura que el evento no se maneje de manera predeterminada.
-      buttonnav.forEach(function (button) {
+    function handleDragStart(event) {
+      event.preventDefault();
+
+      buttonnav.forEach(button => {
         button.style.opacity = '1';
       });
+
       startY = event.clientY;
       isDragging = true;
-      caja1.style.transition = 'none'; // Desactiva la transición mientras se arrastra
+      navigation.style.transition = 'none';
     }
 
-    // caja2.addEventListener('mousedown', handleMouseDown);
-    caja1.addEventListener('mousedown', handleMouseDown);
 
-    document.addEventListener('mousemove', function (event) {
-      if (isDragging) {
-        let moveY = event.clientY - startY;
-        let dy = currentY - initialY;
-        let resistanceFactor = 1;  // Factor de resistencia base
-        if (moveY > 0) { // Movimiento hacia abajo
-          resistanceFactor += Math.abs(dy) / 2000;
+    ///push button
+    navigation.addEventListener('mousedown', handleDragStart);
+    flkty.on('dragStart', handleDragStart);
 
-        } else { // Movimiento hacia arriba o estacionario
+    ///stop button
+    window.addEventListener('mouseup', handleMouseUp);
+    flkty.on('dragEnd', handleMouseUp);
 
+    // Eventos táctiles
+    navigation.addEventListener('touchstart', handleDragStart);
+    window.addEventListener('touchend', handleMouseUp);
 
-          resistanceFactor += Math.abs(dy) / 100;
-        }
-
-        currentY += moveY / resistanceFactor;
-        startY = event.clientY;
-
-        // Asegura que no se mueva más allá del punto inicial
-        if (currentY > initialY) {
-          currentY = initialY;
-        }
-
-        caja1.style.transform = `translateY(${currentY - initialY}px)`;
-      }
-    });
-
-    window.addEventListener('mouseup', function () {
+    function handleMouseUp() {
+      console.log("soltaste")
       if (isDragging) {
         isDragging = false;
 
@@ -861,21 +852,20 @@
         // Determina el punto más cercano
         const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
 
-
         if (targetY === topPoint) {
           ajustarElementos();
         } else if (targetY === bottomPoint) {
           restablecerElementos();
         }
+
         // Mueve el botón al punto más cercano con una transición suave
-        caja1.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
-        caja1.style.transform = `translateY(${targetY - initialY}px)`;
-        // cajaPequena.style.transform = `translateY(${targetY - initialY}px)`;
-        // caja85.style.transform = `translateY(${targetY - initialY}px)`;
-        // Actualiza la posición actual para futuros arrastres
+        navigation.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+        navigation.style.transform = `translateY(${targetY - initialY}px)`;
+
         currentY = targetY;
       }
-    });
+    }
+
 
     function ajustarElementos() {
       icon.forEach(function (elemento) {
@@ -884,6 +874,7 @@
 
       buttonMain.forEach(function (elemento) {
         elemento.style.transform = 'translateY(-80px)';
+        elemento.style.height = '70%';
       });
 
       buttonnav.forEach(function (elemento) {
@@ -898,6 +889,7 @@
 
       buttonMain.forEach(function (elemento) {
         elemento.style.transform = 'none';
+        elemento.style.height = '85%';
       });
 
 
@@ -905,6 +897,75 @@
         elemento.style.transform = 'translateY(20px)';
       });
     }
+
+    // Eventos de arrastre para mouse, touch y Flickity
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    flkty.on('dragMove', handleDragMove);
+    let prevTouchY = 0; // Variable para almacenar la posición Y anterior del toque
+
+    function handleTouchMove(event) {
+      event.preventDefault();
+      if (isDragging) {
+        const touch = event.touches[0];
+
+        let moveY = touch.clientY - prevTouchY; // Calcular la distancia desde el último toque
+        prevTouchY = touch.clientY; // Actualizar prevTouchY para el próximo evento
+
+        let dy = currentY - initialY;
+
+        let resistanceFactor = 1;
+        if (moveY > 0) {
+          resistanceFactor += Math.abs(dy) / 2000;
+        } else {
+          resistanceFactor += Math.abs(dy) / 100;
+        }
+
+        currentY += moveY / resistanceFactor;
+
+        // Limitar el movimiento al punto inicial
+        if (currentY > initialY) {
+          currentY = initialY;
+        }
+
+        navigation.style.transform = `translateY(${currentY - initialY}px)`;
+      }
+    }
+
+    function handleDragMove(event) {
+      event.preventDefault();
+      if (isDragging) {
+        moveNavigation(event);
+      }
+    }
+    function moveNavigation(event) {
+
+
+      const touch = event.touches ? event.touches[0] : event;
+
+      let prevY = startY; // Almacenar la posición anterior
+      let moveY = touch.clientY - prevY; // Calcular la diferencia
+
+      let dy = currentY - initialY;
+
+      let resistanceFactor = 1;
+      if (moveY > 0) {
+        resistanceFactor += Math.abs(dy) / 2000;
+      } else {
+        resistanceFactor += Math.abs(dy) / 100;
+      }
+
+      currentY += moveY / resistanceFactor;
+      startY = touch.clientY; // Actualizar startY para el próximo evento
+
+      if (currentY > initialY) {
+        currentY = initialY;
+      }
+
+      navigation.style.transform = `translateY(${currentY - initialY}px)`;
+    }
+
+
     function reboteSuave(objeto, direccion = "abajo") {
       const distanciaRebote = direccion === "abajo" ? -8 : 8;
       let velocidad = direccion === "abajo" ? -8 : 8;
