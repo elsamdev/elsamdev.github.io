@@ -838,6 +838,7 @@
 
     // Eventos táctiles
     navigation.addEventListener('touchstart', handleDragStart);
+    // window.addEventListener('touchmove', handleDragMove);
     window.addEventListener('touchend', handleMouseUp);
 
     function handleMouseUp() {
@@ -898,66 +899,36 @@
       });
     }
 
-    // Eventos de arrastre para mouse, touch y Flickity
-    document.addEventListener('mousemove', handleDragMove);
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    flkty.on('dragMove', handleDragMove);
-    let prevTouchY = 0; // Variable para almacenar la posición Y anterior del toque
-
-    function handleTouchMove(event) {
+    document.addEventListener('mousemove', function (event) {
       event.preventDefault();
       if (isDragging) {
-        const touch = event.touches[0];
-
-        let moveY = touch.clientY - prevTouchY; // Calcular la distancia desde el último toque
-        prevTouchY = touch.clientY; // Actualizar prevTouchY para el próximo evento
-
-        let dy = currentY - initialY;
-
-        let resistanceFactor = 1;
-        if (moveY > 0) {
-          resistanceFactor += Math.abs(dy) / 2000;
-        } else {
-          resistanceFactor += Math.abs(dy) / 100;
-        }
-
-        currentY += moveY / resistanceFactor;
-
-        // Limitar el movimiento al punto inicial
-        if (currentY > initialY) {
-          currentY = initialY;
-        }
-
-        navigation.style.transform = `translateY(${currentY - initialY}px)`;
+        moveNavigation(event)
       }
-    }
+    });
 
-    function handleDragMove(event) {
+    flkty.on('dragMove', (event, pointer, moveVector) => {
       event.preventDefault();
       if (isDragging) {
-        moveNavigation(event);
+        moveNavigation(event)
       }
-    }
+    });
     function moveNavigation(event) {
-
-
-      const touch = event.touches ? event.touches[0] : event;
-
-      let prevY = startY; // Almacenar la posición anterior
-      let moveY = touch.clientY - prevY; // Calcular la diferencia
-
+      let moveY = event.clientY - startY;
       let dy = currentY - initialY;
-
-      let resistanceFactor = 1;
-      if (moveY > 0) {
+      let resistanceFactor = 1;  // Factor de resistencia base
+      if (moveY > 0) { // Movimiento hacia abajo
         resistanceFactor += Math.abs(dy) / 2000;
-      } else {
+
+      } else { // Movimiento hacia arriba o estacionario
+
+
         resistanceFactor += Math.abs(dy) / 100;
       }
 
       currentY += moveY / resistanceFactor;
-      startY = touch.clientY; // Actualizar startY para el próximo evento
+      startY = event.clientY;
 
+      // Asegura que no se mueva más allá del punto inicial
       if (currentY > initialY) {
         currentY = initialY;
       }
