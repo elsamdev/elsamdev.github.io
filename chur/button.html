@@ -22,14 +22,16 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-
-            background-color: beige;
+            background-color: green;
+            position: relative;
+            overflow: hidden;
         }
 
         .pantalla {
             width: 100%;
             height: 100%;
-            max-height: 70vh;
+            min-height: 50vh;
+            max-height: 50vh;
             background-color: black;
         }
 
@@ -37,29 +39,32 @@
             display: flex;
             flex-direction: column;
 
-            background-color: beige;
             width: 100%;
             height: 100%;
             transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
-        .caja {
+        .caja1 {
             width: 100%;
-            height: 80px;
-            min-height: 80px;
-
-            position: relative;
-            /* Para posicionar la caja pequeña dentro */
-            /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
+            height: 200px;
+            min-height: 200px;
+            position: absolute;
+            left: 0;
+            bottom: -160px;
+            background-color: beige;
+            opacity: .8;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
         #caja2 {
             width: 100%;
             height: 100%;
-            border: 1px solid black;
+
             position: relative;
             background-color: green;
-            /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
         .caja-pequena {
@@ -68,101 +73,116 @@
             background-color: red;
             position: absolute;
             bottom: 10px;
-            /* Posición inicial en la parte inferior */
             left: 50%;
             transform: translateX(-50%);
-            /* Centrar horizontalmente */
-            transition: bottom 0.3s ease;
-            /* Transición suave para el movimiento */
-            /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
         .caja85 {
             width: 100px;
             height: 100px;
             background-color: aquamarine;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+        }
+
+        #button {
+            width: 100px;
+            height: 100px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 10px;
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s ease-out;
+            /* Efecto elástico al soltar */
         }
     </style>
+
+
+    </script>
 </head>
 
 <body>
-    <div class="pantalla"></div>
+    <div class="pantalla">
+        <div id="button">Arrástrame</div>
+    </div>
     <div class="container">
-
         <div id="caja2" class="caja2">
             <div class="caja85"></div>
         </div>
-        <div id="caja1" class="caja">
-            <div class="caja-pequena"></div>
-        </div>
+    </div>
+    <div id="caja1" class="caja1">
+        <div class="caja-pequena"></div>
     </div>
 
     <script>
         const caja1 = document.getElementById('caja1');
         const caja2 = document.getElementById('caja2');
-        const cajaPequena = caja1.querySelector('.caja-pequena');
+        let initialY = 150;
         let isDragging = false;
-        let initialY, currentSize1 = 80;
-        const [minHeight, maxHeight] = [80, 320];
-        let displacement = 0;
-        let lastY = 0; // Variable para almacenar la posición inicial del mouse
+        let startY, currentY = initialY;
 
-        let lastMoveTime = 0;
-        const throttleDelay = 0; // Aproximadamente 60fps
-
-        function handlePointer(event, action) {
-            if (action === 'move') {
-                const currentTime = Date.now();
-                if (currentTime - lastMoveTime >= throttleDelay) {
-                    lastMoveTime = currentTime;
-                } else {
-                    return; // Salimos si no ha pasado suficiente tiempo
-                }
-            }
-
-            const getPointerY = (event) => event.touches?.[0].clientY ?? event.clientY;
-
-            switch (action) {
-                case 'down':
-                    isDragging = true;
-                    initialY = getPointerY(event);
-                    lastY = initialY; // Almacenamos la posición inicial del mouse
-                    break;
-                case 'move':
-                    if (!isDragging) return;
-                    const currentY = getPointerY(event);
-                    const deltaY = currentY - lastY; // Calculamos la diferencia vertical desde el punto inicial
-                    lastY = currentY; // Actualizamos la posición inicial del mouse
-
-                    if (deltaY > 0) {
-                        displacement -= deltaY; // Si el movimiento es hacia abajo, sumamos la diferencia
-                    } else {
-                        displacement += Math.abs(deltaY); // Si el movimiento es hacia arriba, restamos la diferencia
-                    }
-
-                    currentSize1 = Math.max(minHeight, Math.min(maxHeight, currentSize1 - deltaY));
-                    caja1.style.height = `${currentSize1}px`;
-                    console.log(`Desplazamiento: ${displacement}px`);
-                    break;
-                case 'up':
-                    isDragging = false;
-                    currentSize1 = currentSize1 < (minHeight + maxHeight) / 2 ? minHeight : maxHeight;
-                    caja1.style.height = `${currentSize1}px`;
-
-                    cajaPequena.style.bottom = currentSize1 === maxHeight ? '50px' : '-60px';
-
-                    console.log(`El mouse se movió ${displacement} píxeles verticalmente.`);
-                    displacement = 0; // Reiniciamos el desplazamiento vertical
-                    break;
-            }
-        }
-
-        ['mousedown', 'mousemove', 'mouseup'].forEach(e => {
-            caja1.addEventListener(e, (evt) => handlePointer(evt, e.replace('mouse', '')));
-            caja2.addEventListener(e, (evt) => handlePointer(evt, e.replace('mouse', '')));
+        // Points
+        const topPoint = 0;
+        // Bottom point is now the initial position of caja1
+        const bottomPoint = initialY;
+        caja2.addEventListener('mousedown', function (event) {
+            startY = event.clientY;
+            isDragging = true;
+            caja1.style.transition = 'none';
         });
-    </script>
+        caja1.addEventListener('mousedown', function (event) {
+            startY = event.clientY;
+            isDragging = true;
+            caja1.style.transition = 'none';
+        });
 
+        document.addEventListener('mousemove', function (event) {
+            if (isDragging) {
+                let moveY = event.clientY - startY;
+                let dy = currentY - initialY;
+                let resistanceFactor = 1 + Math.abs(dy) / 100;
+
+                currentY += moveY / resistanceFactor;
+                startY = event.clientY;
+
+                // Prevent dragging below the initial position (translateY(0))
+                if (currentY > initialY) {
+                    currentY = initialY;
+                }
+
+                caja1.style.transform = `translateY(${currentY - initialY}px)`;
+            }
+        });
+
+        document.addEventListener('mouseup', function () {
+            isDragging = false;
+
+            // Calcular la distancia a cada punto de anclaje
+            const distanceToTop = Math.abs(currentY - topPoint);
+            const distanceToBottom = Math.abs(currentY - bottomPoint);
+
+            // Determinar el punto más cercano
+            const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
+
+            // Mover el botón al punto más cercano con una transición suave
+            caja1.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+            caja1.style.transform = `translateY(${targetY - initialY}px)`;
+
+            // Actualizar la posición actual para futuros arrastres
+            currentY = targetY;
+        });
+
+    </script>
 </body>
 
 </html>

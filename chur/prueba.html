@@ -87,6 +87,24 @@
             left: 0;
             transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
+
+        #button {
+            width: 100px;
+            height: 100px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 10px;
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s ease-out;
+            /* Efecto elástico al soltar */
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -152,12 +170,9 @@
                 }
 
 
-                // Imprime el valor en la consola
-
-
-
                 newBottom = -newBottom;
                 caja1.style.bottom = `${newBottom}px`;
+
             }
 
 
@@ -180,7 +195,7 @@
                 }
                 targetBottom = -targetBottom
 
-                caja1.style.transition = 'all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);';
+                caja1.style.transition = 'transform 0.2s  cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                 caja1.style.opacity = '1';
                 caja1.style.bottom = `${targetBottom}px`;
             }
@@ -201,7 +216,9 @@
 </head>
 
 <body>
-    <div class="pantalla"></div>
+    <div class="pantalla">
+        <div id="button">Arrástrame</div>
+    </div>
     <div class="container">
         <div id="caja2" class="caja2">
             <div class="caja85"></div>
@@ -210,6 +227,57 @@
     <div id="caja1" class="caja1">
         <div class="caja-pequena"></div>
     </div>
+
+    <script>
+
+
+        const button = document.getElementById('button');
+        let initialY = 150;
+        let isDragging = false;
+        let startY, currentY = initialY;
+
+        // Puntos de anclaje
+        const topPoint = 50; // Posición Y del punto superior
+        const bottomPoint = 250; // Posición Y del punto inferior
+
+        button.addEventListener('mousedown', function (event) {
+            startY = event.clientY;
+            isDragging = true;
+            button.style.transition = 'none';
+        });
+
+        document.addEventListener('mousemove', function (event) {
+            if (isDragging) {
+                let moveY = event.clientY - startY;
+                let dy = currentY - initialY;
+                let resistanceFactor = 1 + Math.abs(dy) / 100;
+
+                currentY += moveY / resistanceFactor;
+                startY = event.clientY;
+
+                button.style.transform = `translateY(${currentY - initialY}px)`;
+            }
+        });
+
+        document.addEventListener('mouseup', function () {
+            isDragging = false;
+
+            // Calcular la distancia a cada punto de anclaje
+            const distanceToTop = Math.abs(currentY - topPoint);
+            const distanceToBottom = Math.abs(currentY - bottomPoint);
+
+            // Determinar el punto más cercano
+            const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
+
+            // Mover el botón al punto más cercano con una transición suave
+            button.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+            button.style.transform = `translateY(${targetY - initialY}px)`;
+
+            // Actualizar la posición actual para futuros arrastres
+            currentY = targetY;
+        });
+
+    </script>
 </body>
 
 </html>
