@@ -907,9 +907,41 @@
     });
 
     flkty.on('dragMove', (event, pointer, moveVector) => {
+
       const dragDistance = Math.sqrt(moveVector.x * moveVector.x + moveVector.y * moveVector.y);
+      let moveY = event.clientY - startY;
+      let dy = moveVector.y - initialY;
+      console.log(moveVector.y)
+      // console.log("moveY", moveY, "dy", dy);
+      let resistanceFactor = 1;
+
       if (dragDistance > 1) {
-        moveNavigation(event)
+        if (moveVector.y > 0 && navigation.style.transform === 'translateY(-80px)') {
+          resistanceFactor += Math.abs(dy) / 2000;
+
+        } else if (moveVector.y < 0 && navigation.style.transform === 'translateY(0px)') {
+          // Resistencia progresiva hacia arriba
+          const maxResistance = 2; // Resistencia máxima (ajusta este valor)
+          const resistanceIncreaseFactor = 0.01; // Factor de incremento (ajusta este valor)
+          resistanceFactor += Math.min(maxResistance, Math.abs(dy) * resistanceIncreaseFactor);
+
+        }
+
+        // Mostrar botones siempre durante el arrastre
+        buttonnav.forEach(function (button) {
+          button.style.opacity = '1';
+        });
+
+
+        currentY += moveY / resistanceFactor;
+        startY = event.clientY;
+
+        // Asegura que no se mueva más allá del punto inicial
+        if (currentY > initialY) {
+          currentY = initialY;
+        }
+
+        navigation.style.transform = `translateY(${currentY - initialY}px)`;
       }
     });
     function moveNavigation(event) {
