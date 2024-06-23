@@ -907,9 +907,8 @@
     });
 
     flkty.on('dragMove', (event, pointer, moveVector) => {
-
       const dragDistance = Math.sqrt(moveVector.x * moveVector.x + moveVector.y * moveVector.y);
-      if (isDragging) {
+      if (dragDistance > 1) {
         moveNavigation(event)
       }
     });
