@@ -83,7 +83,7 @@
             height: 100px;
             background-color: aquamarine;
             position: absolute;
-            bottom: 0;
+            bottom: 40px;
             left: 0;
             transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
@@ -117,16 +117,18 @@
     </div>
     <div class="container">
         <div id="caja2" class="caja2">
-            <div class="caja85"></div>
+            <div class="caja85" id="caja85"></div>
         </div>
     </div>
     <div id="caja1" class="caja1">
-        <div class="caja-pequena"></div>
+        <div class="caja-pequena" id="caja-pequena"></div>
     </div>
 
     <script>
         const caja1 = document.getElementById('caja1');
         const caja2 = document.getElementById('caja2');
+        const caja85 = document.getElementById('caja85');
+        const cajaPequena = document.getElementById('caja-pequena');
         let initialY = 150;
         let isDragging = false;
         let startY, currentY = initialY;
@@ -136,6 +138,7 @@
         const bottomPoint = initialY;
 
         function handleMouseDown(event) {
+            event.preventDefault();  // Esto asegura que el evento no se maneje de manera predeterminada.
             startY = event.clientY;
             isDragging = true;
             caja1.style.transition = 'none'; // Desactiva la transición mientras se arrastra
@@ -181,12 +184,14 @@
                 // Mueve el botón al punto más cercano con una transición suave
                 caja1.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                 caja1.style.transform = `translateY(${targetY - initialY}px)`;
-
+                cajaPequena.style.transform = `translateY(${targetY - initialY}px)`;
+                caja85.style.transform = `translateY(${targetY - initialY}px)`;
                 // Actualiza la posición actual para futuros arrastres
                 currentY = targetY;
             }
         });
     </script>
+
 </body>
 
 </html>
