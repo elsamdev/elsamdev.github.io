@@ -131,37 +131,34 @@
         let isDragging = false;
         let startY, currentY = initialY;
 
-        // Points
+        // Puntos de anclaje
         const topPoint = 0;
-        // Bottom point is now the initial position of caja1
         const bottomPoint = initialY;
-        caja2.addEventListener('mousedown', function (event) {
+
+        function handleMouseDown(event) {
             startY = event.clientY;
             isDragging = true;
-            caja1.style.transition = 'none';
-        });
-        caja1.addEventListener('mousedown', function (event) {
-            startY = event.clientY;
-            isDragging = true;
-            caja1.style.transition = 'none';
-        });
+            caja1.style.transition = 'none'; // Desactiva la transición mientras se arrastra
+        }
+
+        caja2.addEventListener('mousedown', handleMouseDown);
+        caja1.addEventListener('mousedown', handleMouseDown);
 
         document.addEventListener('mousemove', function (event) {
             if (isDragging) {
                 let moveY = event.clientY - startY;
                 let dy = currentY - initialY;
-
-                // Dynamic Resistance Factor
-                let resistanceFactor = 1;  // Base resistance
-                if (moveY > 0) {         // Moving downwards
-                    resistanceFactor += Math.abs(dy) / 2000; // Increased resistance for upwards movement
-                } else {                 // Moving upwards or stationary
-                    resistanceFactor += Math.abs(dy) / 100; // Original resistance for upwards movement
+                let resistanceFactor = 1;  // Factor de resistencia base
+                if (moveY > 0) { // Movimiento hacia abajo
+                    resistanceFactor += Math.abs(dy) / 2000;
+                } else { // Movimiento hacia arriba o estacionario
+                    resistanceFactor += Math.abs(dy) / 100;
                 }
 
                 currentY += moveY / resistanceFactor;
                 startY = event.clientY;
 
+                // Asegura que no se mueva más allá del punto inicial
                 if (currentY > initialY) {
                     currentY = initialY;
                 }
@@ -170,24 +167,25 @@
             }
         });
 
-        document.addEventListener('mouseup', function () {
-            isDragging = false;
+        window.addEventListener('mouseup', function () {
+            if (isDragging) {
+                isDragging = false;
 
-            // Calcular la distancia a cada punto de anclaje
-            const distanceToTop = Math.abs(currentY - topPoint);
-            const distanceToBottom = Math.abs(currentY - bottomPoint);
+                // Calcula la distancia a cada punto de anclaje
+                const distanceToTop = Math.abs(currentY - topPoint);
+                const distanceToBottom = Math.abs(currentY - bottomPoint);
 
-            // Determinar el punto más cercano
-            const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
+                // Determina el punto más cercano
+                const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
 
-            // Mover el botón al punto más cercano con una transición suave
-            caja1.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
-            caja1.style.transform = `translateY(${targetY - initialY}px)`;
+                // Mueve el botón al punto más cercano con una transición suave
+                caja1.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+                caja1.style.transform = `translateY(${targetY - initialY}px)`;
 
-            // Actualizar la posición actual para futuros arrastres
-            currentY = targetY;
+                // Actualiza la posición actual para futuros arrastres
+                currentY = targetY;
+            }
         });
-
     </script>
 </body>
 
