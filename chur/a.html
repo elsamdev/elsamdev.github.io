@@ -272,6 +272,12 @@
       align-items: center;
       width: 100%;
       background-color: var();
+      position: relative;
+    }
+
+    .icon i {
+      position: absolute;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
     }
 
     .action-button {
@@ -326,7 +332,7 @@
       /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
 
       /* Transición con cubic-bezier para el rebote */
-      transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
       position: absolute;
       top: -1px;
       transform: translate(0);
@@ -393,30 +399,32 @@
 
     .navigation {
       width: 100%;
-      height: 10%;
-      min-height: 10%;
+      min-height: 100px;
+      height: 100px;
+      max-height: 100px;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       gap: 10px;
-      background-color: var(--maingray-color);
+      /* background-color: var(--maingray-color); */
       /* background-color: #180293; */
-      position: relative;
-      transition: all 0.3s ease;
+      position: absolute;
+      bottom: -80px;
+      /* transform: translateY(80px); */
+
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
     }
 
 
     .navigation-container {
       width: 100%;
-      min-height: 80px;
-      height: 80px;
+      min-height: 100%;
+      height: 100%;
       max-height: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: absolute;
-      bottom: 0;
-      transition: all 0.3s cubic-bezier(.47, 1.64, .41, .8);
+
     }
 
     .navigation-button-container {
@@ -438,7 +446,7 @@
       width: 90%;
       height: 80%;
       border: none;
-      background-color: var(--maingray-color);
+      /* background-color: var(--maingray-color); */
       color: var(--lightblack-color);
       font-weight: 300;
       font-size: 20px;
@@ -446,7 +454,7 @@
       border-radius: 10px;
       border: var(--lightblack-color) solid 2px;
       box-shadow: 0px 4px 0px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
-      transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
     }
 
 
@@ -663,7 +671,7 @@
     </div>
   </div>
 
-  <div class="navigation" id="Navigation">
+  <div class="navigation" id="navigation">
     <div class="navigation-container">
       <div class="navigation-button-container">
         <button class="navigation-left">
@@ -787,77 +795,112 @@
     });
 
     ////// inicializando para hacer drag a la barra de navegación
-    const navigation = document.getElementById('Navigation');
-    const navigationContainer = document.querySelector('.navigation-container');
-    const buttonContainers = document.querySelectorAll('.button-container');
-    const buttonNav = document.querySelectorAll('.navigation-button-container');
+    const caja1 = document.getElementById('navigation');
+    const icon = document.querySelectorAll('.icon i');
     const buttonMain = document.querySelectorAll('.button');
-
-    let initialY = 0;
+    const buttonnav = document.querySelectorAll('.navigation-container button');
+    // const caja2 = document.getElementById('caja2');
+    // const caja85 = document.getElementById('caja85');
+    // const cajaPequena = document.getElementById('caja-pequena');
+    let initialY = 80;
     let isDragging = false;
+    let startY, currentY = initialY;
 
-    // Unified Event Handling
-    function handleInteraction(e) {
-      if (!isDragging) return;
+    // Puntos de anclaje
+    const topPoint = 0;
+    const bottomPoint = initialY;
 
-      const currentY = e.clientY || e.touches[0].clientY;
-      const deltaY = currentY - initialY;
-
-      if (Math.abs(deltaY) < 30) return; // Ignore small movements
-
-      const isUpward = deltaY < 0;
-
-      // Condiciones para evitar acciones repetidas
-      if (isUpward && navigation.style.height === '10%') return; // Ya está arriba
-      if (!isUpward && navigation.style.height === '4%') return;  // Ya está abajo
-
-      navigation.style.height = isUpward ? '10%' : '4%';
-      navigation.style.minHeight = navigation.style.height;
-      navigationContainer.style.bottom = isUpward ? '0' : '-200px';
-
-
-
-      initialY = currentY;
-    }
-
-    function startDragging(e) {
-      initialY = e.clientY || e.touches[0].clientY;
+    function handleMouseDown(event) {
+      event.preventDefault();  // Esto asegura que el evento no se maneje de manera predeterminada.
+      startY = event.clientY;
       isDragging = true;
-      window.addEventListener('mousemove', handleInteraction, true);
-      window.addEventListener('touchmove', handleInteraction, true);
+      caja1.style.transition = 'none'; // Desactiva la transición mientras se arrastra
     }
 
-    function stopDragging() {
-      isDragging = false;
-      window.removeEventListener('mousemove', handleInteraction, true);
-      window.removeEventListener('touchmove', handleInteraction, true);
-    }
-    flkty.on('dragMove', (event, pointer, moveVector) => {
-      const dragDistance = Math.sqrt(moveVector.x * moveVector.x + moveVector.y * moveVector.y);
+    // caja2.addEventListener('mousedown', handleMouseDown);
+    caja1.addEventListener('mousedown', handleMouseDown);
 
-      if (dragDistance > 1) {
-        if (moveVector.y > 0 && navigation.style.height !== '4%') { // Arrastre hacia abajo solo si no está ya abajo
-          console.log("Arrastre hacia abajo detectado:", moveVector);
-          navigation.style.height = '4%';
-          navigation.style.minHeight = '4%';
-          navigationContainer.style.bottom = '-50px';
-          buttonMain.forEach(button => reboteSuave(button, 'abajo'));
-        } else if (moveVector.y < 0 && navigation.style.height !== '10%') { // Arrastre hacia arriba solo si no está ya arriba
-          console.log("Arrastre hacia arriba detectado:", moveVector);
-          navigation.style.height = '10%';
-          navigation.style.minHeight = '10%';
-          navigationContainer.style.bottom = '0';
-          buttonMain.forEach(button => reboteSuave(button, 'arriba'));
+    document.addEventListener('mousemove', function (event) {
+      if (isDragging) {
+        let moveY = event.clientY - startY;
+        let dy = currentY - initialY;
+        let resistanceFactor = 1;  // Factor de resistencia base
+        if (moveY > 0) { // Movimiento hacia abajo
+          resistanceFactor += Math.abs(dy) / 2000;
+
+        } else { // Movimiento hacia arriba o estacionario
+
+
+          resistanceFactor += Math.abs(dy) / 100;
         }
+
+        currentY += moveY / resistanceFactor;
+        startY = event.clientY;
+
+        // Asegura que no se mueva más allá del punto inicial
+        if (currentY > initialY) {
+          currentY = initialY;
+        }
+
+        caja1.style.transform = `translateY(${currentY - initialY}px)`;
       }
     });
 
-    navigation.addEventListener('mousedown', startDragging, true);
-    navigation.addEventListener('touchstart', startDragging, true);
-    window.addEventListener('mouseup', stopDragging, true);
-    window.addEventListener('touchend', stopDragging, true);
+    window.addEventListener('mouseup', function () {
+      if (isDragging) {
+        isDragging = false;
+
+        // Calcula la distancia a cada punto de anclaje
+        const distanceToTop = Math.abs(currentY - topPoint);
+        const distanceToBottom = Math.abs(currentY - bottomPoint);
+
+        // Determina el punto más cercano
+        const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
 
 
+        if (targetY === topPoint) {
+          ajustarElementos();
+        } else if (targetY === bottomPoint) {
+          restablecerElementos();
+        }
+        // Mueve el botón al punto más cercano con una transición suave
+        caja1.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+        caja1.style.transform = `translateY(${targetY - initialY}px)`;
+        // cajaPequena.style.transform = `translateY(${targetY - initialY}px)`;
+        // caja85.style.transform = `translateY(${targetY - initialY}px)`;
+        // Actualiza la posición actual para futuros arrastres
+        currentY = targetY;
+      }
+    });
+
+    function ajustarElementos() {
+      icon.forEach(function (elemento) {
+        elemento.style.transform = 'translateY(-40px)';
+      });
+
+      buttonMain.forEach(function (elemento) {
+        elemento.style.transform = 'translateY(-80px)';
+      });
+
+      buttonnav.forEach(function (elemento) {
+        elemento.style.transform = 'none';
+      });
+    }
+
+    function restablecerElementos() {
+      icon.forEach(function (elemento) {
+        elemento.style.transform = 'none';
+      });
+
+      buttonMain.forEach(function (elemento) {
+        elemento.style.transform = 'none';
+      });
+
+
+      buttonnav.forEach(function (elemento) {
+        elemento.style.transform = 'translateY(20px)';
+      });
+    }
     function reboteSuave(objeto, direccion = "abajo") {
       const distanciaRebote = direccion === "abajo" ? -8 : 8;
       let velocidad = direccion === "abajo" ? -8 : 8;
