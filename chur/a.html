@@ -871,17 +871,21 @@
 
     function ajustarElementos() {
       icon.forEach(function (elemento) {
-        elemento.style.transform = 'translateY(-40px)';
+        elemento.style.transform = 'translateY(-20px)';
       });
 
       buttonMain.forEach(function (elemento) {
-        elemento.style.transform = 'translateY(-80px)';
+        elemento.style.transform = 'translateY(-55px)';
         elemento.style.height = '70%';
       });
 
       buttonnav.forEach(function (elemento) {
         elemento.style.transform = 'none';
       });
+
+      navigation.style.minHeight = '80px';
+      navigation.style.maxHeight = '80px';
+      navigation.style.height = '80px';
     }
 
     function restablecerElementos() {
@@ -898,6 +902,10 @@
       buttonnav.forEach(function (elemento) {
         elemento.style.transform = 'translateY(20px)';
       });
+
+      navigation.style.minHeight = '100px';
+      navigation.style.maxHeight = '100px';
+      navigation.style.height = '100px';
     }
 
     document.addEventListener('mousemove', function (event) {
