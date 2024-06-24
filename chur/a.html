@@ -580,7 +580,9 @@
 <body>
   <div class="game">
     <i class="fa-solid fa-bars icon-menu"></i>
-
+    <div id="messageDisplay"
+      style="position: fixed; top: 30px; left: 10px; background: rgb(194, 103, 103); padding: 10px; display: none;">
+    </div>
     <!-- <div class="notification">
       <div class="notification-container">
         <div class="notification-head">
@@ -950,6 +952,7 @@
 
     function handleMouseUp() {
       console.log("soltaste")
+      displayMessage("soltaste")
       if (isDragging) {
         isDragging = false;
 
@@ -1038,9 +1041,13 @@
 
       if (moveY > 0) {
         resistanceFactor += Math.abs(dy) / 2000;
-        console.log("moviendo hacia arriba carrusel")
+
+        console.log("moviendo hacia abajo carrusel")
+        displayMessage("moviendo hacia abajo carrusel")
+
       } else {
-        console.log("moviendo hacia arriba abajo")
+        console.log("moviendo hacia arriba carrusel")
+        displayMessage("moviendo hacia arriba carrusel")
         resistanceFactor += Math.abs(dy) / 100;
       }
 
@@ -1052,6 +1059,7 @@
       }
 
       navigation.style.transform = `translateY(${currentY - initialY}px)`;
+
     }
     function moveNavigation(event) {
       let moveY = event.clientY - startY;
@@ -1105,7 +1113,12 @@
       animar();
     }
 
-
+    // Función para mostrar mensajes en pantalla
+    function displayMessage(message) {
+      const messageDisplay = document.querySelector('#messageDisplay');
+      messageDisplay.textContent = message;
+      messageDisplay.style.display = 'block';
+    }
 
   </script>
 </body>
