@@ -580,8 +580,7 @@
 <body>
   <div class="game">
     <i class="fa-solid fa-bars icon-menu"></i>
-    <div id="messageDisplay"
-      style="position: fixed; bottom: 10px; left: 10px; background: white; padding: 10px; display: none;"></div>
+
     <!-- <div class="notification">
       <div class="notification-container">
         <div class="notification-head">
@@ -800,17 +799,15 @@
   <script>
     const carousel = document.querySelector('.carousel');
     const flkty = new Flickity(carousel, {
-      cellAlign: "center",
-      wrapAround: false,
-      contain: true,
-      selectedAttraction: 0.01,
-      friction: 0.15,
-      pageDots: false,
-      prevNextButtons: false,
-      draggable: true,
-      dragThreshold: 10 // Ajusta según la sensibilidad deseada
+      "cellAlign": "center",
+      "wrapAround": false,
+      "contain": true,
+      "selectedAttraction": 0.06,
+      "friction": 0.25,
+      "pageDots": false,
+      "prevNextButtons": false,
+      dragThreshold: 1
     });
-
     const relleno = document.querySelector('.recurso-relleno');
     let leftPosition = 0;
     estiloRecurso(0)
@@ -917,8 +914,6 @@
 
 
     let initialY = 80;
-    let initialX = null;
-    let isVerticalScroll = false;
     let isDragging = false;
     let startY, currentY = initialY;
 
@@ -931,8 +926,6 @@
 
       buttonnav.forEach(button => {
         button.style.opacity = '1';
-        button.style.transform = 'translateY(-40px)';
-
       });
 
       startY = event.clientY;
@@ -1029,16 +1022,11 @@
     });
 
     flkty.on('dragMove', (event, pointer, moveVector) => {
-      // event.preventDefault(); // Prevenir el scroll vertical
-      // if (isVerticalScroll) {
-      //   flkty.options.draggable = false;
-      //   moveNavigationFlkty(event);
-      // } else {
-      //   flkty.options.draggable = true;
-      // }
-      if (isDragging) {
+      event.preventDefault(); // Prevenir el scroll vertical
 
-        moveNavigationFlkty(event);
+      if (isDragging) {
+        const touch = event.changedTouches ? event.changedTouches[0] : event;
+        moveNavigationFlkty(touch);
       }
     });
 
@@ -1050,7 +1038,9 @@
 
       if (moveY > 0) {
         resistanceFactor += Math.abs(dy) / 2000;
+        console.log("moviendo hacia arriba carrusel")
       } else {
+        console.log("moviendo hacia arriba abajo")
         resistanceFactor += Math.abs(dy) / 100;
       }
 
