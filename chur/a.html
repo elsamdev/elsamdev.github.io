@@ -953,7 +953,7 @@
 
     function handleMouseUp() {
       console.log("soltaste")
-      displayMessage("soltaste")
+      // displayMessage("soltaste")
       if (isDragging) {
         isDragging = false;
 
@@ -1036,19 +1036,23 @@
 
 
     function moveNavigationFlkty(event) {
-
+      displayMessage("laguera")
       let moveY = event.clientY - startY;
+
       let dy = currentY - initialY;
       let resistanceFactor = 1;
 
+      if (moveY > 0) {
+        resistanceFactor += Math.abs(dy) / 2000;
 
-      resistanceFactor += Math.abs(dy) / 2000;
+        console.log("moviendo hacia abajo carrusel")
+        // displayMessage("moviendo hacia abajo carrusel")
 
-      console.log("moviendo hacia abajo carrusel")
-      displayMessage("moviendo hacia abajo carrusel")
-
-
-
+      } else {
+        console.log("moviendo hacia arriba carrusel")
+        // displayMessage("moviendo hacia arriba carrusel")
+        resistanceFactor += Math.abs(dy) / 100;
+      }
 
       currentY += moveY / resistanceFactor;
       startY = event.clientY;
