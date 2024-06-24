@@ -1043,14 +1043,16 @@
 
     flkty.on('dragMove', (event, pointer, moveVector) => {
       event.preventDefault(); // Prevenir el scroll vertical
-      displayMessage1(moveVector.x)
-      displayMessage4(moveVector.y)
+
 
       // event.stopPropagation();
       if (isDragging) {
         // const touch = event.changedTouches ? event.changedTouches[0] : event;
         moveNavigationFlkty(event);
       }
+
+      displayMessage1(moveVector.x)
+      displayMessage4(moveVector.y)
     });
 
 
