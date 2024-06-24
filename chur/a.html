@@ -925,7 +925,7 @@
     const bottomPoint = initialY;
 
     function handleDragStart(event) {
-      event.preventDefault();
+      // event.preventDefault();
 
       buttonnav.forEach(button => {
         button.style.opacity = '1';
@@ -1026,12 +1026,12 @@
     });
 
     flkty.on('dragMove', (event, pointer, moveVector) => {
-      event.preventDefault(); // Prevenir el scroll vertical
+      // event.preventDefault(); // Prevenir el scroll vertical
 
-      if (isDragging) {
-        const touch = event.changedTouches ? event.changedTouches[0] : event;
-        moveNavigationFlkty(touch);
-      }
+      // if (isDragging) {
+      const touch = event.changedTouches ? event.changedTouches[0] : event;
+      moveNavigationFlkty(touch);
+      // }
     });
 
 
