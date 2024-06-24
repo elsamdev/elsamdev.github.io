@@ -928,7 +928,7 @@
 
       buttonnav.forEach(button => {
         button.style.opacity = '1';
-        button.style.transform = 'translateY(-80px)';
+
       });
 
       startY = event.clientY;
@@ -1024,15 +1024,15 @@
       }
     });
 
-    flkty.on('dragMove', (event, pointer, moveVector) => {
-      // event.preventDefault(); // Prevenir el scroll vertical
+    // flkty.on('dragMove', (event, pointer, moveVector) => {
+    //   // event.preventDefault(); // Prevenir el scroll vertical
 
-      if (isDragging) {
-        const touch = event.changedTouches ? event.changedTouches[0] : event;
-        moveNavigationFlkty(event);
-      }
-    });
+    //   if (isDragging) {
 
+    //     moveNavigationFlkty(event);
+    //   }
+    // });
+    flkty.on('dragMove', moveNavigationFlkty);
 
     function moveNavigationFlkty(event) {
       let moveY = event.clientY - startY;
