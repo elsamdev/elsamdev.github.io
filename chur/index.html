@@ -1,44 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Slider Snap con Iconos</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Mejorado</title>
+    <style>
+        .container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-overflow-scrolling: touch;
+
+
+            transition: scrollLeft 0.3s ease-out;
+
+
+        }
+
+        .item {
+            flex: 0 0 33.3333%;
+            scroll-snap-align: start;
+            background: gray;
+            height: 200px;
+            box-sizing: border-box;
+        }
+
+        .item-inside {
+            background: black;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-button.prev {
+            left: 10px;
+        }
+
+        .nav-button.next {
+            right: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="principal">
-        <div class="juego">
-            <button>-</button>
-
-        </div>
-
-        <div class="points">
-            <div class="coins">
-                <i class="fas fa-coins"></i>
-                <p>600,580,900</p>
+    <div class="page">
+        <div class="container" id="sliderContainer">
+            <div class="item">
+                <div class="item-inside"></div>
             </div>
-            <i class="fas fa-book"></i>
+            <div class="item">
+                <div class="item-inside"></div>
+            </div>
+            <div class="item">
+                <div class="item-inside"></div>
+            </div>
+            <div class="item">
+                <div class="item-inside"></div>
+            </div>
+            <div class="item">
+                <div class="item-inside"></div>
+            </div>
+            <div class="item">
+                <div class="item-inside"></div>
+            </div>
+            <div class="item">
+                <div class="item-inside"></div>
+            </div>
+            <div class="item">
+                <div class="item-inside"></div>
+            </div>
+            <div class="item">
+                <div class="item-inside"></div>
+            </div>
         </div>
-        <div class="slider-container">
-            <div class="slide"><i class="fas fa-gem"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-heart"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-bomb"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-star"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-coins"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-music"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-film"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-camera"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-book"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-gamepad"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-paw"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-leaf"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-sun"></i><button>+</button></div>
-            <div class="slide"><i class="fas fa-moon"></i><button>+</button></div>
-        </div>
+
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const slider = document.getElementById('sliderContainer');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+            slider.classList.add('active'); // Opcional: cambia el cursor o estilo
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+            slider.classList.remove('active');
+        });
+
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.classList.remove('active');
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 3; // El factor 3 aumenta la sensibilidad del movimiento
+            slider.scrollLeft = scrollLeft - walk;
+        });
+    </script>
+
 </body>
 
 </html>
