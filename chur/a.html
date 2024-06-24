@@ -806,7 +806,7 @@
       "friction": 0.25,
       "pageDots": false,
       "prevNextButtons": false,
-      dragThreshold: 5
+      dragThreshold: 1
     });
     const relleno = document.querySelector('.recurso-relleno');
     let leftPosition = 0;
@@ -928,6 +928,7 @@
 
       buttonnav.forEach(button => {
         button.style.opacity = '1';
+        button.style.transform = 'translateY(-40px)';
 
       });
 
