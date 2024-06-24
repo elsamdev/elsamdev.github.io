@@ -581,7 +581,23 @@
   <div class="game">
     <i class="fa-solid fa-bars icon-menu"></i>
     <div id="messageDisplay"
-      style="position: fixed; top: 30px; left: 10px; background: rgb(194, 103, 103); padding: 10px; display: none;">
+      style="position: fixed; top: 30px; right: 10px; background: rgb(126, 156, 223); padding: 10px; display: none;">
+    </div>
+
+    <div id="messageDisplay1"
+      style="position: fixed; top: 30px; left: 10px; background: rgb(126, 156, 223); padding: 10px; display: none;">
+    </div>
+
+    <div id="messageDisplay2"
+      style="position: fixed; top: 50px; left: 10px; background: rgb(194, 103, 103); padding: 10px; display: none;">
+    </div>
+
+    <div id="messageDisplay3"
+      style="position: fixed; top: 70px; left: 10px; background: rgb(194, 103, 103); padding: 10px; display: none;">
+    </div>
+
+    <div id="messageDisplay4"
+      style="position: fixed; top: 90px; left: 10px; background: rgb(194, 103, 103); padding: 10px; display: none;">
     </div>
     <!-- <div class="notification">
       <div class="notification-container">
@@ -1027,6 +1043,9 @@
 
     flkty.on('dragMove', (event, pointer, moveVector) => {
       event.preventDefault(); // Prevenir el scroll vertical
+      displayMessage1(moveVector.x)
+      displayMessage4(moveVector.y)
+
       // event.stopPropagation();
       if (isDragging) {
         // const touch = event.changedTouches ? event.changedTouches[0] : event;
@@ -1122,6 +1141,22 @@
       messageDisplay.textContent = message;
       messageDisplay.style.display = 'block';
     }
+
+    function displayMessage1(message) {
+      const messageDisplay = document.querySelector('#messageDisplay1');
+      messageDisplay.textContent = message;
+      messageDisplay.style.display = 'block';
+    }
+
+
+
+
+    function displayMessage4(message) {
+      const messageDisplay = document.querySelector('#messageDisplay4');
+      messageDisplay.textContent = message;
+      messageDisplay.style.display = 'block';
+    }
+
 
   </script>
 </body>
