@@ -970,6 +970,7 @@
     function handleMouseUp() {
       console.log("soltaste")
       displayMessage("soltaste")
+      flkty.bindDrag();
       if (isDragging) {
         isDragging = false;
 
@@ -1064,6 +1065,7 @@
       let resistanceFactor = 1;
 
       if (moveY > 0) {
+        flkty.unbindDrag();
         resistanceFactor += Math.abs(dy) / 2000;
 
         console.log("moviendo hacia abajo carrusel")
