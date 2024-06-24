@@ -1047,8 +1047,8 @@
 
       // event.stopPropagation();
       if (isDragging) {
-        // const touch = event.changedTouches ? event.changedTouches[0] : event;
-        moveNavigationFlkty(event);
+        const touch = event.changedTouches ? event.changedTouches[0] : event;
+        moveNavigationFlkty(touch);
       }
 
       displayMessage1(moveVector.x)
