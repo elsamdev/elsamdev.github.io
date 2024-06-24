@@ -1,197 +1,447 @@
 <!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+</html>
 <html>
 
 <head>
+    <title>Sistema de Notificaciones</title>
     <style>
+        @font-face {
+            font-family: 'BetmRounded';
+            src: url('fonts/BetmRounded-Black.ttf') format('truetype')
+                /* Black */
+                ,
+                url('fonts/BetmRounded-ExtraBlack.ttf') format('truetype')
+                /* ExtraBlack */
+                ,
+                url('fonts/BetmRounded-Regular.ttf') format('truetype')
+                /* Regular */
+                ,
+                url('fonts/BetmRounded-SemiBold.ttf') format('truetype')
+                /* SemiBold */
+                ,
+                url('fonts/BetmRounded-SemiLight.ttf') format('truetype')
+                /* SemiLight */
+            ;
+        }
+
+        :root {
+            --maingray-color: #d6dce8;
+            --maingray-color-reverse: #c8cdd8;
+            --main-color: #ee0451;
+            --lightbg-color: #eef4f7;
+            --yellow-color: #ffd400;
+            --darklight-color: #dde5ee;
+            --darkblack-color: #171717;
+            --lightblack-color: #2a2a2a;
+            --ultralightblakc-color: #3f3f51;
+            --darkwhite-color: #dde5ee;
+            --purlple-color: #654eb2;
+            --green-color: #16bb77;
+            --red-color: #eb2743;
+        }
+
         * {
-            margin: 0;
+            box-sizing: border-box;
             padding: 0;
-            box-sizing: border-box
+            margin: 0;
         }
 
         html {
-            height: 100%;
             width: 100%;
+            height: 100%;
             overflow: hidden;
         }
 
         body {
-            height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: space-around;
+            font-family: 'BetmRounded', sans-serif;
+            padding: 0;
+            margin: 0;
+            background-color: var(--lightbg-color);
+            display: flex;
+            justify-content: center;
             align-items: center;
+            height: 100%;
             width: 100%;
-            background-color: green;
             position: relative;
             overflow: hidden;
         }
 
-        .pantalla {
-            width: 100%;
-            height: 100%;
-            min-height: 50vh;
-            max-height: 50vh;
-            background-color: black;
+
+        .notification {
+            position: absolute;
+            min-width: 400px;
+            max-width: 400px;
+            min-height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            top: 20px;
+            left: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease-out;
         }
 
-        .container {
+        .notification-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            /* justify-content: center;
+      align-items: center; */
+            position: relative;
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 10px 15px 15px 15px;
+            gap: 15px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            /* Fondo blanco semitransparente (ajusta los valores según tus preferencias) */
+            backdrop-filter: blur(10px);
+            transform: scale(1);
+            /* Desenfoque de fondo (ajusta el valor según la intensidad deseada) */
+        }
+
+        .notification-head {
+            width: 10%;
+            min-height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-head img {
+            width: 70%;
+            left: 10px;
+            top: 10px;
+        }
+
+        .notification-body {
+            width: 75%;
+            min-height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 0px;
+            margin: 0;
 
-            width: 100%;
-            height: 100%;
-            transition: all 0.3s ease;
-            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
         }
 
-        .caja1 {
-            width: 100%;
-            height: 200px;
-            min-height: 200px;
+        .notification-body h1 {
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--lightblack-color);
+        }
+
+        .notification-body h2 {
+            font-size: 20px;
+            font-weight: 100;
+            margin-top: -5px;
+            color: var(--ultralightblakc-color);
+        }
+
+        .notification p {
+            font-size: 14px;
+            font-weight: 100;
             position: absolute;
-            left: 0;
-            bottom: -160px;
-            background-color: beige;
-            opacity: .8;
-            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+            right: 25px;
+            top: 25px;
+            color: var(--green-color);
         }
 
-        #caja2 {
-            width: 100%;
-            height: 100%;
-
-            position: relative;
-            background-color: green;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+        .notification h3 {
+            font-size: 22px;
+            font-weight: 100;
+            color: var(--ultralightblakc-color);
         }
 
-        .caja-pequena {
-            width: 60px;
-            height: 60px;
-            background-color: red;
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+        @keyframes slideInFromLeft {
+            0% {
+                left: -420px;
+                opacity: 0;
+            }
+
+            90% {
+                left: 10px;
+
+                opacity: .9;
+            }
+
+
+            100% {
+
+                left: 10px;
+                opacity: 1;
+            }
+
         }
 
-        .caja85 {
-            width: 100px;
-            height: 100px;
-            background-color: aquamarine;
-            position: absolute;
-            bottom: 40px;
-            left: 0;
-            transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8);
+        @keyframes slideInTransform {
+            0% {
+                transform: translateX(-100%) scale(0.8);
+                /* Empieza más pequeño y fuera de la pantalla */
+                opacity: 0;
+            }
+
+            70% {
+                /* Aumenta la duración para una entrada más lenta */
+                transform: translateY(0) scale(1.5);
+                /* Sobrepasa ligeramente la escala final */
+                opacity: 0.8;
+                /* Aumenta la opacidad gradualmente */
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+                /* Vuelve a la escala normal */
+                opacity: 1;
+            }
         }
 
-        #button {
-            width: 100px;
-            height: 100px;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 10px;
-            position: absolute;
-            top: 150px;
-            left: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+        @keyframes slideOutToLeft {
+            from {
+                left: 10px;
+                opacity: 1;
+            }
+
+            to {
+                left: -420px;
+                opacity: 0;
+            }
+
+            /* Sale por la izquierda */
+        }
+
+        /* Media queries para adaptar a diferentes tamaños de pantalla */
+        @media (max-width: 768px) {}
+
+        /* Media queries para pantallas aún más pequeñas (opcional) */
+        @media (min-width: 532px) {}
+
+        .notification-body h1,
+        .notification-body h2,
+        .notification-body h3 {
             user-select: none;
-            transition: transform 0.2s ease-out;
-            /* Efecto elástico al soltar */
+        }
+
+        #notificationForm {
+            width: 350px;
+            /* Adjust width as needed */
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-family: 'BetmRounded', sans-serif;
+        }
+
+        #notificationForm h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #notificationForm label {
+            display: block;
+            margin-top: 10px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        #notificationForm input[type="text"],
+        #notificationForm input[type="number"],
+        #notificationForm textarea,
+        #notificationForm select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        #notificationForm textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        #notificationForm button {
+            background-color: var(--main-color);
+            /* or #007bff (a nice blue) */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        #notificationForm button:hover {
+            background-color: #0056b3;
+            /* Darker shade on hover */
         }
     </style>
-
-
-    </script>
 </head>
 
 <body>
-    <div class="pantalla">
-        <div id="button">Arrástrame</div>
-    </div>
-    <div class="container">
-        <div id="caja2" class="caja2">
-            <div class="caja85" id="caja85"></div>
-        </div>
-    </div>
-    <div id="caja1" class="caja1">
-        <div class="caja-pequena" id="caja-pequena"></div>
+    <div id="notificationsContainer"></div>
+
+    <div id="notificationForm">
+        <h2>Crear Notificación</h2>
+        <label for="notificationTypeInput">Tipo:</label>
+        <input type="text" id="notificationTypeInput" value="Tipo"><br>
+
+        <label for="notificationTitleInput">Título:</label>
+        <input type="text" id="notificationTitleInput" value="Titulo"><br>
+
+        <label for="notificationMessageInput">Mensaje:</label>
+        <textarea id="notificationMessageInput">Lorem ipsum dolor sit amet</textarea><br>
+
+        <label for="notificationImageInput">Imagen:</label>
+        <select id="notificationImageInput">
+            <option value="sword.png" selected>Espada</option>
+            <option value="shield.png">Escudo</option>
+            <option value="potion.png">Poción</option>
+        </select><br>
+
+        <label for="notificationSecondsInput">Segundos:</label>
+        <input type="number" id="notificationSecondsInput" value="60"><br>
+
+        <button onclick="addNotification()">Agregar Notificación</button>
     </div>
 
     <script>
-        const caja1 = document.getElementById('caja1');
-        const caja2 = document.getElementById('caja2');
-        const caja85 = document.getElementById('caja85');
-        const cajaPequena = document.getElementById('caja-pequena');
-        let initialY = 150;
-        let isDragging = false;
-        let startY, currentY = initialY;
+        const notificationsContainer = document.getElementById("notificationsContainer");
+        const maxNotifications = 3;
+        const notificationPositions = [0, 100, 200];
 
-        // Puntos de anclaje
-        const topPoint = 0;
-        const bottomPoint = initialY;
+        function addNotification() {
+            const notificationType = document.getElementById("notificationTypeInput").value;
+            const notificationTitle = document.getElementById("notificationTitleInput").value;
+            const notificationMessage = document.getElementById("notificationMessageInput").value;
+            const notificationImage = document.getElementById("notificationImageInput").value;
+            let notificationSeconds = parseInt(document.getElementById("notificationSecondsInput").value, 10);
 
-        function handleMouseDown(event) {
-            event.preventDefault();  // Esto asegura que el evento no se maneje de manera predeterminada.
-            startY = event.clientY;
-            isDragging = true;
-            caja1.style.transition = 'none'; // Desactiva la transición mientras se arrastra
+            const existingNotifications = notificationsContainer.querySelectorAll(".notification");
+
+            // Si hay 3 notificaciones, quitar la más antigua y desplazar las demás
+            if (existingNotifications.length >= maxNotifications) {
+                for (let i = 0; i < existingNotifications.length - 1; i++) {
+                    const currentPos = notificationPositions[i];
+                    const nextPos = notificationPositions[i + 1];
+                    existingNotifications[i].style.transform = `translateY(${nextPos}px)`;
+                }
+                existingNotifications[existingNotifications.length - 1].remove(); // Eliminar la última
+            }
+
+            const notificationDiv = document.createElement("div");
+            notificationDiv.classList.add("notification");
+            notificationDiv.innerHTML = `
+  <div class="notification-container">
+    <div class="notification-head">
+      <img src="${notificationImage}" alt="icon">
+    </div>
+    <div class="notification-body">
+      <h3>${notificationType}</h3>
+      <h1>${notificationTitle}</h1>
+      <h2>${notificationMessage}</h2>
+    </div>
+    <p id="notificationTimer">${notificationSeconds}s</p>
+  </div>
+`;
+
+            // Agregar la nueva notificación en la parte superior
+            notificationsContainer.prepend(notificationDiv);
+            positionNotifications();
+            animateNotificationEntry(notificationDiv);
+
+            const timerElement = notificationDiv.querySelector("#notificationTimer");
+            const timerInterval = setInterval(() => {
+                notificationSeconds--;
+                timerElement.innerText = `${notificationSeconds}s`;
+
+                if (notificationSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    animateNotificationExit(notificationDiv);
+                }
+            }, 1000);
+
+
+            // Drag-to-dismiss logic (mouse and touch):
+            let dragging = false;
+            let startX;
+
+            function handleStart(e) {
+                dragging = true;
+                startX = e.clientX || e.touches[0].clientX; // Use clientX for mouse and touches[0].clientX for touch events
+            }
+
+            function handleMove(e) {
+                if (dragging) {
+                    const currentX = e.clientX || e.touches[0].clientX;
+                    const deltaX = currentX - startX;
+                    if (deltaX < 0) {
+                        notificationDiv.style.left = (10 + deltaX) + 'px';
+                    }
+                }
+            }
+
+            function handleEnd() {
+                dragging = false;
+                if (notificationDiv.offsetLeft < -200) {
+                    animateNotificationExit(notificationDiv);
+                } else {
+                    notificationDiv.style.left = '10px';
+                }
+            }
+
+            notificationDiv.addEventListener('mousedown', handleStart);
+            notificationDiv.addEventListener('touchstart', handleStart);
+            document.addEventListener('mousemove', handleMove);
+            document.addEventListener('touchmove', handleMove);
+            document.addEventListener('mouseup', handleEnd);
+            document.addEventListener('touchend', handleEnd);
         }
 
-        caja2.addEventListener('mousedown', handleMouseDown);
-        caja1.addEventListener('mousedown', handleMouseDown);
 
-        document.addEventListener('mousemove', function (event) {
-            if (isDragging) {
-                let moveY = event.clientY - startY;
-                let dy = currentY - initialY;
-                let resistanceFactor = 1;  // Factor de resistencia base
-                if (moveY > 0) { // Movimiento hacia abajo
-                    resistanceFactor += Math.abs(dy) / 2000;
-                } else { // Movimiento hacia arriba o estacionario
-                    resistanceFactor += Math.abs(dy) / 100;
-                }
+        function positionNotifications() {
+            const notifications = notificationsContainer.querySelectorAll(".notification");
+            notifications.forEach((notification, i) => {
+                notification.style.transform = `translateY(${notificationPositions[i]}px) scale(1)`;
+            });
+        }
 
-                currentY += moveY / resistanceFactor;
-                startY = event.clientY;
+        function animateNotificationEntry(notificationDiv) {
+            notificationDiv.style.animation = "slideInFromLeft 0.3s cubic-bezier(0.000, 0.805, 0.000, 0.995)";
+            const container = notificationDiv.querySelector('.notification-container');
+            container.style.animation = "slideInTransform 0.3s cubic-bezier(0.000, 0.805, 0.000, 0.995)";
+        }
 
-                // Asegura que no se mueva más allá del punto inicial
-                if (currentY > initialY) {
-                    currentY = initialY;
-                }
+        function animateNotificationExit(notificationDiv) {
+            notificationDiv.style.animation = "slideOutToLeft 0.3s cubic-bezier(0.000, 0.805, 0.000, 0.995)";
+            notificationDiv.addEventListener('animationend', () => {
+                notificationDiv.remove();
+                positionNotifications();
+            });
+        }
 
-                caja1.style.transform = `translateY(${currentY - initialY}px)`;
-            }
-        });
 
-        window.addEventListener('mouseup', function () {
-            if (isDragging) {
-                isDragging = false;
-
-                // Calcula la distancia a cada punto de anclaje
-                const distanceToTop = Math.abs(currentY - topPoint);
-                const distanceToBottom = Math.abs(currentY - bottomPoint);
-
-                // Determina el punto más cercano
-                const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
-
-                // Mueve el botón al punto más cercano con una transición suave
-                caja1.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
-                caja1.style.transform = `translateY(${targetY - initialY}px)`;
-                cajaPequena.style.transform = `translateY(${targetY - initialY}px)`;
-                caja85.style.transform = `translateY(${targetY - initialY}px)`;
-                // Actualiza la posición actual para futuros arrastres
-                currentY = targetY;
-            }
-        });
     </script>
-
 </body>
 
 </html>

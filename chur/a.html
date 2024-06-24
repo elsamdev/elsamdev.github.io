@@ -66,7 +66,7 @@
       justify-content: center;
       align-items: center;
       height: 100%;
-
+      position: relative;
     }
 
     .game {
@@ -482,6 +482,97 @@
       transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
 
+
+    .notification {
+      position: absolute;
+      min-width: 300px;
+      max-width: 500px;
+      min-height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 5;
+
+      left: 0;
+    }
+
+    .notification-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      /* justify-content: center;
+      align-items: center; */
+      position: relative;
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 10px 15px 15px 15px;
+      gap: 15px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      /* Fondo blanco semitransparente (ajusta los valores según tus preferencias) */
+      backdrop-filter: blur(10px);
+      transform: scale(1);
+      /* Desenfoque de fondo (ajusta el valor según la intensidad deseada) */
+    }
+
+    .notification-head {
+      width: 10%;
+      min-height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notification-head img {
+      width: 70%;
+      left: 10px;
+      top: 10px;
+    }
+
+    .notification-body {
+      width: 75%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 0px;
+      margin: 0;
+
+    }
+
+    .notification-body h1 {
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--lightblack-color);
+    }
+
+    .notification-body h2 {
+      font-size: 20px;
+      font-weight: 100;
+      margin-top: -5px;
+      color: var(--ultralightblakc-color);
+    }
+
+    .notification p {
+      font-size: 14px;
+      font-weight: 100;
+      position: absolute;
+      right: 25px;
+      top: 25px;
+      color: var(--green-color);
+    }
+
+    .notification h3 {
+      font-size: 22px;
+      font-weight: 100;
+      color: var(--ultralightblakc-color);
+
+    }
+
+
     @media (min-width: 582px) {}
   </style>
 </head>
@@ -490,7 +581,21 @@
   <div class="game">
     <i class="fa-solid fa-bars icon-menu"></i>
 
+    <!-- <div class="notification">
+      <div class="notification-container">
+        <div class="notification-head">
+          <img src="sword.png" alt="icon">
+        </div>
+        <div class="notification-body">
+          <h3>Tipo</h3>
+          <h1>Titulo</h1>
+          <h2>Lorem ipsum dolor sit amet,
 
+          </h2>
+        </div>
+        <p>60s</p>
+      </div>
+    </div> -->
 
 
     <button class="action-button">
@@ -701,7 +806,7 @@
       "friction": 0.25,
       "pageDots": false,
       "prevNextButtons": false,
-      dragThreshold: 0
+      dragThreshold: 1
     });
     const relleno = document.querySelector('.recurso-relleno');
     let leftPosition = 0;
@@ -809,6 +914,8 @@
 
 
     let initialY = 80;
+    let initialX = null;
+
     let isDragging = false;
     let startY, currentY = initialY;
 
@@ -830,6 +937,7 @@
 
 
     ///push button
+    navigation.addEventListener('mousedown', handleDragStart);
     navigation.addEventListener('mousedown', handleDragStart);
     flkty.on('dragStart', handleDragStart);
 
