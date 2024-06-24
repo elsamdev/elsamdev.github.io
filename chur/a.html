@@ -1026,7 +1026,7 @@
     });
 
     flkty.on('dragMove', (event, pointer, moveVector) => {
-
+      isDragging = true;
 
       if (isDragging) {
         const touch = event.changedTouches ? event.changedTouches[0] : event;
