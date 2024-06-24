@@ -808,8 +808,8 @@
       "friction": 0.25,
       "pageDots": false,
       "prevNextButtons": false,
-      dragThreshold: 10,
-      touchVerticalScroll: true
+      dragThreshold: 1,
+      draggable: true
     });
     const relleno = document.querySelector('.recurso-relleno');
     let leftPosition = 0;
@@ -1026,7 +1026,7 @@
     });
 
     flkty.on('dragMove', (event, pointer, moveVector) => {
-      event.preventDefault(); // Prevenir el scroll vertical
+
 
       if (isDragging) {
         const touch = event.changedTouches ? event.changedTouches[0] : event;
