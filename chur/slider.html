@@ -401,7 +401,7 @@
                 slider.classList.remove('grabbing');
 
                 const dx = currentPos - startPos;
-                let newTransform = lastTransform + dx + (velocity * 800); // Momentum effect, adjust 800 to control overshoot
+                let newTransform = lastTransform + dx + (velocity * 100); // Momentum effect, adjust 800 to control overshoot
 
                 if (newTransform > 0) {
                     newTransform = 0;
