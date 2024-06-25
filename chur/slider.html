@@ -509,10 +509,10 @@
                 // console.log("currentPosY: " + currentPosY)
                 const dy = currentPosY - startPosY;
 
-                if (Math.abs(dy) > 20 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
+                if (Math.abs(dy) > 50 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
                     moveNavigation(currentPosY)
                     console.log(Math.abs(dy))
-                } else {
+                } else if (draggingElement === navigation) {
                     moveNavigation(currentPosY)
                 }
 
@@ -550,7 +550,7 @@
                 }
 
                 slider.style.transform = `translateX(${newTransform}px)`;
-                slider.style.transition = 'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)'; // Smooth deceleration
+                slider.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)'; // Smooth deceleration
                 lastTransform = newTransform;
 
 
@@ -614,7 +614,11 @@
             slider.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, slider));
             navigation.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, navigation));
             window.addEventListener('touchmove', e => moveInteraction(e.touches[0].clientX, e.touches[0].clientY));
-            window.addEventListener('touchend', e => endInteraction(e.touches[0].clientX, e.touches[0].clientY));
+            window.addEventListener('touchend', e => {
+                if (e.changedTouches && e.changedTouches.length > 0) {
+                    endInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                }
+            });
         });
 
         /////////////////////////////////////////
