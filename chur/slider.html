@@ -521,6 +521,8 @@
                 let tentativeTransform = lastTransform + dx;
                 velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
 
+                //
+
                 // Elastic effect
                 if (tentativeTransform > 0) {
                     tentativeTransform = dx / 5;
@@ -548,7 +550,7 @@
                 }
 
                 slider.style.transform = `translateX(${newTransform}px)`;
-                slider.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)'; // Smooth deceleration
+                slider.style.transition = 'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)'; // Smooth deceleration
                 lastTransform = newTransform;
 
 
