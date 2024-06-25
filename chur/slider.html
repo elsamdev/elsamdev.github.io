@@ -499,6 +499,7 @@
 
             // Unified function for handling start of interaction
             function startInteraction(startX, startY, element) {
+                if (slider.classList.contains('animating')) return;
                 isDragging = true;
                 startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
                 startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
@@ -512,7 +513,8 @@
 
             // Unified function for handling movement
             function moveInteraction(currentPosX, currentPosY) {
-                if (!isDragging) return;
+
+                if (!isDragging || slider.classList.contains('animating')) return;
 
                 // console.log("currentPosX: " + currentPosX)
                 // console.log("currentPosY: " + currentPosY)
@@ -566,6 +568,7 @@
 
                 slider.style.transform = `translateX(${newTransform}px)`;
                 slider.style.transition = 'all 1s cubic-bezier(0.34, 1.56, 0.64, 1)'; // Smooth deceleration
+                slider.classList.add('animating');
                 lastTransform = newTransform;
 
 
@@ -587,6 +590,11 @@
                 navigation.style.transform = `translateY(${targetY - initialY}px)`;
                 currentY = targetY;
                 draggingElement = false;
+
+                // Remove animating class after the animation ends
+                slider.addEventListener('transitionend', () => {
+                    slider.classList.remove('animating');
+                }, { once: true });
             }
 
             function moveNavigation(currentPosY) {
