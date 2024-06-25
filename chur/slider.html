@@ -7,7 +7,7 @@
     <title>slider</title>
 </head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.min.css" />
+
 <style>
     @font-face {
         font-family: 'BetmRounded';
@@ -460,8 +460,7 @@
         const icon = document.querySelectorAll('.icon i');
         const buttonMain = document.querySelectorAll('.button');
         const buttonnav = document.querySelectorAll('.navigation-container button');
-        let initialY = 80;
-        let startY, currentY = initialY;
+
         document.addEventListener('DOMContentLoaded', function () {
             const slider = document.querySelector('.slider');
             let isDragging = false;
@@ -473,9 +472,11 @@
             let startPosX = 0, startPosY = 0;
             let transform = 0, lastTransform = 0;
             let velocity = 0, direction = '';
+            let initialY = 80;
             let startY = 0, currentY = 80; // For vertical navigation movement
             const topPoint = 0;
             const bottomPoint = 80;
+            let draggingElement = null;
 
             function updateSliderWidth() {
                 sliderWidth = slider.scrollWidth - slider.clientWidth;
@@ -488,10 +489,12 @@
             window.addEventListener('resize', updateSliderWidth);
 
             // Unified function for handling start of interaction
-            function startInteraction(startX) {
+            function startInteraction(startX, startY, element) {
                 isDragging = true;
-                startPos = startX;
+                startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
+                startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
                 startTime = Date.now();
+                draggingElement = element;
                 slider.classList.add('grabbing');
                 slider.style.transition = 'none';
                 // Remove transition for real-time tracking
@@ -504,10 +507,17 @@
 
                 // console.log("currentPosX: " + currentPosX)
                 // console.log("currentPosY: " + currentPosY)
-                const dy = currentPosY - startPos;
+                const dy = currentPosY - startPosY;
 
-                moveNavigation(currentPosY)
+                if (Math.abs(dy) > 20 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
+                    moveNavigation(currentPosY)
+                    console.log(Math.abs(dy))
+                } else {
+                    moveNavigation(currentPosY)
+                }
+
                 const dx = currentPosX - startPos;
+
                 let tentativeTransform = lastTransform + dx;
                 velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
 
@@ -554,11 +564,12 @@
                 } else if (targetY === bottomPoint) {
                     restablecerElementos();
                 }
-                console.log(targetY);
+
                 // Mueve el botón al punto más cercano con una transición suave
                 navigation.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                 navigation.style.transform = `translateY(${targetY - initialY}px)`;
-
+                currentY = targetY;
+                draggingElement = null;
             }
 
             function moveNavigation(currentPosY) {
@@ -592,16 +603,16 @@
 
             }
 
-            slider.addEventListener('mousedown', e => startInteraction(e.clientX));
-            navigation.addEventListener('mousedown', e => startInteraction(e.clientX));
+            slider.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, slider));
+            navigation.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, navigation));
             window.addEventListener('mousemove', e => moveInteraction(e.clientX, e.clientY));
             window.addEventListener('mouseup', e => endInteraction(e.clientX));
 
             // Touch events
-            slider.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX));
-            navigation.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX));
+            slider.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, slider));
+            navigation.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, navigation));
             window.addEventListener('touchmove', e => moveInteraction(e.touches[0].clientX, e.touches[0].clientY));
-            window.addEventListener('touchend', e => endInteraction(e.changedTouches[0].clientX));
+            window.addEventListener('touchend', e => endInteraction(e.touches[0].clientX, e.touches[0].clientY));
         });
 
         /////////////////////////////////////////
