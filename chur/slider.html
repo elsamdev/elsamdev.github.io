@@ -67,6 +67,8 @@
     .slider-container {
         width: 100%;
         overflow: hidden;
+        position: absolute;
+        bottom: 0;
     }
 
     .slider {
@@ -215,6 +217,92 @@
         background-color: var(--maingray-color-reverse);
         transition: all .3 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
+
+
+    .navigation {
+        width: 100%;
+        min-height: 100px;
+        height: 100px;
+        max-height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 10px;
+        /* background-color: var(--maingray-color); */
+        /* background-color: #180293; */
+        position: absolute;
+        bottom: -80px;
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+    }
+
+
+
+    .navigation-container {
+        width: 100%;
+        min-height: 100%;
+        height: 100%;
+        max-height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+
+    .navigation-button-container {
+        width: 33.33%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s cubic-bezier(.47, 1.64, .41, .8);
+    }
+
+    .navigation-container button {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        height: 80%;
+        border: none;
+        /* background-color: var(--maingray-color); */
+        color: var(--lightblack-color);
+        font-weight: 300;
+        font-size: 20px;
+        cursor: pointer;
+        border-radius: 10px;
+        border: var(--lightblack-color) solid 2px;
+        box-shadow: 0px 4px 0px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+        opacity: 0;
+    }
+
+
+    .navigation-container .navigation-center img {
+        height: 30% !important;
+    }
+
+    .navigation-container .navigation-left img {
+
+        height: 40% !important;
+    }
+
+    .navigation-container .navigation-right img {
+
+        height: 40% !important;
+    }
+
+    .navigation-container button:active {
+        box-shadow: inset 0px 0px 0px 2px var(--ultralightblakc-color);
+    }
+
+    .navigation-container button:active {
+        transform: translateY(5px);
+        background-color: var(--maingray-color-reverse);
+        transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
+    }
 </style>
 
 <body>
@@ -346,16 +434,48 @@
             </div>
         </div>
     </div>
+    <div class="navigation" id="navigation" style="transform: translateY(0px)">
+        <div class="navigation-container">
+            <div class="navigation-button-container">
+                <button class="navigation-left">
+                    <img src="img/arrow-left.png" alt="">
+                </button>
+            </div>
+            <div class="navigation-button-container">
+                <button class="navigation-center">
+                    <img src="img/arrow-up.png" alt="">
+                </button>
+            </div>
+            <div class="navigation-button-container">
+                <button class="navigation-right">
+                    <img src="img/arrow-right.png" alt="">
+                </button>
+            </div>
+        </div>
+    </div>
+
+
     <script>
+        const navigation = document.getElementById('navigation');
+        const icon = document.querySelectorAll('.icon i');
+        const buttonMain = document.querySelectorAll('.button');
+        const buttonnav = document.querySelectorAll('.navigation-container button');
+        let initialY = 80;
+        let startY, currentY = initialY;
         document.addEventListener('DOMContentLoaded', function () {
             const slider = document.querySelector('.slider');
             let isDragging = false;
             let startPos = 0;
             let startTime = 0;
-            let transform = 0;
-            let lastTransform = 0;
             let sliderWidth = slider.scrollWidth - slider.clientWidth;
-            let velocity = 0;
+            let itemWidth = slider.querySelector('.slider-item').clientWidth;
+            const navigation = document.getElementById('navigation');
+            let startPosX = 0, startPosY = 0;
+            let transform = 0, lastTransform = 0;
+            let velocity = 0, direction = '';
+            let startY = 0, currentY = 80; // For vertical navigation movement
+            const topPoint = 0;
+            const bottomPoint = 80;
 
             function updateSliderWidth() {
                 sliderWidth = slider.scrollWidth - slider.clientWidth;
@@ -373,13 +493,20 @@
                 startPos = startX;
                 startTime = Date.now();
                 slider.classList.add('grabbing');
-                slider.style.transition = 'none'; // Remove transition for real-time tracking
+                slider.style.transition = 'none';
+                // Remove transition for real-time tracking
             }
 
             // Unified function for handling movement
-            function moveInteraction(currentPos) {
+            function moveInteraction(currentPosX, currentPosY) {
                 if (!isDragging) return;
-                const dx = currentPos - startPos;
+
+                // console.log("currentPosX: " + currentPosX)
+                // console.log("currentPosY: " + currentPosY)
+                const dy = currentPosY - startPos;
+                console.log("dy: " + dy)
+                moveNavigation(currentPosY)
+                const dx = currentPosX - startPos;
                 let tentativeTransform = lastTransform + dx;
                 velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
 
@@ -402,7 +529,7 @@
 
                 const dx = currentPos - startPos;
                 let newTransform = lastTransform + dx + (velocity * 100); // Momentum effect, adjust 800 to control overshoot
-
+                newTransform = Math.round(newTransform / itemWidth) * itemWidth;
                 if (newTransform > 0) {
                     newTransform = 0;
                 } else if (newTransform < -sliderWidth) {
@@ -412,20 +539,106 @@
                 slider.style.transform = `translateX(${newTransform}px)`;
                 slider.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)'; // Smooth deceleration
                 lastTransform = newTransform;
+
+
+                // Calcula la distancia a cada punto de anclaje
+                const distanceToTop = Math.abs(currentY - topPoint);
+                const distanceToBottom = Math.abs(currentY - bottomPoint);
+
+                // Determina el punto más cercano
+                const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
+
+                if (targetY === topPoint) {
+                    ajustarElementos();
+                } else if (targetY === bottomPoint) {
+                    restablecerElementos();
+                }
+
+                // Mueve el botón al punto más cercano con una transición suave
+                navigation.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+                navigation.style.transform = `translateY(${targetY - initialY}px)`;
             }
 
-            // Mouse events
+            function moveNavigation(currentPosY) {
+                buttonnav.forEach(button => {
+                    button.style.opacity = '1';
+                });
+
+                let moveY = currentPosY - startY;
+                let dy = currentY - initialY;
+                let resistanceFactor = 1;  // Factor de resistencia base
+                if (moveY > 0) { // Movimiento hacia abajo
+                    resistanceFactor += Math.abs(dy) / 2000;
+
+                } else { // Movimiento hacia arriba o estacionario
+
+
+                    resistanceFactor += Math.abs(dy) / 100;
+                }
+
+                currentY += moveY / resistanceFactor;
+                startY = currentPosY;
+
+                // Asegura que no se mueva más allá del punto inicial
+                if (currentY > initialY) {
+                    currentY = initialY;
+                }
+
+                navigation.style.transform = `translateY(${currentY - initialY}px)`;
+            }
+
             slider.addEventListener('mousedown', e => startInteraction(e.clientX));
-            window.addEventListener('mousemove', e => moveInteraction(e.clientX));
+            window.addEventListener('mousemove', e => moveInteraction(e.clientX, e.clientY));
             window.addEventListener('mouseup', e => endInteraction(e.clientX));
 
             // Touch events
             slider.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX));
-            window.addEventListener('touchmove', e => moveInteraction(e.touches[0].clientX));
+            window.addEventListener('touchmove', e => moveInteraction(e.touches[0].clientX, e.touches[0].clientY));
             window.addEventListener('touchend', e => endInteraction(e.changedTouches[0].clientX));
         });
 
+        /////////////////////////////////////////
 
+
+        //////////////////////////
+        function ajustarElementos() {
+            icon.forEach(function (elemento) {
+                elemento.style.transform = 'translateY(-20px)';
+            });
+
+            buttonMain.forEach(function (elemento) {
+                elemento.style.transform = 'translateY(-55px)';
+                elemento.style.height = '70%';
+            });
+
+            buttonnav.forEach(function (elemento) {
+                elemento.style.transform = 'none';
+            });
+
+            navigation.style.minHeight = '80px';
+            navigation.style.maxHeight = '80px';
+            navigation.style.height = '80px';
+        }
+
+        function restablecerElementos() {
+            icon.forEach(function (elemento) {
+                elemento.style.transform = 'none';
+            });
+
+            buttonMain.forEach(function (elemento) {
+                elemento.style.transform = 'none';
+                elemento.style.height = '85%';
+            });
+
+
+            buttonnav.forEach(function (elemento) {
+                elemento.style.transform = 'translateY(20px)';
+            });
+
+            navigation.style.minHeight = '100px';
+            navigation.style.maxHeight = '100px';
+            navigation.style.height = '100px';
+        }
 
     </script>
 </body>
