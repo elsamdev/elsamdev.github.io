@@ -157,7 +157,6 @@
     }
 
     .button {
-        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -177,12 +176,12 @@
         /* transition: all 0.3s cubic-bezier(0.47, 1.8, 0.41, 0.8); */
 
         /* Transición con cubic-bezier para el rebote */
-        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
-        position: absolute;
-        top: -1px;
-        transform: translate(0);
-    }
 
+        position: absolute;
+
+        transform: none;
+
+    }
 
 
     .button-yellow {
@@ -222,7 +221,7 @@
     .button:active {
         transform: translateY(5px);
         background-color: var(--maingray-color-reverse);
-        transition: all .3 cubic-bezier(0.000, 0.805, 0.000, 0.995);
+        transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
     }
 
 
@@ -306,9 +305,12 @@
     }
 
     .navigation-container button:active {
-        transform: translateY(5px);
+        /* transform: translateY(5px); */
         background-color: var(--maingray-color-reverse);
-        transition: all .2 cubic-bezier(0.000, 0.805, 0.000, 0.995);
+    }
+
+    .animate-button {
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275);
     }
 </style>
 
@@ -320,7 +322,7 @@
                     <i class="fas fa-heart"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-green">
+                    <button class="animate-button button button-green">
                         <i class="fas fa-heart"></i>Botón
                     </button>
                 </div>
@@ -330,7 +332,7 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-green">
+                    <button class="animate-button button button-green">
                         <i class="fas fa-space-shuttle"></i>Botón
                     </button>
                 </div>
@@ -340,7 +342,7 @@
                     <i class="fas fa-bank"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-green">
+                    <button class="animate-button button button-green">
                         <i class="fas fa-bank"></i>Botón
                     </button>
                 </div>
@@ -352,7 +354,7 @@
                     <i class="fas fa-heart"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-blue">
+                    <button class="animate-button button button-blue">
                         <i class="fas fa-heart"></i>Botón
                     </button>
                 </div>
@@ -362,7 +364,7 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-blue">
+                    <button class="animate-button button button-blue">
                         <i class="fas fa-space-shuttle"></i>Botón
                     </button>
                 </div>
@@ -372,7 +374,7 @@
                     <i class="fas fa-bank"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-blue">
+                    <button class="animate-button button button-blue">
                         <i class="fas fa-bank"></i>Botón
                     </button>
                 </div>
@@ -383,7 +385,7 @@
                     <i class="fas fa-heart"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-yellow">
+                    <button class="animate-button button button-yellow">
                         <i class="fas fa-heart"></i>Botón
                     </button>
                 </div>
@@ -393,7 +395,7 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-yellow">
+                    <button class="animate-button button button-yellow">
                         <i class="fas fa-space-shuttle"></i>Botón
                     </button>
                 </div>
@@ -403,7 +405,7 @@
                     <i class="fas fa-bank"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-yellow">
+                    <button class="animate-button button button-yellow">
                         <i class="fas fa-bank"></i>Botón
                     </button>
                 </div>
@@ -414,7 +416,7 @@
                     <i class="fas fa-heart"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-black">
+                    <button class="animate-button button button-black">
                         <i class="fas fa-heart"></i>Botón
                     </button>
                 </div>
@@ -424,7 +426,7 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-black">
+                    <button class="animate-button button button-black">
                         <i class="fas fa-space-shuttle"></i>Botón
                     </button>
                 </div>
@@ -434,7 +436,7 @@
                     <i class="fas fa-bank"></i>
                 </div>
                 <div class="button-container">
-                    <button class="button button-black">
+                    <button class="animate-button button button-black">
                         <i class="fas fa-bank"></i>Botón
                     </button>
                 </div>
@@ -444,17 +446,17 @@
     <div class="navigation" id="navigation" style="transform: translateY(0px)">
         <div class="navigation-container">
             <div class="navigation-button-container">
-                <button class="navigation-left">
+                <button class="animate-button navigation-left">
                     <img src="img/arrow-left.png" alt="">
                 </button>
             </div>
             <div class="navigation-button-container">
-                <button class="navigation-center">
+                <button class="animate-button navigation-center">
                     <img src="img/arrow-up.png" alt="">
                 </button>
             </div>
             <div class="navigation-button-container">
-                <button class="navigation-right">
+                <button class="animate-button navigation-right">
                     <img src="img/arrow-right.png" alt="">
                 </button>
             </div>
@@ -519,26 +521,32 @@
                 if (Math.abs(dy) > 50 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
                     moveNavigation(currentPosY)
                     console.log(Math.abs(dy))
+                    let draggingElement = true;
                 } else if (draggingElement === navigation) {
                     moveNavigation(currentPosY)
+                    let draggingElement = true;
                 }
 
                 const dx = currentPosX - startPos;
+                if (Math.abs(dx) > 3) {
+                    let draggingElement = true;
+                    let tentativeTransform = lastTransform + dx;
+                    velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
 
-                let tentativeTransform = lastTransform + dx;
-                velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
+                    //
 
-                //
+                    // Elastic effect
+                    if (tentativeTransform > 0) {
+                        tentativeTransform = dx / 5;
+                    } else if (tentativeTransform < -sliderWidth) {
+                        tentativeTransform = -sliderWidth + (dx / 5);
+                    }
 
-                // Elastic effect
-                if (tentativeTransform > 0) {
-                    tentativeTransform = dx / 5;
-                } else if (tentativeTransform < -sliderWidth) {
-                    tentativeTransform = -sliderWidth + (dx / 5);
+                    transform = tentativeTransform;
+                    slider.style.transform = `translateX(${transform}px)`;
+
                 }
 
-                transform = tentativeTransform;
-                slider.style.transform = `translateX(${transform}px)`;
             }
 
             // Unified function for ending interaction
@@ -557,7 +565,7 @@
                 }
 
                 slider.style.transform = `translateX(${newTransform}px)`;
-                slider.style.transition = 'transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)'; // Smooth deceleration
+                slider.style.transition = 'all 1s cubic-bezier(0.34, 1.56, 0.64, 1)'; // Smooth deceleration
                 lastTransform = newTransform;
 
 
@@ -578,7 +586,7 @@
                 navigation.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                 navigation.style.transform = `translateY(${targetY - initialY}px)`;
                 currentY = targetY;
-                draggingElement = null;
+                draggingElement = false;
             }
 
             function moveNavigation(currentPosY) {
@@ -638,7 +646,7 @@
             });
 
             buttonMain.forEach(function (elemento) {
-                elemento.style.transform = 'translateY(-55px)';
+                elemento.style.top = '-55px';
                 elemento.style.height = '70%';
             });
 
@@ -658,7 +666,7 @@
             });
 
             buttonMain.forEach(function (elemento) {
-                elemento.style.transform = 'none';
+                elemento.style.top = '0';
                 elemento.style.height = '85%';
             });
 
@@ -672,6 +680,25 @@
             navigation.style.height = '100px';
         }
 
+
+        ///////////////********BOTONES********** *///////////////
+        document.querySelectorAll('.animate-button').forEach(button => {
+            button.addEventListener('mousedown', function () {
+                this.style.transform = 'translateY(5px)';
+                // this.style.boxShadow = 'inset 0px 0px 10px 2px rgba(0, 0, 0, 0.2)';
+            });
+
+            button.addEventListener('mouseup', function () {
+                this.style.transform = 'translateY(0px)';
+                this.style.boxShadow = '';  // Restablecer al estilo original
+            });
+
+            button.addEventListener('mouseleave', function () {
+                // Restablecer si el mouse sale del botón mientras está presionado
+                this.style.transform = 'translateY(0px)';
+                this.style.boxShadow = '';
+            });
+        });
     </script>
 </body>
 
