@@ -58,7 +58,27 @@
         user-select: none;
     }
 
-    body,
+    html {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        font-family: 'BetmRounded', sans-serif;
+        padding: 0;
+        margin: 0;
+        background-color: var(--lightbg-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        position: relative;
+    }
+
+    /* body,
     html {
         margin: 0;
         padding: 0;
@@ -69,13 +89,171 @@
         justify-content: center;
         overflow: hidden;
         font-family: Arial, sans-serif;
+    } */
+
+    /* screengame */
+    .game {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        min-height: 53%;
+        max-height: 53%;
+        background-color: var(--lightbg-color);
+
+        position: relative;
     }
 
+    .coin {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        max-height: 3vh;
+        background-color: var(--lightbg-color);
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    .coins {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+
+    }
+
+
+
+    .recursos {
+        display: flex;
+        position: relative;
+        height: 100%;
+        /* Para colocar los elementos en fila */
+        /* Espacio entre los elementos */
+        overflow: hidden;
+    }
+
+
+
+    .recurso-relleno {
+        content: "hola";
+        height: 100%;
+        width: 25%;
+        background-color: var(--green-color);
+        color: white;
+        position: absolute;
+        left: 0;
+        transition: all 0.3s ease;
+    }
+
+    .recursos-item {
+        min-width: 50px;
+        display: flex;
+        justify-content: flex-end;
+        height: 100%;
+        /* Para colocar el número y el ícono en fila */
+        align-items: center;
+        gap: 2px;
+        /* Alinea verticalmente el número y el ícono */
+
+        /* Espacio alrededor del ícono */
+        /* border-left: 1px solid #ccc; */
+        /* Borde para cada recurso */
+        /* border-radius: 5px; */
+        /* Bordes redondeados */
+        /* border: 1px solid var(--main-color); */
+        padding: 1px 7px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .recursos-item img {
+        height: 7px;
+    }
+
+    .recursos-item.active {
+        /* background-color: #000000; */
+        /* Cambia el color de fondo */
+        border: 2px solid var(--darkwhite-color);
+        /* Agrega un borde */
+        color: white;
+        transition: all 0.3s ease;
+        animation: fadeIn 0.3s ease 1;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: scale(5);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Estilos para el SVG dentro de .recursos-item.active */
+    .recursos-item.active svg {
+        width: 10px;
+        height: 10px;
+        transition: all 0.3s ease;
+    }
+
+    /* Estilos para el elemento .numero dentro de .recursos-item.active */
+    .recursos-item.active .numero {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+    .recursos-item svg {
+        width: 12px;
+        /* Tamaño del ícono */
+        height: 12px;
+        /* Tamaño del ícono */
+        margin-right: 2px;
+        /* Espacio entre el número y el ícono */
+        font-weight: 900;
+        transition: all 0.3s ease;
+    }
+
+
+
+    .recursos-item .numero {
+        font-size: 12px;
+        /* Tamaño del número */
+        /* Estilo del número */
+        font-weight: 300;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+    .icon-menu {
+        color: var(--green-color);
+        width: 40px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 30px;
+    }
+
+    /************** SLIDER **************/
     .slider-container {
         width: 100%;
         overflow: hidden;
-        position: absolute;
-        bottom: 0;
+        height: 100%;
+        /* position: absolute;
+        bottom: 0; */
     }
 
     .slider {
@@ -84,11 +262,12 @@
         /* Make transitions smooth */
         will-change: transform;
         cursor: grab;
+        height: 100%;
     }
 
     .slider-item {
         flex: 0 0 33.33%;
-        height: 300px;
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -315,6 +494,39 @@
 </style>
 
 <body>
+    <div class="game">
+        <i class="fa-solid fa-bars icon-menu"></i>
+        <button class="action-button">
+            <i class="fa-solid fa-khanda"></i>
+        </button>
+
+        <div class="coin">
+            <div class="coins">
+                <div class="recursos">
+                    <div class="recurso-relleno"></div>
+                    <div class="soldados recursos-item">
+                        <img src="sword.png" alt="sword">
+                        <p class="numero point-soldier">0</p>
+                    </div>
+                    <div class="comida recursos-item">
+                        <img src="sword.png" alt="sword">
+                        <p class="numero point-food">999</p>
+                    </div>
+                    <div class="madera recursos-item">
+                        <img src="sword.png" alt="sword">
+                        <p class="numero point-wood">300</p>
+                    </div>
+                    <div class="obrero recursos-item">
+                        <img src="sword.png" alt="sword">
+                        <p class="numero point-slaves">600</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
     <div class="slider-container">
         <div class="slider">
             <div class="slider-item">
@@ -499,7 +711,6 @@
 
             // Unified function for handling start of interaction
             function startInteraction(startX, startY, element) {
-                if (slider.classList.contains('animating')) return;
                 isDragging = true;
                 startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
                 startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
@@ -514,7 +725,7 @@
             // Unified function for handling movement
             function moveInteraction(currentPosX, currentPosY) {
 
-                if (!isDragging || slider.classList.contains('animating')) return;
+                if (!isDragging) return;
 
                 // console.log("currentPosX: " + currentPosX)
                 // console.log("currentPosY: " + currentPosY)
@@ -530,7 +741,8 @@
                 }
 
                 const dx = currentPosX - startPos;
-                if (Math.abs(dx) > 3) {
+                if (Math.abs(dx) > 20) {
+                    console.log(Math.abs(dx))
                     let draggingElement = true;
                     let tentativeTransform = lastTransform + dx;
                     velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
@@ -546,7 +758,8 @@
 
                     transform = tentativeTransform;
                     slider.style.transform = `translateX(${transform}px)`;
-
+                    logCurrentCenteredItem();
+                    logSliderPercentage();
                 }
 
             }
@@ -591,9 +804,15 @@
                 currentY = targetY;
                 draggingElement = false;
 
+                // Call the functions to log item index and percentage
+
+
+
                 // Remove animating class after the animation ends
                 slider.addEventListener('transitionend', () => {
                     slider.classList.remove('animating');
+                    logCurrentCenteredItem();
+                    logSliderPercentage();
                 }, { once: true });
             }
 
@@ -627,6 +846,19 @@
                 navigation.style.transform = `translateY(${currentY - initialY}px)`;
 
             }
+
+
+            function logCurrentCenteredItem() {
+                const centerPosition = -transform + (slider.clientWidth / 2);
+                const centeredItemIndex = Math.floor(centerPosition / itemWidth);
+                console.log(`Centered item index: ${centeredItemIndex}`);
+            }
+
+            function logSliderPercentage() {
+                const percentage = (Math.abs(transform) / sliderWidth) * 100;
+                console.log(`Slider is currently showing: ${percentage.toFixed(2)}%`);
+            }
+
 
             slider.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, slider));
             navigation.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, navigation));
@@ -707,6 +939,44 @@
                 this.style.boxShadow = '';
             });
         });
+
+
+        ////////////////////********Recursos**********/////////////////////////
+        function changeNumberValue(element, targetValue, duration) {
+            const startValue = parseInt(element.textContent);
+            const increment = (targetValue - startValue) / (duration / 10);
+            let currentValue = startValue;
+
+            const interval = setInterval(function () {
+                currentValue += increment;
+                element.textContent = Math.round(currentValue);
+
+                if ((increment > 0 && currentValue >= targetValue) || (increment < 0 && currentValue <= targetValue)) {
+                    element.textContent = targetValue;
+                    clearInterval(interval);
+                }
+            }, 10);
+        }
+
+        const soldierNumber = document.querySelector('.point-soldier');
+        const foodNumber = document.querySelector('.point-food');
+        const woodNumber = document.querySelector('.point-wood');
+        const slavesNumber = document.querySelector('.point-slaves');
+        const actionButton = document.querySelector('.action-button');
+
+        actionButton.addEventListener('click', function () {
+            changeNumberValue(soldierNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 500 en 2 segundos
+            changeNumberValue(foodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 750 en 1.5 segundos
+            changeNumberValue(woodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 1000 en 1 segundo
+            changeNumberValue(slavesNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 250 en 2.5 segundos
+
+        });
+
+        function generateRandomNumber() {
+            return Math.floor(Math.random() * 1000);
+        }
+
+
     </script>
 </body>
 
