@@ -861,20 +861,6 @@
             function logCurrentCenteredItem() {
                 const centerPosition = -transform + (slider.clientWidth / 2);
                 const centeredItemIndex = Math.floor(centerPosition / itemWidth);
-
-                // if (centeredItemIndex <= 1) {
-                //     numbar = 0
-                // } else if (centeredItemIndex === 4) {
-                //     numbar = 1
-                // } else if (centeredItemIndex === 7) {
-                //     numbar = 2
-                // }
-                // else if (centeredItemIndex >= 10) {
-                //     numbar = 3
-                // }
-
-                estiloRecurso(numbar)
-
             }
 
             function logSliderPercentage() {
@@ -965,33 +951,7 @@
 
         ////////////////////********Recursos**********/////////////////////////
         const relleno = document.querySelector('.recurso-relleno');
-        let leftPosition = 0;
-        estiloRecurso(0)
 
-        function estiloRecurso(btRecurso) {
-            // document.querySelectorAll('.recursos-item').forEach(item => {
-            //     item.classList.remove('active');
-            // });
-
-            // // Agregar la clase active al elemento actual
-            // document.querySelectorAll('.recursos-item')[btRecurso].classList.add('active');
-            // if (btRecurso === 0) {
-            //     console.log('item 1')
-            //     relleno.style.left = leftPosition + '0%';
-
-            // } else if (btRecurso === 1) {
-            //     console.log('mostrar 2')
-            //     relleno.style.left = leftPosition + '25%';
-
-            // } else if (btRecurso === 2) {
-            //     console.log('mostrar 4')
-            //     relleno.style.left = leftPosition + '50%';
-            // }
-            // else if (btRecurso >= 3) {
-            //     console.log('mostrar 4')
-            //     relleno.style.left = leftPosition + '75%';
-            // }
-        }
         function changeNumberValue(element, targetValue, duration) {
             const startValue = parseInt(element.textContent);
             const increment = (targetValue - startValue) / (duration / 10);
