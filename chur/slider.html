@@ -528,7 +528,7 @@
 
 
     <div class="slider-container">
-        <div class="slider">
+        <div class="slider" id="slider">
             <div class="slider-item">
                 <div class="icon">
                     <i class="fas fa-heart"></i>
@@ -721,6 +721,7 @@
                 // Remove transition for real-time tracking
                 logCurrentCenteredItem();
                 logSliderPercentage();
+                valorTra()
             }
 
             // Unified function for handling movement
@@ -728,13 +729,12 @@
 
                 if (!isDragging) return;
 
-                // console.log("currentPosX: " + currentPosX)
-                // console.log("currentPosY: " + currentPosY)
+
                 const dy = currentPosY - startPosY;
 
                 if (Math.abs(dy) > 50 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
                     moveNavigation(currentPosY)
-                    // console.log(Math.abs(dy))
+
                     let draggingElement = true;
                 } else if (draggingElement === navigation) {
                     moveNavigation(currentPosY)
@@ -743,7 +743,7 @@
 
                 const dx = currentPosX - startPos;
                 if (Math.abs(dx) > 20) {
-                    // console.log(Math.abs(dx))
+
                     let draggingElement = true;
                     let tentativeTransform = lastTransform + dx;
                     velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
@@ -758,11 +758,13 @@
                     }
 
                     transform = tentativeTransform;
-                    slider.style.transform = `translateX(${transform}px)`;
-                    logCurrentCenteredItem();
-                    logSliderPercentage();
-                }
 
+                    slider.style.transform = `translateX(${transform}px)`;
+
+                }
+                logCurrentCenteredItem();
+                logSliderPercentage();
+                valorTra()
             }
 
             // Unified function for ending interaction
@@ -773,11 +775,16 @@
 
                 const dx = currentPos - startPos;
                 let newTransform = lastTransform + dx + (velocity * 100); // Momentum effect, adjust 800 to control overshoot
+
                 newTransform = Math.round(newTransform / itemWidth) * itemWidth;
+
                 if (newTransform > 0) {
                     newTransform = 0;
+                    logCurrentCenteredItem();
+                    logSliderPercentage();
                 } else if (newTransform < -sliderWidth) {
                     newTransform = -sliderWidth;
+
                 }
 
                 slider.style.transform = `translateX(${newTransform}px)`;
@@ -805,8 +812,6 @@
                 currentY = targetY;
                 draggingElement = false;
 
-                // Call the functions to log item index and percentage
-
 
 
                 // Remove animating class after the animation ends
@@ -814,10 +819,12 @@
                     slider.classList.remove('animating');
                     logCurrentCenteredItem();
                     logSliderPercentage();
+                    valorTra()
                 }, { once: true });
 
                 logCurrentCenteredItem();
                 logSliderPercentage();
+                valorTra()
             }
 
             function moveNavigation(currentPosY) {
@@ -847,7 +854,7 @@
                 }
 
                 navigation.style.transform = `translateY(${currentY - initialY}px)`;
-
+                valorTra()
             }
 
 
@@ -855,25 +862,23 @@
                 const centerPosition = -transform + (slider.clientWidth / 2);
                 const centeredItemIndex = Math.floor(centerPosition / itemWidth);
 
-                if (centeredItemIndex <= 1) {
-                    numbar = 0
-                } else if (centeredItemIndex === 4) {
-                    numbar = 1
-                } else if (centeredItemIndex === 7) {
-                    numbar = 2
-                }
-                else if (centeredItemIndex >= 10) {
-                    numbar = 3
-                }
-                console.log(`Centered item index: ${numbar}`);
+                // if (centeredItemIndex <= 1) {
+                //     numbar = 0
+                // } else if (centeredItemIndex === 4) {
+                //     numbar = 1
+                // } else if (centeredItemIndex === 7) {
+                //     numbar = 2
+                // }
+                // else if (centeredItemIndex >= 10) {
+                //     numbar = 3
+                // }
+
                 estiloRecurso(numbar)
-                // console.log(`Centered item index: ${centeredItemIndex}`);
 
             }
 
             function logSliderPercentage() {
                 const percentage = (Math.abs(transform) / sliderWidth) * 100;
-                console.log(`Slider is currently showing: ${percentage.toFixed(2)}%`);
             }
 
 
@@ -964,28 +969,28 @@
         estiloRecurso(0)
 
         function estiloRecurso(btRecurso) {
-            document.querySelectorAll('.recursos-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            // document.querySelectorAll('.recursos-item').forEach(item => {
+            //     item.classList.remove('active');
+            // });
 
-            // Agregar la clase active al elemento actual
-            document.querySelectorAll('.recursos-item')[btRecurso].classList.add('active');
-            if (btRecurso === 0) {
-                console.log('item 1')
-                relleno.style.left = leftPosition + '0%';
+            // // Agregar la clase active al elemento actual
+            // document.querySelectorAll('.recursos-item')[btRecurso].classList.add('active');
+            // if (btRecurso === 0) {
+            //     console.log('item 1')
+            //     relleno.style.left = leftPosition + '0%';
 
-            } else if (btRecurso === 1) {
-                console.log('mostrar 2')
-                relleno.style.left = leftPosition + '25%';
+            // } else if (btRecurso === 1) {
+            //     console.log('mostrar 2')
+            //     relleno.style.left = leftPosition + '25%';
 
-            } else if (btRecurso === 2) {
-                console.log('mostrar 4')
-                relleno.style.left = leftPosition + '50%';
-            }
-            else if (btRecurso >= 3) {
-                console.log('mostrar 4')
-                relleno.style.left = leftPosition + '75%';
-            }
+            // } else if (btRecurso === 2) {
+            //     console.log('mostrar 4')
+            //     relleno.style.left = leftPosition + '50%';
+            // }
+            // else if (btRecurso >= 3) {
+            //     console.log('mostrar 4')
+            //     relleno.style.left = leftPosition + '75%';
+            // }
         }
         function changeNumberValue(element, targetValue, duration) {
             const startValue = parseInt(element.textContent);
@@ -1021,6 +1026,54 @@
             return Math.floor(Math.random() * 1000);
         }
 
+        //////function obtener valor del trnalaste
+        function valorTra() {
+            const sliderElement = document.getElementById('slider');
+            const style = window.getComputedStyle(sliderElement);
+            const matrix = style.getPropertyValue('transform');
+            const values = matrix.match(/matrix.*\((.+)\)/)[1].split(', ');
+            const translateX = parseFloat(values[4]);
+
+            // Calcula el ancho del slider
+            const sliderWidth = sliderElement.clientWidth;
+            const scrollLeft = sliderElement.scrollLeft;
+
+            // Determina la posición total que el slider puede desplazarse
+            const maxTranslateX = -(sliderElement.scrollWidth - sliderWidth);
+
+            // Calcula el porcentaje de translateX
+            const porcentaje = ((translateX - scrollLeft) / maxTranslateX) * 100;
+
+            // Limita el porcentaje entre 0 y 100
+            const porcentajeLimitado = Math.max(0, Math.min(100, porcentaje));
+            let porcentajeFinal = 0;
+            let movFinal = 0
+            let herOne = 0
+            if (porcentajeLimitado <= 25 && herOne !== 0) {
+                porcentajeFinal = 0
+                herOne, movFinal = 0
+            } else if (porcentajeLimitado >= 25 && porcentajeLimitado <= 50 && herOne !== 1) {
+                porcentajeFinal = 25
+                herOne, movFinal = 1
+            } else if (porcentajeLimitado >= 50 && porcentajeLimitado <= 75 && herOne !== 2) {
+                porcentajeFinal = 50
+                herOne, movFinal = 2
+            } else if (porcentajeLimitado >= 75 && herOne !== 3) {
+                porcentajeFinal = 75
+                herOne, movFinal = 3
+            }
+
+            relleno.style.left = porcentajeFinal + '%';
+            document.querySelectorAll('.recursos-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Agregar la clase active al elemento actual
+            document.querySelectorAll('.recursos-item')[movFinal].classList.add('active');
+
+            console.log('translateX:', translateX);
+            console.log('porcentaje:', porcentajeLimitado);
+        }
 
     </script>
 </body>
