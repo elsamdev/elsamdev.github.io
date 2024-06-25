@@ -509,7 +509,7 @@
                 // console.log("currentPosY: " + currentPosY)
                 const dy = currentPosY - startPosY;
 
-                if (Math.abs(dy) > 50 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
+                if (Math.abs(dy) > 15 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
                     moveNavigation(currentPosY)
                     console.log(Math.abs(dy))
                 } else if (draggingElement === navigation) {
