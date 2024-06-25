@@ -78,18 +78,6 @@
         position: relative;
     }
 
-    /* body,
-    html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-    } */
 
     /* screengame */
     .game {
@@ -158,17 +146,9 @@
         display: flex;
         justify-content: flex-end;
         height: 100%;
-        /* Para colocar el número y el ícono en fila */
+
         align-items: center;
         gap: 2px;
-        /* Alinea verticalmente el número y el ícono */
-
-        /* Espacio alrededor del ícono */
-        /* border-left: 1px solid #ccc; */
-        /* Borde para cada recurso */
-        /* border-radius: 5px; */
-        /* Bordes redondeados */
-        /* border: 1px solid var(--main-color); */
         padding: 1px 7px;
         position: relative;
         cursor: pointer;
@@ -180,10 +160,7 @@
     }
 
     .recursos-item.active {
-        /* background-color: #000000; */
-        /* Cambia el color de fondo */
         border: 2px solid var(--darkwhite-color);
-        /* Agrega un borde */
         color: white;
         transition: all 0.3s ease;
         animation: fadeIn 0.3s ease 1;
@@ -683,6 +660,7 @@
             let sliderWidth = slider.scrollWidth - slider.clientWidth;
             let itemWidth = slider.querySelector('.slider-item').clientWidth;
             const navigation = document.getElementById('navigation');
+            navigation.style.transform = "translate(0)"
             let startPosX = 0, startPosY = 0;
             let transform = 0, lastTransform = 0;
             let velocity = 0, direction = '';
@@ -692,6 +670,7 @@
             const bottomPoint = 80;
             let draggingElement = null;
             let numbar = 0;
+
             function updateSliderWidth() {
                 sliderWidth = slider.scrollWidth - slider.clientWidth;
                 if (-lastTransform > sliderWidth) {
@@ -827,25 +806,31 @@
                 });
 
                 let moveY = currentPosY - startY;
+                // console.log(currentPosY)
 
+                // console.log(Math.abs(currentPosY))
                 let dy = currentY - initialY;
-
+                // console.log(moveY)
                 let resistanceFactor = 3;  // Factor de resistencia base
                 if (moveY > 0) { // Movimiento hacia abajo
+
                     resistanceFactor += Math.abs(dy) / 2000;
 
                 } else { // Movimiento hacia arriba o estacionario
-                    resistanceFactor += Math.abs(dy) / 100;
+
+                    resistanceFactor += Math.abs(dy) / 2000;
+
                 }
 
                 currentY += moveY / resistanceFactor;
+
                 startY = currentPosY;
 
                 // Asegura que no se mueva más allá del punto inicial
                 if (currentY > initialY) {
                     currentY = initialY;
                 }
-
+                console.log(initialY)
                 navigation.style.transform = `translateY(${currentY - initialY}px)`;
 
             }
@@ -875,51 +860,57 @@
                     endInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
                 }
             });
+
+
+            /////////////////////////////////////////
+
+
+            //////////////////////////
+            function ajustarElementos() {
+                icon.forEach(function (elemento) {
+                    elemento.style.transform = 'translateY(-20px)';
+                });
+
+                buttonMain.forEach(function (elemento) {
+                    elemento.style.top = '-55px';
+                    elemento.style.height = '70%';
+                });
+
+                buttonnav.forEach(function (elemento) {
+                    elemento.style.transform = 'none';
+                });
+
+                navigation.style.minHeight = '80px';
+                navigation.style.maxHeight = '80px';
+                navigation.style.height = '80px';
+
+
+            }
+
+            function restablecerElementos() {
+                icon.forEach(function (elemento) {
+                    elemento.style.transform = 'none';
+                });
+
+                buttonMain.forEach(function (elemento) {
+                    elemento.style.top = '0';
+                    elemento.style.height = '85%';
+                });
+
+
+                buttonnav.forEach(function (elemento) {
+                    elemento.style.transform = 'translateY(20px)';
+                });
+
+                navigation.style.minHeight = '100px';
+                navigation.style.maxHeight = '100px';
+                navigation.style.height = '100px';
+
+
+            }
+
         });
 
-        /////////////////////////////////////////
-
-
-        //////////////////////////
-        function ajustarElementos() {
-            icon.forEach(function (elemento) {
-                elemento.style.transform = 'translateY(-20px)';
-            });
-
-            buttonMain.forEach(function (elemento) {
-                elemento.style.top = '-55px';
-                elemento.style.height = '70%';
-            });
-
-            buttonnav.forEach(function (elemento) {
-                elemento.style.transform = 'none';
-            });
-
-            navigation.style.minHeight = '80px';
-            navigation.style.maxHeight = '80px';
-            navigation.style.height = '80px';
-
-        }
-
-        function restablecerElementos() {
-            icon.forEach(function (elemento) {
-                elemento.style.transform = 'none';
-            });
-
-            buttonMain.forEach(function (elemento) {
-                elemento.style.top = '0';
-                elemento.style.height = '85%';
-            });
-
-
-            buttonnav.forEach(function (elemento) {
-                elemento.style.transform = 'translateY(20px)';
-            });
-
-            navigation.style.minHeight = '100px';
-            navigation.style.maxHeight = '100px';
-            navigation.style.height = '100px';
-        }
 
 
         ///////////////********BOTONES********** *///////////////
@@ -983,9 +974,18 @@
         function valorTra() {
             const sliderElement = document.getElementById('slider');
             const style = window.getComputedStyle(sliderElement);
-            const matrix = style.getPropertyValue('transform');
-            const values = matrix.match(/matrix.*\((.+)\)/)[1].split(', ');
-            const translateX = parseFloat(values[4]);
+            const matrixString = style.getPropertyValue('transform');
+
+            let translateX = 0; // Valor predeterminado si no se encuentra coincidencia
+
+            // Verifica si matrixString es válido y extrae translateX
+            if (matrixString && matrixString !== 'none') {
+                const matrixMatch = matrixString.match(/matrix.*\((.+)\)/);
+                if (matrixMatch) {
+                    const values = matrixMatch[1].split(', ');
+                    translateX = parseFloat(values[4]);
+                }
+            }
 
             // Calcula el ancho del slider
             const sliderWidth = sliderElement.clientWidth;
@@ -1024,8 +1024,7 @@
             // Agregar la clase active al elemento actual
             document.querySelectorAll('.recursos-item')[movFinal].classList.add('active');
 
-            // console.log('translateX:', translateX);
-            console.log('porcentaje:', porcentajeLimitado);
+
         }
 
     </script>
