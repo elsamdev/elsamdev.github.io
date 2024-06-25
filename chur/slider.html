@@ -50,6 +50,13 @@
         margin: 0;
     }
 
+    i,
+    h1,
+    h2,
+    p,
+    h3 {
+        user-select: none;
+    }
 
     body,
     html {
@@ -509,7 +516,7 @@
                 // console.log("currentPosY: " + currentPosY)
                 const dy = currentPosY - startPosY;
 
-                if (Math.abs(dy) > 15 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
+                if (Math.abs(dy) > 50 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
                     moveNavigation(currentPosY)
                     console.log(Math.abs(dy))
                 } else if (draggingElement === navigation) {
@@ -550,7 +557,7 @@
                 }
 
                 slider.style.transform = `translateX(${newTransform}px)`;
-                slider.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)'; // Smooth deceleration
+                slider.style.transition = 'transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)'; // Smooth deceleration
                 lastTransform = newTransform;
 
 
