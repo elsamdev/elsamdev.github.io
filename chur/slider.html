@@ -847,19 +847,18 @@
 
                 let moveY = currentPosY - startPosY;
 
-                console.log("moveY ", moveY, " startY ", startY, " currentPosY ", currentPosY, " initialY ", initialY);
 
                 let dy = currentY - initialY;
 
-                let resistanceFactor = 5;  // Factor de resistencia base
+                let resistanceFactor = 4;  // Factor de resistencia base
                 if (isAtTop) { // Movimiento hacia abajo
-
-                    resistanceFactor += Math.abs(dy) / 2000;
-
+                    console.log("moviendo hacia abajo")
+                    resistanceFactor += Math.abs(dy) / 100;
+                    let Bmov = 0;
                 } else { // Movimiento hacia arriba o estacionario
-
+                    console.log("moviendo hacia arriba")
                     resistanceFactor += Math.abs(dy) / 500;
-
+                    let Bmov = 20;
                 }
 
                 currentY += moveY / resistanceFactor;
@@ -871,15 +870,22 @@
                 if (currentY > initialY) {
                     currentY = initialY;
                 }
-                // console.log("currentY2 ", currentY);
-                // console.log("currentY ", currentY);
 
-                buttonMain.forEach(function (elemento) {
-                    elemento.style.height = `75%`;
-                    elemento.style.transition = `top 0s ease`;
-                    elemento.style.top = `${currentY - initialY}px`;
+                if (isAtBottom) {
+                    buttonMain.forEach(function (elemento) {
+                        elemento.style.height = `70%`;
+                        elemento.style.transition = `top 0s ease`;
+                        elemento.style.top = `${currentY - initialY}px`;
 
-                });
+                    });
+                } else {
+                    buttonMain.forEach(function (elemento) {
+                        elemento.style.height = `75%`;
+                        elemento.style.transition = `top 0s ease`;
+                        elemento.style.top = `${currentY - initialY + 20}px`;
+                    });
+                }
+
 
                 let distance = currentY - initialY;
 
@@ -902,13 +908,7 @@
                     });
                 }
 
-
-
-
-                // console.log("top ", moveY);
                 navigation.style.transform = `translateY(${currentY - initialY}px)`;
-
-
 
             }
 
