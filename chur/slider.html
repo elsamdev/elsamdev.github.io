@@ -273,6 +273,7 @@
         justify-content: center;
         align-items: center;
         width: 100%;
+
         background-color: var();
         position: relative;
     }
@@ -280,6 +281,7 @@
     .icon i {
         position: absolute;
         transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+
     }
 
     .action-button {
@@ -349,21 +351,24 @@
         box-shadow: 0px 5px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
     }
 
-
+    .button-yellow.active,
     .button-yellow:active {
         box-shadow: inset 0px 0px 0px 2px #fee15a;
     }
 
+    .button-blue.active,
     .button-blue:active {
 
         box-shadow: inset 0px 0px 0px 2px #41b8f7;
     }
 
+    .button-black.active,
     .button-black:active {
 
         box-shadow: inset 0px 0px 0px 2px var(--ultralightblakc-color);
     }
 
+    .button-green.active,
     .button-green:active {
         box-shadow: inset 0px 0px 0px 2px #2fd792;
     }
@@ -460,7 +465,7 @@
     }
 
     .animate-button {
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+        transition: top .2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
     }
 </style>
 
@@ -564,7 +569,7 @@
             </div>
 
             <div class="slider-item">
-                <div class="icon">
+                <div class="icon ">
                     <i class="fas fa-heart"></i>
                 </div>
                 <div class="button-container">
@@ -870,19 +875,26 @@
                     const sizeFactor = Math.max(0, 1 - (1 / (resistanceFactor * 1)));
                     const sizePercentage = 70 + (15 * sizeFactor); // Rango entre 70% y 85%
                     buttonMain.forEach(element => {
+                        element.style.transition = 'height 0.1s ease-out, top 0s ease-out'; // Transiciones rápidas para suavidad
                         element.style.height = `${sizePercentage}%`;
-                        element.style.transition = 'height 0s ease, top 0s ease';
                         element.style.top = `${currentY - initialY}px`;
+                        requestAnimationFrame(() => {
+                            // element.style.transition = 'height .1s ease, top .1s ease';
+                        });
+
                     });
 
                 } else {
-                    console.log("bajando")
+
                     const sizeFactor = Math.max(0, (resistanceFactor - 1.5) / 1); // Normalizar y escalar
                     const sizePercentage = 70 + (15 * sizeFactor); // Rango entre 70% y 85%
                     buttonMain.forEach(function (elemento) {
+                        elemento.style.transition = 'height 0.1s ease-out, top 0s ease-out'; // Transiciones rápidas para suavidad
                         elemento.style.height = `${sizePercentage}%`;
-                        elemento.style.transition = `height 0s ease, top 0s ease`;
                         elemento.style.top = `${currentY - initialY + 20}px`;
+                        requestAnimationFrame(() => {
+                            // elemento.style.transition = 'height .1s ease, top .1s ease';
+                        });
                     });
                 }
 
@@ -944,14 +956,16 @@
             //////////////////////////
             function ajustarElementos() {
                 icon.forEach(function (elemento) {
-                    elemento.style.transform = 'translateY(-20px)';
                     elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275);';
+                    elemento.style.transform = 'translateY(-20px)';
+
                 });
 
                 buttonMain.forEach(function (elemento) {
-                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275);';
+                    elemento.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     elemento.style.top = '-55px';
                     elemento.style.height = '70%';
+                    elemento.style.transform = 'translateY(0px)';
                 });
 
                 buttonnav.forEach(function (elemento) {
@@ -973,15 +987,16 @@
                 });
 
                 buttonMain.forEach(function (elemento) {
-                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     elemento.style.top = '0';
                     elemento.style.height = '85%';
+                    elemento.style.transform = 'translateY(0px)';
                 });
 
 
                 buttonnav.forEach(function (elemento) {
                     elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
-                    elemento.style.transform = 'translateY(20px)';
+                    elemento.style.transform = 'translateY(40px)';
                 });
 
                 navigation.style.minHeight = '100px';
@@ -1018,11 +1033,13 @@
             // Eventos para dispositivos táctiles
             button.addEventListener('touchstart', function (event) {
                 event.preventDefault(); // Prevenir el comportamiento predeterminado para evitar conflictos con eventos de clic
+                this.classList.add('active');
                 pressButton.call(this);
             });
 
             button.addEventListener('touchend', function (event) {
                 event.preventDefault(); // Prevenir el comportamiento predeterminado para evitar conflictos con eventos de clic
+                this.classList.remove('active');
                 releaseButton.call(this);
             });
         });
