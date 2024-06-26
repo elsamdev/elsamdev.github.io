@@ -669,7 +669,6 @@
             let startY = 0, currentY = 80; // For vertical navigation movement
             const topPoint = 0;
             const bottomPoint = 80;
-
             let draggingAffter = null;
             let numbar = 0;
             let movementDirection = null;
@@ -837,6 +836,7 @@
                 logSliderPercentage();
                 valorTra()
 
+
             }
 
             function moveNavigation(currentPosY) {
@@ -845,39 +845,42 @@
                     button.style.opacity = '1';
                 });
 
-                let moveY = currentPosY - startY;
+                let moveY = currentPosY - startPosY;
 
-                console.log(moveY)
+                console.log("moveY ", moveY, " startY ", startY, " currentPosY ", currentPosY, " initialY ", initialY);
 
                 let dy = currentY - initialY;
 
                 let resistanceFactor = 5;  // Factor de resistencia base
-                if (moveY > 0) { // Movimiento hacia abajo
+                if (isAtTop) { // Movimiento hacia abajo
 
                     resistanceFactor += Math.abs(dy) / 2000;
 
                 } else { // Movimiento hacia arriba o estacionario
 
-                    resistanceFactor += Math.abs(dy) / 2000;
+                    resistanceFactor += Math.abs(dy) / 500;
 
                 }
 
                 currentY += moveY / resistanceFactor;
                 moreRes = moveY / resistanceFactor + 5;
-                startY = currentPosY;
+                startPosY = currentPosY;
 
                 // Asegura que no se mueva más allá del punto inicial
+
                 if (currentY > initialY) {
                     currentY = initialY;
                 }
-
+                // console.log("currentY2 ", currentY);
+                // console.log("currentY ", currentY);
 
                 buttonMain.forEach(function (elemento) {
                     elemento.style.height = `75%`;
                     elemento.style.transition = `top 0s ease`;
-                    elemento.style.top = `${currentY - initialY + 10}px`;
+                    elemento.style.top = `${currentY - initialY}px`;
 
                 });
+
                 let distance = currentY - initialY;
 
                 // Cálculo de translateY para iconos
@@ -898,7 +901,14 @@
                         elemento.style.transform = 'translateY(0px)';
                     });
                 }
+
+
+
+
+                // console.log("top ", moveY);
                 navigation.style.transform = `translateY(${currentY - initialY}px)`;
+
+
 
             }
 
@@ -954,7 +964,7 @@
                 navigation.style.maxHeight = '80px';
                 navigation.style.height = '80px';
                 isAtTop = false;
-                startY = 0, currentY = 80;
+                initialY = 80;
             }
 
             function restablecerElementos() {
@@ -979,9 +989,9 @@
                 navigation.style.maxHeight = '100px';
                 navigation.style.height = '100px';
                 isAtBottom = false;
-                startY = 80, currentY = 0;
-            }
 
+            }
+            initialY = 0;
         });
 
 
