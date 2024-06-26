@@ -668,10 +668,12 @@
             let startY = 0, currentY = 80; // For vertical navigation movement
             const topPoint = 0;
             const bottomPoint = 80;
-            let draggingElement = null;
+
             let draggingAffter = null;
             let numbar = 0;
-
+            let movementDirection = null;
+            let isAtTop = false;
+            let isAtBottom = true;
             function updateSliderWidth() {
                 sliderWidth = slider.scrollWidth - slider.clientWidth;
                 if (-lastTransform > sliderWidth) {
@@ -688,7 +690,7 @@
                 startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
                 isDragging = true;
                 startTime = Date.now();
-                draggingElement = element;
+
                 slider.classList.add('grabbing');
                 slider.style.transition = 'none';
                 // Remove transition for real-time tracking
@@ -704,37 +706,50 @@
 
 
                 const dy = currentPosY - startPosY;
-
-                if (Math.abs(dy) > 50 && draggingElement === slider) {  // Verificar si se ha movido verticalmente más de 15px
-                    moveNavigation(currentPosY)
-
-
-                } else if (draggingElement === navigation) {
-                    moveNavigation(currentPosY)
-
+                const dx = currentPosX - startPos;
+                if (movementDirection === null) {  // Usar null para la comprobación inicial
+                    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {  // Umbral bajo para respuesta rápida
+                        movementDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
+                    }
                 }
 
-                const dx = currentPosX - startPos;
-                if (Math.abs(dx) > 20) {
+
+                if (movementDirection === 'horizontal') {
+                    if (Math.abs(dx) > 0) {
 
 
-                    let tentativeTransform = lastTransform + dx;
-                    velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
+                        let tentativeTransform = lastTransform + dx;
+                        velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
 
-                    //
+                        //
 
-                    // Elastic effect
-                    if (tentativeTransform > 0) {
-                        tentativeTransform = dx / 5;
-                    } else if (tentativeTransform < -sliderWidth) {
-                        tentativeTransform = -sliderWidth + (dx / 5);
+                        // Elastic effect
+                        if (tentativeTransform > 0) {
+                            tentativeTransform = dx / 5;
+                        } else if (tentativeTransform < -sliderWidth) {
+                            tentativeTransform = -sliderWidth + (dx / 5);
+                        }
+
+                        transform = tentativeTransform;
+
+                        slider.style.transform = `translateX(${transform}px)`;
+
+                    }
+                } else if (movementDirection === 'vertical') {
+                    // Manejar solo movimientos verticales para el slider
+
+                    if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
+                        // Si está en el top y el movimiento es hacia abajo, o está en el bottom y el movimiento es hacia arriba, permitir movimiento
+                        moveNavigation(currentPosY);
                     }
 
-                    transform = tentativeTransform;
-
-                    slider.style.transform = `translateX(${transform}px)`;
 
                 }
+
+
+
+
+
                 logCurrentCenteredItem();
                 logSliderPercentage();
                 valorTra()
@@ -745,6 +760,7 @@
             function endInteraction(currentPos) {
 
                 if (!isDragging) return;
+                movementDirection = null;
                 isDragging = false;
                 draggingAffter = true
                 slider.classList.remove('grabbing');
@@ -786,8 +802,12 @@
 
                 if (targetY === topPoint) {
                     ajustarElementos();
+                    isAtTop = true;
+                    isAtBottom = false;
                 } else if (targetY === bottomPoint) {
                     restablecerElementos();
+                    isAtTop = false;
+                    isAtBottom = true;
                 }
 
                 // Mueve el botón al punto más cercano con una transición suave
@@ -900,7 +920,7 @@
                 navigation.style.minHeight = '80px';
                 navigation.style.maxHeight = '80px';
                 navigation.style.height = '80px';
-
+                isAtTop = false;
 
             }
 
@@ -922,7 +942,7 @@
                 navigation.style.minHeight = '100px';
                 navigation.style.maxHeight = '100px';
                 navigation.style.height = '100px';
-
+                isAtBottom = false;
 
             }
 
