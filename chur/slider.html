@@ -780,10 +780,10 @@
                     newTransform = 0;
                     logCurrentCenteredItem();
                     logSliderPercentage();
-                    console.log("hola")
+
                 } else if (newTransform < -sliderWidth) {
                     newTransform = -sliderWidth;
-                    console.log("hola")
+
                 }
                 if (!draggingAffter) {
 
@@ -825,7 +825,7 @@
                     logSliderPercentage();
                     valorTra()
                     draggingAffter = false
-                    console.log(draggingAffter)
+
                 }, { once: true });
 
 
@@ -844,12 +844,12 @@
                 });
 
                 let moveY = currentPosY - startY;
-                // console.log(currentPosY)
 
-                // console.log(Math.abs(currentPosY))
+
+
                 let dy = currentY - initialY;
-                // console.log(moveY)
-                let resistanceFactor = 3;  // Factor de resistencia base
+
+                let resistanceFactor = 4;  // Factor de resistencia base
                 if (moveY > 0) { // Movimiento hacia abajo
 
                     resistanceFactor += Math.abs(dy) / 2000;
@@ -861,14 +861,40 @@
                 }
 
                 currentY += moveY / resistanceFactor;
-
+                moreRes = moveY / resistanceFactor + 5;
                 startY = currentPosY;
 
                 // Asegura que no se mueva más allá del punto inicial
                 if (currentY > initialY) {
                     currentY = initialY;
                 }
-                console.log(initialY)
+
+
+                buttonMain.forEach(function (elemento) {
+                    elemento.style.transition = `top 0s ease`;
+                    elemento.style.top = `${currentY - initialY + 10}px`;
+                    elemento.style.height = `75%`;
+                });
+                let distance = currentY - initialY;
+
+                // Cálculo de translateY para iconos
+                // Supongamos que queremos que los iconos comiencen a moverse después de que la navegación haya superado los 20px
+                let movementThreshold = 20;
+                let effectiveDistance = Math.abs(distance) - movementThreshold;
+
+                if (effectiveDistance > 0) {
+                    // Calculamos un porcentaje del rango máximo de movimiento (20px)
+                    let iconTranslateY = (effectiveDistance / (movementThreshold * 5)) * 50;  // Ajusta el denominador para modificar la sensibilidad
+                    iconTranslateY = Math.sign(distance) * Math.min(50, iconTranslateY);  // Asegura que no exceda los límites y mantiene la dirección correcta
+                    icon.forEach(function (elemento) {
+                        elemento.style.transform = `translateY(${iconTranslateY}px)`;
+                    });
+                } else {
+                    // No hay suficiente distancia para mover los iconos
+                    icon.forEach(function (elemento) {
+                        elemento.style.transform = 'translateY(0px)';
+                    });
+                }
                 navigation.style.transform = `translateY(${currentY - initialY}px)`;
 
             }
@@ -907,9 +933,11 @@
             function ajustarElementos() {
                 icon.forEach(function (elemento) {
                     elemento.style.transform = 'translateY(-20px)';
+                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275);';
                 });
 
                 buttonMain.forEach(function (elemento) {
+                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275);';
                     elemento.style.top = '-55px';
                     elemento.style.height = '70%';
                 });
@@ -927,10 +955,12 @@
 
             function restablecerElementos() {
                 icon.forEach(function (elemento) {
+                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                     elemento.style.transform = 'none';
                 });
 
                 buttonMain.forEach(function (elemento) {
+                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                     elemento.style.top = '0';
                     elemento.style.height = '85%';
                 });
