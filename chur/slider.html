@@ -740,8 +740,10 @@
                     // Manejar solo movimientos verticales para el slider
 
                     if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
+
                         // Si está en el top y el movimiento es hacia abajo, o está en el bottom y el movimiento es hacia arriba, permitir movimiento
                         moveNavigation(currentPosY);
+
                     }
 
 
@@ -845,7 +847,7 @@
 
                 let moveY = currentPosY - startY;
 
-
+                console.log(moveY)
 
                 let dy = currentY - initialY;
 
@@ -944,6 +946,7 @@
                 });
 
                 buttonnav.forEach(function (elemento) {
+                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                     elemento.style.transform = 'none';
                 });
 
@@ -951,7 +954,7 @@
                 navigation.style.maxHeight = '80px';
                 navigation.style.height = '80px';
                 isAtTop = false;
-
+                startY = 0, currentY = 80;
             }
 
             function restablecerElementos() {
@@ -968,6 +971,7 @@
 
 
                 buttonnav.forEach(function (elemento) {
+                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                     elemento.style.transform = 'translateY(20px)';
                 });
 
@@ -975,7 +979,7 @@
                 navigation.style.maxHeight = '100px';
                 navigation.style.height = '100px';
                 isAtBottom = false;
-
+                startY = 80, currentY = 0;
             }
 
         });
