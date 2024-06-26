@@ -849,7 +849,7 @@
 
                 let dy = currentY - initialY;
 
-                let resistanceFactor = 4;  // Factor de resistencia base
+                let resistanceFactor = 5;  // Factor de resistencia base
                 if (moveY > 0) { // Movimiento hacia abajo
 
                     resistanceFactor += Math.abs(dy) / 2000;
@@ -871,9 +871,10 @@
 
 
                 buttonMain.forEach(function (elemento) {
+                    elemento.style.height = `75%`;
                     elemento.style.transition = `top 0s ease`;
                     elemento.style.top = `${currentY - initialY + 10}px`;
-                    elemento.style.height = `75%`;
+
                 });
                 let distance = currentY - initialY;
 
