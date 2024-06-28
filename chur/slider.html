@@ -480,9 +480,9 @@
         height: 40% !important;
     }
 
-    .navigation-container button:active {
+    /* .navigation-container button:active {
         box-shadow: inset 0px 0px 0px 2px var(--ultralightblakc-color);
-    }
+    } */
 
     .navigation-container button:active {
         /* transform: translateY(5px); */
@@ -539,7 +539,7 @@
 <body>
     <div class="game">
         <i class="fa-solid fa-bars icon-menu"></i>
-        <button onclick="buttonClicked(event)" class="action-button">
+        <button class="action-button">
             <i class="fa-solid fa-khanda"></i>
         </button>
 
@@ -574,33 +574,33 @@
         <div class="slider" id="slider">
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'green')" class="primary-button ">
                         <i class="fas fa-heart"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-green">
+                    <button onclick="buttonClicked(event, 'green')" class="animate-button button button-green">
                         <i class="fas fa-heart"></i>Botón
                     </button>
                 </div>
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'green')" class="primary-button">
                         <i class="fas fa-rocket"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-green">
+                    <button onclick="buttonClicked(event, 'green')" class="animate-button button button-green">
                         <i class="fas fa-space-shuttle"></i>Botón
                     </button>
                 </div>
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'green')" class="primary-button">
                         <i class="fas fa-bank"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-green">
+                    <button onclick="buttonClicked(event, 'green')" class="animate-button button button-green">
                         <i class="fas fa-bank"></i>Botón
                     </button>
                 </div>
@@ -609,34 +609,34 @@
 
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'blue')" class="primary-button">
                         <i class="fas fa-heart"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-blue">
+                    <button onclick="buttonClicked(event, 'blue')" class="animate-button button button-blue">
                         <i class="fas fa-heart"></i>Botón
                     </button>
                 </div>
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'blue')" class="primary-button">
                         <i class="fas fa-rocket"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-blue">
+                    <button onclick="buttonClicked(event, 'blue')" class="animate-button button button-blue">
                         <i class="fas fa-space-shuttle"></i>Botón
                     </button>
                 </div>
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'blue')" class="primary-button">
                         <i class="fas fa-bank"></i>
                     </button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-blue">
+                    <button onclick="buttonClicked(event, 'blue')" class="animate-button button button-blue">
                         <i class="fas fa-bank"></i>Botón
                     </button>
                 </div>
@@ -644,33 +644,33 @@
 
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'yellow')" class="primary-button">
                         <i class="fas fa-heart"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-yellow">
+                    <button onclick="buttonClicked(event, 'yellow')" class="animate-button button button-yellow">
                         <i class="fas fa-heart"></i>Botón
                     </button>
                 </div>
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'yellow')" class="primary-button">
                         <i class="fas fa-rocket"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-yellow">
+                    <button onclick="buttonClicked(event, 'yellow')" class="animate-button button button-yellow">
                         <i class="fas fa-space-shuttle"></i>Botón
                     </button>
                 </div>
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'yellow')" class="primary-button">
                         <i class="fas fa-bank"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-yellow">
+                    <button onclick="buttonClicked(event, 'yellow')" class="animate-button button button-yellow">
                         <i class="fas fa-bank"></i>Botón
                     </button>
                 </div>
@@ -678,33 +678,33 @@
 
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'black')" class="primary-button">
                         <i class="fas fa-heart"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-black">
+                    <button onclick="buttonClicked(event, 'black')" class="animate-button button button-black">
                         <i class="fas fa-heart"></i>Botón
                     </button>
                 </div>
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'black')" class="primary-button">
                         <i class="fas fa-rocket"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-black">
+                    <button onclick="buttonClicked(event, 'black')" class="animate-button button button-black">
                         <i class="fas fa-space-shuttle"></i>Botón
                     </button>
                 </div>
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <button onclick="buttonClicked(event)" class="primary-button">
+                    <button onclick="buttonClicked(event, 'black')" class="primary-button">
                         <i class="fas fa-bank"></i></button>
                 </div>
                 <div class="button-container">
-                    <button onclick="buttonClicked(event)" class="animate-button button button-black">
+                    <button onclick="buttonClicked(event, 'black')" class="animate-button button button-black">
                         <i class="fas fa-bank"></i>Botón
                     </button>
                 </div>
@@ -714,17 +714,17 @@
     <div class="navigation" id="navigation" style="transform: translateY(0px)">
         <div class="navigation-container">
             <div class="navigation-button-container">
-                <button onclick="buttonClicked(event)" class="animate-button navigation-left">
+                <button onclick="buttonClicked(event, 'black')" class="animate-button navigation-left">
                     <img src="img/arrow-left.png" alt="">
                 </button>
             </div>
             <div class="navigation-button-container">
-                <button onclick="buttonClicked(event)" class="animate-button navigation-center">
+                <button onclick="buttonClicked(event, 'black')" class="animate-button navigation-center">
                     <img src="img/arrow-up.png" alt="">
                 </button>
             </div>
             <div class="navigation-button-container">
-                <button onclick="buttonClicked(event)" class="animate-button navigation-right">
+                <button onclick="buttonClicked(event, 'black')" class="animate-button navigation-right">
                     <img src="img/arrow-right.png" alt="">
                 </button>
             </div>
@@ -1129,10 +1129,26 @@
 
 
         });
+        const buttonStyles = {
+            green: {
+                border: '#029357 solid 4px',
+                boxShadow: '0px 5px #046d41, inset 0px 0px 0px 2px #2fd792'
+            },
+            yellow: {
+                border: '#fec902 solid 4px',
+                boxShadow: '0px 5px #be8d15, inset 0px 0px 0px 2px #fee15a'
+            },
+            blue: {
+                border: '#1c9cd3 solid 4px',
+                boxShadow: '0px 5px #2178a0, inset 0px 0px 0px 2px #41b8f7'
+            },
+            black: {
+                border: 'var(--lightblack-color) solid 4px',
+                boxShadow: '0px 5px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color)'
+            }
+        };
 
-
-
-        function buttonClicked(event) {
+        function buttonClicked(event, color) {
             const button = event.currentTarget; // Esto asegura que siempre es el botón
 
             if (!dragghash) {
@@ -1141,7 +1157,7 @@
                 button.style.boxShadow = 'none';
                 setTimeout(() => {
                     button.style.transform = 'translateY(0px)';
-                    button.style.boxShadow = '0px 5px #046d41, inset 0px 0px 0px 2px #2fd792';
+                    button.style.boxShadow = buttonStyles[color].boxShadow;
                 }, 50); // Tiempo para la animación de clic
             } else {
                 console.log('Drag detected, button click ignored');
