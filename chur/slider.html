@@ -957,7 +957,7 @@
 
                 let dy = currentY - initialY;
 
-                let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 4 + Math.abs(dy) / 2000;
+                let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 6 + Math.abs(dy) / 2000;
                 resistanceFactor = Math.max(1, resistanceFactor);
 
                 currentY += moveY / resistanceFactor;
