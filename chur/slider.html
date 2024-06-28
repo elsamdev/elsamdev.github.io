@@ -784,7 +784,7 @@
 
             let startY = 0, currentY = 80; // For vertical navigation movement
             const topPoint = 0;
-            const bottomPoint = 80;
+            const bottomPoint = 1;
             let draggingAffter = null;
             let numbar = 0;
             let movementDirection = null;
@@ -1013,21 +1013,22 @@
 
             //////////////////////////
             function ajustarElementos() {
+
                 icon.forEach(function (elemento) {
-                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275);';
+                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     elemento.style.transform = 'translateY(-10px)';
                     elemento.style.height = '75%';
                 });
 
                 buttonMain.forEach(function (elemento) {
-                    elemento.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     // elemento.style.top = '-55px';
                     elemento.style.height = '75%';
                     elemento.style.transform = 'translateY(-40px)';
                 });
 
                 buttonnav.forEach(function (elemento) {
-                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     elemento.style.transform = 'none';
                     elemento.style.height = '60%';
                     elemento.style.transform = 'translateY(4px)';
@@ -1042,7 +1043,7 @@
 
             function restablecerElementos() {
                 icon.forEach(function (elemento) {
-                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     elemento.style.transform = 'none';
                     elemento.style.height = '100%';
                 });
@@ -1056,7 +1057,7 @@
 
 
                 buttonnav.forEach(function (elemento) {
-                    elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     elemento.style.transform = 'translateY(10px)';
                     elemento.style.height = '80%';
                 });
