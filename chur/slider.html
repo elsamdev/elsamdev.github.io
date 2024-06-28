@@ -865,7 +865,7 @@
             }
 
             // Unified function for ending interaction
-            function endInteraction(currentPos) {
+            function endInteraction(currentPosX, currentPosY) {
 
                 if (!isDragging) return;
 
@@ -875,7 +875,9 @@
                 slider.classList.remove('grabbing');
 
 
-                const dx = currentPos - startPos;
+                const dx = currentPosX - startPos;
+
+
                 let newTransform;
                 // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
                 if (Math.abs(dx) > 20) {
@@ -885,7 +887,6 @@
                 }
 
                 if (Math.abs(dx) > 20) {
-
                     dragghash = true;
                 } else {
                     dragghash = false;
@@ -1025,7 +1026,7 @@
             slider.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, slider));
             navigation.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, navigation));
             window.addEventListener('mousemove', e => moveInteraction(e.clientX, e.clientY));
-            window.addEventListener('mouseup', e => endInteraction(e.clientX));
+            window.addEventListener('mouseup', e => endInteraction(e.clientX, e.clientY));
 
             // Touch events
             slider.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, slider));
