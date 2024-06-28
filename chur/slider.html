@@ -1138,10 +1138,11 @@
             if (!dragghash) {
                 console.log('Button click detected');
                 button.style.transform = 'translateY(5px)';
+                button.style.boxShadow = 'none';
                 setTimeout(() => {
                     button.style.transform = 'translateY(0px)';
-
-                }, 200); // Tiempo para la animación de clic
+                    button.style.boxShadow = '0px 5px #046d41, inset 0px 0px 0px 2px #2fd792';
+                }, 50); // Tiempo para la animación de clic
             } else {
                 console.log('Drag detected, button click ignored');
                 // No cambia nada si fue drag
