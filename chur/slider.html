@@ -87,8 +87,8 @@
         align-items: center;
         width: 100%;
         height: 100%;
-        min-height: 53%;
-        max-height: 53%;
+        min-height: 70%;
+        max-height: 70%;
         background-color: var(--lightbg-color);
 
         position: relative;
@@ -232,6 +232,7 @@
         height: 100%;
         /* position: absolute;
         bottom: 0; */
+
     }
 
     .slider {
@@ -247,17 +248,17 @@
         flex: 0 0 33.33%;
         height: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         font-size: 24px;
         text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
         color: var(--lightblack-color);
         font-size: 24px;
         background-color: var(--maingray-color);
+        /* border: 1px solid var(--lightblack-color); */
+        padding: 20px 0;
+        gap: 20px;
     }
 
     .grabbing {
@@ -273,9 +274,31 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-
-        background-color: var();
+        max-height: 45%;
+        /* background-color: var(--main-color); */
         position: relative;
+
+    }
+
+    .primary-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        height: 100%;
+        border: none;
+        background-color: var(--green-color);
+        color: var(--maingray-color);
+        font-weight: 300;
+        font-size: 20px;
+        cursor: pointer;
+        border-radius: 10px;
+        border: #029357 solid 4px;
+        box-shadow: 0px 5px #046d41, inset 0px 0px 0px 2px #2fd792;
+        /* position: absolute; */
+        transform: none;
+        bottom: 90px;
     }
 
     .icon i {
@@ -307,12 +330,12 @@
 
     .button-container {
         width: 100%;
-        height: 30%;
+        height: 45%;
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
-        /* background-color: #2178a0; */
+
     }
 
     .button {
@@ -321,7 +344,7 @@
         justify-content: center;
         align-items: center;
         width: 90%;
-        height: 85%;
+        height: 100%;
         border: none;
         background-color: var(--maingray-color);
         color: var(--lightblack-color);
@@ -331,8 +354,9 @@
         border-radius: 10px;
         border: #029357 solid 4px;
         box-shadow: 0px 5px #046d41, inset 0px 0px 0px 2px #2fd792;
-        position: absolute;
+        /* position: absolute; */
         transform: none;
+        top: -40px;
     }
 
 
@@ -467,6 +491,48 @@
     .animate-button {
         transition: top .2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
     }
+
+    @media (min-width: 536px) {
+        .primary-button {
+            width: 93%;
+        }
+
+        .button {
+            width: 93%;
+        }
+
+        .navigation-container button {
+            width: 93%;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .primary-button {
+            width: 95%;
+        }
+
+        .button {
+            width: 95%;
+        }
+
+        .navigation-container button {
+            width: 95%;
+        }
+    }
+
+    @media (min-width: 958px) {
+        .primary-button {
+            width: 96%;
+        }
+
+        .button {
+            width: 96%;
+        }
+
+        .navigation-container button {
+            width: 96%;
+        }
+    }
 </style>
 
 <body>
@@ -507,7 +573,8 @@
         <div class="slider" id="slider">
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-heart"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-heart"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-green">
@@ -517,7 +584,8 @@
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-rocket"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-rocket"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-green">
@@ -527,7 +595,8 @@
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-bank"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-bank"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-green">
@@ -539,7 +608,8 @@
 
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-heart"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-heart"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-blue">
@@ -549,7 +619,8 @@
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-rocket"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-rocket"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-blue">
@@ -559,7 +630,9 @@
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-bank"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-bank"></i>
+                    </button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-blue">
@@ -569,8 +642,9 @@
             </div>
 
             <div class="slider-item">
-                <div class="icon ">
-                    <i class="fas fa-heart"></i>
+                <div class="icon">
+                    <button class="primary-button">
+                        <i class="fas fa-heart"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-yellow">
@@ -580,7 +654,8 @@
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-rocket"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-rocket"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-yellow">
@@ -590,7 +665,8 @@
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-bank"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-bank"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-yellow">
@@ -601,7 +677,8 @@
 
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-heart"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-heart"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-black">
@@ -611,7 +688,8 @@
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-rocket"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-rocket"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-black">
@@ -621,7 +699,8 @@
             </div>
             <div class="slider-item">
                 <div class="icon">
-                    <i class="fas fa-bank"></i>
+                    <button class="primary-button">
+                        <i class="fas fa-bank"></i></button>
                 </div>
                 <div class="button-container">
                     <button class="animate-button button button-black">
@@ -654,7 +733,7 @@
 
     <script>
         const navigation = document.getElementById('navigation');
-        const icon = document.querySelectorAll('.icon i');
+        const icon = document.querySelectorAll('.primary-button');
         const buttonMain = document.querySelectorAll('.button');
         const buttonnav = document.querySelectorAll('.navigation-container button');
 
@@ -695,7 +774,6 @@
                 startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
                 isDragging = true;
                 startTime = Date.now();
-
                 slider.classList.add('grabbing');
                 slider.style.transition = 'none';
                 // Remove transition for real-time tracking
@@ -706,9 +784,7 @@
 
             // Unified function for handling movement
             function moveInteraction(currentPosX, currentPosY) {
-
                 if (!isDragging) return;
-
 
                 const dy = currentPosY - startPosY;
                 const dx = currentPosX - startPos;
@@ -718,15 +794,12 @@
                     }
                 }
 
-
                 if (movementDirection === 'horizontal') {
                     if (Math.abs(dx) > 0) {
 
 
                         let tentativeTransform = lastTransform + dx;
                         velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
-
-                        //
 
                         // Elastic effect
                         if (tentativeTransform > 0) {
@@ -831,17 +904,11 @@
                     logSliderPercentage();
                     valorTra()
                     draggingAffter = false
-
                 }, { once: true });
-
-
-
 
                 logCurrentCenteredItem();
                 logSliderPercentage();
                 valorTra()
-
-
             }
 
             function moveNavigation(currentPosY) {
@@ -855,7 +922,7 @@
 
                 let dy = currentY - initialY;
 
-                let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 5 + Math.abs(dy) / 2000;
+                let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 8 + Math.abs(dy) / 2000;
                 resistanceFactor = Math.max(1, resistanceFactor);
 
                 currentY += moveY / resistanceFactor;
@@ -866,56 +933,68 @@
                 // Asegura que no se mueva más allá del punto inicial
 
 
+                // if (isAtBottom) {
+                //     const sizeFactor = Math.max(0, 1 - (1 / (resistanceFactor * 1)));
+                //     const sizePercentage = 70 + (15 * sizeFactor); // Rango entre 70% y 85%
+                //     buttonMain.forEach(element => {
+                //         element.style.transition = 'height 0.1s ease-out, top 0s ease-out'; // Transiciones rápidas para suavidad
+                //         element.style.height = `${sizePercentage}%`;
+                //         element.style.transform = `translateY(${currentY - initialY}px`;
+                //         requestAnimationFrame(() => {
+                //             // element.style.transition = 'height .1s ease, top .1s ease';
+                //         });
 
+                //     });
 
+                // } else {
 
-
-
-                if (isAtBottom) {
-                    const sizeFactor = Math.max(0, 1 - (1 / (resistanceFactor * 1)));
-                    const sizePercentage = 70 + (15 * sizeFactor); // Rango entre 70% y 85%
-                    buttonMain.forEach(element => {
-                        element.style.transition = 'height 0.1s ease-out, top 0s ease-out'; // Transiciones rápidas para suavidad
-                        element.style.height = `${sizePercentage}%`;
-                        element.style.top = `${currentY - initialY}px`;
-                        requestAnimationFrame(() => {
-                            // element.style.transition = 'height .1s ease, top .1s ease';
-                        });
-
-                    });
-
-                } else {
-
-                    const sizeFactor = Math.max(0, (resistanceFactor - 1.5) / 1); // Normalizar y escalar
-                    const sizePercentage = 70 + (15 * sizeFactor); // Rango entre 70% y 85%
-                    buttonMain.forEach(function (elemento) {
-                        elemento.style.transition = 'height 0.1s ease-out, top 0s ease-out'; // Transiciones rápidas para suavidad
-                        elemento.style.height = `${sizePercentage}%`;
-                        elemento.style.top = `${currentY - initialY + 20}px`;
-                        requestAnimationFrame(() => {
-                            // elemento.style.transition = 'height .1s ease, top .1s ease';
-                        });
-                    });
-                }
+                //     const sizeFactor = Math.max(0, (resistanceFactor - 1.5) / 1); // Normalizar y escalar
+                //     const sizePercentage = 70 + (15 * sizeFactor); // Rango entre 70% y 85%
+                //     buttonMain.forEach(function (elemento) {
+                //         elemento.style.transition = 'height 0.1s ease-out, top 0s ease-out'; // Transiciones rápidas para suavidad
+                //         elemento.style.height = `${sizePercentage}%`;
+                //         elemento.style.transform = `translateY(${currentY - initialY + 20}px`;
+                //         requestAnimationFrame(() => {
+                //             // elemento.style.transition = 'height .1s ease, top .1s ease';
+                //         });
+                //     });
+                // }
 
                 let distance = currentY - initialY;
 
                 // Cálculo de translateY para iconos
                 // Supongamos que queremos que los iconos comiencen a moverse después de que la navegación haya superado los 20px
-                let movementThreshold = 20;
+                let movementThreshold = 8;
                 let effectiveDistance = Math.abs(distance) - movementThreshold;
+                if (isAtBottom) {
+                    if (effectiveDistance > 0) {
+                        // Calculamos un porcentaje del rango máximo de movimiento (20px)
+                        iconTranslateY = (effectiveDistance / (movementThreshold * 5)) * 50;  // Ajusta el denominador para modificar la sensibilidad
+                        iconTranslateY = Math.sign(distance) * Math.min(70, iconTranslateY);  // Asegura que no exceda los límites y mantiene la dirección correcta
+                        console.log(iconTranslateY)
+                        icon.forEach(function (elemento) {
+                            elemento.style.transform = `translateY(${iconTranslateY}px)`;
+                        });
 
-                if (effectiveDistance > 0) {
-                    // Calculamos un porcentaje del rango máximo de movimiento (20px)
-                    let iconTranslateY = (effectiveDistance / (movementThreshold * 5)) * 50;  // Ajusta el denominador para modificar la sensibilidad
-                    iconTranslateY = Math.sign(distance) * Math.min(70, iconTranslateY);  // Asegura que no exceda los límites y mantiene la dirección correcta
-                    icon.forEach(function (elemento) {
-                        elemento.style.transform = `translateY(${iconTranslateY}px)`;
-                    });
+                        buttonMain.forEach(function (elemento) {
+                            elemento.style.transform = `translateY(${iconTranslateY}px`;
+                        });
+                    } else {
+                        // No hay suficiente distancia para mover los iconos
+                        icon.forEach(function (elemento) {
+                            elemento.style.transform = 'translateY(0px)';
+                        });
+                    }
                 } else {
-                    // No hay suficiente distancia para mover los iconos
+                    iconTranslateY = (effectiveDistance / (movementThreshold * 5)) * 50;  // Ajusta el denominador para modificar la sensibilidad
+                    iconTranslateY = Math.sign(distance) * Math.min(70, iconTranslateY);  // Asegura que no exceda los límites y mantiene la dirección correcta
+                    console.log(iconTranslateY)
                     icon.forEach(function (elemento) {
-                        elemento.style.transform = 'translateY(0px)';
+                        elemento.style.transform = `translateY(${iconTranslateY + 60}px)`;
+                    });
+
+                    buttonMain.forEach(function (elemento) {
+                        elemento.style.transform = `translateY(${iconTranslateY + 30}px`;
                     });
                 }
 
@@ -957,20 +1036,22 @@
             function ajustarElementos() {
                 icon.forEach(function (elemento) {
                     elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275);';
-                    elemento.style.transform = 'translateY(-20px)';
-
+                    elemento.style.transform = 'translateY(-10px)';
+                    elemento.style.height = '75%';
                 });
 
                 buttonMain.forEach(function (elemento) {
                     elemento.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    elemento.style.top = '-55px';
-                    elemento.style.height = '70%';
-                    elemento.style.transform = 'translateY(0px)';
+                    // elemento.style.top = '-55px';
+                    elemento.style.height = '75%';
+                    elemento.style.transform = 'translateY(-40px)';
                 });
 
                 buttonnav.forEach(function (elemento) {
                     elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                     elemento.style.transform = 'none';
+                    elemento.style.height = '60%';
+                    elemento.style.transform = 'translateY(4px)';
                 });
 
                 navigation.style.minHeight = '80px';
@@ -984,12 +1065,13 @@
                 icon.forEach(function (elemento) {
                     elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                     elemento.style.transform = 'none';
+                    elemento.style.height = '100%';
                 });
 
                 buttonMain.forEach(function (elemento) {
                     elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    elemento.style.top = '0';
-                    elemento.style.height = '85%';
+                    // elemento.style.top = '0';
+                    elemento.style.height = '100%';
                     elemento.style.transform = 'translateY(0px)';
                 });
 
@@ -997,6 +1079,7 @@
                 buttonnav.forEach(function (elemento) {
                     elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
                     elemento.style.transform = 'translateY(40px)';
+                    elemento.style.height = '80%';
                 });
 
                 navigation.style.minHeight = '100px';
