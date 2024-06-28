@@ -868,15 +868,11 @@
             function endInteraction(currentPosX, currentPosY) {
 
                 if (!isDragging) return;
-
                 movementDirection = null;
                 isDragging = false;
                 draggingAffter = true
                 slider.classList.remove('grabbing');
-
-
                 const dx = currentPosX - startPos;
-
 
                 let newTransform;
                 // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
@@ -961,52 +957,25 @@
 
                 let dy = currentY - initialY;
 
-                let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 8 + Math.abs(dy) / 2000;
+                let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 4 + Math.abs(dy) / 2000;
                 resistanceFactor = Math.max(1, resistanceFactor);
 
                 currentY += moveY / resistanceFactor;
                 if (currentY > initialY) currentY = initialY;
 
                 startPosY = currentPosY;
+                let distanceFactorMain = isAtTop ? 40 : 0;
+                let distanceFactorIcon = isAtTop ? 70 : 0;
+                // let distance = currentY - initialY;
 
 
-                let distance = currentY - initialY;
+                buttonMain.forEach(function (elemento) {
+                    elemento.style.transform = `translateY(${currentY - initialY + distanceFactorMain}px`;
+                });
 
-                // Cálculo de translateY para iconos
-                // Supongamos que queremos que los iconos comiencen a moverse después de que la navegación haya superado los 20px
-                let movementThreshold = 8;
-                let effectiveDistance = Math.abs(distance) - movementThreshold;
-                if (isAtBottom) {
-                    if (effectiveDistance > 0) {
-                        // Calculamos un porcentaje del rango máximo de movimiento (20px)
-                        iconTranslateY = (effectiveDistance / (movementThreshold * 5)) * 50;  // Ajusta el denominador para modificar la sensibilidad
-                        iconTranslateY = Math.sign(distance) * Math.min(70, iconTranslateY);  // Asegura que no exceda los límites y mantiene la dirección correcta
-
-                        icon.forEach(function (elemento) {
-                            elemento.style.transform = `translateY(${iconTranslateY}px)`;
-                        });
-
-                        buttonMain.forEach(function (elemento) {
-                            elemento.style.transform = `translateY(${iconTranslateY}px`;
-                        });
-                    } else {
-                        // No hay suficiente distancia para mover los iconos
-                        icon.forEach(function (elemento) {
-                            elemento.style.transform = 'translateY(0px)';
-                        });
-                    }
-                } else {
-                    iconTranslateY = (effectiveDistance / (movementThreshold * 5)) * 50;  // Ajusta el denominador para modificar la sensibilidad
-                    iconTranslateY = Math.sign(distance) * Math.min(70, iconTranslateY);  // Asegura que no exceda los límites y mantiene la dirección correcta
-
-                    icon.forEach(function (elemento) {
-                        elemento.style.transform = `translateY(${iconTranslateY + 60}px)`;
-                    });
-
-                    buttonMain.forEach(function (elemento) {
-                        elemento.style.transform = `translateY(${iconTranslateY + 30}px`;
-                    });
-                }
+                icon.forEach(function (elemento) {
+                    elemento.style.transform = `translateY(${currentY - initialY + distanceFactorIcon}px)`;
+                });
 
                 navigation.style.transform = `translateY(${currentY - initialY}px)`;
 
@@ -1088,7 +1057,7 @@
 
                 buttonnav.forEach(function (elemento) {
                     elemento.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
-                    elemento.style.transform = 'translateY(40px)';
+                    elemento.style.transform = 'translateY(10px)';
                     elemento.style.height = '80%';
                 });
 
@@ -1099,35 +1068,6 @@
                 initialY = 0;
             }
             ///////////////********BOTONES********** *///////////////
-            // document.querySelectorAll('.animate-button').forEach(button => {
-
-
-            //     function pressButton() {
-            //         // Aplica la transformación solo si el botón no se ha soltado en 100 milisegundos
-            //         this.style.transform = 'translateY(5px)';
-            //     }
-
-            //     function releaseButton() {
-            //         // Resetea el estilo sin importar la duración del clic
-            //         this.style.transform = 'translateY(-40px)';
-            //         // this.style.boxShadow = '';
-            //     }
-
-            //     // Eventos para dispositivos con ratón
-            //     button.addEventListener('mousedown', pressButton);
-            //     button.addEventListener('mouseup', releaseButton);
-
-            //     // Eventos para dispositivos táctiles
-            //     button.addEventListener('touchstart', function (event) {
-            //         event.preventDefault(); // Prevenir el comportamiento predeterminado
-            //         pressButton.call(this);
-            //     });
-
-            //     button.addEventListener('touchend', function (event) {
-            //         event.preventDefault(); // Prevenir el comportamiento predeterminado
-            //         releaseButton.call(this);
-            //     });
-            // });
 
 
 
@@ -1173,7 +1113,9 @@
                 console.log('Button click detected');
                 button.style.transform = `translateY(${translateUp}px)`;
                 console.log(translateUp + "px")
-                button.style.boxShadow = 'none';
+                setTimeout(() => {
+                    button.style.boxShadow = 'none';
+                }, 20);
                 setTimeout(() => {
                     button.style.transform = `translateY(${translateDown}px)`;
                     button.style.boxShadow = buttonStyles[color].boxShadow;
