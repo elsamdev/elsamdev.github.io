@@ -823,7 +823,7 @@
                 const dx = currentPosX - startPos;
 
                 if (movementDirection === null) {  // Usar null para la comprobación inicial
-                    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {  // Umbral bajo para respuesta rápida
+                    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {  // Umbral bajo para respuesta rápida
 
                         movementDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
                     }
