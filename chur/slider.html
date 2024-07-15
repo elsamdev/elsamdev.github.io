@@ -860,7 +860,7 @@
             function endInteraction(currentPosX, currentPosY) {
 
                 if (!isDragging) return;
-                movementDirection = null;
+
                 isDragging = false;
                 draggingAffter = true
                 slider.classList.remove('grabbing');
@@ -868,12 +868,12 @@
 
                 let newTransform;
                 // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
-                if (Math.abs(dx) > 20) {
+                if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
                     newTransform = lastTransform + dx + (velocity * 100); // Momentum efectivo
                 } else {
                     newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
                 }
-
+                movementDirection = null;
                 if (Math.abs(dx) > 20) {
                     dragghash = true;
                 } else {
