@@ -22,7 +22,7 @@
         #container {
             display: flex;
             justify-content: space-around;
-            width: 90%;
+            width: 60%;
             height: 50%;
             border: rgb(117, 7, 7) dashed 2px;
             position: relative;
@@ -90,12 +90,13 @@
                     box.style.left = 'calc(100% - 50px)';
                 }
             });
+            console.log((time * 1000) + 1000)
         }
 
         function initializeBoxes() {
             beziers.forEach((bezier, index) => createAnimationElement(bezier, index));
             moveBoxes();
-            setInterval(moveBoxes, time * 1000 + 2000);
+            setInterval(moveBoxes, (time * 1000) + 1000);
         }
 
 
