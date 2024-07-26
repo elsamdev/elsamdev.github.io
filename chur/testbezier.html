@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cubic Bézier</title>
+    <style>
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        #container {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            height: 50%;
+            border: rgb(117, 7, 7) dashed 2px;
+            position: relative;
+        }
+
+        .animation-box {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background-color: #5c67f2;
+            border-radius: 10px;
+            top: 40px;
+            left: 0;
+        }
+
+        .red-box {
+            background-color: red;
+        }
+
+        textarea,
+        button,
+        input {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <textarea id="bezierInput" rows="4" cols="50"
+        placeholder="Ingrese nuevas curvas Bézier, una por línea cubic-bezier(0,-0.01,1,1)"></textarea>
+    <input id="transitionTime" type="text" placeholder="Tiempo de transición en segundos (ej. 3s)" />
+    <button onclick="updateBeziers()">Actualizar Curvas Bézier</button>
+    <script>
+        let time = 3;
+
+        const container = document.getElementById('container');
+        let beziers = [
+            'cubic-bezier(0,-0.01,1,1)', // Se mantiene este como el primer elemento por defecto y rojo
+            'cubic-bezier(0.34, 1.56, 0.64, 1)',
+            'cubic-bezier(0.4, 1.5, 0.6, 1)',
+            'cubic-bezier(0.5, 1.5, 0.55, 1)',
+            'cubic-bezier(0.45, 1.6, 0.5, 1)',
+            'cubic-bezier(0.35, 1.55, 0.65, 1)'
+        ];
+
+        function createAnimationElement(bezier, index) {
+            const box = document.createElement('div');
+            box.classList.add('animation-box');
+            if (index === 0) {
+                box.classList.add('red-box'); // El primer elemento es rojo
+            }
+            box.style.top = `${index * 60}px`;
+            box.style.transition = `all ${time}s ${bezier}`;
+            container.appendChild(box);
+        }
+
+        function moveBoxes() {
+            const boxes = document.querySelectorAll(".animation-box");
+            boxes.forEach(box => {
+                const currentLeft = box.style.left;
+                if (currentLeft === 'calc(100% - 50px)') {
+                    box.style.left = '0px';
+                } else {
+                    box.style.left = 'calc(100% - 50px)';
+                }
+            });
+        }
+
+        function initializeBoxes() {
+            beziers.forEach((bezier, index) => createAnimationElement(bezier, index));
+            moveBoxes();
+            setInterval(moveBoxes, time * 1000 + 2000);
+        }
+
+
+        function updateBeziers() {
+            const input = document.getElementById('bezierInput').value.trim();
+            if (input) {
+                let newBeziers = input.split('\n').filter(line => line.trim() !== '');
+                newBeziers.unshift('cubic-bezier(0,-0.01,1,1)'); // Aseguramos que el primer elemento siempre esté
+                container.innerHTML = ''; // Limpiar el contenedor antes de agregar los nuevos elementos
+                beziers = newBeziers; // Actualiza el arreglo de beziers
+                beziers.forEach((bezier, index) => createAnimationElement(bezier, index));
+
+                initializeBoxes(); // Reinicia la animación de inmediato
+            }
+            updateTransitionTime()
+        }
+
+        function updateTransitionTime() {
+            const transitionTime = document.getElementById('transitionTime').value.trim();
+            const boxes = document.querySelectorAll(".animation-box");
+
+            if (transitionTime) {
+                boxes.forEach(box => {
+                    // Obtener la transición actual
+                    const currentTransition = box.style.transition;
+                    const transitionParts = currentTransition.split(' ');
+
+                    // Filtrar y mantener solo la parte de la curva Bézier (asumimos que está al final)
+                    const bezier = transitionParts.slice(1).join(' '); // Unir de nuevo en caso de múltiples partes
+
+                    // Actualizar la transición con el nuevo tiempo
+                    box.style.transition = `all ${transitionTime}s ${bezier}`;
+
+                });
+                time = transitionTime;
+            }
+
+        }
+
+        initializeBoxes(); // Inicializa con las curvas por defecto al cargar la página
+    </script>
+</body>
+
+</html>
