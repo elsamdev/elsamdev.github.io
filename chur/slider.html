@@ -1314,21 +1314,28 @@
             sliderItems.forEach(createSliderItem);
         }
 
+        // Suponiendo que mantienes un registro de los temporizadores para cada ítem
+        let itemStates = new Map(); // Para rastrear el estado de animación de cada ítem
+
         function removeSliderItem(index) {
             const slider = document.getElementById('slider');
-            if (slider.children[index] && index >= 1) { // Asegúrate de que el ítem existe y no es el primer ítem (índice 0)
-                animateItem(slider.children[index], false); // Aplicar animación de desaparición
-
-                setTimeout(() => {
-                    slider.removeChild(slider.children[index]); // Remover ítem después de la animación
-                    adjustSliderItems(); // Ajustar los ítems restantes si es necesario
-                    updateSliderWidth(); // Actualizar el ancho del slider si es necesario
-                    updateDOMSelectors(); // Actualizar los selectores DOM
-                    nextItemIndex--;  // Decrementar el índice para manejar correctamente la adición de nuevos ítems
-
-                }, 600); // Asume que la duración de la animación de salida es de 500 ms + 100 ms de margen
+            if (slider.children[index] && index >= 1) {
+                const item = slider.children[index];
+                if (!itemStates.get(item) || !itemStates.get(item).isAnimating) {
+                    animateItem(item, false); // Aplicar animación de desaparición
+                    setTimeout(() => {
+                        if (!itemStates.get(item) || !itemStates.get(item).isAnimating) {
+                            slider.removeChild(item);
+                            adjustSliderItems();
+                            updateSliderWidth();
+                            updateDOMSelectors();
+                            nextItemIndex--;
+                        }
+                    }, 600);
+                }
             }
         }
+
 
 
         function addSliderItem() {
@@ -1370,45 +1377,32 @@
         }
 
         function animateItem(item, appearing) {
-            const primaryButton = item.querySelector('.primary-button');
-            const animatedButton = item.querySelector('.animate-button');
-
             if (appearing) {
-                // Configurar estado inicial para la animación de aparición
-                primaryButton.style.transform = 'scale(0)';
-                animatedButton.style.transform = 'scale(0)';
-                primaryButton.style.opacity = '0';
-                animatedButton.style.opacity = '0';
-
+                item.style.transform = 'scale(0)';
+                item.style.opacity = 0;
+                item.style.display = 'flex';  // O 'block' según tu layout
                 setTimeout(() => {
-                    // Aplicar la animación de aparición
-                    primaryButton.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
-                    animatedButton.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
-                    primaryButton.style.transform = 'scale(1)';
-                    animatedButton.style.transform = 'scale(1)';
-                    primaryButton.style.opacity = '1';
-                    animatedButton.style.opacity = '1';
+                    item.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+                    item.style.transform = 'scale(1)';
+                    item.style.opacity = 1;
                     playSound('soundAppear');
-                }, 100); // Pequeño retraso para asegurar que el DOM está listo
+                    // Marcar como completado si es necesario
+                }, 100);
             } else {
-                // Configurar la transición para la animación de desaparición
-                primaryButton.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
-                animatedButton.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
-
-                setTimeout(() => {
-                    // Aplicar la animación de desaparición
-                    primaryButton.style.transform = 'scale(0)';
-                    animatedButton.style.transform = 'scale(0)';
-                    primaryButton.style.opacity = '0';
-                    animatedButton.style.opacity = '0';
+                if (!itemStates.get(item) || itemStates.get(item).isAnimating) {
+                    item.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
+                    item.style.transform = 'scale(0)';
+                    item.style.opacity = 0;
+                    itemStates.set(item, { isAnimating: true });
                     playSound('soundDisappear');
                     setTimeout(() => {
-                        primaryButton.style.display = 'none';
-                        animatedButton.style.display = 'none';
-                    }, 500); // Esperar hasta que la animación termine para ocultar
-                }, 100);
+                        item.style.display = 'none';
+                        itemStates.set(item, { isAnimating: false });
+                    }, 500);
+                }
             }
         }
+
 
     </script>
 </body>
