@@ -1,134 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slider Mejorado</title>
-    <style>
-        .container {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 10px;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-overflow-scrolling: touch;
-
-
-            transition: scrollLeft 0.3s ease-out;
-
-
-        }
-
-        .item {
-            flex: 0 0 33.3333%;
-            scroll-snap-align: start;
-            background: gray;
-            height: 200px;
-            box-sizing: border-box;
-        }
-
-        .item-inside {
-            background: black;
-            height: 100%;
-            box-sizing: border-box;
-        }
-
-        .nav-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 50%;
-            font-size: 18px;
-            z-index: 2;
-        }
-
-        .nav-button:hover {
-            background: rgba(0, 0, 0, 0.8);
-        }
-
-        .nav-button.prev {
-            left: 10px;
-        }
-
-        .nav-button.next {
-            right: 10px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="page">
-        <div class="container" id="sliderContainer">
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-            <div class="item">
-                <div class="item-inside"></div>
-            </div>
-        </div>
-
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'green', 'up')" class="primary-button primary-button-green">
+            <!-- <i class="fas fa-heart"></i> -->
+            Power
+        </button>
     </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'green', 'center')" class="animate-button button button-green">
+            <i class="fas fa-space-shuttle"></i>Botón
+        </button>
+    </div>
+</div>
 
-    <script>
-        const slider = document.getElementById('sliderContainer');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'green', 'up')" class="primary-button primary-button-green">
+            <!-- <i class="fas fa-rocket"></i> -->
+            Life
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'green', 'center')" class="animate-button button button-green">
+            <i class="fas fa-heart"></i>Botón
+        </button>
+    </div>
+</div>
+<!-- borra -->
 
-        slider.addEventListener('mousedown', (e) => {
-            isDown = true;
-            startX = e.pageX - slider.offsetLeft;
-            scrollLeft = slider.scrollLeft;
-            slider.classList.add('active'); // Opcional: cambia el cursor o estilo
-        });
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'green', 'up')" class="primary-button primary-button-green">
+            <!-- <i class="fas fa-bank"></i></button> -->
+            Rate <br> fire
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'green', 'center')" class="animate-button button button-green">
+            <i class="fas fa-bank"></i>Botón
+        </button>
+    </div>
+</div>
 
-        slider.addEventListener('mouseleave', () => {
-            isDown = false;
-            slider.classList.remove('active');
-        });
 
-        slider.addEventListener('mouseup', () => {
-            isDown = false;
-            slider.classList.remove('active');
-        });
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'blue', 'up')" class="primary-button primary-button-blue">
+            <!-- <i class="fas fa-heart"></i> -->
+            Arco
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'blue', 'center')" class="animate-button button button-blue">
+            <i class="fas fa-heart"></i>Botón
+        </button>
+    </div>
+</div>
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'blue', 'up')" class="primary-button primary-button-blue">
+            <!-- <i class="fas fa-rocket"></i> -->
+            Cañon
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'blue', 'center')" class="animate-button button button-blue">
+            <i class="fas fa-space-shuttle"></i>Botón
+        </button>
+    </div>
+</div>
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'blue', 'up')" class="primary-button primary-button-blue">
+            <!-- <i class="fas fa-bank"></i> -->
+            Espada
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'blue', 'center')" class="animate-button button button-blue">
+            <i class="fas fa-bank"></i>Botón
+        </button>
+    </div>
+</div>
 
-        slider.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 3; // El factor 3 aumenta la sensibilidad del movimiento
-            slider.scrollLeft = scrollLeft - walk;
-        });
-    </script>
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'yellow', 'up')" class="primary-button primary-button-yellow">
+            <!-- <i class="fas fa-heart"></i> -->
+            Madera
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'yellow', 'center')" class="animate-button button button-yellow">
+            <i class="fas fa-heart"></i>Botón
+        </button>
+    </div>
+</div>
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'yellow', 'up')" class="primary-button primary-button-yellow">
+            <!-- <i class="fas fa-rocket"></i> -->
+            Comida
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'yellow', 'center')" class="animate-button button button-yellow">
+            <i class="fas fa-space-shuttle"></i>Botón
+        </button>
+    </div>
+</div>
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'yellow', 'up')" class="primary-button primary-button-yellow">
+            <!-- <i class="fas fa-bank"></i> -->
+            Piedra
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'yellow', 'center')" class="animate-button button button-yellow">
+            <i class="fas fa-bank"></i>Botón
+        </button>
+    </div>
+</div>
 
-</body>
-
-</html>
+<div class="slider-item">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'black', 'up')" class="primary-button primary-button-black">
+            <!-- <i class="fas fa-heart"></i> -->
+            FA
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'black', 'center')" class="animate-button button button-black">
+            <i class="fas fa-heart"></i>Botón
+        </button>
+    </div>
+</div>
+<div class="slider-item" style="display: none;">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'black', 'up')" class="primary-button primary-button-black">
+            <!-- <i class="fas fa-rocket"></i> -->
+            Entrenar
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'black', 'center')" class="animate-button button button-black">
+            <i class="fas fa-space-shuttle"></i>Botón
+        </button>
+    </div>
+</div>
+<div class="slider-item" style="display: none;">
+    <div class="icon">
+        <button onclick="buttonClicked(event, 'black', 'up')" class="primary-button primary-button-black">
+            <!-- <i class="fas fa-bank"></i> -->
+            Descansar
+        </button>
+    </div>
+    <div class="button-container">
+        <button onclick="buttonClicked(event, 'black', 'center')" class="animate-button button button-black">
+            <i class="fas fa-bank"></i>Botón
+        </button>
+    </div>
+</div>

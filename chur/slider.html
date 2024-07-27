@@ -248,6 +248,7 @@
 
     .slider-item {
         flex: 0 0 33.33%;
+        /* Default para tres items */
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -256,11 +257,19 @@
         font-size: 24px;
         text-align: center;
         color: var(--lightblack-color);
-        font-size: 24px;
         background-color: var(--maingray-color);
-        /* border: 1px solid var(--lightblack-color); */
         padding: 20px 0;
         gap: 20px;
+    }
+
+    .slider-item.full-width {
+        flex: 0 0 100%;
+        /* Para un solo item */
+    }
+
+    .slider-item.half-width {
+        flex: 0 0 50%;
+        /* Para dos items */
     }
 
     .grabbing {
@@ -526,6 +535,45 @@
             width: 96%;
         }
     }
+
+    .controls button {
+        background-color: #4CAF50;
+        /* Color de fondo verde */
+        color: white;
+        /* Texto en color blanco */
+        font-size: 16px;
+        /* Tamaño del texto */
+        border: 3px solid #4CAF50;
+        /* Borde del mismo color que el fondo */
+        border-radius: 0;
+        /* Bordes cuadrados para un look pixelado */
+        padding: 10px 20px;
+        /* Espaciado interno */
+        cursor: pointer;
+        /* Cursor en forma de mano al pasar el mouse */
+        outline: none;
+        /* Elimina el borde de foco automático */
+        transition: background-color 0.3s, color 0.3s, transform 0.2s;
+        /* Suaviza la transición de colores y transformación */
+        font-family: 'Press Start 2P', cursive;
+        /* Fuente de estilo píxel si está disponible */
+    }
+
+    .controls button:hover {
+        background-color: #45a049;
+        /* Color de fondo más oscuro al pasar el mouse */
+        color: #FFF;
+        /* Texto blanco para mantener contraste */
+        transform: scale(1.1);
+        /* Aumenta el tamaño del botón ligeramente */
+    }
+
+    .controls button:active {
+        transform: scale(0.9);
+        /* Reduce el tamaño del botón al hacer clic */
+        background-color: #397d39;
+        /* Color de fondo aún más oscuro al hacer clic */
+    }
 </style>
 
 <body>
@@ -534,6 +582,11 @@
         <button class="action-button">
             <i class="fa-solid fa-khanda"></i>
         </button>
+        <div class="controls">
+            <button id="removeButton">-</button>
+            <button id="addButton">+</button>
+        </div>
+
 
         <div class="coin">
             <div class="coins">
@@ -559,179 +612,14 @@
             </div>
 
         </div>
+
     </div>
 
 
     <div class="slider-container">
         <div class="slider" id="slider">
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'green', 'up')" class="primary-button primary-button-green">
-                        <!-- <i class="fas fa-heart"></i> -->
-                        Power
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'green', 'center')"
-                        class="animate-button button button-green">
-                        <i class="fas fa-space-shuttle"></i>Botón
-                    </button>
-                </div>
-            </div>
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'green', 'up')" class="primary-button primary-button-green">
-                        <!-- <i class="fas fa-rocket"></i> -->
-                        Life
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'green', 'center')"
-                        class="animate-button button button-green">
-                        <i class="fas fa-heart"></i>Botón
-                    </button>
-                </div>
-            </div>
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'green', 'up')" class="primary-button primary-button-green">
-                        <!-- <i class="fas fa-bank"></i></button> -->
-                        Rate <br> fire
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'green', 'center')"
-                        class="animate-button button button-green">
-                        <i class="fas fa-bank"></i>Botón
-                    </button>
-                </div>
-            </div>
 
-
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'blue', 'up')" class="primary-button primary-button-blue">
-                        <!-- <i class="fas fa-heart"></i> -->
-                        Arco
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'blue', 'center')" class="animate-button button button-blue">
-                        <i class="fas fa-heart"></i>Botón
-                    </button>
-                </div>
-            </div>
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'blue', 'up')" class="primary-button primary-button-blue">
-                        <!-- <i class="fas fa-rocket"></i> -->
-                        Cañon
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'blue', 'center')" class="animate-button button button-blue">
-                        <i class="fas fa-space-shuttle"></i>Botón
-                    </button>
-                </div>
-            </div>
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'blue', 'up')" class="primary-button primary-button-blue">
-                        <!-- <i class="fas fa-bank"></i> -->
-                        Espada
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'blue', 'center')" class="animate-button button button-blue">
-                        <i class="fas fa-bank"></i>Botón
-                    </button>
-                </div>
-            </div>
-
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'yellow', 'up')" class="primary-button primary-button-yellow">
-                        <!-- <i class="fas fa-heart"></i> -->
-                        Madera
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'yellow', 'center')"
-                        class="animate-button button button-yellow">
-                        <i class="fas fa-heart"></i>Botón
-                    </button>
-                </div>
-            </div>
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'yellow', 'up')" class="primary-button primary-button-yellow">
-                        <!-- <i class="fas fa-rocket"></i> -->
-                        Comida
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'yellow', 'center')"
-                        class="animate-button button button-yellow">
-                        <i class="fas fa-space-shuttle"></i>Botón
-                    </button>
-                </div>
-            </div>
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'yellow', 'up')" class="primary-button primary-button-yellow">
-                        <!-- <i class="fas fa-bank"></i> -->
-                        Piedra
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'yellow', 'center')"
-                        class="animate-button button button-yellow">
-                        <i class="fas fa-bank"></i>Botón
-                    </button>
-                </div>
-            </div>
-
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'black', 'up')" class="primary-button primary-button-black">
-                        <!-- <i class="fas fa-heart"></i> -->
-                        FA
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'black', 'center')"
-                        class="animate-button button button-black">
-                        <i class="fas fa-heart"></i>Botón
-                    </button>
-                </div>
-            </div>
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'black', 'up')" class="primary-button primary-button-black">
-                        <!-- <i class="fas fa-rocket"></i> -->
-                        Entrenar
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'black', 'center')"
-                        class="animate-button button button-black">
-                        <i class="fas fa-space-shuttle"></i>Botón
-                    </button>
-                </div>
-            </div>
-            <div class="slider-item">
-                <div class="icon">
-                    <button onclick="buttonClicked(event, 'black', 'up')" class="primary-button primary-button-black">
-                        <!-- <i class="fas fa-bank"></i> -->
-                        Descansar
-                    </button>
-                </div>
-                <div class="button-container">
-                    <button onclick="buttonClicked(event, 'black', 'center')"
-                        class="animate-button button button-black">
-                        <i class="fas fa-bank"></i>Botón
-                    </button>
-                </div>
-            </div>
+            <!-- borra -->
         </div>
     </div>
     <div class="navigation" id="navigation" style="transform: translateY(0px)">
@@ -754,25 +642,33 @@
         </div>
     </div>
 
+    <audio id="soundAppear" src="sound2.wav" preload="auto"></audio>
+    <audio id="soundDisappear" src="sound2.wav" preload="auto"></audio>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
+        });
+        const slider = document.querySelector('.slider');
         const navigation = document.getElementById('navigation');
-        const icon = document.querySelectorAll('.primary-button');
-        const buttonMain = document.querySelectorAll('.button');
-        const buttonnav = document.querySelectorAll('.navigation-container button');
+        let icon = document.querySelectorAll('.primary-button');
+        let buttonMain = document.querySelectorAll('.button');
+        let buttonnav = document.querySelectorAll('.navigation-container button');
         let dragghash = false;
         let initialY = 80;
+        let sliderWidth = slider.scrollWidth - slider.clientWidth;
+        let transform = 0, lastTransform = 0;
         document.addEventListener('DOMContentLoaded', function () {
-            const slider = document.querySelector('.slider');
+
 
             let startPos = 0;
             let startTime = 0;
-            let sliderWidth = slider.scrollWidth - slider.clientWidth;
+
             let itemWidth = slider.querySelector('.slider-item').clientWidth;
             const navigation = document.getElementById('navigation');
             navigation.style.transform = "translate(0)"
             let startPosX = 0, startPosY = 0;
-            let transform = 0, lastTransform = 0;
+
             let velocity = 0, direction = '';
             let startY = 0, currentY = 80; // For vertical navigation movement
             const topPoint = 0;
@@ -788,10 +684,12 @@
                 if (-lastTransform > sliderWidth) {
                     lastTransform = -sliderWidth;
                     slider.style.transform = `translateX(${lastTransform}px)`;
+                    console.log("lastTransformssss: " + lastTransform)
                 }
             }
-
+            updateSliderWidth()
             window.addEventListener('resize', updateSliderWidth);
+
 
             // Unified function for handling start of interaction
             function startInteraction(startX, startY, element) {
@@ -1207,6 +1105,309 @@
 
             // Agregar la clase active al elemento actual
             document.querySelectorAll('.recursos-item')[movFinal].classList.add('active');
+        }
+
+
+        ///****** agregar quitar botones *****/
+
+
+
+        function updateSliderWidth() {
+            sliderWidth = slider.scrollWidth - slider.clientWidth;
+            lastTransform = -sliderWidth;
+            slider.style.transform = `translateX(${lastTransform}px)`;
+        }
+
+        function adjustSliderItems() {
+
+            const visibleItems = document.querySelectorAll('.slider-item:not([style*="display: none"])');
+            const visibleCount = visibleItems.length;
+
+            // Remover clases previas para un reseteo limpio
+            visibleItems.forEach(item => {
+                item.classList.remove('full-width', 'half-width');
+            });
+
+            switch (visibleCount) {
+                case 1:
+                    visibleItems.forEach(item => item.classList.add('full-width'));
+                    slider.style.width = '100%'; // Ocupa todo el ancho disponible
+                    break;
+                case 2:
+                    visibleItems.forEach(item => item.classList.add('half-width'));
+                    slider.style.width = '100%'; // Dos items ocupan todo el ancho, cada uno la mitad
+                    break;
+                case 3:
+                    slider.style.width = '100%'; // Tres items, cada uno un tercio
+                    break;
+                default:
+                    slider.style.width = '100%'; // Por defecto, ocupar el ancho completo
+                    break;
+            }
+            // Código existente...
+
+        }
+
+
+        // function toggleSliderItem(action) {
+        //     const items = Array.from(document.querySelectorAll('.slider-item'));
+        //     const visibleItems = items.filter(item => !item.style.display || item.style.display !== 'none');
+
+        //     if (action === '+' && visibleItems.length < items.length) {
+        //         const nextItem = items[visibleItems.length]; // Obtener el siguiente item oculto
+        //         adjustSliderItems();
+        //         animateItem(nextItem, true); // Animar y mostrar el item
+        //     } else if (action === '-' && visibleItems.length > 1) {
+        //         const lastVisibleItem = visibleItems[visibleItems.length - 1];
+        //         adjustSliderItems();
+        //         animateItem(lastVisibleItem, false); // Animar y ocultar el item
+        //     }
+        //     updateSliderWidth()
+        // }
+
+        // function animateItem(item, appearing) {
+        //     const originalTransition = item.style.transition; // Guardar la transición original
+        //     // Curva Bézier para efecto de rebote
+        //     const bounceEffect = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
+        //     item.style.transition = `transform 0.5s ${bounceEffect}`;
+
+        //     if (appearing) {
+        //         item.style.display = ''; // Hacerlo visible
+        //         item.style.transform = 'scale(0)'; // Comienza desde scale 0
+        //         setTimeout(() => {
+
+        //             item.style.transform = 'scale(1)'; // Anima hasta scale 1
+        //             playSound('soundAppear');
+        //             setTimeout(() => {
+        //                 item.style.transition = originalTransition; // Restaurar la transición original después de la animación
+        //             }, 500); // Coincide con la duración de la transición
+        //         }, 1010); // Añadido un retraso de 1 segundo (1000 ms)
+        //     } else {
+
+        //         item.style.transform = 'scale(1)'; // Comienza desde scale 1
+        //         setTimeout(() => {
+        //             item.style.transform = 'scale(0)'; // Anima hasta scale 0
+        //             playSound('soundDisappear');
+        //             setTimeout(() => {
+        //                 item.style.display = 'none';
+        //                 item.style.transition = originalTransition; // Restaurar la transición original
+        //             }, 500); // Coincide con la duración de la transición
+        //         }, 1010); // Añadido un retraso de 1 segundo (1000 ms)
+        //     }
+        // }
+
+        // function playSound(soundId) {
+        //     const sound = document.getElementById(soundId);
+        //     sound.play();
+        // }
+
+
+        ///****** agregar quitar botones fin*****/
+        let nextItemIndex = 0;  // Inicializa el contador para seguir el próximo ítem a agregar
+
+        const sliderItems = [
+            {
+                color: 'green',
+                icon: 'fas fa-space-shuttle',
+                buttonLabel: 'Power',
+                buttonText: 'Botón',
+                action: 'up'
+            },
+            {
+                color: 'green',
+                icon: 'fas fa-heart',
+                buttonLabel: 'Life',
+                buttonText: 'Botón',
+                action: 'center'
+            },
+            {
+                color: 'green',
+                icon: 'fas fa-bank',
+                buttonLabel: 'Rate fire',
+                buttonText: 'Botón',
+                action: 'center'
+            },
+            {
+                color: 'blue',
+                icon: 'fas fa-heart',
+                buttonLabel: 'Arco',
+                buttonText: 'Botón',
+                action: 'up'
+            },
+            {
+                color: 'blue',
+                icon: 'fas fa-space-shuttle',
+                buttonLabel: 'Cañon',
+                buttonText: 'Botón',
+                action: 'center'
+            },
+            {
+                color: 'blue',
+                icon: 'fas fa-bank',
+                buttonLabel: 'Espada',
+                buttonText: 'Botón',
+                action: 'center'
+            },
+            {
+                color: 'yellow',
+                icon: 'fas fa-heart',
+                buttonLabel: 'Madera',
+                buttonText: 'Botón',
+                action: 'up'
+            },
+            {
+                color: 'yellow',
+                icon: 'fas fa-space-shuttle',
+                buttonLabel: 'Comida',
+                buttonText: 'Botón',
+                action: 'center'
+            },
+            {
+                color: 'yellow',
+                icon: 'fas fa-bank',
+                buttonLabel: 'Piedra',
+                buttonText: 'Botón',
+                action: 'center'
+            },
+            {
+                color: 'black',
+                icon: 'fas fa-heart',
+                buttonLabel: 'FA',
+                buttonText: 'Botón',
+                action: 'up'
+            },
+            {
+                color: 'black',
+                icon: 'fas fa-space-shuttle',
+                buttonLabel: 'Entrenar',
+                buttonText: 'Botón',
+                action: 'center'
+            },
+            {
+                color: 'black',
+                icon: 'fas fa-bank',
+                buttonLabel: 'Descansar',
+                buttonText: 'Botón',
+                action: 'center'
+            }
+        ];
+
+        function createSliderItem(itemData) {
+            const item = document.createElement('div');
+            item.className = 'slider-item';
+            item.innerHTML = `
+        <div class="icon">
+            <button onclick="buttonClicked(event, '${itemData.color}', '${itemData.action}')" class="primary-button primary-button-${itemData.color}">
+                ${itemData.buttonLabel}
+            </button>
+        </div>
+        <div class="button-container">
+            <button onclick="buttonClicked(event, '${itemData.color}', 'center')" class="animate-button button button-${itemData.color}">
+                <i class="${itemData.icon}"></i> ${itemData.buttonText}
+            </button>
+        </div>
+    `;
+            return item;
+        }
+
+        function initializeSlider() {
+            sliderItems.forEach(createSliderItem);
+        }
+
+        function removeSliderItem(index) {
+            const slider = document.getElementById('slider');
+            if (slider.children[index] && index >= 1) { // Asegúrate de que el ítem existe y no es el primer ítem (índice 0)
+                animateItem(slider.children[index], false); // Aplicar animación de desaparición
+
+                setTimeout(() => {
+                    slider.removeChild(slider.children[index]); // Remover ítem después de la animación
+                    adjustSliderItems(); // Ajustar los ítems restantes si es necesario
+                    updateSliderWidth(); // Actualizar el ancho del slider si es necesario
+                    updateDOMSelectors(); // Actualizar los selectores DOM
+                    nextItemIndex--;  // Decrementar el índice para manejar correctamente la adición de nuevos ítems
+
+                }, 600); // Asume que la duración de la animación de salida es de 500 ms + 100 ms de margen
+            }
+        }
+
+
+        function addSliderItem() {
+            const slider = document.getElementById('slider');
+            if (nextItemIndex < sliderItems.length) {
+                const newItem = createSliderItem(sliderItems[nextItemIndex]);
+                slider.appendChild(newItem);
+
+                adjustSliderItems();
+                updateSliderWidth();
+                updateDOMSelectors();
+                animateItem(newItem, true);
+                nextItemIndex++;  // Incrementar el índice para el próximo ítem a agregar
+            } else {
+                console.log("No more items to add"); // Mensaje si no hay más ítems para agregar
+            }
+        }
+
+
+        document.getElementById('addButton').addEventListener('click', addSliderItem);
+
+        document.getElementById('removeButton').addEventListener('click', () => {
+            const slider = document.getElementById('slider');
+            removeSliderItem(slider.children.length - 1); // Elimina el último ítem
+        });
+
+
+        function updateDOMSelectors() {
+            // Reasigna los selectores después de cualquier cambio en el DOM
+            icon = document.querySelectorAll('.primary-button');
+            buttonMain = document.querySelectorAll('.button');
+            buttonnav = document.querySelectorAll('.navigation-container button');
+        }
+
+
+        function playSound(soundId) {
+            const sound = document.getElementById(soundId);
+            sound.play();
+        }
+
+        function animateItem(item, appearing) {
+            const primaryButton = item.querySelector('.primary-button');
+            const animatedButton = item.querySelector('.animate-button');
+
+            if (appearing) {
+                // Configurar estado inicial para la animación de aparición
+                primaryButton.style.transform = 'scale(0)';
+                animatedButton.style.transform = 'scale(0)';
+                primaryButton.style.opacity = '0';
+                animatedButton.style.opacity = '0';
+
+                setTimeout(() => {
+                    // Aplicar la animación de aparición
+                    primaryButton.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+                    animatedButton.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+                    primaryButton.style.transform = 'scale(1)';
+                    animatedButton.style.transform = 'scale(1)';
+                    primaryButton.style.opacity = '1';
+                    animatedButton.style.opacity = '1';
+                    playSound('soundAppear');
+                }, 100); // Pequeño retraso para asegurar que el DOM está listo
+            } else {
+                // Configurar la transición para la animación de desaparición
+                primaryButton.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
+                animatedButton.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
+
+                setTimeout(() => {
+                    // Aplicar la animación de desaparición
+                    primaryButton.style.transform = 'scale(0)';
+                    animatedButton.style.transform = 'scale(0)';
+                    primaryButton.style.opacity = '0';
+                    animatedButton.style.opacity = '0';
+                    playSound('soundDisappear');
+                    setTimeout(() => {
+                        primaryButton.style.display = 'none';
+                        animatedButton.style.display = 'none';
+                    }, 500); // Esperar hasta que la animación termine para ocultar
+                }, 100);
+            }
         }
 
     </script>
