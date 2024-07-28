@@ -706,10 +706,11 @@
             let isDragging = false;
             function updateSliderWidth() {
                 sliderWidth = slider.scrollWidth - slider.clientWidth;
+                console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
                 if (-lastTransform > sliderWidth) {
                     lastTransform = -sliderWidth;
                     slider.style.transform = `translateX(${lastTransform}px)`;
-                    console.log("lastTransformssss: " + lastTransform)
+
                 }
             }
             updateSliderWidth()
@@ -1023,9 +1024,9 @@
                         translateUp = 9;
                     }
                 }
-                console.log('Button click detected');
+
                 button.style.transform = `translateY(${translateUp}px)`;
-                console.log(translateUp + "px")
+
                 setTimeout(() => {
                     button.style.boxShadow = 'none';
                 }, 20);
@@ -1035,7 +1036,7 @@
 
                 }, 50); // Tiempo para la animación de clic
             } else {
-                console.log('Drag detected, button click ignored');
+
                 // No cambia nada si fue drag
             }
 
@@ -1140,13 +1141,16 @@
 
         function updateSliderWidth(newItem, add) {
             const visibleItems = slider.querySelectorAll('.slider-item:not([style*="display: none"])');
-            sliderWidth = slider.scrollWidth - slider.clientWidth;
+
+
 
             if (visibleItems.length <= 3) {
+                sliderWidth = 0
                 lastTransform = 0; // Mantener el slider en la posición inicial
             } else {
 
-
+                sliderWidth = slider.scrollWidth - slider.clientWidth;
+                console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
                 // Calcular la posición del nuevo ítem respecto al inicio del slider
                 const newItemRect = newItem.getBoundingClientRect();
                 const sliderRect = slider.getBoundingClientRect();
@@ -1160,7 +1164,6 @@
                 // Asegurarse de que lastTransform no exceda los límites del slider
                 lastTransform = Math.min(0, lastTransform); // No permitir valores positivos
                 lastTransform = Math.max(lastTransform, -sliderWidth); // No permitir scroll más allá del contenido
-                console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
 
             }
 
@@ -1302,7 +1305,7 @@
             );
 
             if (existingItem) {
-                console.log("Item with label", buttonLabelToMatch, "already exists.");
+
                 return;
             }
 
@@ -1326,10 +1329,8 @@
                 animateItem(newItem, true);
                 updateSliderWidth(newItem, true); // Asegurarte de que se ajusta el translateX correctamente
                 adjustSliderItems();
-                console.log("Item added at the correct position:", buttonLabelToMatch);
-
             } else {
-                console.log("No item found with the label:", buttonLabelToMatch);
+
             }
         }
 
@@ -1454,7 +1455,7 @@
             const itemIndex = allItems.findIndex(item => item.getAttribute('data-label') === buttonLabelToRemove);
 
             if (itemIndex === -1) {
-                console.log("Item does not exist and cannot be removed:", buttonLabelToRemove);
+
                 return;
             }
 
@@ -1467,14 +1468,14 @@
             slider.removeChild(itemToRemove);
 
             if (itemIndex === allItems.length - 1) {
-                console.log("Removing last item...");
+
                 // Opcional: algo específico cuando se remueve el último ítem
                 // Puede ser necesario ajustar el slider si se elimina el último
                 if (itemToLeft) {
                     updateSliderWidth(itemToLeft, false); // Centrar en el ítem a la izquierda del eliminado si es el último
                 }
             } else {
-                console.log("Removing an item that is not the last...");
+
                 // Actualizar el ancho del slider y centrar el ítem a la izquierda
                 if (itemToLeft) {
                     updateSliderWidth(itemToLeft, false); // Centrar en el ítem a la izquierda del eliminado
@@ -1484,7 +1485,7 @@
             updateDOMSelectors(); // Actualizar los selectores DOM
             adjustSliderItems();
             animateItem(itemToRemove, false); // Animación para la eliminación
-            console.log("Item removed:", buttonLabelToRemove);
+
         }
 
 
