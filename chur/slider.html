@@ -1133,25 +1133,30 @@
 
 
 
-        // function updateSliderWidth() {
-        //     sliderWidth = slider.scrollWidth - slider.clientWidth;
-        //     lastTransform = -sliderWidth;
-        //     slider.style.transform = `translateX(${lastTransform}px)`;
-        // }
-
-        function updateSliderWidth() {
+        function updateSliderWidth(newItem) {
             const slider = document.getElementById('slider');
             const visibleItems = slider.querySelectorAll('.slider-item:not([style*="display: none"])');
             sliderWidth = slider.scrollWidth - slider.clientWidth;
 
-            // Resetear lastTransform si solo hay uno o dos ítems visibles
             if (visibleItems.length <= 3) {
                 lastTransform = 0; // Mantener el slider en la posición inicial
             } else {
-                lastTransform = -sliderWidth;
-            }
-            slider.style.transform = `translateX(${lastTransform}px)`;
+                // Calcular la posición del nuevo ítem respecto al inicio del slider
+                const newItemRect = newItem.getBoundingClientRect();
+                const sliderRect = slider.getBoundingClientRect();
 
+                // Calcular la posición del nuevo ítem dentro del slider
+                const newItemPosition = newItemRect.left - sliderRect.left;
+
+                // Ajustar lastTransform para centrar el nuevo ítem en la vista del slider
+                lastTransform = -newItemPosition + (slider.clientWidth / 2 - newItemRect.width / 2);
+
+                // Asegurarse de que lastTransform no exceda los límites del slider
+                lastTransform = Math.min(0, lastTransform); // No permitir valores positivos
+                lastTransform = Math.max(lastTransform, -sliderWidth); // No permitir scroll más allá del contenido
+            }
+
+            slider.style.transform = `translateX(${lastTransform}px)`;
         }
 
 
@@ -1189,7 +1194,7 @@
 
             // Ajustar el ancho del slider y actualizar el width después de aplicar las clases
             slider.style.width = '100%'; // Este puede permanecer constante si siempre deseas que ocupe el 100%
-            updateSliderWidth(); // Asegurarte de que se ajusta el translateX correctamente
+
         }
 
 
@@ -1347,30 +1352,7 @@
             }
         }
 
-        function createAndAddSliderItem(buttonLabelToMatch) {
-            const slider = document.getElementById('slider');
-            const itemData = sliderItems.find(item => item.buttonLabel === buttonLabelToMatch);
 
-            if (itemData) {
-                const newItem = createSliderItemElement(itemData);
-
-                // Determinar la posición correcta basada en el orden en sliderItems
-                const index = sliderItems.indexOf(itemData);
-                const nextItem = sliderItems[index + 1];
-                const nextElement = nextItem ? slider.querySelector(`.slider-item[data-label="${nextItem.buttonLabel}"]`) : null;
-
-                // Insertar el nuevo ítem en la posición correcta
-                if (nextElement) {
-                    slider.insertBefore(newItem, nextElement);
-                } else {
-                    slider.appendChild(newItem);  // Si no hay un siguiente ítem, añadir al final
-                }
-
-                console.log("Item added at the correct position:", buttonLabelToMatch);
-            } else {
-                console.log("No item found with the label:", buttonLabelToMatch);
-            }
-        }
 
         function createAndAddSliderItem(buttonLabelToMatch) {
             const slider = document.getElementById('slider');
@@ -1403,6 +1385,7 @@
                 adjustSliderItems();
                 updateDOMSelectors();
                 animateItem(newItem, true);
+                updateSliderWidth(newItem); // Asegurarte de que se ajusta el translateX correctamente
                 console.log("Item added at the correct position:", buttonLabelToMatch);
             } else {
                 console.log("No item found with the label:", buttonLabelToMatch);
