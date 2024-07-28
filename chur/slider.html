@@ -260,6 +260,7 @@
         background-color: var(--maingray-color);
         padding: 20px 0;
         gap: 20px;
+
     }
 
     .slider-item.full-width {
@@ -314,8 +315,20 @@
         /* position: absolute; */
         transform: none;
         bottom: 90px;
+
     }
 
+    .icon.full-width,
+    .button-container.full-width {
+        width: calc(100% + 20px);
+        /* Para un solo item */
+    }
+
+    .icon.half-width,
+    .button-container.half-width {
+        width: calc(100% + 5px);
+        /* Para dos items */
+    }
 
     .primary-button-yellow {
         background-color: #b4a262;
@@ -583,10 +596,13 @@
             <i class="fa-solid fa-khanda"></i>
         </button>
         <div class="controls">
-            <button id="removeButton">-</button>
-            <button id="addButton">+</button>
+            <!-- <button id="removeButton">-</button>
+            <button id="addButton">+</button> -->
         </div>
-
+        <div class="dropdown-container">
+            <select id="availableItems"></select>
+            <select id="addedItems"></select>
+        </div>
 
         <div class="coin">
             <div class="coins">
@@ -647,8 +663,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
+            // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
+            createAndAddSliderItem("Power");
+            initializeDropdowns()
         });
+
+
         const slider = document.querySelector('.slider');
         const navigation = document.getElementById('navigation');
         let icon = document.querySelectorAll('.primary-button');
@@ -658,6 +678,8 @@
         let initialY = 80;
         let sliderWidth = slider.scrollWidth - slider.clientWidth;
         let transform = 0, lastTransform = 0;
+        let isAtTop = false;
+        let isAtBottom = true;
         document.addEventListener('DOMContentLoaded', function () {
 
 
@@ -676,8 +698,7 @@
             let draggingAffter = null;
             let numbar = 0;
             let movementDirection = null;
-            let isAtTop = false;
-            let isAtBottom = true;
+
             let isDragging = false;
             function updateSliderWidth() {
                 sliderWidth = slider.scrollWidth - slider.clientWidth;
@@ -1112,94 +1133,65 @@
 
 
 
+        // function updateSliderWidth() {
+        //     sliderWidth = slider.scrollWidth - slider.clientWidth;
+        //     lastTransform = -sliderWidth;
+        //     slider.style.transform = `translateX(${lastTransform}px)`;
+        // }
+
         function updateSliderWidth() {
+            const slider = document.getElementById('slider');
+            const visibleItems = slider.querySelectorAll('.slider-item:not([style*="display: none"])');
             sliderWidth = slider.scrollWidth - slider.clientWidth;
-            lastTransform = -sliderWidth;
+
+            // Resetear lastTransform si solo hay uno o dos ítems visibles
+            if (visibleItems.length <= 3) {
+                lastTransform = 0; // Mantener el slider en la posición inicial
+            } else {
+                lastTransform = -sliderWidth;
+            }
             slider.style.transform = `translateX(${lastTransform}px)`;
+
         }
 
-        function adjustSliderItems() {
 
+        function adjustSliderItems() {
             const visibleItems = document.querySelectorAll('.slider-item:not([style*="display: none"])');
             const visibleCount = visibleItems.length;
 
-            // Remover clases previas para un reseteo limpio
+            // Aplicar y remover transiciones y clases adecuadas
             visibleItems.forEach(item => {
-                item.classList.remove('full-width', 'half-width');
+                const icons = item.querySelectorAll('.icon');
+                const primaryButtons = item.querySelectorAll('.button-container');
+
+                // Remover clases previas para un reseteo limpio en todos los elementos relevantes
+                [item, ...icons, ...primaryButtons].forEach(el => {
+                    el.style.transition = 'flex-basis 0.2s ease-out';
+                    el.classList.remove('full-width', 'half-width');
+                });
+
+                switch (visibleCount) {
+                    case 1:
+                        [item, ...icons, ...primaryButtons].forEach(el => {
+                            el.classList.add('full-width');
+                        });
+                        break;
+                    case 2:
+                        [item, ...icons, ...primaryButtons].forEach(el => {
+                            el.classList.add('half-width');
+                        });
+                        break;
+                    case 3:
+                        // No need to apply 'third-width' class specifically, manage with default styling
+                        break;
+                }
             });
 
-            switch (visibleCount) {
-                case 1:
-                    visibleItems.forEach(item => item.classList.add('full-width'));
-                    slider.style.width = '100%'; // Ocupa todo el ancho disponible
-                    break;
-                case 2:
-                    visibleItems.forEach(item => item.classList.add('half-width'));
-                    slider.style.width = '100%'; // Dos items ocupan todo el ancho, cada uno la mitad
-                    break;
-                case 3:
-                    slider.style.width = '100%'; // Tres items, cada uno un tercio
-                    break;
-                default:
-                    slider.style.width = '100%'; // Por defecto, ocupar el ancho completo
-                    break;
-            }
-            // Código existente...
-
+            // Ajustar el ancho del slider y actualizar el width después de aplicar las clases
+            slider.style.width = '100%'; // Este puede permanecer constante si siempre deseas que ocupe el 100%
+            updateSliderWidth(); // Asegurarte de que se ajusta el translateX correctamente
         }
 
-
-        // function toggleSliderItem(action) {
-        //     const items = Array.from(document.querySelectorAll('.slider-item'));
-        //     const visibleItems = items.filter(item => !item.style.display || item.style.display !== 'none');
-
-        //     if (action === '+' && visibleItems.length < items.length) {
-        //         const nextItem = items[visibleItems.length]; // Obtener el siguiente item oculto
-        //         adjustSliderItems();
-        //         animateItem(nextItem, true); // Animar y mostrar el item
-        //     } else if (action === '-' && visibleItems.length > 1) {
-        //         const lastVisibleItem = visibleItems[visibleItems.length - 1];
-        //         adjustSliderItems();
-        //         animateItem(lastVisibleItem, false); // Animar y ocultar el item
-        //     }
-        //     updateSliderWidth()
-        // }
-
-        // function animateItem(item, appearing) {
-        //     const originalTransition = item.style.transition; // Guardar la transición original
-        //     // Curva Bézier para efecto de rebote
-        //     const bounceEffect = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
-        //     item.style.transition = `transform 0.5s ${bounceEffect}`;
-
-        //     if (appearing) {
-        //         item.style.display = ''; // Hacerlo visible
-        //         item.style.transform = 'scale(0)'; // Comienza desde scale 0
-        //         setTimeout(() => {
-
-        //             item.style.transform = 'scale(1)'; // Anima hasta scale 1
-        //             playSound('soundAppear');
-        //             setTimeout(() => {
-        //                 item.style.transition = originalTransition; // Restaurar la transición original después de la animación
-        //             }, 500); // Coincide con la duración de la transición
-        //         }, 1010); // Añadido un retraso de 1 segundo (1000 ms)
-        //     } else {
-
-        //         item.style.transform = 'scale(1)'; // Comienza desde scale 1
-        //         setTimeout(() => {
-        //             item.style.transform = 'scale(0)'; // Anima hasta scale 0
-        //             playSound('soundDisappear');
-        //             setTimeout(() => {
-        //                 item.style.display = 'none';
-        //                 item.style.transition = originalTransition; // Restaurar la transición original
-        //             }, 500); // Coincide con la duración de la transición
-        //         }, 1010); // Añadido un retraso de 1 segundo (1000 ms)
-        //     }
-        // }
-
-        // function playSound(soundId) {
-        //     const sound = document.getElementById(soundId);
-        //     sound.play();
-        // }
 
 
         ///****** agregar quitar botones fin*****/
@@ -1310,6 +1302,9 @@
             return item;
         }
 
+
+
+
         function initializeSlider() {
             sliderItems.forEach(createSliderItem);
         }
@@ -1322,7 +1317,6 @@
                 setTimeout(() => {
                     slider.removeChild(slider.children[index]); // Remover ítem después de la animación
                     adjustSliderItems(); // Ajustar los ítems restantes si es necesario
-                    updateSliderWidth(); // Actualizar el ancho del slider si es necesario
                     updateDOMSelectors(); // Actualizar los selectores DOM
                     // Decrementar el índice para manejar correctamente la adición de nuevos ítems
                     nextItemIndex--;
@@ -1332,14 +1326,19 @@
         }
 
 
+
         function addSliderItem() {
+            if (isAtTop) {
+                console.log("top");
+            } else {
+                console.log("bottom");
+            }
             const slider = document.getElementById('slider');
             if (nextItemIndex < sliderItems.length) {
                 const newItem = createSliderItem(sliderItems[nextItemIndex]);
                 slider.appendChild(newItem);
 
                 adjustSliderItems();
-                updateSliderWidth();
                 updateDOMSelectors();
                 animateItem(newItem, true);
                 nextItemIndex++;  // Incrementar el índice para el próximo ítem a agregar
@@ -1348,8 +1347,82 @@
             }
         }
 
+        function createAndAddSliderItem(buttonLabelToMatch) {
+            if (isAtTop) {
+                console.log("top");
+            } else {
+                console.log("bottom");
+            }
+            const slider = document.getElementById('slider'); // Asume que tienes un contenedor con id 'slider'
 
-        document.getElementById('addButton').addEventListener('click', addSliderItem);
+            // Primero verificar si ya existe un ítem con el mismo buttonLabel
+            const existingItem = Array.from(slider.querySelectorAll('.slider-item')).find(item =>
+                item.querySelector('.primary-button').textContent.trim() === buttonLabelToMatch
+            );
+
+            // Si ya existe, no agregar otro
+            if (existingItem) {
+                console.log("Item with label", buttonLabelToMatch, "already exists.");
+                return;
+            }
+
+            // Buscar en el array el ítem que coincida con el buttonLabel proporcionado
+            const itemData = sliderItems.find(item => item.buttonLabel === buttonLabelToMatch);
+
+            // Si encuentra una coincidencia, crea el ítem y lo agrega al DOM
+            if (itemData) {
+                const item = document.createElement('div');
+                item.className = 'slider-item';
+                item.setAttribute('data-label', itemData.buttonLabel);
+                item.innerHTML = `
+            <div class="icon">
+                <button onclick="buttonClicked(event, '${itemData.color}', '${itemData.action}')" class="primary-button primary-button-${itemData.color}">
+                    ${itemData.buttonLabel}
+                </button>
+            </div>
+            <div class="button-container">
+                <button onclick="buttonClicked(event, '${itemData.color}', 'center')" class="animate-button button button-${itemData.color}">
+                    <i class="${itemData.icon}"></i> ${itemData.buttonText}
+                </button>
+            </div>
+        `;
+
+                // Agregar el nuevo ítem al slider
+                slider.appendChild(item);
+                adjustSliderItems();
+                updateDOMSelectors();
+                animateItem(item, true);
+
+            } else {
+                console.log("No item found with the label:", buttonLabelToMatch);
+            }
+        }
+
+
+        function removeSliderItemByLabel(buttonLabelToRemove) {
+            const slider = document.getElementById('slider'); // Asume que tienes un contenedor con id 'slider'
+            const itemToRemove = Array.from(slider.querySelectorAll('.slider-item')).find(item =>
+                item.querySelector('.primary-button').textContent.trim() === buttonLabelToRemove
+            );
+
+            if (itemToRemove) {
+                // Remover el ítem del DOM
+                slider.removeChild(itemToRemove);
+                console.log("Item with label", buttonLabelToRemove, "has been removed.");
+
+                // Luego de eliminar, actualiza los elementos y la interfaz
+                adjustSliderItems();
+                updateDOMSelectors(); // Suponiendo que necesitas actualizar selecciones del DOM después de cambios
+
+                // Si tienes un sistema para manejar ítems eliminados, actualiza esto también
+                updateAvailableItemsDropdown();
+                updateAddedItemsDropdown();
+            } else {
+                console.log("No item found with the label:", buttonLabelToRemove);
+            }
+        }
+
+        // document.getElementById('addButton').addEventListener('click', addSliderItem);
 
         document.getElementById('removeButton').addEventListener('click', () => {
             const slider = document.getElementById('slider');
@@ -1410,6 +1483,62 @@
                 }, 100);
             }
         }
+
+        function initializeDropdowns() {
+            const availableItems = document.getElementById('availableItems');
+            const addedItems = document.getElementById('addedItems');
+
+            fillDropdown(availableItems);
+            fillDropdown(addedItems);
+
+            // Escuchar cambios en el dropdown de ítems disponibles para agregar
+            availableItems.onchange = function () {
+                if (this.value !== '') {
+                    createAndAddSliderItem(this.value);  // Intenta añadir el ítem seleccionado
+                }
+            };
+
+            // Escuchar cambios en el dropdown de ítems agregados para eliminar
+            addedItems.onchange = function () {
+                if (this.value !== '') {
+                    removeSliderItemByName(this.value);  // Intenta eliminar el ítem seleccionado
+                }
+            };
+        }
+
+        function fillDropdown(dropdown) {
+            dropdown.innerHTML = '';  // Limpia el dropdown
+            const defaultOption = document.createElement('option');
+            defaultOption.textContent = 'Seleccione un ítem';
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            dropdown.appendChild(defaultOption);
+
+            sliderItems.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.buttonLabel;
+                option.textContent = item.buttonLabel;
+                dropdown.appendChild(option);
+            });
+        }
+
+        function removeSliderItemByName(buttonLabelToRemove) {
+            const slider = document.getElementById('slider');
+            const itemToRemove = Array.from(slider.querySelectorAll('.slider-item')).find(item =>
+                item.getAttribute('data-label') === buttonLabelToRemove
+            );
+
+            if (itemToRemove) {
+                slider.removeChild(itemToRemove);
+                adjustSliderItems(); // Ajustar los ítems restantes si es necesario
+                updateDOMSelectors(); // Actualizar los selectores DOM
+                animateItem(itemToRemove, false);
+                console.log("Item removed:", buttonLabelToRemove);
+            } else {
+                console.log("Item does not exist and cannot be removed:", buttonLabelToRemove);
+            }
+        }
+
 
     </script>
 </body>
