@@ -665,11 +665,14 @@
         document.addEventListener('DOMContentLoaded', function () {
             // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
             createAndAddSliderItem("Power");
+            // createAndAddSliderItem("Arco");
+            // createAndAddSliderItem("Madera");
             initializeDropdowns()
         });
 
 
         const slider = document.querySelector('.slider');
+        const SliderContainer = document.querySelector('.slider-container');
         const navigation = document.getElementById('navigation');
         let icon = document.querySelectorAll('.primary-button');
         let buttonMain = document.querySelectorAll('.button');
@@ -680,6 +683,7 @@
         let transform = 0, lastTransform = 0;
         let isAtTop = false;
         let isAtBottom = true;
+
         document.addEventListener('DOMContentLoaded', function () {
 
 
@@ -750,6 +754,7 @@
                         } else if (tentativeTransform < -sliderWidth) {
                             tentativeTransform = -sliderWidth + (dx / 5);
                         }
+
 
                         transform = tentativeTransform;
 
@@ -1133,14 +1138,15 @@
 
 
 
-        function updateSliderWidth(newItem) {
-            const slider = document.getElementById('slider');
+        function updateSliderWidth(newItem, add) {
             const visibleItems = slider.querySelectorAll('.slider-item:not([style*="display: none"])');
             sliderWidth = slider.scrollWidth - slider.clientWidth;
 
             if (visibleItems.length <= 3) {
                 lastTransform = 0; // Mantener el slider en la posición inicial
             } else {
+
+
                 // Calcular la posición del nuevo ítem respecto al inicio del slider
                 const newItemRect = newItem.getBoundingClientRect();
                 const sliderRect = slider.getBoundingClientRect();
@@ -1154,46 +1160,43 @@
                 // Asegurarse de que lastTransform no exceda los límites del slider
                 lastTransform = Math.min(0, lastTransform); // No permitir valores positivos
                 lastTransform = Math.max(lastTransform, -sliderWidth); // No permitir scroll más allá del contenido
+                console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
+
             }
 
             slider.style.transform = `translateX(${lastTransform}px)`;
+
         }
 
 
         function adjustSliderItems() {
-            const visibleItems = document.querySelectorAll('.slider-item:not([style*="display: none"])');
-            const visibleCount = visibleItems.length;
+            const sliderItems = document.querySelectorAll('.slider-item');
+            const itemCount = sliderItems.length;  // Uso itemCount para reflejar el total de ítems en el slider
 
-            // Aplicar y remover transiciones y clases adecuadas
-            visibleItems.forEach(item => {
+            // Remover clases y resetear transiciones
+            sliderItems.forEach(item => {
                 const icons = item.querySelectorAll('.icon');
                 const primaryButtons = item.querySelectorAll('.button-container');
 
-                // Remover clases previas para un reseteo limpio en todos los elementos relevantes
                 [item, ...icons, ...primaryButtons].forEach(el => {
                     el.style.transition = 'flex-basis 0.2s ease-out';
                     el.classList.remove('full-width', 'half-width');
                 });
 
-                switch (visibleCount) {
-                    case 1:
-                        [item, ...icons, ...primaryButtons].forEach(el => {
-                            el.classList.add('full-width');
-                        });
-                        break;
-                    case 2:
-                        [item, ...icons, ...primaryButtons].forEach(el => {
-                            el.classList.add('half-width');
-                        });
-                        break;
-                    case 3:
-                        // No need to apply 'third-width' class specifically, manage with default styling
-                        break;
+                // Aplicar clases basadas en la cantidad de ítems
+                if (itemCount === 1) {
+                    [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('full-width'));
+                } else if (itemCount === 2) {
+                    [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('half-width'));
+                } else if (itemCount === 3) {
+                    // Aplica transiciones personalizadas para tres ítems
+                    [item, ...icons, ...primaryButtons].forEach(el => {
+                        el.style.transition = 'flex-basis 1s cubic-bezier(0.5, 1.5, 0.55, 1)';
+                    });
                 }
             });
 
-            // Ajustar el ancho del slider y actualizar el width después de aplicar las clases
-            slider.style.width = '100%'; // Este puede permanecer constante si siempre deseas que ocupe el 100%
+            slider.style.width = '100%';
 
         }
 
@@ -1289,70 +1292,6 @@
             }
         ];
 
-        function createSliderItem(itemData) {
-            const item = document.createElement('div');
-            item.className = 'slider-item';
-            item.innerHTML = `
-        <div class="icon">
-            <button onclick="buttonClicked(event, '${itemData.color}', '${itemData.action}')" class="primary-button primary-button-${itemData.color}">
-                ${itemData.buttonLabel}
-            </button>
-        </div>
-        <div class="button-container">
-            <button onclick="buttonClicked(event, '${itemData.color}', 'center')" class="animate-button button button-${itemData.color}">
-                <i class="${itemData.icon}"></i> ${itemData.buttonText}
-            </button>
-        </div>
-    `;
-            return item;
-        }
-
-
-
-
-        function initializeSlider() {
-            sliderItems.forEach(createSliderItem);
-        }
-
-        function removeSliderItem(index) {
-            const slider = document.getElementById('slider');
-            if (slider.children[index] && index >= 1) { // Asegúrate de que el ítem existe y no es el primer ítem (índice 0)
-                animateItem(slider.children[index], false); // Aplicar animación de desaparición
-
-                setTimeout(() => {
-                    slider.removeChild(slider.children[index]); // Remover ítem después de la animación
-                    adjustSliderItems(); // Ajustar los ítems restantes si es necesario
-                    updateDOMSelectors(); // Actualizar los selectores DOM
-                    // Decrementar el índice para manejar correctamente la adición de nuevos ítems
-                    nextItemIndex--;
-                }, 600); // Asume que la duración de la animación de salida es de 500 ms + 100 ms de margen
-
-            }
-        }
-
-
-
-        function addSliderItem() {
-            if (isAtTop) {
-                console.log("top");
-            } else {
-                console.log("bottom");
-            }
-            const slider = document.getElementById('slider');
-            if (nextItemIndex < sliderItems.length) {
-                const newItem = createSliderItem(sliderItems[nextItemIndex]);
-                slider.appendChild(newItem);
-
-                adjustSliderItems();
-                updateDOMSelectors();
-                animateItem(newItem, true);
-                nextItemIndex++;  // Incrementar el índice para el próximo ítem a agregar
-            } else {
-                console.log("No more items to add"); // Mensaje si no hay más ítems para agregar
-            }
-        }
-
-
 
         function createAndAddSliderItem(buttonLabelToMatch) {
             const slider = document.getElementById('slider');
@@ -1382,11 +1321,13 @@
                 } else {
                     slider.appendChild(newItem); // Si no hay un siguiente ítem definido, añadir al final
                 }
-                adjustSliderItems();
+
                 updateDOMSelectors();
                 animateItem(newItem, true);
-                updateSliderWidth(newItem); // Asegurarte de que se ajusta el translateX correctamente
+                updateSliderWidth(newItem, true); // Asegurarte de que se ajusta el translateX correctamente
+                adjustSliderItems();
                 console.log("Item added at the correct position:", buttonLabelToMatch);
+
             } else {
                 console.log("No item found with the label:", buttonLabelToMatch);
             }
@@ -1413,37 +1354,6 @@
         }
 
 
-
-
-        function removeSliderItemByLabel(buttonLabelToRemove) {
-            const slider = document.getElementById('slider'); // Asume que tienes un contenedor con id 'slider'
-            const itemToRemove = Array.from(slider.querySelectorAll('.slider-item')).find(item =>
-                item.querySelector('.primary-button').textContent.trim() === buttonLabelToRemove
-            );
-
-            if (itemToRemove) {
-                // Remover el ítem del DOM
-                slider.removeChild(itemToRemove);
-                console.log("Item with label", buttonLabelToRemove, "has been removed.");
-
-                // Luego de eliminar, actualiza los elementos y la interfaz
-                adjustSliderItems();
-                updateDOMSelectors(); // Suponiendo que necesitas actualizar selecciones del DOM después de cambios
-
-                // Si tienes un sistema para manejar ítems eliminados, actualiza esto también
-                updateAvailableItemsDropdown();
-                updateAddedItemsDropdown();
-            } else {
-                console.log("No item found with the label:", buttonLabelToRemove);
-            }
-        }
-
-        // document.getElementById('addButton').addEventListener('click', addSliderItem);
-
-        document.getElementById('removeButton').addEventListener('click', () => {
-            const slider = document.getElementById('slider');
-            removeSliderItem(slider.children.length - 1); // Elimina el último ítem
-        });
 
 
         function updateDOMSelectors() {
@@ -1540,20 +1450,43 @@
 
         function removeSliderItemByName(buttonLabelToRemove) {
             const slider = document.getElementById('slider');
-            const itemToRemove = Array.from(slider.querySelectorAll('.slider-item')).find(item =>
-                item.getAttribute('data-label') === buttonLabelToRemove
-            );
+            const allItems = Array.from(slider.querySelectorAll('.slider-item'));
+            const itemIndex = allItems.findIndex(item => item.getAttribute('data-label') === buttonLabelToRemove);
 
-            if (itemToRemove) {
-                slider.removeChild(itemToRemove);
-                adjustSliderItems(); // Ajustar los ítems restantes si es necesario
-                updateDOMSelectors(); // Actualizar los selectores DOM
-                animateItem(itemToRemove, false);
-                console.log("Item removed:", buttonLabelToRemove);
-            } else {
+            if (itemIndex === -1) {
                 console.log("Item does not exist and cannot be removed:", buttonLabelToRemove);
+                return;
             }
+
+            const itemToRemove = allItems[itemIndex];
+
+            // Si no es el primer ítem, obtenemos el ítem a la izquierda
+            const itemToLeft = itemIndex > 0 ? allItems[itemIndex - 1] : null;
+
+            // Remover el ítem del DOM
+            slider.removeChild(itemToRemove);
+
+            if (itemIndex === allItems.length - 1) {
+                console.log("Removing last item...");
+                // Opcional: algo específico cuando se remueve el último ítem
+                // Puede ser necesario ajustar el slider si se elimina el último
+                if (itemToLeft) {
+                    updateSliderWidth(itemToLeft, false); // Centrar en el ítem a la izquierda del eliminado si es el último
+                }
+            } else {
+                console.log("Removing an item that is not the last...");
+                // Actualizar el ancho del slider y centrar el ítem a la izquierda
+                if (itemToLeft) {
+                    updateSliderWidth(itemToLeft, false); // Centrar en el ítem a la izquierda del eliminado
+                }
+            }
+
+            updateDOMSelectors(); // Actualizar los selectores DOM
+            adjustSliderItems();
+            animateItem(itemToRemove, false); // Animación para la eliminación
+            console.log("Item removed:", buttonLabelToRemove);
         }
+
 
 
     </script>
