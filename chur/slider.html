@@ -861,14 +861,11 @@
 
             if (movementDirection === null) {  // Usar null para la comprobación inicial
                 if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {  // Umbral bajo para respuesta rápida
-
                     movementDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
-
                 }
             }
 
             if (movementDirection === 'horizontal') {
-
                 if (Math.abs(dx) > 0) {
 
                     let tentativeTransform = lastTransform + dx;
@@ -948,7 +945,7 @@
 
             }
             slider.style.transform = `translateX(${newTransform}px)`;
-            slider.style.transition = 'all 1s cubic-bezier(0.5, 1.5, 0.55, 1)'; // Smooth deceleration
+            slider.style.transition = 'all 1s cubic-bezier(.07,.91,.19,1.02)'; // Smooth deceleration
             // slider.classList.add('animating');
             lastTransform = newTransform;
 
