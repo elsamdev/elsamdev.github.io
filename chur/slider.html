@@ -436,7 +436,7 @@
         /* background-color: var(--maingray-color); */
         position: absolute;
         bottom: -80px;
-        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275);
     }
 
 
@@ -795,7 +795,7 @@
 
         function updateSliderWidthResize() {
             sliderWidth = slider.scrollWidth - slider.clientWidth;
-            console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
+
             if (-lastTransform > sliderWidth) {
                 lastTransform = -sliderWidth;
                 slider.style.transform = 'translateY(0)'
@@ -812,7 +812,7 @@
             else {
 
                 sliderWidth = slider.scrollWidth - slider.clientWidth;
-                console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
+
                 // Calcular la posición del nuevo ítem respecto al inicio del slider
                 const newItemRect = newItem.getBoundingClientRect();
                 const sliderRect = slider.getBoundingClientRect();
@@ -835,6 +835,7 @@
 
         ///********************* *************************************//////////
         function startInteraction(startX, startY, element) {
+
             startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
             startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
             isDragging = true;
@@ -851,6 +852,7 @@
 
         // Unified function for handling movement
         function moveInteraction(currentPosX, currentPosY) {
+            // console.log("isAtTop: " + isAtTop, " isAtBottom: ", isAtBottom)
             if (!isDragging) return;
             const dy = currentPosY - startPosY;
             const dx = currentPosX - startPos;
@@ -866,6 +868,7 @@
             if (movementDirection === 'horizontal') {
 
                 if (Math.abs(dx) > 0) {
+
                     let tentativeTransform = lastTransform + dx;
 
                     velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
@@ -884,12 +887,14 @@
                 }
             } else if (movementDirection === 'vertical') {
                 // Manejar solo movimientos verticales para el slider
-                console.log(isAtTop, " separa ", isAtBottom)
+
+
                 if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
+
+                    // if ((dy > 0) || (dy < 0)) {
 
                     // Si está en el top y el movimiento es hacia abajo, o está en el bottom y el movimiento es hacia arriba, permitir movimiento
                     moveNavigation(currentPosY);
-
                 }
 
 
@@ -906,6 +911,7 @@
 
             if (!isDragging) return;
 
+
             isDragging = false;
             draggingAffter = true
             slider.classList.remove('grabbing');
@@ -918,7 +924,7 @@
             } else {
                 newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
             }
-            movementDirection = null;
+
             if (Math.abs(dx) > 20) {
                 dragghash = true;
             } else {
@@ -951,19 +957,24 @@
 
             // Determina el punto más cercano
             const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
+            const dy = currentPosY - startPosY;
+            if (movementDirection === 'vertical') {
+                if (targetY === topPoint) {
+                    ajustarElementos();
+                    isAtTop = true;
+                    isAtBottom = false;
+                } else if (targetY === bottomPoint) {
+                    restablecerElementos();
+                    isAtTop = false;
+                    isAtBottom = true;
+                }
+            } else {
 
-            if (targetY === topPoint) {
-                ajustarElementos();
-                isAtTop = true;
-                isAtBottom = false;
-            } else if (targetY === bottomPoint) {
-                restablecerElementos();
-                isAtTop = false;
-                isAtBottom = true;
             }
 
+
             // Mueve el botón al punto más cercano con una transición suave
-            navigation.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+            navigation.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
             navigation.style.transform = `translateY(${targetY - initialY}px)`;
             currentY = targetY;
 
@@ -979,6 +990,7 @@
             logCurrentCenteredItem();
             logSliderPercentage();
             valorTra()
+            movementDirection = null;
         }
 
         function moveNavigation(currentPosY) {
@@ -1032,13 +1044,13 @@
         //////////////////////////
         function ajustarElementos() {
             icon.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                elemento.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 elemento.style.transform = 'translateY(-10px)';
                 elemento.style.height = '75%';
             });
 
             buttonMain.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                elemento.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 // elemento.style.top = '-55px';
                 elemento.style.height = '75%';
                 elemento.style.transform = 'translateY(-40px)';
@@ -1054,20 +1066,21 @@
             navigation.style.minHeight = '80px';
             navigation.style.maxHeight = '80px';
             navigation.style.height = '80px';
-            isAtTop = false;
-            isAtBottom = true;
+            isAtTop = true;
+            isAtBottom = false;
             initialY = 80;
+
         }
 
         function restablecerElementos() {
             icon.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                elemento.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 elemento.style.transform = 'none';
                 elemento.style.height = '100%';
             });
 
             buttonMain.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                elemento.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 // elemento.style.top = '0';
                 elemento.style.height = '100%';
                 elemento.style.transform = 'translateY(0px)';
@@ -1083,10 +1096,12 @@
             navigation.style.minHeight = '100px';
             navigation.style.maxHeight = '100px';
             navigation.style.height = '100px';
-            isAtBottom = false;
-            isAtTop = true;
+            isAtTop = false;
+            isAtBottom = true;
             initialY = 0;
+
         }
+
         ///////////////********BOTONES********** *///////////////
 
 
@@ -1256,7 +1271,7 @@
                 const primaryButtons = item.querySelectorAll('.button-container');
 
                 [item, ...icons, ...primaryButtons].forEach(el => {
-                    el.style.transition = 'flex-basis 0.2s ease-out';
+                    el.style.transition = 'flex-basis 0.3s ease-out';
                     el.classList.remove('full-width', 'half-width');
                 });
 
@@ -1382,11 +1397,7 @@
 
         function createAndAddSliderItem(buttonLabelToMatch) {
             const slider = document.getElementById('slider');
-            if (isAtTop) {
-                console.log("esta arriba")
-            } else {
-                console.log("esta abajo")
-            }
+
             // Comprobar si el ítem ya existe en el slider para evitar duplicados
             const existingItem = Array.from(slider.querySelectorAll('.slider-item')).find(item =>
                 item.getAttribute('data-label') === buttonLabelToMatch
@@ -1412,12 +1423,13 @@
                 } else {
                     slider.appendChild(newItem); // Si no hay un siguiente ítem definido, añadir al final
                 }
-                restablecerElementos();
+
                 navigation.style.transform = "translateY(1px)"
                 adjustSliderItems();
                 updateDOMSelectors();
                 animateItem(newItem, true);
                 updateSliderWidth(newItem, true); // Asegurarte de que se ajusta el translateX correctamente
+                restablecerElementos();
 
             } else {
 
@@ -1473,8 +1485,8 @@
 
                 setTimeout(() => {
                     // Aplicar la animación de aparición
-                    primaryButton.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
-                    animatedButton.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+                    primaryButton.style.transition = 'transform 0.2s ease-out, opacity 0.2s ease-out';
+                    animatedButton.style.transition = 'transform 0.2s ease-out, opacity 0.2s ease-out';
                     primaryButton.style.transform = 'scale(1)';
                     animatedButton.style.transform = 'scale(1)';
                     primaryButton.style.opacity = '1';
