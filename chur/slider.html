@@ -1366,7 +1366,11 @@
 
         function createAndAddSliderItem(buttonLabelToMatch) {
             const slider = document.getElementById('slider');
-
+            if (isAtTop) {
+                console.log("esta arriba")
+            } else {
+                console.log("esta abajo")
+            }
             // Comprobar si el ítem ya existe en el slider para evitar duplicados
             const existingItem = Array.from(slider.querySelectorAll('.slider-item')).find(item =>
                 item.getAttribute('data-label') === buttonLabelToMatch
