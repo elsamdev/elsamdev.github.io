@@ -740,6 +740,33 @@
             // createAndAddSliderItem("Espada");
             // createAndAddSliderItem("Piedra");
             initializeDropdowns()
+
+
+            // /********************************** /
+
+
+            updateSliderWidthResize()
+            window.addEventListener('resize', updateSliderWidthResize);
+            slider.style.transform = 'translateY(0)'
+            lastTransform = 0;
+
+
+            // click event
+            slider.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, slider));
+            navigation.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, navigation));
+            window.addEventListener('mousemove', e => moveInteraction(e.clientX, e.clientY));
+            window.addEventListener('mouseup', e => endInteraction(e.clientX, e.clientY));
+
+            // Touch events
+            slider.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, slider));
+            navigation.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, navigation));
+            window.addEventListener('touchmove', e => moveInteraction(e.touches[0].clientX, e.touches[0].clientY));
+            window.addEventListener('touchend', e => {
+                if (e.changedTouches && e.changedTouches.length > 0) {
+                    endInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                }
+            });
+
         });
 
 
@@ -758,6 +785,13 @@
         let startPos = 0, startPosY = 0, startTime = 0, lastTransform = 0;
         let isDragging = false, movementDirection = null, draggingAffter = null;
         let velocity = 0;
+        let startY = 0, currentY = 80; // For vertical navigation movement
+        let startPosX = 0;
+        let direction = '';
+        const topPoint = 0;
+        const bottomPoint = 1;
+
+        let numbar = 0;
 
         function updateSliderWidthResize() {
             sliderWidth = slider.scrollWidth - slider.clientWidth;
@@ -800,300 +834,262 @@
         }
 
         ///********************* *************************************//////////
+        function startInteraction(startX, startY, element) {
+            startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
+            startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
+            isDragging = true;
 
-        document.addEventListener('DOMContentLoaded', function () {
+            startTime = Date.now();
+            slider.classList.add('grabbing');
+            slider.style.transition = 'none';
+            // Remove transition for real-time tracking
+            logCurrentCenteredItem();
+            logSliderPercentage();
+            valorTra()
 
+        }
+
+        // Unified function for handling movement
+        function moveInteraction(currentPosX, currentPosY) {
+            if (!isDragging) return;
+            const dy = currentPosY - startPosY;
+            const dx = currentPosX - startPos;
+
+            if (movementDirection === null) {  // Usar null para la comprobación inicial
+                if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {  // Umbral bajo para respuesta rápida
+
+                    movementDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
+
+                }
+            }
+
+            if (movementDirection === 'horizontal') {
+
+                if (Math.abs(dx) > 0) {
+                    let tentativeTransform = lastTransform + dx;
+
+                    velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
+                    // Elastic effect
+                    if (tentativeTransform > 0) {
+                        tentativeTransform = dx / 5;
+                    } else if (tentativeTransform < -sliderWidth) {
+                        tentativeTransform = -sliderWidth + (dx / 5);
+                    }
+
+
+                    transform = tentativeTransform;
+
+                    slider.style.transform = `translateX(${transform}px)`;
+
+                }
+            } else if (movementDirection === 'vertical') {
+                // Manejar solo movimientos verticales para el slider
+                console.log(isAtTop, " separa ", isAtBottom)
+                if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
+
+                    // Si está en el top y el movimiento es hacia abajo, o está en el bottom y el movimiento es hacia arriba, permitir movimiento
+                    moveNavigation(currentPosY);
+
+                }
+
+
+            }
+
+            logCurrentCenteredItem();
+            logSliderPercentage();
+            valorTra()
+
+        }
+
+        // Unified function for ending interaction
+        function endInteraction(currentPosX, currentPosY) {
+
+            if (!isDragging) return;
+
+            isDragging = false;
+            draggingAffter = true
+            slider.classList.remove('grabbing');
+            const dx = currentPosX - startPos;
+
+            let newTransform;
+            // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
+            if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
+                newTransform = lastTransform + dx + (velocity * 100); // Momentum efectivo
+            } else {
+                newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
+            }
+            movementDirection = null;
+            if (Math.abs(dx) > 20) {
+                dragghash = true;
+            } else {
+                dragghash = false;
+            }
             let itemWidth = slider.querySelector('.slider-item').clientWidth;
-            // navigation.style.transform = "translate(0)"
-            let startPosX = 0, startPosY = 0;
-            let direction = '';
-            let startY = 0, currentY = 80; // For vertical navigation movement
-            const topPoint = 0;
-            const bottomPoint = 1;
-            let draggingAffter = null;
-            let numbar = 0;
+            newTransform = Math.round(newTransform / itemWidth) * itemWidth;
+
+            if (newTransform > 0) {
+                newTransform = 0;
+                logCurrentCenteredItem();
+                logSliderPercentage();
+
+            } else if (newTransform < -sliderWidth) {
+                newTransform = -sliderWidth;
+
+            }
+            if (!draggingAffter) {
+
+            }
+            slider.style.transform = `translateX(${newTransform}px)`;
+            slider.style.transition = 'all 1s cubic-bezier(0.5, 1.5, 0.55, 1)'; // Smooth deceleration
+            // slider.classList.add('animating');
+            lastTransform = newTransform;
 
 
-            let isDragging = false;
+            // Calcula la distancia a cada punto de anclaje
+            const distanceToTop = Math.abs(currentY - topPoint);
+            const distanceToBottom = Math.abs(currentY - bottomPoint);
 
-            updateSliderWidthResize()
-            window.addEventListener('resize', updateSliderWidthResize);
-            slider.style.transform = 'translateY(0)'
-            lastTransform = 0;
+            // Determina el punto más cercano
+            const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
 
-            // Unified function for handling start of interaction
-            function startInteraction(startX, startY, element) {
-                startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
-                startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
-                isDragging = true;
+            if (targetY === topPoint) {
+                ajustarElementos();
+                isAtTop = true;
+                isAtBottom = false;
+            } else if (targetY === bottomPoint) {
+                restablecerElementos();
+                isAtTop = false;
+                isAtBottom = true;
+            }
 
-                startTime = Date.now();
-                slider.classList.add('grabbing');
-                slider.style.transition = 'none';
-                // Remove transition for real-time tracking
+            // Mueve el botón al punto más cercano con una transición suave
+            navigation.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+            navigation.style.transform = `translateY(${targetY - initialY}px)`;
+            currentY = targetY;
+
+            // Remove animating class after the animation ends
+            slider.addEventListener('transitionend', () => {
+                slider.classList.remove('animating');
                 logCurrentCenteredItem();
                 logSliderPercentage();
                 valorTra()
-            }
+                draggingAffter = false
+            }, { once: true });
 
-            // Unified function for handling movement
-            function moveInteraction(currentPosX, currentPosY) {
-                if (!isDragging) return;
-                const dy = currentPosY - startPosY;
-                const dx = currentPosX - startPos;
+            logCurrentCenteredItem();
+            logSliderPercentage();
+            valorTra()
+        }
 
-                if (movementDirection === null) {  // Usar null para la comprobación inicial
-                    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {  // Umbral bajo para respuesta rápida
+        function moveNavigation(currentPosY) {
+            buttonnav.forEach(button => {
+                button.style.opacity = '1';
+            });
 
-                        movementDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
-                    }
-                }
-
-                if (movementDirection === 'horizontal') {
-                    const itemWidth = slider.querySelector('.slider-item').clientWidth;  // Asume que todos los ítems tienen el mismo ancho
-                    if (Math.abs(dx) > 0) {
-                        let tentativeTransform = lastTransform + dx;
-
-                        velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
-                        // Elastic effect
-                        if (tentativeTransform > 0) {
-                            tentativeTransform = dx / 5;
-                        } else if (tentativeTransform < -sliderWidth) {
-                            tentativeTransform = -sliderWidth + (dx / 5);
-                        }
+            let moveY = currentPosY - startPosY;
 
 
-                        transform = tentativeTransform;
+            let dy = currentY - initialY;
 
-                        slider.style.transform = `translateX(${transform}px)`;
+            let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 6 + Math.abs(dy) / 2000;
+            resistanceFactor = Math.max(1, resistanceFactor);
 
-                    }
-                } else if (movementDirection === 'vertical') {
-                    // Manejar solo movimientos verticales para el slider
+            currentY += moveY / resistanceFactor;
+            if (currentY > initialY) currentY = initialY;
 
-                    if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
-
-                        // Si está en el top y el movimiento es hacia abajo, o está en el bottom y el movimiento es hacia arriba, permitir movimiento
-                        moveNavigation(currentPosY);
-
-                    }
+            startPosY = currentPosY;
+            let distanceFactorMain = isAtTop ? 40 : 0;
+            let distanceFactorIcon = isAtTop ? 70 : 0;
+            // let distance = currentY - initialY;
 
 
-                }
+            buttonMain.forEach(function (elemento) {
+                elemento.style.transform = `translateY(${currentY - initialY + distanceFactorMain}px`;
+            });
 
-                logCurrentCenteredItem();
-                logSliderPercentage();
-                valorTra()
+            icon.forEach(function (elemento) {
+                elemento.style.transform = `translateY(${currentY - initialY + distanceFactorIcon}px)`;
+            });
 
-            }
+            navigation.style.transform = `translateY(${currentY - initialY}px)`;
 
-            // Unified function for ending interaction
-            function endInteraction(currentPosX, currentPosY) {
-
-                if (!isDragging) return;
-
-                isDragging = false;
-                draggingAffter = true
-                slider.classList.remove('grabbing');
-                const dx = currentPosX - startPos;
-
-                let newTransform;
-                // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
-                if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
-                    newTransform = lastTransform + dx + (velocity * 100); // Momentum efectivo
-                } else {
-                    newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
-                }
-                movementDirection = null;
-                if (Math.abs(dx) > 20) {
-                    dragghash = true;
-                } else {
-                    dragghash = false;
-                }
-
-                newTransform = Math.round(newTransform / itemWidth) * itemWidth;
-
-                if (newTransform > 0) {
-                    newTransform = 0;
-                    logCurrentCenteredItem();
-                    logSliderPercentage();
-
-                } else if (newTransform < -sliderWidth) {
-                    newTransform = -sliderWidth;
-
-                }
-                if (!draggingAffter) {
-
-                }
-                slider.style.transform = `translateX(${newTransform}px)`;
-                slider.style.transition = 'all 1s cubic-bezier(0.5, 1.5, 0.55, 1)'; // Smooth deceleration
-                // slider.classList.add('animating');
-                lastTransform = newTransform;
+        }
 
 
-                // Calcula la distancia a cada punto de anclaje
-                const distanceToTop = Math.abs(currentY - topPoint);
-                const distanceToBottom = Math.abs(currentY - bottomPoint);
+        function logCurrentCenteredItem() {
+            const centerPosition = -transform + (slider.clientWidth / 2);
+            let itemWidth = slider.querySelector('.slider-item').clientWidth;
+            const centeredItemIndex = Math.floor(centerPosition / itemWidth);
+        }
 
-                // Determina el punto más cercano
-                const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
+        function logSliderPercentage() {
+            const percentage = (Math.abs(transform) / sliderWidth) * 100;
+        }
 
-                if (targetY === topPoint) {
-                    ajustarElementos();
-                    isAtTop = true;
-                    isAtBottom = false;
-                } else if (targetY === bottomPoint) {
-                    restablecerElementos();
-                    isAtTop = false;
-                    isAtBottom = true;
-                }
+        /////////////////////////////////////////
 
-                // Mueve el botón al punto más cercano con una transición suave
-                navigation.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
-                navigation.style.transform = `translateY(${targetY - initialY}px)`;
-                currentY = targetY;
+        /////////*********** re ajustar elementos ******************//////
+        //////////////////////////
+        function ajustarElementos() {
+            icon.forEach(function (elemento) {
+                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                elemento.style.transform = 'translateY(-10px)';
+                elemento.style.height = '75%';
+            });
 
-                // Remove animating class after the animation ends
-                slider.addEventListener('transitionend', () => {
-                    slider.classList.remove('animating');
-                    logCurrentCenteredItem();
-                    logSliderPercentage();
-                    valorTra()
-                    draggingAffter = false
-                }, { once: true });
+            buttonMain.forEach(function (elemento) {
+                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                // elemento.style.top = '-55px';
+                elemento.style.height = '75%';
+                elemento.style.transform = 'translateY(-40px)';
+            });
 
-                logCurrentCenteredItem();
-                logSliderPercentage();
-                valorTra()
-            }
+            buttonnav.forEach(function (elemento) {
+                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                elemento.style.transform = 'none';
+                elemento.style.height = '60%';
+                elemento.style.transform = 'translateY(4px)';
+            });
 
-            function moveNavigation(currentPosY) {
-                buttonnav.forEach(button => {
-                    button.style.opacity = '1';
-                });
+            navigation.style.minHeight = '80px';
+            navigation.style.maxHeight = '80px';
+            navigation.style.height = '80px';
+            isAtTop = false;
+            isAtBottom = true;
+            initialY = 80;
+        }
 
-                let moveY = currentPosY - startPosY;
+        function restablecerElementos() {
+            icon.forEach(function (elemento) {
+                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                elemento.style.transform = 'none';
+                elemento.style.height = '100%';
+            });
 
-
-                let dy = currentY - initialY;
-
-                let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 6 + Math.abs(dy) / 2000;
-                resistanceFactor = Math.max(1, resistanceFactor);
-
-                currentY += moveY / resistanceFactor;
-                if (currentY > initialY) currentY = initialY;
-
-                startPosY = currentPosY;
-                let distanceFactorMain = isAtTop ? 40 : 0;
-                let distanceFactorIcon = isAtTop ? 70 : 0;
-                // let distance = currentY - initialY;
-
-
-                buttonMain.forEach(function (elemento) {
-                    elemento.style.transform = `translateY(${currentY - initialY + distanceFactorMain}px`;
-                });
-
-                icon.forEach(function (elemento) {
-                    elemento.style.transform = `translateY(${currentY - initialY + distanceFactorIcon}px)`;
-                });
-
-                navigation.style.transform = `translateY(${currentY - initialY}px)`;
-
-            }
-
-
-            function logCurrentCenteredItem() {
-                const centerPosition = -transform + (slider.clientWidth / 2);
-                const centeredItemIndex = Math.floor(centerPosition / itemWidth);
-            }
-
-            function logSliderPercentage() {
-                const percentage = (Math.abs(transform) / sliderWidth) * 100;
-            }
-
-
-            slider.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, slider));
-            navigation.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, navigation));
-            window.addEventListener('mousemove', e => moveInteraction(e.clientX, e.clientY));
-            window.addEventListener('mouseup', e => endInteraction(e.clientX, e.clientY));
-
-            // Touch events
-            slider.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, slider));
-            navigation.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, navigation));
-            window.addEventListener('touchmove', e => moveInteraction(e.touches[0].clientX, e.touches[0].clientY));
-            window.addEventListener('touchend', e => {
-                if (e.changedTouches && e.changedTouches.length > 0) {
-                    endInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-                }
-
-
+            buttonMain.forEach(function (elemento) {
+                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                // elemento.style.top = '0';
+                elemento.style.height = '100%';
+                elemento.style.transform = 'translateY(0px)';
             });
 
 
-            /////////////////////////////////////////
+            buttonnav.forEach(function (elemento) {
+                elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                elemento.style.transform = 'translateY(10px)';
+                elemento.style.height = '70%';
+            });
 
-            /////////*********** re ajustar elementos ******************//////
-            //////////////////////////
-            function ajustarElementos() {
-                icon.forEach(function (elemento) {
-                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    elemento.style.transform = 'translateY(-10px)';
-                    elemento.style.height = '75%';
-                });
-
-                buttonMain.forEach(function (elemento) {
-                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    // elemento.style.top = '-55px';
-                    elemento.style.height = '75%';
-                    elemento.style.transform = 'translateY(-40px)';
-                });
-
-                buttonnav.forEach(function (elemento) {
-                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    elemento.style.transform = 'none';
-                    elemento.style.height = '60%';
-                    elemento.style.transform = 'translateY(4px)';
-                });
-
-                navigation.style.minHeight = '80px';
-                navigation.style.maxHeight = '80px';
-                navigation.style.height = '80px';
-                isAtTop = false;
-                initialY = 80;
-            }
-
-            function restablecerElementos() {
-                icon.forEach(function (elemento) {
-                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    elemento.style.transform = 'none';
-                    elemento.style.height = '100%';
-                });
-
-                buttonMain.forEach(function (elemento) {
-                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    // elemento.style.top = '0';
-                    elemento.style.height = '100%';
-                    elemento.style.transform = 'translateY(0px)';
-                });
+            navigation.style.minHeight = '100px';
+            navigation.style.maxHeight = '100px';
+            navigation.style.height = '100px';
+            isAtBottom = false;
+            isAtTop = true;
+            initialY = 0;
+        }
+        ///////////////********BOTONES********** *///////////////
 
 
-                buttonnav.forEach(function (elemento) {
-                    elemento.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    elemento.style.transform = 'translateY(10px)';
-                    elemento.style.height = '70%';
-                });
-
-                navigation.style.minHeight = '100px';
-                navigation.style.maxHeight = '100px';
-                navigation.style.height = '100px';
-                isAtBottom = false;
-                initialY = 0;
-            }
-            ///////////////********BOTONES********** *///////////////
-
-
-
-        });
         const buttonStyles = {
             green: {
                 border: '#029357 solid 4px',
@@ -1416,6 +1412,8 @@
                 } else {
                     slider.appendChild(newItem); // Si no hay un siguiente ítem definido, añadir al final
                 }
+                restablecerElementos();
+                navigation.style.transform = "translateY(1px)"
                 adjustSliderItems();
                 updateDOMSelectors();
                 animateItem(newItem, true);
