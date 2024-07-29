@@ -919,7 +919,7 @@
             let newTransform;
             // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
             if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
-                newTransform = lastTransform + dx + (velocity * 100); // Momentum efectivo
+                newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
             } else {
                 newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
             }
@@ -945,7 +945,7 @@
 
             }
             slider.style.transform = `translateX(${newTransform}px)`;
-            slider.style.transition = 'all 1s cubic-bezier(.07,.91,.19,1.02)'; // Smooth deceleration
+            slider.style.transition = 'all .5s cubic-bezier(.07,.91,.19,1.02)'; // Smooth deceleration
             // slider.classList.add('animating');
             lastTransform = newTransform;
 
@@ -1389,7 +1389,7 @@
             sliderItems.forEach((item, index) => {
                 setTimeout(() => {
                     createAndAddSliderItem(item.buttonLabel);
-                }, 1000 * index);
+                }, 500 * index);
             });
         }
 
