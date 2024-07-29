@@ -587,6 +587,67 @@
         background-color: #397d39;
         /* Color de fondo aún más oscuro al hacer clic */
     }
+
+    .dropdown-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 20px;
+        background-color: #f9f9f9;
+        /* Color de fondo claro */
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Sombra sutil */
+    }
+
+    .dropdown-container select {
+
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        /* Borde sutil */
+        border-radius: 4px;
+        background-color: white;
+        font-size: 16px;
+        /* Tamaño de fuente accesible */
+        color: #333;
+        /* Color de texto oscuro para contraste */
+        cursor: pointer;
+        outline: none;
+        /* Remover el borde de foco predeterminado */
+        appearance: none;
+        /* Eliminar estilo predeterminado del sistema */
+        margin-right: 10px;
+        /* Espacio entre los elementos */
+    }
+
+    .dropdown-container button {
+        padding: 8px 20px;
+        background-color: #4CAF50;
+        /* Verde suave */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        /* Transición suave del color de fondo */
+    }
+
+    .dropdown-container button:hover {
+        background-color: #45a049;
+        /* Un tono más oscuro al pasar el mouse */
+    }
+
+    .dropdown-container button:focus {
+        outline: none;
+        /* Remover el borde de foco predeterminado */
+    }
+
+    .dropdown-container button:active {
+        transform: scale(0.98);
+        /* Efecto de clic sutil */
+    }
 </style>
 
 <body>
@@ -602,6 +663,7 @@
         <div class="dropdown-container">
             <select id="availableItems"></select>
             <select id="addedItems"></select>
+            <button onclick="addAllItemsWithDelay()">Todos</button>
         </div>
 
         <div class="coin">
@@ -1141,9 +1203,6 @@
 
         function updateSliderWidth(newItem, add) {
             const visibleItems = slider.querySelectorAll('.slider-item:not([style*="display: none"])');
-
-
-
             if (visibleItems.length <= 3) {
                 sliderWidth = 0
                 lastTransform = 0; // Mantener el slider en la posición inicial
@@ -1294,6 +1353,15 @@
                 action: 'center'
             }
         ];
+
+
+        function addAllItemsWithDelay() {
+            sliderItems.forEach((item, index) => {
+                setTimeout(() => {
+                    createAndAddSliderItem(item.buttonLabel);
+                }, 1000 * index);
+            });
+        }
 
 
         function createAndAddSliderItem(buttonLabelToMatch) {
