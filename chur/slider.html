@@ -648,6 +648,14 @@
         transform: scale(0.98);
         /* Efecto de clic sutil */
     }
+
+    button {
+        user-select: none !important;
+    }
+
+    button * {
+        user-select: none !important;
+    }
 </style>
 
 <body>
@@ -729,6 +737,8 @@
             createAndAddSliderItem("Power");
             // createAndAddSliderItem("Arco");
             // createAndAddSliderItem("Madera");
+            // createAndAddSliderItem("Espada");
+            // createAndAddSliderItem("Piedra");
             initializeDropdowns()
         });
 
@@ -742,42 +752,74 @@
         let dragghash = false;
         let initialY = 80;
         let sliderWidth = slider.scrollWidth - slider.clientWidth;
-        let transform = 0, lastTransform = 0;
+        let transform = 0;
         let isAtTop = false;
         let isAtBottom = true;
+        let startPos = 0, startPosY = 0, startTime = 0, lastTransform = 0;
+        let isDragging = false, movementDirection = null, draggingAffter = null;
+        let velocity = 0;
+
+        function updateSliderWidthResize() {
+            sliderWidth = slider.scrollWidth - slider.clientWidth;
+            console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
+            if (-lastTransform > sliderWidth) {
+                lastTransform = -sliderWidth;
+                slider.style.transform = 'translateY(0)'
+            }
+            slider.style.transform = 'translateY(0)'
+        }
+
+        function updateSliderWidth(newItem) {
+            const visibleItems = slider.querySelectorAll('.slider-item:not([style*="display: none"])');
+            if (visibleItems.length <= 3) {
+                sliderWidth = 0
+                lastTransform = 0; // Mantener el slider en la posición inicial
+            }
+            else {
+
+                sliderWidth = slider.scrollWidth - slider.clientWidth;
+                console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
+                // Calcular la posición del nuevo ítem respecto al inicio del slider
+                const newItemRect = newItem.getBoundingClientRect();
+                const sliderRect = slider.getBoundingClientRect();
+
+                // Calcular la posición del nuevo ítem dentro del slider
+                const newItemPosition = newItemRect.left - sliderRect.left;
+
+                // Ajustar lastTransform para centrar el nuevo ítem en la vista del slider
+                lastTransform = -newItemPosition + (slider.clientWidth / 2 - newItemRect.width / 2);
+
+                // Asegurarse de que lastTransform no exceda los límites del slider
+                lastTransform = Math.min(0, lastTransform); // No permitir valores positivos
+                lastTransform = Math.max(lastTransform, -sliderWidth); // No permitir scroll más allá del contenido
+
+            }
+
+            slider.style.transform = `translateX(${lastTransform}px)`;
+
+        }
+
+        ///********************* *************************************//////////
 
         document.addEventListener('DOMContentLoaded', function () {
 
-
-            let startPos = 0;
-            let startTime = 0;
-
             let itemWidth = slider.querySelector('.slider-item').clientWidth;
-            const navigation = document.getElementById('navigation');
-            navigation.style.transform = "translate(0)"
+            // navigation.style.transform = "translate(0)"
             let startPosX = 0, startPosY = 0;
-
-            let velocity = 0, direction = '';
+            let direction = '';
             let startY = 0, currentY = 80; // For vertical navigation movement
             const topPoint = 0;
             const bottomPoint = 1;
             let draggingAffter = null;
             let numbar = 0;
-            let movementDirection = null;
+
 
             let isDragging = false;
-            function updateSliderWidth() {
-                sliderWidth = slider.scrollWidth - slider.clientWidth;
-                console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
-                if (-lastTransform > sliderWidth) {
-                    lastTransform = -sliderWidth;
-                    slider.style.transform = `translateX(${lastTransform}px)`;
 
-                }
-            }
-            updateSliderWidth()
-            window.addEventListener('resize', updateSliderWidth);
-
+            updateSliderWidthResize()
+            window.addEventListener('resize', updateSliderWidthResize);
+            slider.style.transform = 'translateY(0)'
+            lastTransform = 0;
 
             // Unified function for handling start of interaction
             function startInteraction(startX, startY, element) {
@@ -808,8 +850,10 @@
                 }
 
                 if (movementDirection === 'horizontal') {
+                    const itemWidth = slider.querySelector('.slider-item').clientWidth;  // Asume que todos los ítems tienen el mismo ancho
                     if (Math.abs(dx) > 0) {
                         let tentativeTransform = lastTransform + dx;
+
                         velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
                         // Elastic effect
                         if (tentativeTransform > 0) {
@@ -981,6 +1025,8 @@
                 if (e.changedTouches && e.changedTouches.length > 0) {
                     endInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
                 }
+
+
             });
 
 
@@ -1201,34 +1247,7 @@
 
 
 
-        function updateSliderWidth(newItem, add) {
-            const visibleItems = slider.querySelectorAll('.slider-item:not([style*="display: none"])');
-            if (visibleItems.length <= 3) {
-                sliderWidth = 0
-                lastTransform = 0; // Mantener el slider en la posición inicial
-            } else {
 
-                sliderWidth = slider.scrollWidth - slider.clientWidth;
-                console.log("lastTransform: ", lastTransform, "ScrollWidth:", slider.scrollWidth, "ClientWidth:", slider.clientWidth, "SliderWidth:", sliderWidth);
-                // Calcular la posición del nuevo ítem respecto al inicio del slider
-                const newItemRect = newItem.getBoundingClientRect();
-                const sliderRect = slider.getBoundingClientRect();
-
-                // Calcular la posición del nuevo ítem dentro del slider
-                const newItemPosition = newItemRect.left - sliderRect.left;
-
-                // Ajustar lastTransform para centrar el nuevo ítem en la vista del slider
-                lastTransform = -newItemPosition + (slider.clientWidth / 2 - newItemRect.width / 2);
-
-                // Asegurarse de que lastTransform no exceda los límites del slider
-                lastTransform = Math.min(0, lastTransform); // No permitir valores positivos
-                lastTransform = Math.max(lastTransform, -sliderWidth); // No permitir scroll más allá del contenido
-
-            }
-
-            slider.style.transform = `translateX(${lastTransform}px)`;
-
-        }
 
 
         function adjustSliderItems() {
@@ -1247,14 +1266,15 @@
 
                 // Aplicar clases basadas en la cantidad de ítems
                 if (itemCount === 1) {
-                    [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('full-width'));
+                    setTimeout(() => {
+                        [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('full-width'));
+                    }, 100);
+
                 } else if (itemCount === 2) {
                     [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('half-width'));
                 } else if (itemCount === 3) {
                     // Aplica transiciones personalizadas para tres ítems
-                    [item, ...icons, ...primaryButtons].forEach(el => {
-                        el.style.transition = 'flex-basis 1s cubic-bezier(0.5, 1.5, 0.55, 1)';
-                    });
+
                 }
             });
 
@@ -1396,11 +1416,11 @@
                 } else {
                     slider.appendChild(newItem); // Si no hay un siguiente ítem definido, añadir al final
                 }
-
+                adjustSliderItems();
                 updateDOMSelectors();
                 animateItem(newItem, true);
                 updateSliderWidth(newItem, true); // Asegurarte de que se ajusta el translateX correctamente
-                adjustSliderItems();
+
             } else {
 
             }
@@ -1439,7 +1459,7 @@
 
         function playSound(soundId) {
             const sound = document.getElementById(soundId);
-            sound.play();
+            // sound.play();
         }
 
         function animateItem(item, appearing) {
