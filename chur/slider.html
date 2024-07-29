@@ -917,7 +917,7 @@
 
             if (!isDragging) return;
 
-
+            slider.style.transition = 'all 1s cubic-bezier(.07,.91,.19,1.02)'; // Smooth deceleration
             isDragging = false;
             draggingAffter = true
             slider.classList.remove('grabbing');
@@ -952,7 +952,7 @@
 
             }
             slider.style.transform = `translateX(${newTransform}px)`;
-            slider.style.transition = 'all 1s cubic-bezier(.07,.91,.19,1.02)'; // Smooth deceleration
+
             // slider.classList.add('animating');
             lastTransform = newTransform;
 
