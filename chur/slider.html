@@ -994,6 +994,11 @@
 
                     snapToClosestItem(newTransform);
                 }
+            } else {
+                // Llamar a snapToClosestItem si no hay desplazamiento significativo
+                const style = window.getComputedStyle(slider);
+                const matrix = new WebKitCSSMatrix(style.transform);
+                snapToClosestItem(matrix.m41);
             }
 
             // Calcula la distancia a cada punto de anclaje
@@ -1099,7 +1104,7 @@
             slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
-
+            playSound('soundMove');
         }
 
 
