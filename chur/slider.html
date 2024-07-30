@@ -786,7 +786,6 @@
         let buttonMain = document.querySelectorAll('.button');
         let buttonnav = document.querySelectorAll('.navigation-container button');
         let dragghash = false;
-        let NoDrag = false;
         let initialY = 80;
         let sliderWidth = slider.scrollWidth - slider.clientWidth;
         let transform = 0;
@@ -874,31 +873,38 @@
             });
         }
 
+        let animationFrameId = null;
 
-        // document.addEventListener('DOMContentLoaded', setupIntersectionObserver);
-        ///********************* *************************************//////////
+
         function startInteraction(startX, startY, element) {
-            if (NoDrag) return;
-            setupIntersectionObserver()
+
+            // Cancel any ongoing animation
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            setupIntersectionObserver();
+
+            // Actualizar lastTransform con el valor actual de la transformación del slider
+            const style = window.getComputedStyle(slider);
+            const matrix = new WebKitCSSMatrix(style.transform);
+            lastTransform = matrix.m41;
+
             startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
             startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
             isDragging = true;
             startTime = Date.now();
             slider.classList.add('grabbing');
             slider.style.transition = 'none';
-            // Remove transition for real-time tracking
             logCurrentCenteredItem();
             logSliderPercentage();
-            valorTra()
-
+            valorTra();
         }
 
         let previousPositions = [];
         const positionBufferSize = 3; // Tamaño del buffer de posiciones para los últimos 20 píxeles (ajustable)
 
-        // Unified function for handling movement
         function moveInteraction(currentPosX, currentPosY) {
-
             if (!isDragging) return;
             const dy = currentPosY - startPosY;
             const dx = currentPosX - startPos;
@@ -911,7 +917,6 @@
 
             if (movementDirection === 'horizontal') {
                 if (Math.abs(dx) > 0) {
-                    NoDrag = true;
                     let tentativeTransform = lastTransform + dx;
 
                     const currentTime = Date.now();
@@ -938,40 +943,26 @@
                 }
             } else if (movementDirection === 'vertical') {
                 // Manejar solo movimientos verticales para el slider
-
-
                 if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
-
-                    // if ((dy > 0) || (dy < 0)) {
-
-                    // Si está en el top y el movimiento es hacia abajo, o está en el bottom y el movimiento es hacia arriba, permitir movimiento
                     moveNavigation(currentPosY);
                 }
-
-
             }
 
             logCurrentCenteredItem();
             logSliderPercentage();
-            valorTra()
-
+            valorTra();
         }
 
-        // Unified function for ending interaction
         function endInteraction(currentPosX, currentPosY) {
             if (!isDragging) return;
 
-            // slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)'; // Smooth deceleration
             isDragging = false;
-            draggingAffter = true
             slider.classList.remove('grabbing');
 
             const dx = currentPosX - startPos;
             let absDx = Math.abs(dx);
 
-
             if (movementDirection === 'horizontal') {
-
                 const firstPosition = previousPositions[0];
                 const lastPosition = previousPositions[previousPositions.length - 1];
                 const distance = lastPosition.pos - firstPosition.pos;
@@ -993,12 +984,8 @@
 
                     // Anima hacia el destino con desaceleración
                     animateToDestination(destination);
-
-                    // Reiniciar flags y otros controles
-
                 } else {
                     slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)';
-
 
                     let newTransform = lastTransform;
                     if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
@@ -1007,7 +994,6 @@
 
                     snapToClosestItem(newTransform);
                 }
-
             }
 
             // Calcula la distancia a cada punto de anclaje
@@ -1039,52 +1025,46 @@
                 slider.classList.remove('animating');
                 logCurrentCenteredItem();
                 logSliderPercentage();
-                valorTra()
-                draggingAffter = false
+                valorTra();
+                draggingAffter = false;
             }, { once: true });
 
             logCurrentCenteredItem();
             logSliderPercentage();
-            valorTra()
+            valorTra();
             movementDirection = null;
 
             const sliderItems = document.querySelectorAll('.slider-item');
             const itemCount = sliderItems.length;  // Uso itemCount para reflejar el total de ítems en el slider
             if (itemCount <= 3) {
-                NoDrag = false
+
             }
+
+            previousPositions = []; // Clear the buffer after ending interaction
         }
 
-        /////////////////********************      /
-
-        // Función para animar suavemente hasta el punto de destino
         function animateToDestination(destination) {
             let currentTransform = lastTransform;
-            const step = () => {
 
+            const step = () => {
                 // Calcular el paso de desaceleración
                 currentTransform += (destination - currentTransform) * (0.05 + 0.1 / (1 + Math.abs(destination - currentTransform)));
-
-
-                // Calcular el transform actualizado
 
                 // Aplicar el transform actualizado
                 slider.style.transform = `translateX(${currentTransform}px)`;
 
                 // Chequear si estamos cerca del destino
                 if (Math.abs(destination - currentTransform) > 1) {
-                    requestAnimationFrame(step); // Continuar la animación
+                    animationFrameId = requestAnimationFrame(step); // Continuar la animación
                 } else {
+                    animationFrameId = null;
                     // Calcular el snap al ítem más cercano cuando estemos cerca del final
                     snapToClosestItem(currentTransform);
                 }
             };
-            requestAnimationFrame(step); // Iniciar la animación
+
+            animationFrameId = requestAnimationFrame(step); // Iniciar la animación
         }
-
-
-
-        /////////////////******************   /****************
 
         function snapToClosestItem(currentTransform) {
             const sliderWidthSnap = slider.clientWidth - slider.scrollWidth;
@@ -1119,9 +1099,7 @@
             slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
-            playSound('soundDisappear');
 
-            NoDrag = false;
         }
 
 
@@ -1207,7 +1185,7 @@
             isAtTop = true;
             isAtBottom = false;
             initialY = 80;
-            NoDrag = false;
+
         }
 
         function restablecerElementos() {
@@ -1237,7 +1215,7 @@
             isAtTop = false;
             isAtBottom = true;
             initialY = 0;
-            NoDrag = false;
+
         }
 
         ///////////////********BOTONES********** *///////////////
