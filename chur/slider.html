@@ -858,7 +858,6 @@
                         // Si el elemento se intersecta y no ha reproducido el sonido antes
                         if (!entry.target.hasAttribute('soundPlayed')) {
                             const index = Array.from(document.querySelectorAll('.icon')).indexOf(entry.target);
-                            // console.log(`El ícono con índice ${index} está en el centro.`);
 
                             playSound('soundDisappear'); // Reproduce el sonido asociado
                             entry.target.setAttribute('soundPlayed', 'true'); // Marca que el sonido se ha reproducido
@@ -899,7 +898,7 @@
 
         // Unified function for handling movement
         function moveInteraction(currentPosX, currentPosY) {
-            // console.log("isAtTop: " + isAtTop, " isAtBottom: ", isAtBottom)
+
             if (!isDragging) return;
             const dy = currentPosY - startPosY;
             const dx = currentPosX - startPos;
@@ -927,7 +926,9 @@
                     }
 
                     transform = tentativeTransform;
-                    slider.style.transform = `translateX(${transform}px)`;
+                    requestAnimationFrame(() => {
+                        slider.style.transform = `translateX(${transform}px)`;
+                    });
 
                     // Store the last few positions for velocity calculation
                     previousPositions.push({ pos: currentPosX, time: currentTime });
@@ -997,7 +998,7 @@
 
                 } else {
                     slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)';
-                    console.log('No hay desplazamiento significativo');
+
 
                     let newTransform = lastTransform;
                     if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
@@ -1026,10 +1027,7 @@
                     isAtTop = false;
                     isAtBottom = true;
                 }
-            } else {
-
             }
-
 
             // Mueve el botón al punto más cercano con una transición suave
             navigation.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
@@ -1053,7 +1051,6 @@
             const sliderItems = document.querySelectorAll('.slider-item');
             const itemCount = sliderItems.length;  // Uso itemCount para reflejar el total de ítems en el slider
             if (itemCount <= 3) {
-                console.log("3 o menos items")
                 NoDrag = false
             }
         }
@@ -1067,7 +1064,7 @@
 
                 // Calcular el paso de desaceleración
                 currentTransform += (destination - currentTransform) * (0.05 + 0.1 / (1 + Math.abs(destination - currentTransform)));
-                console.log(currentTransform)
+
 
                 // Calcular el transform actualizado
 
