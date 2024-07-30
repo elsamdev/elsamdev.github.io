@@ -894,6 +894,9 @@
 
         }
 
+        let previousPositions = [];
+        const positionBufferSize = 3; // Tamaño del buffer de posiciones para los últimos 20 píxeles (ajustable)
+
         // Unified function for handling movement
         function moveInteraction(currentPosX, currentPosY) {
             // console.log("isAtTop: " + isAtTop, " isAtBottom: ", isAtBottom)
@@ -909,10 +912,13 @@
 
             if (movementDirection === 'horizontal') {
                 if (Math.abs(dx) > 0) {
-                    NoDrag = true
+                    NoDrag = true;
                     let tentativeTransform = lastTransform + dx;
 
-                    velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
+                    const currentTime = Date.now();
+                    const timeElapsed = currentTime - startTime;
+                    const velocity = dx / timeElapsed; // Calculate velocity for momentum
+
                     // Elastic effect
                     if (tentativeTransform > 0) {
                         tentativeTransform = dx / 5;
@@ -920,11 +926,14 @@
                         tentativeTransform = -sliderWidth + (dx / 5);
                     }
 
-
                     transform = tentativeTransform;
-
                     slider.style.transform = `translateX(${transform}px)`;
 
+                    // Store the last few positions for velocity calculation
+                    previousPositions.push({ pos: currentPosX, time: currentTime });
+                    if (previousPositions.length > positionBufferSize) {
+                        previousPositions.shift(); // Maintain the buffer size
+                    }
                 }
             } else if (movementDirection === 'vertical') {
                 // Manejar solo movimientos verticales para el slider
@@ -952,70 +961,79 @@
             if (!isDragging) return;
 
             // slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)'; // Smooth deceleration
-
-            draggingAffter = true
-            const dx = currentPosX - startPos;
-            const timeElapsed = Date.now() - startTime;
-            let velocity = dx / timeElapsed; // Velocidad al soltar
-            let absVelocity = Math.abs(velocity);
-            let absDx = Math.abs(dx);
-
             isDragging = false;
+            draggingAffter = true
             slider.classList.remove('grabbing');
 
-            // Establece un umbral para la velocidad y la distancia para considerar un deslizamiento rápido
-            const flickThresholdSpeed = 0.5; // Velocidad en px/ms
-            const flickThresholdDistance = 50; // Distancia mínima en px
+            const dx = currentPosX - startPos;
+            let absDx = Math.abs(dx);
 
 
-            // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
-            if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 20 && movementDirection === 'horizontal') {
-                let destination = lastTransform + velocity * 350; // El factor de 500 ajusta la 'inercia'
+            if (movementDirection === 'horizontal') {
 
-                // Limitar el destino para no desbordar los límites del slider
-                destination = Math.max(destination, -sliderWidth);
-                destination = Math.min(destination, 0);
 
-                // Anima hacia el destino con desaceleración
-                animateToDestination(destination);
+                const firstPosition = previousPositions[0];
+                const lastPosition = previousPositions[previousPositions.length - 1];
+                const distance = lastPosition.pos - firstPosition.pos;
+                const timeElapsed = lastPosition.time - firstPosition.time;
+                const velocity = distance / timeElapsed;
+                const absVelocity = Math.abs(velocity);
 
-                // Reiniciar flags y otros controles
 
-            } else {
-                slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)';
-                console.log('No hay desplazamiento significativo');
-                if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
-                    newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
+
+                // Establece un umbral para la velocidad y la distancia para considerar un deslizamiento rápido
+                const flickThresholdSpeed = 0.5; // Velocidad en px/ms
+                const flickThresholdDistance = 50; // Distancia mínima en px
+
+
+                // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
+                if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 20) {
+                    let destination = lastTransform + velocity * 500; // El factor de 500 ajusta la 'inercia'
+
+                    // Limitar el destino para no desbordar los límites del slider
+                    destination = Math.max(destination, -sliderWidth);
+                    destination = Math.min(destination, 0);
+
+                    // Anima hacia el destino con desaceleración
+                    animateToDestination(destination);
+
+                    // Reiniciar flags y otros controles
+
                 } else {
-                    newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
+                    slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)';
+                    console.log('No hay desplazamiento significativo');
+                    if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
+                        newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
+                    } else {
+                        newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
+                    }
+
+                    if (Math.abs(dx) > 20) {
+                        dragghash = true;
+                    } else {
+                        dragghash = false;
+                    }
+                    let itemWidth = slider.querySelector('.slider-item').clientWidth;
+                    newTransform = Math.round(newTransform / itemWidth) * itemWidth;
+
+                    if (newTransform > 0) {
+                        newTransform = 0;
+                        logCurrentCenteredItem();
+                        logSliderPercentage();
+
+                    } else if (newTransform < -sliderWidth) {
+                        newTransform = -sliderWidth;
+
+                    }
+
+                    slider.style.transform = `translateX(${newTransform}px)`;
+
+                    // slider.classList.add('animating');
+                    lastTransform = newTransform;
+                    NoDrag = false
                 }
 
-                if (Math.abs(dx) > 20) {
-                    dragghash = true;
-                } else {
-                    dragghash = false;
-                }
-                let itemWidth = slider.querySelector('.slider-item').clientWidth;
-                newTransform = Math.round(newTransform / itemWidth) * itemWidth;
-
-                if (newTransform > 0) {
-                    newTransform = 0;
-                    logCurrentCenteredItem();
-                    logSliderPercentage();
-
-                } else if (newTransform < -sliderWidth) {
-                    newTransform = -sliderWidth;
-
-                }
-
-                slider.style.transform = `translateX(${newTransform}px)`;
-
-                // slider.classList.add('animating');
-                lastTransform = newTransform;
-                NoDrag = false
             }
-
-
 
             // Calcula la distancia a cada punto de anclaje
             const distanceToTop = Math.abs(currentY - topPoint);
@@ -1217,7 +1235,7 @@
             isAtTop = true;
             isAtBottom = false;
             initialY = 80;
-
+            NoDrag = false;
         }
 
         function restablecerElementos() {
@@ -1247,7 +1265,7 @@
             isAtTop = false;
             isAtBottom = true;
             initialY = 0;
-
+            NoDrag = false;
         }
 
         ///////////////********BOTONES********** *///////////////
