@@ -1002,35 +1002,13 @@
                 } else {
                     slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)';
                     console.log('No hay desplazamiento significativo');
+
+                    let newTransform = lastTransform;
                     if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
                         newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
-                    } else {
-                        newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
                     }
 
-                    if (Math.abs(dx) > 20) {
-                        dragghash = true;
-                    } else {
-                        dragghash = false;
-                    }
-                    let itemWidth = slider.querySelector('.slider-item').clientWidth;
-                    newTransform = Math.round(newTransform / itemWidth) * itemWidth;
-
-                    if (newTransform > 0) {
-                        newTransform = 0;
-                        logCurrentCenteredItem();
-                        logSliderPercentage();
-
-                    } else if (newTransform < -sliderWidth) {
-                        newTransform = -sliderWidth;
-
-                    }
-
-                    slider.style.transform = `translateX(${newTransform}px)`;
-
-                    // slider.classList.add('animating');
-                    lastTransform = newTransform;
-                    NoDrag = false
+                    snapToClosestItem(newTransform);
                 }
 
             }
