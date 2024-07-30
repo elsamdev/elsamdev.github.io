@@ -732,7 +732,7 @@
 
     <audio id="soundAppear" src="sound2.wav" preload="auto"></audio>
     <audio id="soundDisappear" src="sound2.wav" preload="auto"></audio>
-
+    <audio id="slideSound" src="peo.mp3"></audio>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
@@ -842,13 +842,46 @@
 
         }
 
+
+
+        function setupIntersectionObserver() {
+            const observerOptions = {
+                root: null, // observa dentro del viewport
+                rootMargin: '0px',
+                threshold: 0.5 // Se ajusta para que el evento se dispare cuando la mitad del elemento sea visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Si el elemento se intersecta y no ha reproducido el sonido antes
+                        if (!entry.target.hasAttribute('soundPlayed')) {
+                            const index = Array.from(document.querySelectorAll('.icon')).indexOf(entry.target);
+                            // console.log(`El ícono con índice ${index} está en el centro.`);
+
+                            playSound('soundDisappear'); // Reproduce el sonido asociado
+                            entry.target.setAttribute('soundPlayed', 'true'); // Marca que el sonido se ha reproducido
+                        }
+                    } else {
+                        // Elimina el atributo cuando el elemento ya no está intersectando
+                        entry.target.removeAttribute('soundPlayed');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.icon').forEach(icon => {
+                observer.observe(icon);
+            });
+        }
+
+
+        // document.addEventListener('DOMContentLoaded', setupIntersectionObserver);
         ///********************* *************************************//////////
         function startInteraction(startX, startY, element) {
-
+            setupIntersectionObserver()
             startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
             startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
             isDragging = true;
-
             startTime = Date.now();
             slider.classList.add('grabbing');
             slider.style.transition = 'none';
@@ -914,47 +947,71 @@
 
         // Unified function for ending interaction
         function endInteraction(currentPosX, currentPosY) {
-
             if (!isDragging) return;
 
-            slider.style.transition = 'all 1s cubic-bezier(.07,.91,.19,1.02)'; // Smooth deceleration
-            isDragging = false;
+            // slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)'; // Smooth deceleration
+
             draggingAffter = true
-            slider.classList.remove('grabbing');
             const dx = currentPosX - startPos;
+            const timeElapsed = Date.now() - startTime;
+            let velocity = dx / timeElapsed; // Velocidad al soltar
+            let absVelocity = Math.abs(velocity);
+            let absDx = Math.abs(dx);
 
-            let newTransform;
+            isDragging = false;
+            slider.classList.remove('grabbing');
+
+            // Establece un umbral para la velocidad y la distancia para considerar un deslizamiento rápido
+            const flickThresholdSpeed = 0.5; // Velocidad en px/ms
+            const flickThresholdDistance = 50; // Distancia mínima en px
+
+
             // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
-            if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
-                newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
+            if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 20 && movementDirection === 'horizontal') {
+                let destination = lastTransform + velocity * 350; // El factor de 500 ajusta la 'inercia'
+
+                // Limitar el destino para no desbordar los límites del slider
+                destination = Math.max(destination, -sliderWidth);
+                destination = Math.min(destination, 0);
+
+                // Anima hacia el destino con desaceleración
+                animateToDestination(destination);
+
+                // Reiniciar flags y otros controles
+
             } else {
-                newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
+                slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)';
+                console.log('No hay desplazamiento significativo');
+                if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
+                    newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
+                } else {
+                    newTransform = lastTransform; // No hay desplazamiento significativo, se mantiene la posición
+                }
+
+                if (Math.abs(dx) > 20) {
+                    dragghash = true;
+                } else {
+                    dragghash = false;
+                }
+                let itemWidth = slider.querySelector('.slider-item').clientWidth;
+                newTransform = Math.round(newTransform / itemWidth) * itemWidth;
+
+                if (newTransform > 0) {
+                    newTransform = 0;
+                    logCurrentCenteredItem();
+                    logSliderPercentage();
+
+                } else if (newTransform < -sliderWidth) {
+                    newTransform = -sliderWidth;
+
+                }
+
+                slider.style.transform = `translateX(${newTransform}px)`;
+
+                // slider.classList.add('animating');
+                lastTransform = newTransform;
             }
 
-            if (Math.abs(dx) > 20) {
-                dragghash = true;
-            } else {
-                dragghash = false;
-            }
-            let itemWidth = slider.querySelector('.slider-item').clientWidth;
-            newTransform = Math.round(newTransform / itemWidth) * itemWidth;
-
-            if (newTransform > 0) {
-                newTransform = 0;
-                logCurrentCenteredItem();
-                logSliderPercentage();
-
-            } else if (newTransform < -sliderWidth) {
-                newTransform = -sliderWidth;
-
-            }
-            if (!draggingAffter) {
-
-            }
-            slider.style.transform = `translateX(${newTransform}px)`;
-
-            // slider.classList.add('animating');
-            lastTransform = newTransform;
 
 
             // Calcula la distancia a cada punto de anclaje
@@ -998,6 +1055,84 @@
             valorTra()
             movementDirection = null;
         }
+
+        /////////////////********************      /
+
+        // Función para animar suavemente hasta el punto de destino
+        function animateToDestination(destination) {
+            let currentTransform = lastTransform;
+            const step = () => {
+
+                // Calcular el paso de desaceleración
+                currentTransform += (destination - currentTransform) * (0.04 + 0.1 / (1 + Math.abs(destination - currentTransform)));
+
+                // Aplicar el transform actualizado
+                slider.style.transform = `translateX(${currentTransform}px)`;
+
+                // Chequear si estamos cerca del destino
+                if (Math.abs(destination - currentTransform) > 1) {
+                    requestAnimationFrame(step); // Continuar la animación
+                } else {
+                    // Calcular el snap al ítem más cercano cuando estemos cerca del final
+                    snapToClosestItem(currentTransform);
+                }
+            };
+            requestAnimationFrame(step); // Iniciar la animación
+        }
+
+
+
+        /////////////////******************   /****************
+
+        function snapToClosestItem(currentTransform) {
+            const sliderWidthSnap = slider.clientWidth - slider.scrollWidth;
+            if (currentTransform === sliderWidthSnap) {
+                slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+                slider.style.transform = `translateX(${sliderWidthSnap}px)`;
+                playSound('soundDisappear');
+                return;
+            } else if (currentTransform === 0) {
+                slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+                slider.style.transform = `translateX(0px)`;
+                playSound('soundDisappear');
+                return;
+            }
+
+            const items = slider.querySelectorAll('.slider-item');
+            const itemWidth = items[0].clientWidth;
+            const numberOfItems = items.length;
+
+            // Calcula la posición del slider en relación con su punto inicial
+            const absoluteTransform = Math.abs(currentTransform);
+
+            // Encuentra el índice del elemento que está más cercano al centro visual del viewport
+            const centeredItemIndex = Math.floor((absoluteTransform + (slider.clientWidth / 2)) / itemWidth);
+
+            // Verifica los límites para asegurar que el índice está dentro del rango válido
+            let closestIndex = centeredItemIndex;
+            if (closestIndex < 0) closestIndex = 0;
+            if (closestIndex >= numberOfItems) closestIndex = numberOfItems - 1;
+
+            // Ajusta el índice si es el primer o último elemento
+            if (closestIndex === 0) closestIndex = 1;
+            if (closestIndex === numberOfItems - 1 && numberOfItems > 1) closestIndex = numberOfItems - 2;
+
+            // Calcula el nuevo transform para centrar el ítem seleccionado
+            const newTransform = -(closestIndex * itemWidth) + (slider.clientWidth / 2 - itemWidth / 2);
+
+            // Aplica el nuevo transform con una transición suave
+            slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+            slider.style.transform = `translateX(${newTransform}px)`;
+            lastTransform = newTransform;
+            playSound('soundDisappear');
+
+        }
+
+
+        // Suponiendo que el resto de las funciones son similares y ajustan lastTransform según sea necesario.
+
+
+
 
         function moveNavigation(currentPosY) {
             buttonnav.forEach(button => {
@@ -1474,9 +1609,18 @@
 
 
         function playSound(soundId) {
-            const sound = document.getElementById(soundId);
-            // sound.play();
+            const originalSound = document.getElementById(soundId);
+            if (originalSound) {
+                const soundClone = originalSound.cloneNode();
+                soundClone.play();
+                soundClone.addEventListener('ended', () => {
+                    soundClone.remove(); // Elimina el clon después de reproducir el sonido
+                });
+            } else {
+                console.log('Sound element not found:', soundId);
+            }
         }
+
 
         function animateItem(item, appearing) {
             const primaryButton = item.querySelector('.primary-button');
@@ -1497,7 +1641,7 @@
                     animatedButton.style.transform = 'scale(1)';
                     primaryButton.style.opacity = '1';
                     animatedButton.style.opacity = '1';
-                    playSound('soundAppear');
+                    //  playSound('soundAppear');
                 }, 100); // Pequeño retraso para asegurar que el DOM está listo
             } else {
                 // Configurar la transición para la animación de desaparición
@@ -1510,7 +1654,7 @@
                     animatedButton.style.transform = 'scale(0)';
                     primaryButton.style.opacity = '0';
                     animatedButton.style.opacity = '0';
-                    playSound('soundDisappear');
+                    // playSound('soundDisappear');
                     setTimeout(() => {
                         primaryButton.style.display = 'none';
                         animatedButton.style.display = 'none';
