@@ -971,7 +971,6 @@
 
             if (movementDirection === 'horizontal') {
 
-
                 const firstPosition = previousPositions[0];
                 const lastPosition = previousPositions[previousPositions.length - 1];
                 const distance = lastPosition.pos - firstPosition.pos;
@@ -979,12 +978,9 @@
                 const velocity = distance / timeElapsed;
                 const absVelocity = Math.abs(velocity);
 
-
-
                 // Establece un umbral para la velocidad y la distancia para considerar un deslizamiento rápido
                 const flickThresholdSpeed = 0.5; // Velocidad en px/ms
                 const flickThresholdDistance = 50; // Distancia mínima en px
-
 
                 // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
                 if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 20) {
@@ -1053,6 +1049,13 @@
             logSliderPercentage();
             valorTra()
             movementDirection = null;
+
+            const sliderItems = document.querySelectorAll('.slider-item');
+            const itemCount = sliderItems.length;  // Uso itemCount para reflejar el total de ítems en el slider
+            if (itemCount <= 3) {
+                console.log("3 o menos items")
+                NoDrag = false
+            }
         }
 
         /////////////////********************      /
@@ -1065,7 +1068,7 @@
                 // Calcular el paso de desaceleración
                 currentTransform += (destination - currentTransform) * (0.05 + 0.1 / (1 + Math.abs(destination - currentTransform)));
                 console.log(currentTransform)
-                console.log("hola")
+
                 // Calcular el transform actualizado
 
                 // Aplicar el transform actualizado
@@ -1088,17 +1091,9 @@
 
         function snapToClosestItem(currentTransform) {
             const sliderWidthSnap = slider.clientWidth - slider.scrollWidth;
-            if (currentTransform === sliderWidthSnap) {
-                slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
-                slider.style.transform = `translateX(${sliderWidthSnap}px)`;
-                playSound('soundDisappear');
-                return;
-            } else if (currentTransform === 0) {
-                slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
-                slider.style.transform = `translateX(0px)`;
-                playSound('soundDisappear');
-                return;
-            }
+
+            // Limitar el currentTransform dentro de los límites permitidos
+            currentTransform = Math.max(Math.min(currentTransform, 0), sliderWidthSnap);
 
             const items = slider.querySelectorAll('.slider-item');
             const itemWidth = items[0].clientWidth;
@@ -1111,25 +1106,27 @@
             const centeredItemIndex = Math.floor((absoluteTransform + (slider.clientWidth / 2)) / itemWidth);
 
             // Verifica los límites para asegurar que el índice está dentro del rango válido
-            let closestIndex = centeredItemIndex;
-            if (closestIndex < 0) closestIndex = 0;
-            if (closestIndex >= numberOfItems) closestIndex = numberOfItems - 1;
+            let closestIndex = Math.min(Math.max(centeredItemIndex, 0), numberOfItems - 1);
 
             // Ajusta el índice si es el primer o último elemento
-            if (closestIndex === 0) closestIndex = 1;
+            if (closestIndex === 0 && numberOfItems > 1) closestIndex = 1;
             if (closestIndex === numberOfItems - 1 && numberOfItems > 1) closestIndex = numberOfItems - 2;
 
             // Calcula el nuevo transform para centrar el ítem seleccionado
-            const newTransform = -(closestIndex * itemWidth) + (slider.clientWidth / 2 - itemWidth / 2);
+            let newTransform = -(closestIndex * itemWidth) + (slider.clientWidth / 2 - itemWidth / 2);
+
+            // Limitar el nuevo transform dentro de los límites permitidos
+            newTransform = Math.max(Math.min(newTransform, 0), sliderWidthSnap);
 
             // Aplica el nuevo transform con una transición suave
             slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
             playSound('soundDisappear');
-            NoDrag = false
 
+            NoDrag = false;
         }
+
 
 
         // Suponiendo que el resto de las funciones son similares y ajustan lastTransform según sea necesario.
