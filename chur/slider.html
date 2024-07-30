@@ -786,6 +786,7 @@
         let buttonMain = document.querySelectorAll('.button');
         let buttonnav = document.querySelectorAll('.navigation-container button');
         let dragghash = false;
+        let NoDrag = false;
         let initialY = 80;
         let sliderWidth = slider.scrollWidth - slider.clientWidth;
         let transform = 0;
@@ -878,6 +879,7 @@
         // document.addEventListener('DOMContentLoaded', setupIntersectionObserver);
         ///********************* *************************************//////////
         function startInteraction(startX, startY, element) {
+            if (NoDrag) return;
             setupIntersectionObserver()
             startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
             startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
@@ -907,7 +909,7 @@
 
             if (movementDirection === 'horizontal') {
                 if (Math.abs(dx) > 0) {
-
+                    NoDrag = true
                     let tentativeTransform = lastTransform + dx;
 
                     velocity = dx / (Date.now() - startTime); // Calculate velocity for momentum
@@ -1010,6 +1012,7 @@
 
                 // slider.classList.add('animating');
                 lastTransform = newTransform;
+                NoDrag = false
             }
 
 
@@ -1064,7 +1067,10 @@
             const step = () => {
 
                 // Calcular el paso de desaceleración
-                currentTransform += (destination - currentTransform) * (0.04 + 0.1 / (1 + Math.abs(destination - currentTransform)));
+                currentTransform += (destination - currentTransform) * (0.05 + 0.1 / (1 + Math.abs(destination - currentTransform)));
+                console.log(currentTransform)
+                console.log("hola")
+                // Calcular el transform actualizado
 
                 // Aplicar el transform actualizado
                 slider.style.transform = `translateX(${currentTransform}px)`;
@@ -1125,6 +1131,7 @@
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
             playSound('soundDisappear');
+            NoDrag = false
 
         }
 
