@@ -920,7 +920,7 @@
             const dx = currentPosX - startPos;
 
             if (movementDirection === null) {  // Usar null para la comprobación inicial
-                if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {  // Umbral bajo para respuesta rápida
+                if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {  // Umbral bajo para respuesta rápida
                     movementDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
                 }
             }
@@ -1722,10 +1722,8 @@
             const itemIndex = allItems.findIndex(item => item.getAttribute('data-label') === buttonLabelToRemove);
 
             if (itemIndex === -1) {
-
                 return;
             }
-
             const itemToRemove = allItems[itemIndex];
 
             // Si no es el primer ítem, obtenemos el ítem a la izquierda
@@ -1734,25 +1732,25 @@
             // Remover el ítem del DOM
             slider.removeChild(itemToRemove);
 
-            if (itemIndex === allItems.length - 1) {
-
-                // Opcional: algo específico cuando se remueve el último ítem
-                // Puede ser necesario ajustar el slider si se elimina el último
+            if (itemIndex === 0) {
+                // Si se elimina el primer ítem, restablece el slider a la posición inicial
+                lastTransform = 0;
+                slider.style.transform = `translateX(0)`;
+            } else if (itemIndex === allItems.length - 1) {
+                // Si se elimina el último ítem, centrar en el ítem a la izquierda del eliminado si es el último
                 if (itemToLeft) {
-                    updateSliderWidth(itemToLeft, false); // Centrar en el ítem a la izquierda del eliminado si es el último
+                    updateSliderWidth(itemToLeft, false);
                 }
             } else {
-
                 // Actualizar el ancho del slider y centrar el ítem a la izquierda
                 if (itemToLeft) {
-                    updateSliderWidth(itemToLeft, false); // Centrar en el ítem a la izquierda del eliminado
+                    updateSliderWidth(itemToLeft, false);
                 }
             }
 
             updateDOMSelectors(); // Actualizar los selectores DOM
             adjustSliderItems();
             animateItem(itemToRemove, false); // Animación para la eliminación
-
         }
 
 
