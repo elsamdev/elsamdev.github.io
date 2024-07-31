@@ -755,12 +755,23 @@
 
 
             updateSliderWidthResize()
-            window.addEventListener('resize', updateSliderWidthResize);
+
+
+
+            if (!window.listenersInitialized) {
+                window.listenersInitialized = true;
+
+                initializeEventListeners();
+            }
             slider.style.transform = 'translateY(0)'
             lastTransform = 0;
 
+        });
 
+
+        function initializeEventListeners() {
             // click event
+            window.addEventListener('resize', updateSliderWidthResize);
             slider.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, slider));
             navigation.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, navigation));
             window.addEventListener('mousemove', e => moveInteraction(e.clientX, e.clientY));
@@ -775,9 +786,7 @@
                     endInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
                 }
             });
-
-        });
-
+        }
 
         const slider = document.querySelector('.slider');
         const SliderContainer = document.querySelector('.slider-container');
@@ -799,8 +808,13 @@
         let direction = '';
         const topPoint = 0;
         const bottomPoint = 1;
-
         let numbar = 0;
+        let animationFrameId = null;
+        let previousPositions = [];
+        const positionBufferSize = 3; // Tamaño del buffer de posiciones para los últimos 20 píxeles (ajustable)
+
+
+
 
         function updateSliderWidthResize() {
             sliderWidth = slider.scrollWidth - slider.clientWidth;
@@ -873,7 +887,6 @@
             });
         }
 
-        let animationFrameId = null;
 
 
         function startInteraction(startX, startY, element) {
@@ -901,8 +914,6 @@
             valorTra();
         }
 
-        let previousPositions = [];
-        const positionBufferSize = 3; // Tamaño del buffer de posiciones para los últimos 20 píxeles (ajustable)
 
         function moveInteraction(currentPosX, currentPosY) {
             if (!isDragging) return;
@@ -1102,7 +1113,7 @@
             newTransform = Math.max(Math.min(newTransform, 0), sliderWidthSnap);
 
             // Aplica el nuevo transform con una transición suave
-            slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+            slider.style.transition = 'all .3s cubic-bezier(0.085, 0.980, 0.000, 0.995);';
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
             playSound('soundAppear');
