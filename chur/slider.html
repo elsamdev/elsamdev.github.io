@@ -818,7 +818,6 @@
 
         function updateSliderWidthResize() {
             sliderWidth = slider.scrollWidth - slider.clientWidth;
-
             if (-lastTransform > sliderWidth) {
                 lastTransform = -sliderWidth;
                 slider.style.transform = 'translateY(0)'
@@ -833,9 +832,7 @@
                 lastTransform = 0; // Mantener el slider en la posición inicial
             }
             else {
-
                 sliderWidth = slider.scrollWidth - slider.clientWidth;
-
                 // Calcular la posición del nuevo ítem respecto al inicio del slider
                 const newItemRect = newItem.getBoundingClientRect();
                 const sliderRect = slider.getBoundingClientRect();
@@ -890,13 +887,11 @@
 
 
         function startInteraction(startX, startY, element) {
-
             // Cancel any ongoing animation
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
                 animationFrameId = null;
             }
-            setupIntersectionObserver();
 
             // Actualizar lastTransform con el valor actual de la transformación del slider
             const style = window.getComputedStyle(slider);
@@ -992,17 +987,15 @@
                     // Limitar el destino para no desbordar los límites del slider
                     destination = Math.max(destination, -sliderWidth);
                     destination = Math.min(destination, 0);
-
+                    console.log("chanfle1")
                     // Anima hacia el destino con desaceleración
                     animateToDestination(destination);
                 } else {
-                    slider.style.transition = 'all 1s cubic-bezier(0,.3,.1,1)';
-
                     let newTransform = lastTransform;
                     if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
                         newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
                     }
-
+                    console.log("chanfle2")
                     snapToClosestItem(newTransform);
                 }
             } else {
@@ -1010,7 +1003,7 @@
                 const style = window.getComputedStyle(slider);
                 const matrix = new WebKitCSSMatrix(style.transform);
                 snapToClosestItem(matrix.m41);
-
+                console.log("chanfle3")
             }
 
             // Calcula la distancia a cada punto de anclaje
@@ -1113,7 +1106,7 @@
             newTransform = Math.max(Math.min(newTransform, 0), sliderWidthSnap);
 
             // Aplica el nuevo transform con una transición suave
-            slider.style.transition = 'all .3s cubic-bezier(0.085, 0.980, 0.000, 0.995);';
+            slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
             playSound('soundAppear');
@@ -1260,7 +1253,7 @@
         function buttonClicked(event, color, btn) {
             const button = event.currentTarget; // Esto asegura que siempre es el botón
 
-            if (!dragghash) {
+            if (!isDragging) {
                 if (initialY === 0) {
                     translateDown = 0;
                     translateUp = 5;
@@ -1563,10 +1556,11 @@
                 animateItem(newItem, true);
                 updateSliderWidth(newItem, true); // Asegurarte de que se ajusta el translateX correctamente
                 restablecerElementos();
-
+                setupIntersectionObserver();
             } else {
 
             }
+
         }
 
 
