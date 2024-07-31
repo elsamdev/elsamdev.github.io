@@ -1090,29 +1090,27 @@
         }
 
         function animateToDestination(destination) {
+
             let currentTransform = lastTransform;
 
             const step = () => {
                 // Calcular el paso de desaceleración
-                const distance = destination - currentTransform;
-                const stepSize = distance * (0.05 + 0.1 / (1 + Math.abs(distance)));
-                currentTransform += stepSize;
+                currentTransform += (destination - currentTransform) * (0.05 + 0.1 / (1 + Math.abs(destination - currentTransform)));
 
                 // Aplicar el transform actualizado
                 slider.style.transform = `translateX(${currentTransform}px)`;
-                console.log(currentTransform);
 
                 // Chequear si estamos cerca del destino
-                if (Math.abs(distance) > 1) { // Reducido el umbral para una parada más precisa
-                    requestAnimationFrame(step); // Continuar la animación
+                if (Math.abs(destination - currentTransform) > 100) {
+                    animationFrameId = requestAnimationFrame(step); // Continuar la animación
                 } else {
-                    // Asegurarse de que hemos llegado exactamente al destino
-                    slider.style.transform = `translateX(${destination}px)`;
-                    snapToClosestItem(destination);
+                    animationFrameId = null;
+                    // Calcular el snap al ítem más cercano cuando estemos cerca del final
+                    snapToClosestItem(currentTransform);
                 }
             };
 
-            requestAnimationFrame(step); // Iniciar la animación
+            animationFrameId = requestAnimationFrame(step); // Iniciar la animación
         }
 
         function snapToClosestItem(currentTransform) {
