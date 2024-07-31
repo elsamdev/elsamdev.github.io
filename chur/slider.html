@@ -1288,6 +1288,11 @@
 
         function buttonMouseUp(event) {
             if (!currentButton) return;
+            if (isDragging) {
+                console.log("isDragging")
+            } else {
+                console.log("no isDragging")
+            }
 
             let translateDown = 0;
             const btn = currentButton.getAttribute('data-btn');
