@@ -1265,6 +1265,7 @@
         let currentButton = null;
 
         function buttonClicked(event, color, btn) {
+            event.preventDefault();
             const button = event.currentTarget;
             currentButton = button; // Guardar el botón actual
 
