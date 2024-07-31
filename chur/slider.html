@@ -713,17 +713,20 @@
     <div class="navigation" id="navigation" style="transform: translateY(0px)">
         <div class="navigation-container">
             <div class="navigation-button-container">
-                <button onclick="buttonClicked(event, 'black')" class="animate-button navigation-left">
+                <button onmousedown="buttonClicked(event, 'black')" class="animate-button navigation-left"
+                    data-color="black">
                     <img src="img/arrow-left.png" alt="">
                 </button>
             </div>
             <div class="navigation-button-container">
-                <button onclick="buttonClicked(event, 'black')" class="animate-button navigation-center">
+                <button onmousedown="buttonClicked(event, 'black')" class="animate-button navigation-center"
+                    data-color="black">
                     <img src="img/arrow-up.png" alt="">
                 </button>
             </div>
             <div class="navigation-button-container">
-                <button onclick="buttonClicked(event, 'black')" class="animate-button navigation-right">
+                <button onmousedown="buttonClicked(event, 'black')" class="animate-button navigation-right"
+                    data-color="black">
                     <img src="img/arrow-right.png" alt="">
                 </button>
             </div>
@@ -812,7 +815,7 @@
         let animationFrameId = null;
         let previousPositions = [];
         const positionBufferSize = 3; // Tamaño del buffer de posiciones para los últimos 20 píxeles (ajustable)
-
+        let stopInertia = false;
 
 
 
@@ -891,6 +894,7 @@
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
                 animationFrameId = null;
+                stopInertia = true
             }
 
             // Actualizar lastTransform con el valor actual de la transformación del slider
@@ -922,6 +926,7 @@
             }
 
             if (movementDirection === 'horizontal') {
+                buttonMouseUp();
                 if (Math.abs(dx) > 0) {
                     let tentativeTransform = lastTransform + dx;
 
@@ -948,6 +953,7 @@
                     }
                 }
             } else if (movementDirection === 'vertical') {
+                buttonMouseUp();
                 // Manejar solo movimientos verticales para el slider
                 if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
                     moveNavigation(currentPosY);
@@ -1000,10 +1006,13 @@
                 }
             } else {
                 // Llamar a snapToClosestItem si no hay desplazamiento significativo
-                const style = window.getComputedStyle(slider);
-                const matrix = new WebKitCSSMatrix(style.transform);
-                snapToClosestItem(matrix.m41);
-                console.log("chanfle3")
+                if (stopInertia) {
+                    const style = window.getComputedStyle(slider);
+                    const matrix = new WebKitCSSMatrix(style.transform);
+                    snapToClosestItem(matrix.m41);
+                    console.log("chanfle3")
+
+                }
             }
 
             // Calcula la distancia a cada punto de anclaje
@@ -1043,7 +1052,7 @@
             logSliderPercentage();
             valorTra();
             movementDirection = null;
-
+            stopInertia = false;
             const sliderItems = document.querySelectorAll('.slider-item');
             const itemCount = sliderItems.length;  // Uso itemCount para reflejar el total de ítems en el slider
             if (itemCount <= 3) {
@@ -1250,41 +1259,56 @@
             }
         };
 
+        let currentButton = null;
+
         function buttonClicked(event, color, btn) {
-            const button = event.currentTarget; // Esto asegura que siempre es el botón
+            const button = event.currentTarget;
+            currentButton = button; // Guardar el botón actual
 
-            if (!isDragging) {
-                if (initialY === 0) {
-                    translateDown = 0;
-                    translateUp = 5;
-                } else {
-                    if (btn === 'center') {
-                        translateDown = -40;
-                        translateUp = -35;
-                    } else if (btn === 'up') {
-                        translateDown = -10;
-                        translateUp = -5;
-                    } else { // Cualquier otro valor de btn
-                        translateDown = 4;
-                        translateUp = 9;
-                    }
-                }
+            let translateUp = 0;
 
-                button.style.transform = `translateY(${translateUp}px)`;
-
-                setTimeout(() => {
-                    button.style.boxShadow = 'none';
-                }, 20);
-                setTimeout(() => {
-                    button.style.transform = `translateY(${translateDown}px)`;
-                    button.style.boxShadow = buttonStyles[color].boxShadow;
-
-                }, 50); // Tiempo para la animación de clic
+            if (initialY === 0) {
+                translateUp = 5;
             } else {
-
-                // No cambia nada si fue drag
+                if (btn === 'center') {
+                    translateUp = -35;
+                } else if (btn === 'up') {
+                    translateUp = -5;
+                } else { // Cualquier otro valor de btn
+                    translateUp = 9;
+                }
             }
 
+            button.style.transform = `translateY(${translateUp}px)`;
+            button.style.boxShadow = 'none';
+
+            window.addEventListener('mouseup', buttonMouseUp);
+            window.addEventListener('touchend', buttonMouseUp);
+        }
+
+        function buttonMouseUp(event) {
+            if (!currentButton) return;
+
+            let translateDown = 0;
+            const btn = currentButton.getAttribute('data-btn');
+            const color = currentButton.getAttribute('data-color');
+
+            if (initialY !== 0) {
+                if (btn === 'center') {
+                    translateDown = -40;
+                } else if (btn === 'up') {
+                    translateDown = -10;
+                } else { // Cualquier otro valor de btn
+                    translateDown = 4;
+                }
+            }
+
+            currentButton.style.transform = `translateY(${translateDown}px)`;
+            currentButton.style.boxShadow = buttonStyles[color].boxShadow;
+
+            window.removeEventListener('mouseup', buttonMouseUp);
+            window.removeEventListener('touchend', buttonMouseUp);
+            currentButton = null; // Limpiar el botón actual
         }
 
         ////////////////////********Recursos**********/////////////////////////
@@ -1570,12 +1594,12 @@
             item.setAttribute('data-label', itemData.buttonLabel);
             item.innerHTML = `
         <div class="icon">
-            <button onclick="buttonClicked(event, '${itemData.color}', 'up')" class="primary-button primary-button-${itemData.color}">
+            <button onmousedown="buttonClicked(event, '${itemData.color}', 'up')" class="primary-button primary-button-${itemData.color}" data-color="${itemData.color}" data-btn="up" >
                 ${itemData.buttonLabel}
             </button>
         </div>
         <div class="button-container">
-            <button onclick="buttonClicked(event, '${itemData.color}', 'center')" class="animate-button button button-${itemData.color}">
+            <button onmousedown="buttonClicked(event, '${itemData.color}', 'center')" class="animate-button button button-${itemData.color}" data-color="${itemData.color}" data-btn="center">
                 <i class="${itemData.icon}"></i> ${itemData.buttonText}
             </button>
         </div>
