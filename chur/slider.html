@@ -1060,7 +1060,7 @@
                 slider.style.transform = `translateX(${currentTransform}px)`;
 
                 // Chequear si estamos cerca del destino
-                if (Math.abs(destination - currentTransform) > 1) {
+                if (Math.abs(destination - currentTransform) > 100) {
                     animationFrameId = requestAnimationFrame(step); // Continuar la animación
                 } else {
                     animationFrameId = null;
