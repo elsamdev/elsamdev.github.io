@@ -713,20 +713,23 @@
     <div class="navigation" id="navigation" style="transform: translateY(0px)">
         <div class="navigation-container">
             <div class="navigation-button-container">
-                <button onmousedown="buttonClicked(event, 'black')" class="animate-button navigation-left"
-                    data-color="black">
+                <button onmousedown="buttonClicked(event, 'black')"
+                    ontouchstart="buttonClicked(event, '${itemData.color}', 'up')"
+                    class="animate-button navigation-left" data-color="black">
                     <img src="img/arrow-left.png" alt="">
                 </button>
             </div>
             <div class="navigation-button-container">
-                <button onmousedown="buttonClicked(event, 'black')" class="animate-button navigation-center"
-                    data-color="black">
+                <button onmousedown="buttonClicked(event, 'black')"
+                    ontouchstart="buttonClicked(event, '${itemData.color}', 'up')"
+                    class="animate-button navigation-center" data-color="black">
                     <img src="img/arrow-up.png" alt="">
                 </button>
             </div>
             <div class="navigation-button-container">
-                <button onmousedown="buttonClicked(event, 'black')" class="animate-button navigation-right"
-                    data-color="black">
+                <button onmousedown="buttonClicked(event, 'black')"
+                    ontouchstart="buttonClicked(event, '${itemData.color}', 'up')"
+                    class="animate-button navigation-right" data-color="black">
                     <img src="img/arrow-right.png" alt="">
                 </button>
             </div>
@@ -1599,12 +1602,12 @@
             item.setAttribute('data-label', itemData.buttonLabel);
             item.innerHTML = `
         <div class="icon">
-            <button onmousedown="buttonClicked(event, '${itemData.color}', 'up')" class="primary-button primary-button-${itemData.color}" data-color="${itemData.color}" data-btn="up" >
+            <button onmousedown="buttonClicked(event, '${itemData.color}', 'up')" ontouchstart="buttonClicked(event, '${itemData.color}', 'up')" class="primary-button primary-button-${itemData.color}" data-color="${itemData.color}" data-btn="up" >
                 ${itemData.buttonLabel}
             </button>
         </div>
         <div class="button-container">
-            <button onmousedown="buttonClicked(event, '${itemData.color}', 'center')" class="animate-button button button-${itemData.color}" data-color="${itemData.color}" data-btn="center">
+            <button onmousedown="buttonClicked(event, '${itemData.color}', 'center')" class="animate-button button button-${itemData.color}" ontouchstart="buttonClicked(event, '${itemData.color}', 'up')" class="primary-button primary-button-${itemData.color}" data-color="${itemData.color}" data-btn="center" > data-color="${itemData.color}" data-btn="center">
                 <i class="${itemData.icon}"></i> ${itemData.buttonText}
             </button>
         </div>
