@@ -893,6 +893,7 @@
 
 
         function startInteraction(startX, startY, element) {
+
             // Cancel any ongoing animation
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
@@ -923,7 +924,7 @@
             const dx = currentPosX - startPos;
 
             if (movementDirection === null) {  // Usar null para la comprobación inicial
-                if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {  // Umbral bajo para respuesta rápida
+                if (Math.abs(dx) > 0 || Math.abs(dy) > 50) {  // Umbral bajo para respuesta rápida
                     movementDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
                 }
             }
@@ -955,12 +956,14 @@
                         previousPositions.shift(); // Maintain the buffer size
                     }
                 }
+
             } else if (movementDirection === 'vertical') {
                 buttonMouseUp();
                 // Manejar solo movimientos verticales para el slider
                 if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
                     moveNavigation(currentPosY);
                 }
+
             }
 
             logCurrentCenteredItem();
@@ -990,30 +993,36 @@
                 const flickThresholdDistance = 50; // Distancia mínima en px
 
                 // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
-                if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 20) {
+                if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 0) {
                     let destination = lastTransform + velocity * 500; // El factor de 500 ajusta la 'inercia'
 
                     // Limitar el destino para no desbordar los límites del slider
                     destination = Math.max(destination, -sliderWidth);
                     destination = Math.min(destination, 0);
-                    console.log("chanfle1")
+
                     // Anima hacia el destino con desaceleración
                     animateToDestination(destination);
+
                 } else {
+
                     let newTransform = lastTransform;
-                    if (Math.abs(dx) > 20 && movementDirection === 'horizontal') {
+
+                    if (Math.abs(dx) > 0 && movementDirection === 'horizontal') {
                         newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
                     }
-                    console.log("chanfle2")
+
                     snapToClosestItem(newTransform);
+
                 }
+
             } else {
+
                 // Llamar a snapToClosestItem si no hay desplazamiento significativo
                 if (stopInertia) {
                     const style = window.getComputedStyle(slider);
                     const matrix = new WebKitCSSMatrix(style.transform);
                     snapToClosestItem(matrix.m41);
-                    console.log("chanfle3")
+
 
                 }
             }
@@ -1063,9 +1072,25 @@
             }
 
             previousPositions = []; // Clear the buffer after ending interaction
+
+            // Verificar y ajustar el translateX del slider al final con un retraso de 500 ms
+            setTimeout(() => {
+                const sliderWidthSnap = slider.clientWidth - slider.scrollWidth;
+                const currentTransform = new WebKitCSSMatrix(window.getComputedStyle(slider).transform).m41;
+
+                if (currentTransform > 0) {
+                    slider.style.transform = `translateX(0)`;
+                    lastTransform = 0;
+                } else if (currentTransform < sliderWidthSnap) {
+                    slider.style.transform = `translateX(${sliderWidthSnap}px)`;
+                    lastTransform = sliderWidthSnap;
+                }
+            }, 10); // 500 ms de retraso
+
         }
 
         function animateToDestination(destination) {
+
             let currentTransform = lastTransform;
 
             const step = () => {
@@ -1122,6 +1147,17 @@
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
             playSound('soundAppear');
+
+            setTimeout(() => {
+                const BorTransform = new WebKitCSSMatrix(window.getComputedStyle(slider).transform).m41;
+                // Comparar currentTransform con newTransform
+                if (Math.abs(BorTransform - newTransform) < 0.1) { // Umbral pequeño para evitar diferencias insignificantes
+                } else {
+                    slider.style.transform = `translateX(${newTransform}px)`;
+                }
+
+            }, 310); // 500 ms de retraso
+
         }
 
 
@@ -1292,9 +1328,9 @@
         function buttonMouseUp(event) {
             if (!currentButton) return;
             if (isDragging) {
-                console.log("isDragging")
+                //  console.log("isDragging")
             } else {
-                console.log("no isDragging")
+                // console.log("no isDragging")
             }
 
             let translateDown = 0;
