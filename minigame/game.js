@@ -79,6 +79,8 @@ function startBattle() {
 
         setTimeout(() => {
             // Colisión y ataque
+            defender.style.transform = defender.classList.contains('white') ? 'rotate(-20deg)' : 'rotate(20deg)';
+            defender.style.backgroundColor = 'red';
             defender.stats.vida -= attacker.stats.fuerza;
             if (defender.stats.vida <= 0) {
                 defender.stats.vida = 0;
@@ -93,9 +95,13 @@ function startBattle() {
             attacker.style.transform = originalPosition;
 
             setTimeout(() => {
-                isAnimating = false;
-                // Reactivar el ciclo de ataque
-                requestAnimationFrame(updateBars);
+                defender.style.transform = 'rotate(0deg)';
+                defender.style.backgroundColor = defender.classList.contains('white') ? 'white' : 'blue';
+                setTimeout(() => {
+                    isAnimating = false;
+                    // Reactivar el ciclo de ataque
+                    requestAnimationFrame(updateBars);
+                }, 500);
             }, 500);
 
         }, 500); // Duración de la animación de ataque
