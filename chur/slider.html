@@ -746,6 +746,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
             createAndAddSliderItem("Power");
+            // addAllItemsWithDelay()
             // createAndAddSliderItem("Life");
             // createAndAddSliderItem("Rate Fire");
             // createAndAddSliderItem("Arco");
@@ -1219,22 +1220,23 @@
 
         /////////*********** re ajustar elementos ******************//////
         //////////////////////////
+        let transitionClickButtons = "all 0.4s cubic-bezier(0.085, 0.980, 0.000, 0.995)";
         function ajustarElementos() {
             icon.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.4s cubic-bezier(0.085, 0.980, 0.000, 0.995)';
+                elemento.style.transition = transitionClickButtons;
                 elemento.style.transform = 'translateY(-10px)';
                 elemento.style.height = '75%';
             });
 
             buttonMain.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.4s cubic-bezier(0.085, 0.980, 0.000, 0.995)';
+                elemento.style.transition = transitionClickButtons;
                 // elemento.style.top = '-55px';
                 elemento.style.height = '75%';
                 elemento.style.transform = 'translateY(-40px)';
             });
 
             buttonnav.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.4s cubic-bezier(0.085, 0.980, 0.000, 0.995)';
+                elemento.style.transition = transitionClickButtons;
                 elemento.style.transform = 'none';
                 elemento.style.height = '60%';
                 elemento.style.transform = 'translateY(4px)';
@@ -1251,13 +1253,13 @@
 
         function restablecerElementos() {
             icon.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.4s cubic-bezier(0.085, 0.980, 0.000, 0.995)';
+                elemento.style.transition = transitionClickButtons;
                 elemento.style.transform = 'none';
                 elemento.style.height = '100%';
             });
 
             buttonMain.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.4s cubic-bezier(0.085, 0.980, 0.000, 0.995)';
+                elemento.style.transition = transitionClickButtons;
                 // elemento.style.top = '0';
                 elemento.style.height = '100%';
                 elemento.style.transform = 'translateY(0px)';
@@ -1265,7 +1267,7 @@
 
 
             buttonnav.forEach(function (elemento) {
-                elemento.style.transition = 'all 0.4s cubic-bezier(0.085, 0.980, 0.000, 0.995)';
+                elemento.style.transition = transitionClickButtons;
                 elemento.style.transform = 'translateY(10px)';
                 elemento.style.height = '70%';
             });
@@ -1468,7 +1470,7 @@
                 const primaryButtons = item.querySelectorAll('.button-container');
 
                 [item, ...icons, ...primaryButtons].forEach(el => {
-                    el.style.transition = 'flex-basis 0.3s ease-out';
+                    el.style.transition = transitionClickButtons;
                     el.classList.remove('full-width', 'half-width');
                 });
 
@@ -1683,6 +1685,18 @@
             const primaryButton = item.querySelector('.primary-button');
             const animatedButton = item.querySelector('.animate-button');
 
+            const handleTransitionEnd = (event) => {
+                if (event.propertyName === 'transform' || event.propertyName === 'opacity') {
+                    // Asegúrate de que el evento 'transitionend' se dispare solo para las propiedades 'transform' o 'opacity'
+                    primaryButton.removeEventListener('transitionend', handleTransitionEnd);
+                    animatedButton.removeEventListener('transitionend', handleTransitionEnd);
+
+                    // Cambia el estilo de transición aquí
+                    primaryButton.style.transition = transitionClickButtons;
+                    animatedButton.style.transition = transitionClickButtons;
+                }
+            };
+
             if (appearing) {
                 // Configurar estado inicial para la animación de aparición
                 primaryButton.style.transform = 'scale(0)';
@@ -1698,8 +1712,13 @@
                     animatedButton.style.transform = 'scale(1)';
                     primaryButton.style.opacity = '1';
                     animatedButton.style.opacity = '1';
-                    //  playSound('soundAppear');
+                    // playSound('soundAppear');
+
+                    // Agregar el manejador de evento 'transitionend'
+                    primaryButton.addEventListener('transitionend', handleTransitionEnd);
+                    animatedButton.addEventListener('transitionend', handleTransitionEnd);
                 }, 100); // Pequeño retraso para asegurar que el DOM está listo
+
             } else {
                 // Configurar la transición para la animación de desaparición
                 primaryButton.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
@@ -1712,13 +1731,14 @@
                     primaryButton.style.opacity = '0';
                     animatedButton.style.opacity = '0';
                     // playSound('soundDisappear');
-                    setTimeout(() => {
-                        primaryButton.style.display = 'none';
-                        animatedButton.style.display = 'none';
-                    }, 500); // Esperar hasta que la animación termine para ocultar
+
+                    // Agregar el manejador de evento 'transitionend'
+                    primaryButton.addEventListener('transitionend', handleTransitionEnd);
+                    animatedButton.addEventListener('transitionend', handleTransitionEnd);
                 }, 100);
             }
         }
+
 
         function initializeDropdowns() {
             const availableItems = document.getElementById('availableItems');
