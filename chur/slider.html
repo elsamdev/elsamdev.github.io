@@ -743,25 +743,30 @@
     <audio id="soundDisappear" src="sound2.wav" preload="auto"></audio>
     <audio id="slideSound" src="peo.mp3"></audio>
     <script>
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
         let isPageLoaded = false;
         document.addEventListener('DOMContentLoaded', function () {
             // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
-
-            createAndAddSliderItem("Power");
-            // addAllItemsWithDelay()
-            createAndAddSliderItem("Life");
-            createAndAddSliderItem("Rate Fire");
-            createAndAddSliderItem("Arco");
-            createAndAddSliderItem("cañon");
-            createAndAddSliderItem("Madera");
-            createAndAddSliderItem("Espada");
-            createAndAddSliderItem("Piedra");
-            createAndAddSliderItem("comida");
-            createAndAddSliderItem("FA");
-            createAndAddSliderItem("Entrenar");
-            createAndAddSliderItem("Descansar");
-            initializeDropdowns()
+            addAllItemsWithDelay()
+            // createAndAddSliderItem("Power");
+            // createAndAddSliderItem("Life");
+            // createAndAddSliderItem("Rate Fire");
+            // createAndAddSliderItem("Arco");
+            // createAndAddSliderItem("cañon");
+            // createAndAddSliderItem("Madera");
+            // createAndAddSliderItem("Espada");
+            // createAndAddSliderItem("Piedra");
+            // createAndAddSliderItem("comida");
+            // createAndAddSliderItem("FA");
+            // createAndAddSliderItem("Entrenar");
+            // createAndAddSliderItem("Descansar");
             isPageLoaded = true;
+
+
+            initializeDropdowns()
+
 
             // /********************************** /
 
@@ -783,19 +788,18 @@
 
         function initializeEventListeners() {
             // click event
-            window.addEventListener('resize', updateSliderWidthResize);
-            slider.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, slider));
-            navigation.addEventListener('mousedown', e => startInteraction(e.clientX, e.clientY, navigation));
-            window.addEventListener('mousemove', e => moveInteraction(e.clientX, e.clientY));
-            window.addEventListener('mouseup', e => endInteraction(e.clientX, e.clientY));
+            slider.addEventListener('mousedown', e => startInteraction(e, e.clientX, e.clientY, slider));
+            navigation.addEventListener('mousedown', e => startInteraction(e, e.clientX, e.clientY, navigation));
+            window.addEventListener('mousemove', e => moveInteraction(e, e.clientX, e.clientY));
+            window.addEventListener('mouseup', e => endInteraction(e, e.clientX, e.clientY));
 
             // Touch events
-            slider.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, slider));
-            navigation.addEventListener('touchstart', e => startInteraction(e.touches[0].clientX, e.touches[0].clientY, navigation));
-            window.addEventListener('touchmove', e => moveInteraction(e.touches[0].clientX, e.touches[0].clientY));
+            slider.addEventListener('touchstart', e => startInteraction(e, e.touches[0].clientX, e.touches[0].clientY, slider));
+            navigation.addEventListener('touchstart', e => startInteraction(e, e.touches[0].clientX, e.touches[0].clientY, navigation));
+            window.addEventListener('touchmove', e => moveInteraction(e, e.touches[0].clientX, e.touches[0].clientY));
             window.addEventListener('touchend', e => {
                 if (e.changedTouches && e.changedTouches.length > 0) {
-                    endInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                    endInteraction(e, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
                 }
             });
         }
@@ -898,13 +902,14 @@
 
 
 
-        function startInteraction(startX, startY, element) {
-
+        function startInteraction(event, startX, startY, element) {
+            event.preventDefault();
             // Cancel any ongoing animation
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
                 animationFrameId = null;
                 stopInertia = true
+
             }
 
             // Actualizar lastTransform con el valor actual de la transformación del slider
@@ -924,7 +929,9 @@
         }
 
 
-        function moveInteraction(currentPosX, currentPosY) {
+
+        function moveInteraction(event, currentPosX, currentPosY) {
+            event.preventDefault();
             if (!isDragging) return;
             const dy = currentPosY - startPosY;
             const dx = currentPosX - startPos;
@@ -936,6 +943,7 @@
             }
 
             if (movementDirection === 'horizontal') {
+
                 buttonMouseUp();
                 if (Math.abs(dx) > 0) {
                     let tentativeTransform = lastTransform + dx;
@@ -955,7 +963,7 @@
                     requestAnimationFrame(() => {
                         slider.style.transform = `translateX(${transform}px)`;
                     });
-
+                    console.log("transform: start" + transform)
                     // Store the last few positions for velocity calculation
                     previousPositions.push({ pos: currentPosX, time: currentTime });
                     if (previousPositions.length > positionBufferSize) {
@@ -977,7 +985,8 @@
             valorTra();
         }
 
-        function endInteraction(currentPosX, currentPosY) {
+        function endInteraction(event, currentPosX, currentPosY) {
+            event.preventDefault();
             if (!isDragging) return;
 
             isDragging = false;
@@ -985,7 +994,7 @@
 
             const dx = currentPosX - startPos;
             let absDx = Math.abs(dx);
-
+            console.log("transform: end" + lastTransform)
             if (movementDirection === 'horizontal') {
                 const firstPosition = previousPositions[0];
                 const lastPosition = previousPositions[previousPositions.length - 1];
@@ -1096,8 +1105,12 @@
         }
 
         function animateToDestination(destination) {
-
+            lastTransform = transform; // Asegúrate de que lastTransform se actualice con la posición actual
             let currentTransform = lastTransform;
+
+            console.log("currentTransform", currentTransform, "destination", destination);
+            let accumulatedTime = 0; // Tiempo acumulado
+            const stepTime = 16.67; // Aproximadamente 60 FPS, cada frame toma aproximadamente 16.67ms
 
             const step = () => {
                 // Calcular el paso de desaceleración
@@ -1109,8 +1122,11 @@
                 // Chequear si estamos cerca del destino
                 if (Math.abs(destination - currentTransform) > 20) {
                     animationFrameId = requestAnimationFrame(step); // Continuar la animación
+                    accumulatedTime += stepTime; // Acumular tiempo
                 } else {
                     animationFrameId = null;
+                    lastTransform = currentTransform;
+                    console.log(`Tiempo total de frenado: ${(accumulatedTime / 1000).toFixed(2)} segundos`); // Convertir ms a segundos y mostrar en consola
                     // Calcular el snap al ítem más cercano cuando estemos cerca del final
                     snapToClosestItem(currentTransform);
                 }
@@ -1118,6 +1134,7 @@
 
             animationFrameId = requestAnimationFrame(step); // Iniciar la animación
         }
+
 
         function snapToClosestItem(currentTransform) {
             const sliderWidthSnap = slider.clientWidth - slider.scrollWidth;
@@ -1585,12 +1602,18 @@
             }
         ];
 
-
+        let timeOut = 0;
         function addAllItemsWithDelay() {
+            if (isPageLoaded) {
+                timeOut = 500;
+            } else {
+                timeOut = 0;
+            }
+
             sliderItems.forEach((item, index) => {
                 setTimeout(() => {
                     createAndAddSliderItem(item.buttonLabel);
-                }, 500 * index);
+                }, timeOut * index);
             });
         }
 
