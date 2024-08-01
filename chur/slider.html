@@ -1004,11 +1004,12 @@
                 const absVelocity = Math.abs(velocity);
 
                 // Establece un umbral para la velocidad y la distancia para considerar un deslizamiento rápido
-                const flickThresholdSpeed = 1; // Velocidad en px/ms
-                const flickThresholdDistance = 100; // Distancia mínima en px
+                const flickThresholdSpeed = 10; // Velocidad en px/ms
+                const flickThresholdDistance = 50; // Distancia mínima en px
 
                 // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
                 if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 0) {
+                    console.log(absVelocity, absDx)
                     let destination = lastTransform + velocity * 400; // El factor de 500 ajusta la 'inercia'
 
                     // Limitar el destino para no desbordar los límites del slider
@@ -1020,11 +1021,11 @@
 
                 } else {
 
-                    let newTransform = lastTransform;
+                    let newTransform = transform;
 
-                    if (Math.abs(dx) > 0 && movementDirection === 'horizontal') {
-                        newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
-                    }
+                    // if (Math.abs(dx) > 0 && movementDirection === 'horizontal') {
+                    //     newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
+                    // }
 
                     snapToClosestItem(newTransform);
 
