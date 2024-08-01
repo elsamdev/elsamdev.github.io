@@ -749,8 +749,8 @@
         let isPageLoaded = false;
         document.addEventListener('DOMContentLoaded', function () {
             // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
-            addAllItemsWithDelay()
-            // createAndAddSliderItem("Power");
+            // addAllItemsWithDelay()
+            createAndAddSliderItem("Power");
             // createAndAddSliderItem("Life");
             // createAndAddSliderItem("Rate Fire");
             // createAndAddSliderItem("Arco");
@@ -963,7 +963,7 @@
                     requestAnimationFrame(() => {
                         slider.style.transform = `translateX(${transform}px)`;
                     });
-                    console.log("transform: start" + transform)
+
                     // Store the last few positions for velocity calculation
                     previousPositions.push({ pos: currentPosX, time: currentTime });
                     if (previousPositions.length > positionBufferSize) {
@@ -994,7 +994,7 @@
 
             const dx = currentPosX - startPos;
             let absDx = Math.abs(dx);
-            console.log("transform: end" + lastTransform)
+
             if (movementDirection === 'horizontal') {
                 const firstPosition = previousPositions[0];
                 const lastPosition = previousPositions[previousPositions.length - 1];
@@ -1108,7 +1108,7 @@
             lastTransform = transform; // Asegúrate de que lastTransform se actualice con la posición actual
             let currentTransform = lastTransform;
 
-            console.log("currentTransform", currentTransform, "destination", destination);
+
             let accumulatedTime = 0; // Tiempo acumulado
             const stepTime = 16.67; // Aproximadamente 60 FPS, cada frame toma aproximadamente 16.67ms
             const maxSpeed = 100; // Velocidad máxima en píxeles por frame
@@ -1615,7 +1615,7 @@
         let timeOut = 0;
         function addAllItemsWithDelay() {
             if (isPageLoaded) {
-                timeOut = 500;
+                timeOut = 200;
             } else {
                 timeOut = 0;
             }
@@ -1744,8 +1744,8 @@
 
                 setTimeout(() => {
                     // Aplicar la animación de aparición
-                    primaryButton.style.transition = 'transform 0.2s ease-out, opacity 0.2s ease-out';
-                    animatedButton.style.transition = 'transform 0.2s ease-out, opacity 0.2s ease-out';
+                    primaryButton.style.transition = 'transform 0.1s ease-out, opacity 0.1s ease-out';
+                    animatedButton.style.transition = 'transform 0.1s ease-out, opacity 0.1s ease-out';
                     primaryButton.style.transform = 'scale(1)';
                     animatedButton.style.transform = 'scale(1)';
                     primaryButton.style.opacity = '1';
@@ -1755,7 +1755,7 @@
                     // Agregar el manejador de evento 'transitionend'
                     primaryButton.addEventListener('transitionend', handleTransitionEnd);
                     animatedButton.addEventListener('transitionend', handleTransitionEnd);
-                }, 100); // Pequeño retraso para asegurar que el DOM está listo
+                }, 10); // Pequeño retraso para asegurar que el DOM está listo
 
             } else {
                 // Configurar la transición para la animación de desaparición
@@ -1773,7 +1773,7 @@
                     // Agregar el manejador de evento 'transitionend'
                     primaryButton.addEventListener('transitionend', handleTransitionEnd);
                     animatedButton.addEventListener('transitionend', handleTransitionEnd);
-                }, 100);
+                }, 10);
             }
         }
 
