@@ -1005,7 +1005,7 @@
 
                 // Establece un umbral para la velocidad y la distancia para considerar un deslizamiento rápido
                 const flickThresholdSpeed = 0.5; // Velocidad en px/ms
-                const flickThresholdDistance = 50; // Distancia mínima en px
+                const flickThresholdDistance = 100; // Distancia mínima en px
 
                 // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
                 if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 0) {
