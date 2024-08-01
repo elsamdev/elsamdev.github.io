@@ -743,23 +743,25 @@
     <audio id="soundDisappear" src="sound2.wav" preload="auto"></audio>
     <audio id="slideSound" src="peo.mp3"></audio>
     <script>
+        let isPageLoaded = false;
         document.addEventListener('DOMContentLoaded', function () {
             // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
+
             createAndAddSliderItem("Power");
             // addAllItemsWithDelay()
-            // createAndAddSliderItem("Life");
-            // createAndAddSliderItem("Rate Fire");
-            // createAndAddSliderItem("Arco");
-            // createAndAddSliderItem("cañon");
-            // createAndAddSliderItem("Madera");
-            // createAndAddSliderItem("Espada");
-            // createAndAddSliderItem("Piedra");
-            // createAndAddSliderItem("comida");
-            // createAndAddSliderItem("FA");
-            // createAndAddSliderItem("Entrenar");
-            // createAndAddSliderItem("Descansar");
+            createAndAddSliderItem("Life");
+            createAndAddSliderItem("Rate Fire");
+            createAndAddSliderItem("Arco");
+            createAndAddSliderItem("cañon");
+            createAndAddSliderItem("Madera");
+            createAndAddSliderItem("Espada");
+            createAndAddSliderItem("Piedra");
+            createAndAddSliderItem("comida");
+            createAndAddSliderItem("FA");
+            createAndAddSliderItem("Entrenar");
+            createAndAddSliderItem("Descansar");
             initializeDropdowns()
-
+            isPageLoaded = true;
 
             // /********************************** /
 
@@ -1476,9 +1478,9 @@
 
                 // Aplicar clases basadas en la cantidad de ítems
                 if (itemCount === 1) {
-                    setTimeout(() => {
-                        [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('full-width'));
-                    }, 100);
+
+                    [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('full-width'));
+
 
                 } else if (itemCount === 2) {
                     [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('half-width'));
@@ -1489,7 +1491,6 @@
             });
 
             slider.style.width = '100%';
-
         }
 
 
@@ -1624,9 +1625,13 @@
                 }
 
                 navigation.style.transform = "translateY(1px)"
+
+
                 adjustSliderItems();
                 updateDOMSelectors();
-                animateItem(newItem, true);
+                if (isPageLoaded) {
+                    animateItem(newItem, true);
+                }
                 updateSliderWidth(newItem, true); // Asegurarte de que se ajusta el translateX correctamente
                 restablecerElementos();
                 setupIntersectionObserver();
