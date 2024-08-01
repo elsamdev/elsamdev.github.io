@@ -1090,21 +1090,18 @@
         }
 
         function animateToDestination(destination) {
+
             let currentTransform = lastTransform;
 
             const step = () => {
                 // Calcular el paso de desaceleración
                 currentTransform += (destination - currentTransform) * (0.05 + 0.1 / (1 + Math.abs(destination - currentTransform)));
 
-                // Limitar el currentTransform dentro de los límites permitidos
-                const sliderWidthSnap = slider.clientWidth - slider.scrollWidth;
-                currentTransform = Math.max(Math.min(currentTransform, 0), sliderWidthSnap);
-
                 // Aplicar el transform actualizado
                 slider.style.transform = `translateX(${currentTransform}px)`;
 
                 // Chequear si estamos cerca del destino
-                if (Math.abs(destination - currentTransform) > 1) { // Ajustar el umbral según sea necesario
+                if (Math.abs(destination - currentTransform) > 100) {
                     animationFrameId = requestAnimationFrame(step); // Continuar la animación
                 } else {
                     animationFrameId = null;
