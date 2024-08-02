@@ -1002,7 +1002,7 @@
                 const timeElapsed = lastPosition.time - firstPosition.time;
                 const velocity = distance / timeElapsed;
                 console.log("velocity", velocity)
-                const maxVelocity = 15.0; // Velocidad máxima permitida en px/ms
+                const maxVelocity = 100; // Velocidad máxima permitida en px/ms
                 const absVelocity = Math.min(Math.abs(velocity), maxVelocity);
 
                 // Establece un umbral para la velocidad y la distancia para considerar un deslizamiento rápido
