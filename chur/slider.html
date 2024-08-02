@@ -1289,7 +1289,7 @@
             newTransform = Math.max(Math.min(newTransform, 0), sliderWidthSnap);
 
             // Aplica el nuevo transform con una transición suave
-            slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+            slider.style.transition = 'transform 0.5s cubic-bezier(0.5, 1.5, 0.55, 1)';
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
             playSound('soundAppear');
