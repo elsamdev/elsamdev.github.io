@@ -683,18 +683,20 @@
     .form-group label {
         display: block;
         margin-bottom: 5px;
+        font-size: 14px;
+        font-weight: 100;
     }
 
     .form-group input {
         width: 100%;
-        padding: 8px;
+        padding: 0px;
         box-sizing: border-box;
     }
 
     .form-group button {
         display: block;
         width: 100%;
-        padding: 10px;
+        padding: 2px;
         background-color: #007BFF;
         border: none;
         color: white;
@@ -722,16 +724,24 @@
             <!-- <h2>Configuración de Variables</h2> -->
             <form id="configForm">
                 <div class="form-group">
-                    <label for="maxVelocity">Velocidad Máxima (px/ms)</label>
+                    <label for="maxVelocity">Velocidad Máxima</label>
                     <input type="number" id="maxVelocity" name="maxVelocity" step="0.1">
                 </div>
                 <div class="form-group">
-                    <label for="flickThresholdSpeed">Umbral de Velocidad (px/ms)</label>
+                    <label for="flickThresholdSpeed">Umbral de Velocidad</label>
                     <input type="number" id="flickThresholdSpeed" name="flickThresholdSpeed" step="0.1">
                 </div>
                 <div class="form-group">
                     <label for="flickThresholdDistance">Umbral de Distancia (px)</label>
                     <input type="number" id="flickThresholdDistance" name="flickThresholdDistance">
+                </div>
+                <div class="form-group">
+                    <label for="minSpeed">Velocidad Mínima para Snap (px/frame)</label>
+                    <input type="number" id="minSpeed" name="minSpeed" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="decelerationFactor">Factor de Desaceleración</label>
+                    <input type="number" id="decelerationFactor" name="decelerationFactor" step="0.01">
                 </div>
                 <div class="form-group">
                     <button type="button" onclick="updateConfig()">Actualizar</button>
@@ -815,8 +825,8 @@
         let isPageLoaded = false;
         document.addEventListener('DOMContentLoaded', function () {
             // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
-            // addAllItemsWithDelay()
-            createAndAddSliderItem("Power");
+            addAllItemsWithDelay()
+            // createAndAddSliderItem("Power");
             // createAndAddSliderItem("Life");
             // createAndAddSliderItem("Rate Fire");
             // createAndAddSliderItem("Arco");
@@ -1056,22 +1066,8 @@
         let flickThresholdSpeed = 0.5; // Velocidad en px/ms
         let flickThresholdDistance = 50; // Distancia mínima en px
 
-        // Función para actualizar las variables de configuración
-        function updateConfig() {
-            maxVelocity = parseFloat(document.getElementById('maxVelocity').value);
-            flickThresholdSpeed = parseFloat(document.getElementById('flickThresholdSpeed').value);
-            flickThresholdDistance = parseInt(document.getElementById('flickThresholdDistance').value);
+        // Función para actualizar las variables de configuración  // Función para actualizar las variables de configuración
 
-            console.log('Configuración Actualizada:');
-            console.log('maxVelocity:', maxVelocity);
-            console.log('flickThresholdSpeed:', flickThresholdSpeed);
-            console.log('flickThresholdDistance:', flickThresholdDistance);
-        }
-
-        // Configurar los valores iniciales en el formulario
-        document.getElementById('maxVelocity').value = maxVelocity;
-        document.getElementById('flickThresholdSpeed').value = flickThresholdSpeed;
-        document.getElementById('flickThresholdDistance').value = flickThresholdDistance;
 
         function endInteraction(event, currentPosX, currentPosY) {
             console.log("maxVelocity", maxVelocity, "flickThresholdSpeed", flickThresholdSpeed, "flickThresholdDistance", flickThresholdDistance)
@@ -1191,16 +1187,40 @@
             }, 10); // 500 ms de retraso
 
         }
+        let accumulatedTime = 0; // Tiempo acumulado
+        let stepTime = 16.67; // Aproximadamente 60 FPS, cada frame toma aproximadamente 16.67ms
+        let maxSpeed = 100; // Velocidad máxima en píxeles por frame
+        let minSpeed = 5; // Velocidad mínima en píxeles por frame para hacer snap
+        let decelerationFactor = 0.95; // Factor de desaceleración
+
+        function updateConfig() {
+            maxVelocity = parseFloat(document.getElementById('maxVelocity').value);
+            flickThresholdSpeed = parseFloat(document.getElementById('flickThresholdSpeed').value);
+            flickThresholdDistance = parseInt(document.getElementById('flickThresholdDistance').value);
+            minSpeed = parseFloat(document.getElementById('minSpeed').value);
+            decelerationFactor = parseFloat(document.getElementById('decelerationFactor').value);
+
+            console.log('Configuración Actualizada:');
+            console.log('maxVelocity:', maxVelocity);
+            console.log('flickThresholdSpeed:', flickThresholdSpeed);
+            console.log('flickThresholdDistance:', flickThresholdDistance);
+            console.log('minSpeed:', minSpeed);
+            console.log('decelerationFactor:', decelerationFactor);
+        }
+
+        // Configurar los valores iniciales en el formulario
+        document.getElementById('maxVelocity').value = maxVelocity;
+        document.getElementById('flickThresholdSpeed').value = flickThresholdSpeed;
+        document.getElementById('flickThresholdDistance').value = flickThresholdDistance;
+        document.getElementById('minSpeed').value = minSpeed;
+        document.getElementById('decelerationFactor').value = decelerationFactor;
+
 
         function animateToDestination(destination) {
             lastTransform = transform; // Asegúrate de que lastTransform se actualice con la posición actual
             let currentTransform = lastTransform;
 
 
-            let accumulatedTime = 0; // Tiempo acumulado
-            const stepTime = 16.67; // Aproximadamente 60 FPS, cada frame toma aproximadamente 16.67ms
-            const maxSpeed = 100; // Velocidad máxima en píxeles por frame
-            const decelerationFactor = 0.95; // Factor de desaceleración
 
             const step = () => {
                 // Calcular el paso de desaceleración con interpolación más suave
@@ -1211,13 +1231,17 @@
                     delta = maxSpeed * Math.sign(delta);
                 }
 
+                // Aplicar el factor de desaceleración
+                delta *= decelerationFactor;
+
                 currentTransform += delta;
 
                 // Aplicar el transform actualizado
                 slider.style.transform = `translateX(${currentTransform}px)`;
 
-                // Chequear si estamos cerca del destino
-                if (Math.abs(destination - currentTransform) > 1) { // Reducir el umbral a 1 para mayor precisión
+                // Chequear si estamos cerca del destino o si la velocidad es menor que la velocidad mínima
+                if (Math.abs(destination - currentTransform) > 1 && Math.abs(delta) > minSpeed) {
+                    console.log(delta)
                     animationFrameId = requestAnimationFrame(step); // Continuar la animación
                     accumulatedTime += stepTime; // Acumular tiempo
                 } else {
@@ -1231,6 +1255,7 @@
 
             animationFrameId = requestAnimationFrame(step); // Iniciar la animación
         }
+
 
 
 
