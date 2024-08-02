@@ -1070,7 +1070,7 @@
 
 
         function endInteraction(event, currentPosX, currentPosY) {
-            console.log("maxVelocity", maxVelocity, "flickThresholdSpeed", flickThresholdSpeed, "flickThresholdDistance", flickThresholdDistance)
+
             if (!isDragging) return;
 
             isDragging = false;
@@ -1085,14 +1085,14 @@
                 const distance = lastPosition.pos - firstPosition.pos;
                 const timeElapsed = lastPosition.time - firstPosition.time;
                 const velocity = distance / timeElapsed;
-                console.log("velocity", velocity)
+
 
                 const absVelocity = Math.min(Math.abs(velocity), maxVelocity);
 
 
                 // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
                 if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 0) {
-                    console.log(absVelocity, absDx)
+
                     let destination = lastTransform + velocity * 400; // El factor de 500 ajusta la 'inercia'
 
                     // Limitar el destino para no desbordar los límites del slider
@@ -1200,12 +1200,7 @@
             minSpeed = parseFloat(document.getElementById('minSpeed').value);
             decelerationFactor = parseFloat(document.getElementById('decelerationFactor').value);
 
-            console.log('Configuración Actualizada:');
-            console.log('maxVelocity:', maxVelocity);
-            console.log('flickThresholdSpeed:', flickThresholdSpeed);
-            console.log('flickThresholdDistance:', flickThresholdDistance);
-            console.log('minSpeed:', minSpeed);
-            console.log('decelerationFactor:', decelerationFactor);
+
         }
 
         // Configurar los valores iniciales en el formulario
@@ -1241,7 +1236,7 @@
 
                 // Chequear si estamos cerca del destino o si la velocidad es menor que la velocidad mínima
                 if (Math.abs(destination - currentTransform) > 1 && Math.abs(delta) > minSpeed) {
-                    console.log(delta)
+
                     animationFrameId = requestAnimationFrame(step); // Continuar la animación
                     accumulatedTime += stepTime; // Acumular tiempo
                 } else {
