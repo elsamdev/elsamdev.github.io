@@ -951,13 +951,13 @@
             const observerOptionsShow = {
                 root: null, // observa dentro del viewport
                 rootMargin: '0px',
-                threshold: 0.5 // Se ajusta para que el evento se dispare cuando el elemento esté completamente visible
+                threshold: 1 // Se ajusta para que el evento se dispare cuando el elemento esté completamente visible
             };
 
             const observerOptionsHide = {
                 root: null,
                 rootMargin: '0px',
-                threshold: 0.5 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
+                threshold: 0.9 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
             };
 
             const observerShow = new IntersectionObserver((entries) => {
@@ -981,9 +981,9 @@
                 });
             }, observerOptionsHide);
 
-            document.querySelectorAll('.slider-item').forEach(item => {
-                observerShow.observe(item);
-                observerHide.observe(item);
+            document.querySelectorAll('.icon').forEach(icon => {
+                observerShow.observe(icon);
+                observerHide.observe(icon);
             });
         }
 
