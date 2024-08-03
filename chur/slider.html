@@ -815,8 +815,8 @@
         </div>
     </div>
 
-    <audio id="soundAppear" src="sound2.wav" preload="auto"></audio>
-    <audio id="soundDisappear" src="sound2.wav" preload="auto"></audio>
+    <audio id="soundAppear" src="sonidos/sonido de vibracion.wav" preload="auto"></audio>
+    <audio id="soundDisappear" src="sonidos/sonido de vibracion.wav" preload="auto"></audio>
     <audio id="slideSound" src="peo.mp3"></audio>
     <script>
         document.addEventListener('contextmenu', function (e) {
@@ -957,7 +957,7 @@
             const observerOptionsHide = {
                 root: null,
                 rootMargin: '0px',
-                threshold: 0.5 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
+                threshold: 0.9 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
             };
 
             const observerShow = new IntersectionObserver((entries) => {
@@ -1044,12 +1044,13 @@
                     if (tentativeTransform > 0) {
                         tentativeTransform = dx / 5;
                     } else if (tentativeTransform < -sliderWidth) {
-                        tentativeTransform = -sliderWidth + (dx / 5);
+                        tentativeTransform = Math.max(tentativeTransform, -sliderWidth - Math.abs(dx) / 5);
                     }
 
                     transform = tentativeTransform;
                     requestAnimationFrame(() => {
                         slider.style.transform = `translateX(${transform}px)`;
+                        console.log(transform);
                     });
 
                     // Store the last few positions for velocity calculation
@@ -1068,9 +1069,7 @@
 
             }
 
-            logCurrentCenteredItem();
-            logSliderPercentage();
-            valorTra();
+
         }
 
         // Valores iniciales de las variables
@@ -1827,6 +1826,7 @@
 
 
         function playSound(soundId) {
+
             const originalSound = document.getElementById(soundId);
             if (originalSound) {
                 const soundClone = originalSound.cloneNode();
