@@ -815,8 +815,8 @@
         </div>
     </div>
 
-    <audio id="soundAppear" src="sonidos/sonido de vibracion.wav" preload="auto"></audio>
-    <audio id="soundDisappear" src="sonidos/sonido de vibracion.wav" preload="auto"></audio>
+    <audio id="soundAppear" src="sonidos/si.wav" preload="auto"></audio>
+    <audio id="soundDisappear" src="sonidos/si.wav" preload="auto"></audio>
     <audio id="slideSound" src="peo.mp3"></audio>
     <script>
         document.addEventListener('contextmenu', function (e) {
@@ -981,9 +981,9 @@
                 });
             }, observerOptionsHide);
 
-            document.querySelectorAll('.icon').forEach(icon => {
-                observerShow.observe(icon);
-                observerHide.observe(icon);
+            document.querySelectorAll('.slider-item').forEach(item => {
+                observerShow.observe(item);
+                observerHide.observe(item);
             });
         }
 
@@ -1050,7 +1050,7 @@
                     transform = tentativeTransform;
                     requestAnimationFrame(() => {
                         slider.style.transform = `translateX(${transform}px)`;
-                        console.log(transform);
+
                     });
 
                     // Store the last few positions for velocity calculation
@@ -1295,10 +1295,10 @@
             newTransform = Math.max(Math.min(newTransform, 0), sliderWidthSnap);
 
             // Aplica el nuevo transform con una transición suave
-            slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+            slider.style.transition = 'transform 0.2s cubic-bezier(0.5, 1.5, 0.55, 1)';
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
-            playSound('soundAppear');
+            // playSound('soundAppear');
 
             setTimeout(() => {
                 const BorTransform = new WebKitCSSMatrix(window.getComputedStyle(slider).transform).m41;
@@ -1310,7 +1310,8 @@
                 }
 
             }, 310); // 500 ms de retraso
-
+            soundCount = 0
+            console.log("soundCount", soundCount)
         }
 
 
@@ -1824,21 +1825,21 @@
             buttonnav = document.querySelectorAll('.navigation-container button');
         }
 
+        let soundCount = 0
+
 
         function playSound(soundId) {
-
-            const originalSound = document.getElementById(soundId);
-            if (originalSound) {
-                const soundClone = originalSound.cloneNode();
-                soundClone.play();
-                soundClone.addEventListener('ended', () => {
-                    soundClone.remove(); // Elimina el clon después de reproducir el sonido
-                });
-            } else {
-                console.log('Sound element not found:', soundId);
+            console.log('Playing sound:', soundCount);
+            const sound = document.getElementById(soundId);
+            if (sound) {
+                sound.currentTime = 0; // Reinicia el sonido para asegurarse de que se reproduce desde el principio
+                sound.play();
             }
+            soundCount += 1
         }
 
+        // Llama a la función para configurar el IntersectionObserver
+        setupIntersectionObserver();
 
         function animateItem(item, appearing) {
             const primaryButton = item.querySelector('.primary-button');
