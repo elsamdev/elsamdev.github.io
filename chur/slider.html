@@ -948,33 +948,45 @@
 
 
         function setupIntersectionObserver() {
-            const observerOptions = {
+            const observerOptionsShow = {
                 root: null, // observa dentro del viewport
                 rootMargin: '0px',
-                threshold: 0.5 // Se ajusta para que el evento se dispare cuando la mitad del elemento sea visible
+                threshold: 1.0 // Se ajusta para que el evento se dispare cuando el elemento esté completamente visible
             };
 
-            const observer = new IntersectionObserver((entries) => {
+            const observerOptionsHide = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
+            };
+
+            const observerShow = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Si el elemento se intersecta y no ha reproducido el sonido antes
+                        // Si el elemento se intersecta completamente y no ha reproducido el sonido antes
                         if (!entry.target.hasAttribute('soundPlayed')) {
-                            const index = Array.from(document.querySelectorAll('.icon')).indexOf(entry.target);
-
                             playSound('soundDisappear'); // Reproduce el sonido asociado
                             entry.target.setAttribute('soundPlayed', 'true'); // Marca que el sonido se ha reproducido
                         }
-                    } else {
-                        // Elimina el atributo cuando el elemento ya no está intersectando
-                        entry.target.removeAttribute('soundPlayed');
                     }
                 });
-            }, observerOptions);
+            }, observerOptionsShow);
+
+            const observerHide = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        // Si el elemento está al menos un 50% fuera de la vista
+                        entry.target.removeAttribute('soundPlayed'); // Elimina el atributo para permitir la reproducción del sonido nuevamente
+                    }
+                });
+            }, observerOptionsHide);
 
             document.querySelectorAll('.icon').forEach(icon => {
-                observer.observe(icon);
+                observerShow.observe(icon);
+                observerHide.observe(icon);
             });
         }
+
 
 
 
