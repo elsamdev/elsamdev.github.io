@@ -1305,7 +1305,7 @@
                 // Comparar currentTransform con newTransform
                 if (Math.abs(BorTransform - newTransform) < 0.1) { // Umbral pequeño para evitar diferencias insignificantes
                 } else {
-                    slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+                    slider.style.transition = 'transform 0.1s cubic-bezier(0.5, 1.5, 0.55, 1)';
                     slider.style.transform = `translateX(${newTransform}px)`;
                 }
 
@@ -1826,20 +1826,22 @@
         }
 
         let soundCount = 0
-
-
         function playSound(soundId) {
             console.log('Playing sound:', soundCount);
-            const sound = document.getElementById(soundId);
-            if (sound) {
-                sound.currentTime = 0; // Reinicia el sonido para asegurarse de que se reproduce desde el principio
-                sound.play();
+            const originalSound = document.getElementById(soundId);
+            if (originalSound) {
+                const soundClone = originalSound.cloneNode();
+                soundClone.play();
+                soundClone.addEventListener('ended', () => {
+                    soundClone.remove(); // Elimina el clon después de reproducir el sonido
+                });
+            } else {
+                console.log('Sound element not found:', soundId);
             }
             soundCount += 1
         }
 
-        // Llama a la función para configurar el IntersectionObserver
-        setupIntersectionObserver();
+
 
         function animateItem(item, appearing) {
             const primaryButton = item.querySelector('.primary-button');
