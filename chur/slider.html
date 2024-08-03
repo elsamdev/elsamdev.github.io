@@ -815,8 +815,8 @@
         </div>
     </div>
 
-    <audio id="soundAppear" src="sonidos/sound2.wav" preload="auto"></audio>
-    <audio id="soundDisappear" src="sonidos/sound2.wav" preload="auto"></audio>
+    <audio id="soundAppear" src="sonidos/si.wav" preload="auto"></audio>
+    <audio id="soundDisappear" src="sonidos/si.wav" preload="auto"></audio>
     <audio id="slideSound" src="peo.mp3"></audio>
     <script>
         document.addEventListener('contextmenu', function (e) {
@@ -975,7 +975,6 @@
                 observer.observe(icon);
             });
         }
-
 
 
         function startInteraction(event, startX, startY, element) {
@@ -1815,12 +1814,13 @@
 
 
         function playSound(soundId) {
-            const originalSound = document.getElementById(soundId);
-            if (originalSound) {
-                const soundClone = originalSound.cloneNode();
-                soundClone.play();
-                soundClone.addEventListener('ended', () => {
-                    soundClone.remove(); // Elimina el clon después de reproducir el sonido
+            const soundElement = document.getElementById(soundId);
+            if (soundElement) {
+                const audio = new Audio(soundElement.src);
+                audio.play().then(() => {
+                    console.log('Sound played successfully');
+                }).catch(error => {
+                    console.log('Error playing sound:', error);
                 });
             } else {
                 console.log('Sound element not found:', soundId);
