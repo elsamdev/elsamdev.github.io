@@ -947,6 +947,35 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+        function preloadSounds(soundIds) {
+            soundIds.forEach(soundId => {
+                const audioElement = document.getElementById(soundId);
+                if (audioElement) {
+                    audioElement.load();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const soundIds = ['soundDisappear', 'soundAppear'];
+            preloadSounds(soundIds);
+        });
+
+
+
+
+
+
         function setupIntersectionObserver() {
             const observerOptionsShow = {
                 root: null, // observa dentro del viewport
