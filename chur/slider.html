@@ -815,8 +815,8 @@
         </div>
     </div>
 
-    <audio id="soundAppear" src="sound2.wav" preload="auto"></audio>
-    <audio id="soundDisappear" src="sound2.wav" preload="auto"></audio>
+    <audio id="soundAppear" src="sonidos/si.wav" preload="auto"></audio>
+    <audio id="soundDisappear" src="sonidos/si.wav" preload="auto"></audio>
     <audio id="slideSound" src="peo.mp3"></audio>
     <script>
         document.addEventListener('contextmenu', function (e) {
@@ -948,33 +948,45 @@
 
 
         function setupIntersectionObserver() {
-            const observerOptions = {
+            const observerOptionsShow = {
                 root: null, // observa dentro del viewport
                 rootMargin: '0px',
-                threshold: 0.5 // Se ajusta para que el evento se dispare cuando la mitad del elemento sea visible
+                threshold: 1.0 // Se ajusta para que el evento se dispare cuando el elemento esté completamente visible
             };
 
-            const observer = new IntersectionObserver((entries) => {
+            const observerOptionsHide = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.9 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
+            };
+
+            const observerShow = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // Si el elemento se intersecta y no ha reproducido el sonido antes
+                        // Si el elemento se intersecta completamente y no ha reproducido el sonido antes
                         if (!entry.target.hasAttribute('soundPlayed')) {
-                            const index = Array.from(document.querySelectorAll('.icon')).indexOf(entry.target);
-
                             playSound('soundDisappear'); // Reproduce el sonido asociado
                             entry.target.setAttribute('soundPlayed', 'true'); // Marca que el sonido se ha reproducido
                         }
-                    } else {
-                        // Elimina el atributo cuando el elemento ya no está intersectando
-                        entry.target.removeAttribute('soundPlayed');
                     }
                 });
-            }, observerOptions);
+            }, observerOptionsShow);
 
-            document.querySelectorAll('.icon').forEach(icon => {
-                observer.observe(icon);
+            const observerHide = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        // Si el elemento está al menos un 50% fuera de la vista
+                        entry.target.removeAttribute('soundPlayed'); // Elimina el atributo para permitir la reproducción del sonido nuevamente
+                    }
+                });
+            }, observerOptionsHide);
+
+            document.querySelectorAll('.slider-item').forEach(item => {
+                observerShow.observe(item);
+                observerHide.observe(item);
             });
         }
+
 
 
 
@@ -1032,12 +1044,13 @@
                     if (tentativeTransform > 0) {
                         tentativeTransform = dx / 5;
                     } else if (tentativeTransform < -sliderWidth) {
-                        tentativeTransform = -sliderWidth + (dx / 5);
+                        tentativeTransform = Math.max(tentativeTransform, -sliderWidth - Math.abs(dx) / 5);
                     }
 
                     transform = tentativeTransform;
                     requestAnimationFrame(() => {
                         slider.style.transform = `translateX(${transform}px)`;
+
                     });
 
                     // Store the last few positions for velocity calculation
@@ -1056,9 +1069,7 @@
 
             }
 
-            logCurrentCenteredItem();
-            logSliderPercentage();
-            valorTra();
+
         }
 
         // Valores iniciales de las variables
@@ -1242,7 +1253,7 @@
                 } else {
                     animationFrameId = null;
                     lastTransform = currentTransform;
-                    console.log(`Tiempo total de frenado: ${(accumulatedTime / 1000).toFixed(2)} segundos`); // Convertir ms a segundos y mostrar en consola
+
                     // Calcular el snap al ítem más cercano cuando estemos cerca del final
                     snapToClosestItem(currentTransform);
                 }
@@ -1284,21 +1295,22 @@
             newTransform = Math.max(Math.min(newTransform, 0), sliderWidthSnap);
 
             // Aplica el nuevo transform con una transición suave
-            slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+            slider.style.transition = 'transform 0.2s cubic-bezier(0.5, 1.5, 0.55, 1)';
             slider.style.transform = `translateX(${newTransform}px)`;
             lastTransform = newTransform;
-            playSound('soundAppear');
+            // playSound('soundAppear');
 
             setTimeout(() => {
                 const BorTransform = new WebKitCSSMatrix(window.getComputedStyle(slider).transform).m41;
                 // Comparar currentTransform con newTransform
                 if (Math.abs(BorTransform - newTransform) < 0.1) { // Umbral pequeño para evitar diferencias insignificantes
                 } else {
-                    slider.style.transition = 'transform 0.3s cubic-bezier(0.5, 1.5, 0.55, 1)';
+                    slider.style.transition = 'transform 0.1s cubic-bezier(0.5, 1.5, 0.55, 1)';
                     slider.style.transform = `translateX(${newTransform}px)`;
                 }
 
             }, 310); // 500 ms de retraso
+
 
         }
 
@@ -1470,11 +1482,7 @@
 
         function buttonMouseUp(event) {
             if (!currentButton) return;
-            if (isDragging) {
-                //  console.log("isDragging")
-            } else {
-                // console.log("no isDragging")
-            }
+
 
             let translateDown = 0;
             const btn = currentButton.getAttribute('data-btn');
@@ -1815,6 +1823,7 @@
 
 
         function playSound(soundId) {
+
             const originalSound = document.getElementById(soundId);
             if (originalSound) {
                 const soundClone = originalSound.cloneNode();
@@ -1823,9 +1832,11 @@
                     soundClone.remove(); // Elimina el clon después de reproducir el sonido
                 });
             } else {
-                console.log('Sound element not found:', soundId);
+
             }
+
         }
+
 
 
         function animateItem(item, appearing) {
