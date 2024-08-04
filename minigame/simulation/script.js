@@ -67,8 +67,9 @@ function replayBattle() {
         if (replayIndex < events.length) {
             const event = events[replayIndex];
             animateAttack(event.attacker, event.defender, event.damage);
-            highlightEvent(replayIndex);
+            highlightEvent(replayIndex - 1);
             replayIndex++;
+            
             setTimeout(nextEvent, 1000);
         }
     }
