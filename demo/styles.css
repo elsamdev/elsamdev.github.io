@@ -93,6 +93,7 @@ header {
     width: 100%;
     text-align: center;
     position: relative;
+
 }
 
 .projects h2 {
@@ -107,7 +108,7 @@ header {
     max-width: 400px;
     width: 400px;
     min-width: 400px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto;
     position: relative;
 }
 
