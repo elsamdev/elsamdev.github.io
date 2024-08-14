@@ -25,6 +25,7 @@ body {
     align-items: center;
     margin: 0;
     width: 100%;
+    position: relative;
 }
 
 /* Encabezado */
@@ -90,24 +91,26 @@ header {
     width: 70px;
     height: 70px;
     position: absolute;
-    bottom: 30px;
+    top: 45%;
+    /* Centrado verticalmente cuando está arriba */
+    left: 50%;
+    transform: translate(-50%, -50%);
     animation: smoothBounce 3s infinite;
-    /* Animación infinita */
     cursor: pointer;
-    /* Indica que es clickeable */
+    transition: all 0.5s ease;
+    /* Transición suave entre posiciones */
 }
 
-@keyframes smoothBounce {
-
-    0%,
-    100% {
-        transform: translateY(10px);
-    }
-
-    50% {
-        transform: translateY(0);
-    }
+.arrow-down.down {
+    top: 95%;
+    /* Posiciona la flecha en la parte inferior */
+    left: 3%;
+    /* Posiciona la flecha hacia la izquierda */
+    transform: translate(0) rotate(180deg) scale(0.7);
 }
+
+
+
 
 /* Sección de proyectos */
 .projects {

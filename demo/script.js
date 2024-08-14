@@ -64,14 +64,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     const arrowDown = document.querySelector('.arrow-down');
-    
-    arrowDown.addEventListener('click', () => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth' // Hace que el scroll sea suave
+    const header = document.querySelector('header');
+    const projects = document.querySelectorAll('.project');
+    let isInProject = false;
+
+    // Observer para el header
+    const headerObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Si el header es visible, quita la clase down de arrowDown y actualiza estado
+                arrowDown.classList.remove('down');
+                isInProject = false; // Está en el header
+            }
         });
+    }, { threshold: 0.5 }); // Ajusta el umbral si es necesario
+
+    // Observer para los projects
+    const projectObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Si el project es visible 100%, agrega la clase down a arrowDown y actualiza estado
+                arrowDown.classList.add('down');
+                isInProject = true; // Está en un project
+            }
+        });
+    }, { threshold: 1.0 }); // 1.0 significa que el elemento debe estar 100% visible
+
+    // Observar el header
+    headerObserver.observe(header);
+
+    // Observar todos los projects
+    projects.forEach(project => {
+        projectObserver.observe(project);
+    });
+
+    // Evento click en el botón arrowDown
+    arrowDown.addEventListener('click', () => {
+        if (isInProject) {
+            // Si está en un project, hace scroll al inicio de la página
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        } else {
+            // Si está en el header, hace scroll al final de la página
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
     });
 });
+
+
 
 
 // Definir la función que reproducirá el sonido
