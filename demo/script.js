@@ -72,3 +72,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+// Definir la función que reproducirá el sonido
+function playSound() {
+    var audio = new Audio('slidersound.wav'); // Reemplaza con la ruta de tu archivo de sonido
+    audio.play();
+}
+
+// Crear el Intersection Observer
+let observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            playSound(); // Reproducir el sonido cuando el elemento es visible
+        }
+    });
+}, { threshold: 0.5 }); // Ajusta el umbral según lo necesario
+
+// Seleccionar todos los elementos .project y aplicar el observer
+document.querySelectorAll('.project').forEach(project => {
+    observer.observe(project);
+});
