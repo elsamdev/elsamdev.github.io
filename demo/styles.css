@@ -76,16 +76,52 @@ header {
     margin-top: 20px;
 }
 
+@keyframes waveOpacity {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
 .icons img {
     width: 50px;
     height: 50px;
     opacity: 0.7;
-    transition: opacity 0.3s;
+    animation: waveOpacity 1.5s infinite;
 }
 
-.icons img:hover {
-    opacity: 1;
+/* Aplica diferentes retrasos a cada icono */
+.icons img:nth-child(1) {
+    animation-delay: 0s;
 }
+
+.icons img:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.icons img:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.icons img:nth-child(4) {
+    animation-delay: 0.9s;
+}
+
+.icons img:nth-child(5) {
+    animation-delay: 1.2s;
+}
+
+/* Añade más nth-child si tienes más iconos */
+
+
+/* .icons img:hover {
+    opacity: 1;
+} */
 
 .arrow-down {
     width: 70px;

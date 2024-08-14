@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('header');
     const projects = document.querySelectorAll('.project');
     let isInProject = false;
+    let sliderObserver; // Variable para almacenar el observer de los sliders
 
     // Observer para el header
     const headerObserver = new IntersectionObserver((entries) => {
@@ -75,9 +76,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Si el header es visible, quita la clase down de arrowDown y actualiza estado
                 arrowDown.classList.remove('down');
                 isInProject = false; // Está en el header
+
+                // Desconectar el observer de los sliders si existe
+                if (sliderObserver) {
+                    sliderObserver.disconnect();
+                    sliderObserver = null;
+                }
             }
         });
-    }, { threshold: 0.5 }); // Ajusta el umbral si es necesario
+    }, { threshold: 0.5 });
 
     // Observer para los projects
     const projectObserver = new IntersectionObserver((entries) => {
@@ -86,9 +93,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Si el project es visible 100%, agrega la clase down a arrowDown y actualiza estado
                 arrowDown.classList.add('down');
                 isInProject = true; // Está en un project
+
+                // Si no existe el observer de sliders, lo crea
+                if (!sliderObserver) {
+                    sliderObserver = addObserveSlider();
+                }
             }
         });
-    }, { threshold: 1.0 }); // 1.0 significa que el elemento debe estar 100% visible
+    }, { threshold: 1.0 });
 
     // Observar el header
     headerObserver.observe(header);
@@ -125,16 +137,20 @@ function playSound() {
     audio.play();
 }
 
-// Crear el Intersection Observer
-let observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            playSound(); // Reproducir el sonido cuando el elemento es visible
-        }
-    });
-}, { threshold: 0.5 }); // Ajusta el umbral según lo necesario
+function addObserveSlider() {
+    // Crear el Intersection Observer
+    let observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                playSound(); // Reproducir el sonido cuando el elemento es visible
+            }
+        });
+    }, { threshold: 0.5 }); // Ajusta el umbral según lo necesario
 
-// Seleccionar todos los elementos .project y aplicar el observer
-document.querySelectorAll('.project').forEach(project => {
-    observer.observe(project);
-});
+    // Seleccionar todos los elementos .project y aplicar el observer
+    document.querySelectorAll('.project').forEach(project => {
+        observer.observe(project);
+    });
+
+    return observer; // Devolver el observer para que pueda ser desconectado más tarde
+}
