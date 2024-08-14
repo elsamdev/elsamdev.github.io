@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const arrowDown = document.querySelector('.arrow-down');
     const header = document.querySelector('header');
-    const projects = document.querySelectorAll('.project');
+    const projects = document.querySelectorAll('.projects');
     let isInProject = false;
 
     // Observer para el header
@@ -80,16 +80,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 arrowDown.classList.remove('down');
                 isInProject = false; // Está en el header
                 sound = false;
+                setTimeout(() => {
+                    sound = true; 
+                }, 500)
             }
         });
     }, { threshold: 0.5 });
 
-  
+    // Observer para los proyectos
+    const projectObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                arrowDown.classList.add('down');
+                isInProject = true; // Está en un proyecto
+                sound = false;
+            }
+        });
+    }, { threshold: 0.1 });
 
     // Observar el header
     headerObserver.observe(header);
 
-    
+    // Observar todos los proyectos
+    projects.forEach(project => {
+        projectObserver.observe(project);
+    });
 
     // Evento click en el botón arrowDown
     arrowDown.addEventListener('click', () => {
@@ -119,7 +134,6 @@ let observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             playSound(); // Reproducir sonido cuando el proyecto es visible
-            console.log("hola")
         }
     });
 }, { threshold: 0.1 });
