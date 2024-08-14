@@ -12,7 +12,7 @@ html {
     /* Habilitamos el snap en scroll vertical */
     height: 100%;
     /* Usamos el 100% para asegurar la altura correcta */
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     scroll-behavior: smooth;
 }
 
@@ -24,6 +24,7 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 0;
+    width: 100%;
 }
 
 /* Encabezado */
@@ -91,22 +92,48 @@ header {
     width: 100%;
     text-align: center;
     padding: 20px;
+    position: relative;
 }
 
-.project-grid {
+/* Estilos del menú de proyectos */
+.project-menu {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
     justify-content: center;
+    margin-bottom: 20px;
+}
+
+.project-menu button {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.project-menu button.active {
+    /* background-color: #333; */
+    color: #e47878;
+}
+
+.project-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding: 10px;
+    scroll-behavior: smooth;
 }
 
 .project {
-    width: calc(100% - 20px);
-    /* Usar ancho completo en móviles */
+    min-width: 100%;
+    height: 70vh;
+    scroll-snap-align: center;
     background-color: #fff;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
 }
 
 .project img {
@@ -120,13 +147,17 @@ header {
     color: #333;
 }
 
+
 /* Pie de página */
 footer {
+    position: absolute;
     margin-top: 40px;
     text-align: center;
     color: #777;
     font-size: 0.9em;
     padding: 20px;
+    bottom: 3px;
+    right: 3px;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
