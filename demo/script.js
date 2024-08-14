@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     buttons.forEach((button, index) => {
         button.addEventListener('click', () => {
+            // Agrega clase para indicar el inicio de la transición
+            colorBackground.classList.add('start-transition');
+            colorBackground.classList.remove('end-transition');
+
             // Mueve el scroll al proyecto correspondiente
             slider.scrollTo({
                 left: projects[index].offsetLeft,
@@ -28,6 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Marca el botón como activo
             buttons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
+
+            // Usar un pequeño retraso para cambiar la clase de fin de transición
+            setTimeout(() => {
+                colorBackground.classList.add('end-transition');
+                colorBackground.classList.remove('start-transition');
+            }, 500); // Ajusta este valor según la duración de la transición
         });
     });
 
@@ -36,13 +46,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const parentRect = buttons[0].parentElement.getBoundingClientRect();
     colorBackground.style.width = `${firstButtonRect.width}px`;
     colorBackground.style.left = `${firstButtonRect.left - parentRect.left}px`;
-
+    colorBackground.classList.add('end-transition');
 
     // Opcional: Cambia automáticamente el botón activo al hacer scroll manual
     slider.addEventListener('scroll', () => {
         let activeIndex = Math.round(slider.scrollLeft / slider.clientWidth);
         buttons.forEach(btn => btn.classList.remove('active'));
         buttons[activeIndex].classList.add('active');
+
+        // Mueve el color de fondo al botón correspondiente
+        const activeButtonRect = buttons[activeIndex].getBoundingClientRect();
+        colorBackground.style.width = `${activeButtonRect.width}px`;
+        colorBackground.style.left = `${activeButtonRect.left - parentRect.left}px`;
     });
 });
 
