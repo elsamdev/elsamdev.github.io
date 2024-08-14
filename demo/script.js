@@ -47,3 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    const arrowDown = document.querySelector('.arrow-down');
+    
+    arrowDown.addEventListener('click', () => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth' // Hace que el scroll sea suave
+        });
+    });
+});

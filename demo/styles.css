@@ -35,7 +35,7 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
+    position: relative;
 }
 
 .logo {
@@ -84,6 +84,29 @@ header {
 
 .icons img:hover {
     opacity: 1;
+}
+
+.arrow-down {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    bottom: 30px;
+    animation: smoothBounce 3s infinite;
+    /* Animación infinita */
+    cursor: pointer;
+    /* Indica que es clickeable */
+}
+
+@keyframes smoothBounce {
+
+    0%,
+    100% {
+        transform: translateY(10px);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
 }
 
 /* Sección de proyectos */
