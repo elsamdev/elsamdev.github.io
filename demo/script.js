@@ -139,3 +139,21 @@ let observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.project').forEach(project => {
     observer.observe(project);
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const logo = document.querySelector('.logo');
+    const text = logo.textContent; // Obtén el texto del elemento h1
+    logo.innerHTML = ''; // Limpia el contenido del h1
+
+    // Reemplaza cada letra con un span
+    text.split('').forEach((char, index) => {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.textContent = char;
+        logo.appendChild(span);
+
+        // Aplica un retraso en la animación para cada letra
+        span.style.animationDelay = `${index * 0.1}s`;
+    });
+});
