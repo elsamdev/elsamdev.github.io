@@ -6,14 +6,13 @@
 }
 
 html {
-
     overflow-y: scroll;
     /* Aseguramos scroll vertical */
     scroll-snap-type: y mandatory;
     /* Habilitamos el snap en scroll vertical */
-    height: 100vh;
-    /* El cuerpo ocupa la altura total del viewport */
-
+    height: 100%;
+    /* Usamos el 100% para asegurar la altura correcta */
+    overflow-x: hidden;
 }
 
 body {
@@ -23,40 +22,36 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    margin: 0;
 }
 
 /* Encabezado */
 header {
     scroll-snap-align: start;
-    /* Alinea al inicio del contenedor */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-}
-
-.logo-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    padding: 20px;
 }
 
 .logo {
-    font-size: 10.5em;
+    font-size: 8em;
+    /* Tamaño de fuente móvil */
     font-weight: bold;
     color: #333;
 }
 
 .tagline {
     width: 100%;
-    text-align: right;
-    font-size: 2.3em;
+    text-align: center;
+    /* Centramos para móviles */
+    font-size: 1.8em;
+    /* Tamaño de fuente móvil */
     color: #555;
-    margin-top: -50px;
+    margin-top: -20px;
 }
 
 /* Sección de tecnologías */
@@ -65,13 +60,17 @@ header {
     margin-bottom: 40px;
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: center;
+    /* Centrado en móviles */
+    padding: 0 20px;
 }
 
 .icons {
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap;
+    /* Permitir que los iconos se envuelvan */
     margin-top: 20px;
 }
 
@@ -89,11 +88,10 @@ header {
 /* Sección de proyectos */
 .projects {
     scroll-snap-align: start;
-    /* Alinea al inicio del contenedor */
     min-height: 100vh;
     width: 100%;
-    max-width: 800px;
     text-align: center;
+    padding: 20px;
 }
 
 .project-grid {
@@ -104,7 +102,8 @@ header {
 }
 
 .project {
-    width: calc(50% - 20px);
+    width: calc(100% - 20px);
+    /* Usar ancho completo en móviles */
     background-color: #fff;
     padding: 10px;
     border-radius: 8px;
@@ -128,4 +127,48 @@ footer {
     text-align: center;
     color: #777;
     font-size: 0.9em;
+    padding: 20px;
+}
+
+/* Media Queries para pantallas más grandes */
+@media (min-width: 768px) {
+
+    .tagline {
+        font-size: 2.3em;
+        /* Aumenta el tamaño para tablets */
+        text-align: right;
+        /* Alinea a la derecha en pantallas más grandes */
+    }
+
+    .technologies {
+        justify-content: end;
+        /* Alinea a la derecha en pantallas más grandes */
+    }
+
+    .project {
+        width: calc(50% - 20px);
+        /* Dos columnas en tablets */
+    }
+}
+
+@media (min-width: 1024px) {
+    .logo {
+        font-size: 10.5em;
+        /* Aumenta el tamaño para pantallas grandes */
+    }
+}
+
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .logo {
+        font-size: 4em;
+        /* Ajuste para móviles pequeños */
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .logo {
+        font-size: 5em;
+        /* Ajuste para tablets */
+    }
 }
