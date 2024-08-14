@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.project-menu button');
     const slider = document.querySelector('.project-slider');
     const projects = document.querySelectorAll('.project');
+    const colorBackground = document.querySelector('.color');
 
     buttons.forEach((button, index) => {
         button.addEventListener('click', () => {
@@ -18,11 +19,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 behavior: 'smooth'
             });
 
+            // Mueve el color de fondo al botón actual
+            const buttonRect = button.getBoundingClientRect();
+            const parentRect = button.parentElement.getBoundingClientRect();
+            colorBackground.style.width = `${buttonRect.width}px`;
+            colorBackground.style.left = `${buttonRect.left - parentRect.left}px`;
+
             // Marca el botón como activo
             buttons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
         });
     });
+
+    // Inicializa la posición del fondo en el primer botón
+    const firstButtonRect = buttons[0].getBoundingClientRect();
+    const parentRect = buttons[0].parentElement.getBoundingClientRect();
+    colorBackground.style.width = `${firstButtonRect.width}px`;
+    colorBackground.style.left = `${firstButtonRect.left - parentRect.left}px`;
+
 
     // Opcional: Cambia automáticamente el botón activo al hacer scroll manual
     slider.addEventListener('scroll', () => {
