@@ -147,7 +147,17 @@ header {
     gap: 20px;
     padding: 10px;
     scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
 }
+
+.project-slider::-webkit-scrollbar {
+    display: none;
+    /* Safari y Chrome */
+}
+
 
 .project {
     min-width: 100%;
