@@ -154,3 +154,21 @@ function addObserveSlider() {
 
     return observer; // Devolver el observer para que pueda ser desconectado más tarde
 }
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const logo = document.querySelector('.logo');
+    const text = logo.textContent;
+    logo.innerHTML = ''; // Vaciar el contenido actual
+
+    // Dividir el texto en letras y envolver cada letra en un span
+    text.split('').forEach((letter, index) => {
+        const span = document.createElement('span');
+        span.textContent = letter;
+        span.classList.add('letter');
+        span.style.animation = `waveEffect 3s infinite`;
+        span.style.animationDelay = `${index * 0.2}s`;
+        logo.appendChild(span);
+    });
+});
