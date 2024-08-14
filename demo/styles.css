@@ -16,6 +16,74 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Diseño para navegadores basados en WebKit (Chrome, Safari) */
+
+/* Contenedor de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 12px;
+    /* Ancho de la barra de desplazamiento */
+}
+
+/* Pista de la barra de desplazamiento */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Color de la pista */
+    border-radius: 10px;
+    /* Bordes redondeados de la pista */
+}
+
+/* Pulgar de la barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    /* Color del pulgar */
+    border-radius: 10px;
+    /* Bordes redondeados del pulgar */
+}
+
+/* Pulgar al pasar el ratón sobre él */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* Color del pulgar al pasar el ratón */
+}
+
+/* Diseño para Firefox */
+
+/* Cambia el ancho de la barra de desplazamiento */
+* {
+    scrollbar-width: thin;
+    /* Puede ser 'auto', 'thin', o 'none' */
+}
+
+/* Cambia el color de la barra de desplazamiento */
+* {
+    scrollbar-color: #888 #f1f1f1;
+    /* Primer color es el pulgar, segundo es la pista */
+}
+
+/* Diseño para Edge y otros navegadores basados en Blink (Chrome, Chromium) */
+
+/* Contenedor de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Pista de la barra de desplazamiento */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Pulgar de la barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* Pulgar al pasar el ratón sobre él */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
 body {
     font-family: "Poppins", sans-serif;
     color: #333;
@@ -61,7 +129,7 @@ header {
 
     50% {
         /* transform: scale(1.01); */
-        color: #494949;
+        color: #ffffff;
     }
 }
 
