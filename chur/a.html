@@ -4,33 +4,2034 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    .button {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 90%;
-      height: 100%;
-      border: none;
-      background-color: var(--maingray-color);
-      color: var(--lightblack-color);
-      font-weight: 300;
-      font-size: 20px;
-      cursor: pointer;
-      border-radius: 10px;
-      border: #029357 solid 4px;
-      box-shadow: 0px 5px #046d41, inset 0px 0px 0px 2px #2fd792;
-      /* position: absolute; */
-      transform: none;
-      top: -40px;
-    }
-  </style>
+  <title>slider</title>
 </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+  rel="stylesheet">
+<style>
+  :root {
+    --gradient-color: linear-gradient(0deg, rgba(214, 220, 232, 1) 0%, rgba(200, 205, 216, 1) 0%);
+    --maingray-color: #d6dce8;
+    --maingray-color-reverse: #c8cdd8;
+    --main-color: #ee0451;
+    --lightbg-color: #eef4f7;
+    --yellow-color: #ffd400;
+    --darklight-color: #dde5ee;
+    --darkblack-color: #171717;
+    --lightblack-color: #2a2a2a;
+    --ultralightblakc-color: #3f3f51;
+    --darkwhite-color: #dde5ee;
+    --purlple-color: #654eb2;
+    --green-color: #16bb77;
+    --red-color: #eb2743;
+  }
+
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  i,
+  h1,
+  h2,
+  p,
+  h3,
+  img {
+    /* evitar que seleccionen */
+    user-select: none !important;
+    pointer-events: none;
+  }
+
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-family: 'Roboto', sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: var(--lightbg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: relative;
+  }
+
+
+  /* screen game */
+  .game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 70%;
+    max-height: 70%;
+    background-color: var(--lightbg-color);
+
+    position: relative;
+  }
+
+
+  /* barra recursos */
+  .coin {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-height: 4vh;
+    background-color: var(--lightbg-color);
+    position: absolute;
+    bottom: 2px;
+    right: 0;
+  }
+
+  .coins {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+  }
+
+
+
+  .recursos {
+    display: flex;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+
+  }
+
+
+
+  .recurso-relleno {
+    content: "hola";
+    height: 100%;
+    width: 25%;
+    background-color: var(--green-color);
+    color: white;
+    position: absolute;
+    left: 0;
+    transition: all 0.5s ease;
+  }
+
+  .recursos-item {
+    min-width: 55px;
+    display: flex;
+    justify-content: flex-start;
+    height: 100%;
+    align-items: center;
+    gap: 4px;
+    padding: 1px 7px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-right: 3px;
+    transition: all 0.3s ease;
+    background-color: var(--darklight-color);
+  }
+
+  .recursos-item img {
+    height: 7px;
+  }
+
+  .recursos-item.active {
+    border: 2px solid var(--darkwhite-color);
+    color: white;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.3s ease 1;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(2);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Estilos para el SVG dentro de .recursos-item.active */
+  .recursos-item.active svg {
+    width: 10px;
+    height: 10px;
+    transition: all 0.3s ease;
+  }
+
+  /* Estilos para el elemento .numero dentro de .recursos-item.active */
+  .recursos-item.active .numero {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+
+  .recursos-item svg {
+    width: 12px;
+    /* Tamaño del ícono */
+    height: 12px;
+    /* Tamaño del ícono */
+    margin-right: 2px;
+    /* Espacio entre el número y el ícono */
+    font-weight: 900;
+    transition: all 0.3s ease;
+  }
+
+
+
+  .recursos-item .numero {
+    font-size: 12px;
+    /* Tamaño del número */
+    /* Estilo del número */
+    font-weight: 300;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+
+  .icon-menu {
+    color: var(--green-color);
+    width: 40px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+  }
+
+  /************** SLIDER **************/
+  .slider-container {
+    width: 100%;
+    overflow: hidden;
+
+    height: 100%;
+    min-height: 30%;
+    max-height: 30%;
+    /* position: absolute;
+        bottom: 0; */
+    background-color: var(--maingray-color);
+  }
+
+  .slider {
+    display: flex;
+    transition: transform 0.3s ease-out;
+    /* Make transitions smooth */
+    will-change: transform;
+    cursor: grab;
+    height: 100%;
+  }
+
+  .slider-item {
+    flex: 0 0 33.33%;
+    /* Default para tres items */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    text-align: center;
+    color: var(--lightblack-color);
+    background-color: var(--maingray-color);
+    padding: 1px 0 22px 0;
+    gap: 20px;
+  }
+
+  .slider-item.full-width {
+    flex: 0 0 100%;
+    /* Para un solo item */
+  }
+
+  .slider-item.half-width {
+    flex: 0 0 50%;
+    /* Para dos items */
+  }
+
+  .grabbing {
+    cursor: grabbing;
+  }
+
+
+
+  .icon {
+    flex: 1;
+    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-height: 45%;
+    /* background-color: var(--main-color); */
+    position: relative;
+
+  }
+
+  .icon button {
+    font-weight: 600;
+  }
+
+  .primary-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    border: none;
+    background-color: var(--green-color);
+    color: var(--maingray-color);
+    font-weight: 300;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: #029357 solid 4px;
+    box-shadow: 0px 5px #046d41, inset 0px 0px 0px 2px #2fd792;
+    /* position: absolute; */
+    transform: none;
+    bottom: 90px;
+
+  }
+
+  .icon.full-width,
+  .button-container.full-width {
+    width: calc(100% + 20px);
+    /* Para un solo item */
+  }
+
+  .icon.half-width,
+  .button-container.half-width {
+    width: calc(100% + 5px);
+    /* Para dos items */
+  }
+
+  .primary-button-yellow {
+    background-color: #b4a262;
+    border: #fec902 solid 4px;
+    box-shadow: 0px 5px #be8d15, inset 0px 0px 0px 2px #fee15a;
+  }
+
+  .primary-button-blue {
+    background-color: #1c9cd3;
+    border: #1c9cd3 solid 4px;
+    box-shadow: 0px 5px #2178a0, inset 0px 0px 0px 2px #41b8f7;
+  }
+
+  .primary-button-black {
+    background-color: var(--darkblack-color);
+    border: var(--lightblack-color) solid 4px;
+    box-shadow: 0px 5px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
+  }
+
+
+  .icon i {
+    position: absolute;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+
+  }
+
+  .action-button {
+    width: 55px;
+    height: 55px;
+    position: absolute;
+    background-color: var(--green-color);
+    border: none;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    right: 0;
+    bottom: 35px;
+  }
+
+  .action-button:focus {
+    outline: none;
+    background-color: var();
+  }
+
+  .button-container {
+    width: 100%;
+    height: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+  }
+
+  .button-container img {
+    width: 30%;
+  }
+
+  .button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    border: none;
+    background-color: var(--maingray-color);
+    color: var(--lightblack-color);
+    font-weight: 300;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: #029357 solid 4px;
+    box-shadow: 0px 5px #046d41, inset 0px 0px 0px 2px #2fd792;
+    /* position: absolute; */
+    transform: none;
+    top: -40px;
+  }
+
+
+  .button-yellow {
+    border: #fec902 solid 4px;
+    box-shadow: 0px 5px #be8d15, inset 0px 0px 0px 2px #fee15a;
+  }
+
+  .button-blue {
+    border: #1c9cd3 solid 4px;
+    box-shadow: 0px 5px #2178a0, inset 0px 0px 0px 2px #41b8f7;
+  }
+
+  .button-black {
+    border: var(--lightblack-color) solid 4px;
+    box-shadow: 0px 5px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
+  }
+
+
+  .navigation {
+    width: 100%;
+    min-height: 100px;
+    height: 100px;
+    max-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    /* background-color: var(--maingray-color); */
+    position: absolute;
+    bottom: -80px;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+  }
+
+
+
+  .navigation-container {
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .navigation-button-container {
+    width: 33.33%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(.47, 1.64, .41, .8);
+  }
+
+  .navigation-container button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 70%;
+    border: none;
+    background-color: var(--maingray-color);
+    color: var(--lightblack-color);
+    font-weight: 300;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: var(--lightblack-color) solid 2px;
+    box-shadow: 0px 4px 0px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+    opacity: 0;
+  }
+
+
+  .navigation-container .navigation-center img {
+    height: 30% !important;
+  }
+
+  .navigation-container .navigation-left img {
+
+    height: 40% !important;
+  }
+
+  .navigation-container .navigation-right img {
+
+    height: 40% !important;
+  }
+
+
+
+  .navigation-container button:active {
+    background-color: var(--maingray-color-reverse);
+  }
+
+  .animate-button {
+    transition: top .2s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+  }
+
+  @media (min-width: 536px) {
+    .primary-button {
+      width: 93%;
+    }
+
+    .button {
+      width: 93%;
+    }
+
+    .navigation-container button {
+      width: 93%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .primary-button {
+      width: 95%;
+    }
+
+    .button {
+      width: 95%;
+    }
+
+    .navigation-container button {
+      width: 95%;
+    }
+  }
+
+  @media (min-width: 958px) {
+    .primary-button {
+      width: 96%;
+    }
+
+    .button {
+      width: 96%;
+    }
+
+    .navigation-container button {
+      width: 96%;
+    }
+  }
+
+  .controls button {
+    background-color: #4CAF50;
+    /* Color de fondo verde */
+    color: white;
+    /* Texto en color blanco */
+    font-size: 16px;
+    /* Tamaño del texto */
+    border: 3px solid #4CAF50;
+    /* Borde del mismo color que el fondo */
+    border-radius: 0;
+    /* Bordes cuadrados para un look pixelado */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    cursor: pointer;
+    /* Cursor en forma de mano al pasar el mouse */
+    outline: none;
+    /* Elimina el borde de foco automático */
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+    /* Suaviza la transición de colores y transformación */
+    font-family: 'Press Start 2P', cursive;
+    /* Fuente de estilo píxel si está disponible */
+  }
+
+  .controls button:hover {
+    background-color: #45a049;
+    /* Color de fondo más oscuro al pasar el mouse */
+    color: #FFF;
+    /* Texto blanco para mantener contraste */
+    transform: scale(1.1);
+    /* Aumenta el tamaño del botón ligeramente */
+  }
+
+  .controls button:active {
+    transform: scale(0.9);
+    /* Reduce el tamaño del botón al hacer clic */
+    background-color: #397d39;
+    /* Color de fondo aún más oscuro al hacer clic */
+  }
+
+  .dropdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #f9f9f9;
+    /* Color de fondo claro */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+  }
+
+  .dropdown-container select {
+
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    /* Borde sutil */
+    border-radius: 4px;
+    background-color: white;
+    font-size: 16px;
+    /* Tamaño de fuente accesible */
+    color: #333;
+    /* Color de texto oscuro para contraste */
+    cursor: pointer;
+    outline: none;
+    /* Remover el borde de foco predeterminado */
+    appearance: none;
+    /* Eliminar estilo predeterminado del sistema */
+    margin-right: 10px;
+    /* Espacio entre los elementos */
+  }
+
+  .dropdown-container button {
+    padding: 8px 20px;
+    background-color: #4CAF50;
+    /* Verde suave */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    /* Transición suave del color de fondo */
+  }
+
+  .dropdown-container button:hover {
+    background-color: #45a049;
+    /* Un tono más oscuro al pasar el mouse */
+  }
+
+  .dropdown-container button:focus {
+    outline: none;
+    /* Remover el borde de foco predeterminado */
+  }
+
+  .dropdown-container button:active {
+    transform: scale(0.98);
+    /* Efecto de clic sutil */
+  }
+
+  button {
+    user-select: none !important;
+
+  }
+
+  button * {
+    user-select: none !important;
+  }
+
+  .form-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 100;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+
+  .form-group button {
+    display: block;
+    width: 100%;
+    padding: 2px;
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .form-group button:hover {
+    background-color: #0056b3;
+  }
+</style>
 
 <body>
+  <div class="game">
+    <i class="fa-solid fa-bars icon-menu"></i>
+    <button class="action-button">
+      <i class="fa-solid fa-khanda"></i>
+    </button>
+    <div class="controls">
+      <!-- <button id="removeButton">-</button>
+            <button id="addButton">+</button> -->
+    </div>
+    <div class="form-container">
+      <!-- <h2>Configuración de Variables</h2> -->
+      <form id="configForm">
+        <div class="form-group">
+          <label for="maxVelocity">Velocidad Máxima</label>
+          <input type="number" id="maxVelocity" name="maxVelocity" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="flickThresholdSpeed">Umbral de Velocidad</label>
+          <input type="number" id="flickThresholdSpeed" name="flickThresholdSpeed" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="flickThresholdDistance">Umbral de Distancia (px)</label>
+          <input type="number" id="flickThresholdDistance" name="flickThresholdDistance">
+        </div>
+        <div class="form-group">
+          <label for="minSpeed">Velocidad Mínima para Snap (px/frame)</label>
+          <input type="number" id="minSpeed" name="minSpeed" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="decelerationFactor">Factor de Desaceleración</label>
+          <input type="number" id="decelerationFactor" name="decelerationFactor" step="0.01">
+        </div>
+        <div class="form-group">
+          <button type="button" onclick="updateConfig()">Actualizar</button>
+        </div>
+      </form>
+    </div>
 
+    <div class="dropdown-container">
+      <select id="availableItems"></select>
+      <select id="addedItems"></select>
+      <button onclick="addAllItemsWithDelay()">Todos</button>
+    </div>
+
+    <div class="coin">
+      <div class="coins">
+        <div class="recursos">
+          <!-- <div class="recurso-relleno"></div> -->
+          <div class="soldados recursos-item">
+            <img
+              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHBhdGggZmlsbD0iI2UxMWQ0OCIgZD0iTTIxNiAzMmgtNjRhOCA4IDAgMCAwLTYuMzQgMy4xMmwtNjQgODMuMjFsLTkuNjYtOS42NGExNiAxNiAwIDAgMC0yMi42NCAwbC0xMi42OSAxMi43YTE2IDE2IDAgMCAwIDAgMjIuNjNsMjAgMjBsLTI4IDI4YTE2IDE2IDAgMCAwIDAgMjIuNjNsMTIuNjkgMTIuNjhhMTYgMTYgMCAwIDAgMjIuNjIgMGwyOC0yOGwyMCAyMGExNiAxNiAwIDAgMCAyMi42NCAwbDEyLjY5LTEyLjdhMTYgMTYgMCAwIDAgMC0yMi42M2wtOS42NC05LjY0bDgzLjIxLTY0QTggOCAwIDAgMCAyMjQgMTA0VjQwYTggOCAwIDAgMC04LThNNTIuNjkgMjE2TDQwIDIwMy4zMmwyOC0yOEw4MC42OCAxODhabTcwLjYxLThMNDggMTMyLjcxTDYwLjcgMTIwbDc1LjMgNzUuMzFaTTIwOCAxMDAuMDZsLTgxLjc0IDYyLjg4TDExNS4zMiAxNTJsNTAuMzQtNTAuMzRhOCA4IDAgMCAwLTExLjMyLTExLjMxTDEwNCAxNDAuNjhsLTEwLjkzLTEwLjk0TDE1NS45NCA0OEgyMDhaIi8+PC9zdmc+"
+              alt="sword">
+            <p class="numero point-soldier">0</p>
+          </div>
+          <div class="comida recursos-item">
+            <img
+              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHBhdGggZmlsbD0iI2UxMWQ0OCIgZD0iTTIxNiAzMmgtNjRhOCA4IDAgMCAwLTYuMzQgMy4xMmwtNjQgODMuMjFsLTkuNjYtOS42NGExNiAxNiAwIDAgMC0yMi42NCAwbC0xMi42OSAxMi43YTE2IDE2IDAgMCAwIDAgMjIuNjNsMjAgMjBsLTI4IDI4YTE2IDE2IDAgMCAwIDAgMjIuNjNsMTIuNjkgMTIuNjhhMTYgMTYgMCAwIDAgMjIuNjIgMGwyOC0yOGwyMCAyMGExNiAxNiAwIDAgMCAyMi42NCAwbDEyLjY5LTEyLjdhMTYgMTYgMCAwIDAgMC0yMi42M2wtOS42NC05LjY0bDgzLjIxLTY0QTggOCAwIDAgMCAyMjQgMTA0VjQwYTggOCAwIDAgMC04LThNNTIuNjkgMjE2TDQwIDIwMy4zMmwyOC0yOEw4MC42OCAxODhabTcwLjYxLThMNDggMTMyLjcxTDYwLjcgMTIwbDc1LjMgNzUuMzFaTTIwOCAxMDAuMDZsLTgxLjc0IDYyLjg4TDExNS4zMiAxNTJsNTAuMzQtNTAuMzRhOCA4IDAgMCAwLTExLjMyLTExLjMxTDEwNCAxNDAuNjhsLTEwLjkzLTEwLjk0TDE1NS45NCA0OEgyMDhaIi8+PC9zdmc+"
+              alt="sword">
+            <p class="numero point-food">999</p>
+          </div>
+          <div class="madera recursos-item">
+            <img
+              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHBhdGggZmlsbD0iI2UxMWQ0OCIgZD0iTTIxNiAzMmgtNjRhOCA4IDAgMCAwLTYuMzQgMy4xMmwtNjQgODMuMjFsLTkuNjYtOS42NGExNiAxNiAwIDAgMC0yMi42NCAwbC0xMi42OSAxMi43YTE2IDE2IDAgMCAwIDAgMjIuNjNsMjAgMjBsLTI4IDI4YTE2IDE2IDAgMCAwIDAgMjIuNjNsMTIuNjkgMTIuNjhhMTYgMTYgMCAwIDAgMjIuNjIgMGwyOC0yOGwyMCAyMGExNiAxNiAwIDAgMCAyMi42NCAwbDEyLjY5LTEyLjdhMTYgMTYgMCAwIDAgMC0yMi42M2wtOS42NC05LjY0bDgzLjIxLTY0QTggOCAwIDAgMCAyMjQgMTA0VjQwYTggOCAwIDAgMC04LThNNTIuNjkgMjE2TDQwIDIwMy4zMmwyOC0yOEw4MC42OCAxODhabTcwLjYxLThMNDggMTMyLjcxTDYwLjcgMTIwbDc1LjMgNzUuMzFaTTIwOCAxMDAuMDZsLTgxLjc0IDYyLjg4TDExNS4zMiAxNTJsNTAuMzQtNTAuMzRhOCA4IDAgMCAwLTExLjMyLTExLjMxTDEwNCAxNDAuNjhsLTEwLjkzLTEwLjk0TDE1NS45NCA0OEgyMDhaIi8+PC9zdmc+"
+              alt="sword">
+            <p class="numero point-wood">300</p>
+          </div>
+          <div class="obrero recursos-item">
+            <img
+              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHBhdGggZmlsbD0iI2UxMWQ0OCIgZD0iTTIxNiAzMmgtNjRhOCA4IDAgMCAwLTYuMzQgMy4xMmwtNjQgODMuMjFsLTkuNjYtOS42NGExNiAxNiAwIDAgMC0yMi42NCAwbC0xMi42OSAxMi43YTE2IDE2IDAgMCAwIDAgMjIuNjNsMjAgMjBsLTI4IDI4YTE2IDE2IDAgMCAwIDAgMjIuNjNsMTIuNjkgMTIuNjhhMTYgMTYgMCAwIDAgMjIuNjIgMGwyOC0yOGwyMCAyMGExNiAxNiAwIDAgMCAyMi42NCAwbDEyLjY5LTEyLjdhMTYgMTYgMCAwIDAgMC0yMi42M2wtOS42NC05LjY0bDgzLjIxLTY0QTggOCAwIDAgMCAyMjQgMTA0VjQwYTggOCAwIDAgMC04LThNNTIuNjkgMjE2TDQwIDIwMy4zMmwyOC0yOEw4MC42OCAxODhabTcwLjYxLThMNDggMTMyLjcxTDYwLjcgMTIwbDc1LjMgNzUuMzFaTTIwOCAxMDAuMDZsLTgxLjc0IDYyLjg4TDExNS4zMiAxNTJsNTAuMzQtNTAuMzRhOCA4IDAgMCAwLTExLjMyLTExLjMxTDEwNCAxNDAuNjhsLTEwLjkzLTEwLjk0TDE1NS45NCA0OEgyMDhaIi8+PC9zdmc+"
+              alt="sword">
+            <p class="numero point-slaves">600</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="slider-container">
+    <div class="slider" id="slider">
+
+      <!-- borra -->
+    </div>
+  </div>
+  <div class="navigation" id="navigation" style="transform: translateY(0px)">
+    <div class="navigation-container">
+      <div class="navigation-button-container">
+        <button onmousedown="buttonClicked(event, 'black')"
+          ontouchstart="buttonClicked(event, '${itemData.color}', 'up')" class="animate-button navigation-left"
+          data-color="black">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHBhdGggZmlsbD0iI2UxMWQ0OCIgZD0iTTIxNiAzMmgtNjRhOCA4IDAgMCAwLTYuMzQgMy4xMmwtNjQgODMuMjFsLTkuNjYtOS42NGExNiAxNiAwIDAgMC0yMi42NCAwbC0xMi42OSAxMi43YTE2IDE2IDAgMCAwIDAgMjIuNjNsMjAgMjBsLTI4IDI4YTE2IDE2IDAgMCAwIDAgMjIuNjNsMTIuNjkgMTIuNjhhMTYgMTYgMCAwIDAgMjIuNjIgMGwyOC0yOGwyMCAyMGExNiAxNiAwIDAgMCAyMi42NCAwbDEyLjY5LTEyLjdhMTYgMTYgMCAwIDAgMC0yMi42M2wtOS42NC05LjY0bDgzLjIxLTY0QTggOCAwIDAgMCAyMjQgMTA0VjQwYTggOCAwIDAgMC04LThNNTIuNjkgMjE2TDQwIDIwMy4zMmwyOC0yOEw4MC42OCAxODhabTcwLjYxLThMNDggMTMyLjcxTDYwLjcgMTIwbDc1LjMgNzUuMzFaTTIwOCAxMDAuMDZsLTgxLjc0IDYyLjg4TDExNS4zMiAxNTJsNTAuMzQtNTAuMzRhOCA4IDAgMCAwLTExLjMyLTExLjMxTDEwNCAxNDAuNjhsLTEwLjkzLTEwLjk0TDE1NS45NCA0OEgyMDhaIi8+PC9zdmc+"
+            alt="">
+        </button>
+      </div>
+      <div class="navigation-button-container">
+        <button onmousedown="buttonClicked(event, 'black')"
+          ontouchstart="buttonClicked(event, '${itemData.color}', 'up')" class="animate-button navigation-center"
+          data-color="black">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHBhdGggZmlsbD0iI2UxMWQ0OCIgZD0iTTIxNiAzMmgtNjRhOCA4IDAgMCAwLTYuMzQgMy4xMmwtNjQgODMuMjFsLTkuNjYtOS42NGExNiAxNiAwIDAgMC0yMi42NCAwbC0xMi42OSAxMi43YTE2IDE2IDAgMCAwIDAgMjIuNjNsMjAgMjBsLTI4IDI4YTE2IDE2IDAgMCAwIDAgMjIuNjNsMTIuNjkgMTIuNjhhMTYgMTYgMCAwIDAgMjIuNjIgMGwyOC0yOGwyMCAyMGExNiAxNiAwIDAgMCAyMi42NCAwbDEyLjY5LTEyLjdhMTYgMTYgMCAwIDAgMC0yMi42M2wtOS42NC05LjY0bDgzLjIxLTY0QTggOCAwIDAgMCAyMjQgMTA0VjQwYTggOCAwIDAgMC04LThNNTIuNjkgMjE2TDQwIDIwMy4zMmwyOC0yOEw4MC42OCAxODhabTcwLjYxLThMNDggMTMyLjcxTDYwLjcgMTIwbDc1LjMgNzUuMzFaTTIwOCAxMDAuMDZsLTgxLjc0IDYyLjg4TDExNS4zMiAxNTJsNTAuMzQtNTAuMzRhOCA4IDAgMCAwLTExLjMyLTExLjMxTDEwNCAxNDAuNjhsLTEwLjkzLTEwLjk0TDE1NS45NCA0OEgyMDhaIi8+PC9zdmc+"
+            alt="">
+        </button>
+      </div>
+      <div class="navigation-button-container">
+        <button onmousedown="buttonClicked(event, 'black')"
+          ontouchstart="buttonClicked(event, '${itemData.color}', 'up')" class="animate-button navigation-right"
+          data-color="black">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+PHBhdGggZmlsbD0iI2UxMWQ0OCIgZD0iTTIxNiAzMmgtNjRhOCA4IDAgMCAwLTYuMzQgMy4xMmwtNjQgODMuMjFsLTkuNjYtOS42NGExNiAxNiAwIDAgMC0yMi42NCAwbC0xMi42OSAxMi43YTE2IDE2IDAgMCAwIDAgMjIuNjNsMjAgMjBsLTI4IDI4YTE2IDE2IDAgMCAwIDAgMjIuNjNsMTIuNjkgMTIuNjhhMTYgMTYgMCAwIDAgMjIuNjIgMGwyOC0yOGwyMCAyMGExNiAxNiAwIDAgMCAyMi42NCAwbDEyLjY5LTEyLjdhMTYgMTYgMCAwIDAgMC0yMi42M2wtOS42NC05LjY0bDgzLjIxLTY0QTggOCAwIDAgMCAyMjQgMTA0VjQwYTggOCAwIDAgMC04LThNNTIuNjkgMjE2TDQwIDIwMy4zMmwyOC0yOEw4MC42OCAxODhabTcwLjYxLThMNDggMTMyLjcxTDYwLjcgMTIwbDc1LjMgNzUuMzFaTTIwOCAxMDAuMDZsLTgxLjc0IDYyLjg4TDExNS4zMiAxNTJsNTAuMzQtNTAuMzRhOCA4IDAgMCAwLTExLjMyLTExLjMxTDEwNCAxNDAuNjhsLTEwLjkzLTEwLjk0TDE1NS45NCA0OEgyMDhaIi8+PC9zdmc+"
+            alt="">
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="soundAppear" src="https://cdn.freesound.org/previews/43/43675_24837-lq.mp3" preload="auto"></audio>
+  <audio id="soundDisappear" src="https://cdn.freesound.org/previews/43/43675_24837-lq.mp3" preload="auto"></audio>
+
+  <script>
+
+    let isPageLoaded = false;
+    function miFuncion() {
+      // addSliderItem();  // Añade automáticamente el primer ítem del array al cargar
+      addAllItemsWithDelay()
+      // createAndAddSliderItem("Power");
+      // createAndAddSliderItem("Life");
+      // createAndAddSliderItem("Rate Fire");
+      // createAndAddSliderItem("Arco");
+      // createAndAddSliderItem("cañon");
+      // createAndAddSliderItem("Madera");
+      // createAndAddSliderItem("Espada");
+      // createAndAddSliderItem("Piedra");
+      // createAndAddSliderItem("comida");
+      // createAndAddSliderItem("FA");
+      // createAndAddSliderItem("Entrenar");
+      // createAndAddSliderItem("Descansar");
+      isPageLoaded = true;
+
+
+      initializeDropdowns()
+
+
+      // /********************************** /
+
+
+      updateSliderWidthResize()
+
+
+
+      if (!window.listenersInitialized) {
+        window.listenersInitialized = true;
+
+        initializeEventListeners();
+      }
+      slider.style.transform = 'translateY(0)'
+      lastTransform = 0;
+      const soundIds = ['soundDisappear', 'soundAppear'];
+      preloadSounds(soundIds);
+      console.log("hola")
+    }
+
+    // Intervalo para verificar la disponibilidad de 'miFuncion'
+    var checkExist = setInterval(function () {
+      if (typeof miFuncion === "function") {
+        console.log("miFuncion está disponible.");
+        miFuncion();  // Ejecutar la función
+        clearInterval(checkExist);  // Limpiar el intervalo una vez que la función está disponible
+      } else {
+        console.log("miFuncion aún no está disponible.");
+      }
+    }, 100);  // Intervalo de tiempo entre verificaciones (en milisegundos)
+
+
+    function initializeEventListeners() {
+      // click event
+      slider.addEventListener('mousedown', e => startInteraction(e, e.clientX, e.clientY, slider));
+      navigation.addEventListener('mousedown', e => startInteraction(e, e.clientX, e.clientY, navigation));
+      window.addEventListener('mousemove', e => moveInteraction(e, e.clientX, e.clientY));
+      window.addEventListener('mouseup', e => endInteraction(e, e.clientX, e.clientY));
+
+      // Touch events
+      slider.addEventListener('touchstart', e => startInteraction(e, e.touches[0].clientX, e.touches[0].clientY, slider));
+      navigation.addEventListener('touchstart', e => startInteraction(e, e.touches[0].clientX, e.touches[0].clientY, navigation));
+      window.addEventListener('touchmove', e => moveInteraction(e, e.touches[0].clientX, e.touches[0].clientY));
+      window.addEventListener('touchend', e => {
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          endInteraction(e, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        }
+      });
+    }
+
+    const slider = document.querySelector('.slider');
+    const SliderContainer = document.querySelector('.slider-container');
+    const navigation = document.getElementById('navigation');
+    let icon = document.querySelectorAll('.primary-button');
+    let buttonMain = document.querySelectorAll('.button');
+    let buttonnav = document.querySelectorAll('.navigation-container button');
+    let dragghash = false;
+    let initialY = 80;
+    let sliderWidth = slider.scrollWidth - slider.clientWidth;
+    let transform = 0;
+    let isAtTop = false;
+    let isAtBottom = true;
+    let startPos = 0, startPosY = 0, startTime = 0, lastTransform = 0;
+    let isDragging = false, movementDirection = null, draggingAffter = null;
+    let velocity = 0;
+    let startY = 0, currentY = 80; // For vertical navigation movement
+    let startPosX = 0;
+    let direction = '';
+    const topPoint = 0;
+    const bottomPoint = 1;
+    let numbar = 0;
+    let animationFrameId = null;
+    let previousPositions = [];
+    const positionBufferSize = 3; // Tamaño del buffer de posiciones para los últimos 20 píxeles (ajustable)
+    let stopInertia = false;
+
+
+
+    function updateSliderWidthResize() {
+      sliderWidth = slider.scrollWidth - slider.clientWidth;
+      if (-lastTransform > sliderWidth) {
+        lastTransform = -sliderWidth;
+        slider.style.transform = 'translateY(0)'
+      }
+      slider.style.transform = 'translateY(0)'
+    }
+
+    function updateSliderWidth(newItem) {
+      const visibleItems = slider.querySelectorAll('.slider-item:not([style*="display: none"])');
+      if (visibleItems.length <= 3) {
+        sliderWidth = 0
+        lastTransform = 0; // Mantener el slider en la posición inicial
+      }
+      else {
+        sliderWidth = slider.scrollWidth - slider.clientWidth;
+        // Calcular la posición del nuevo ítem respecto al inicio del slider
+        const newItemRect = newItem.getBoundingClientRect();
+        const sliderRect = slider.getBoundingClientRect();
+
+        // Calcular la posición del nuevo ítem dentro del slider
+        const newItemPosition = newItemRect.left - sliderRect.left;
+
+        // Ajustar lastTransform para centrar el nuevo ítem en la vista del slider
+        lastTransform = -newItemPosition + (slider.clientWidth / 2 - newItemRect.width / 2);
+
+        // Asegurarse de que lastTransform no exceda los límites del slider
+        lastTransform = Math.min(0, lastTransform); // No permitir valores positivos
+        lastTransform = Math.max(lastTransform, -sliderWidth); // No permitir scroll más allá del contenido
+
+      }
+
+      slider.style.transform = `translateX(${lastTransform}px)`;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function preloadSounds(soundIds) {
+      soundIds.forEach(soundId => {
+        const audioElement = document.getElementById(soundId);
+        if (audioElement) {
+          audioElement.load();
+        }
+      });
+    }
+
+
+
+
+
+    let thresholdObserver = 1;
+
+    function setupIntersectionObserver() {
+      const observerOptionsShow = {
+        root: null, // observa dentro del viewport
+        rootMargin: '0px',
+        threshold: thresholdObserver // Se ajusta para que el evento se dispare cuando el elemento esté completamente visible
+      };
+
+      const observerOptionsHide = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
+      };
+
+      const observerShow = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Si el elemento se intersecta completamente y no ha reproducido el sonido antes
+            if (!entry.target.hasAttribute('soundPlayed')) {
+              playSound('soundDisappear'); // Reproduce el sonido asociado
+              entry.target.setAttribute('soundPlayed', 'true'); // Marca que el sonido se ha reproducido
+            }
+          }
+        });
+      }, observerOptionsShow);
+
+      const observerHide = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            // Si el elemento está al menos un 50% fuera de la vista
+            entry.target.removeAttribute('soundPlayed'); // Elimina el atributo para permitir la reproducción del sonido nuevamente
+          }
+        });
+      }, observerOptionsHide);
+
+      document.querySelectorAll('.icon').forEach(icon => {
+        observerShow.observe(icon);
+        observerHide.observe(icon);
+      });
+    }
+
+
+
+
+    function startInteraction(event, startX, startY, element) {
+
+      // Cancel any ongoing animation
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+        stopInertia = true
+
+      }
+
+      // Actualizar lastTransform con el valor actual de la transformación del slider
+      const style = window.getComputedStyle(slider);
+      const matrix = new WebKitCSSMatrix(style.transform);
+      lastTransform = matrix.m41;
+
+      startPos = startX;  // Guarda la posición inicial en X cuando comienza el drag
+      startPosY = startY;  // Guarda la posición inicial en Y cuando comienza el drag
+      isDragging = true;
+      startTime = Date.now();
+      slider.classList.add('grabbing');
+      slider.style.transition = 'none';
+      logCurrentCenteredItem();
+      logSliderPercentage();
+      valorTra();
+      thresholdObserver = 1;
+    }
+
+
+
+    function moveInteraction(event, currentPosX, currentPosY) {
+
+      if (!isDragging) return;
+      const dy = currentPosY - startPosY;
+      const dx = currentPosX - startPos;
+
+      if (movementDirection === null) {  // Usar null para la comprobación inicial
+        if (Math.abs(dx) > 0 || Math.abs(dy) > 50) {  // Umbral bajo para respuesta rápida
+          movementDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
+        }
+      }
+
+      if (movementDirection === 'horizontal') {
+
+        buttonMouseUp();
+        if (Math.abs(dx) > 0) {
+          let tentativeTransform = lastTransform + dx;
+
+          const currentTime = Date.now();
+          const timeElapsed = currentTime - startTime;
+          const velocity = dx / timeElapsed; // Calculate velocity for momentum
+
+          // Elastic effect
+          if (tentativeTransform > 0) {
+            tentativeTransform = dx / 5;
+          } else if (tentativeTransform < -sliderWidth) {
+            tentativeTransform = Math.max(tentativeTransform, -sliderWidth - Math.abs(dx) / 5);
+          }
+
+          transform = tentativeTransform;
+          requestAnimationFrame(() => {
+            slider.style.transform = `translateX(${transform}px)`;
+
+          });
+
+          // Store the last few positions for velocity calculation
+          previousPositions.push({ pos: currentPosX, time: currentTime });
+          if (previousPositions.length > positionBufferSize) {
+            previousPositions.shift(); // Maintain the buffer size
+          }
+        }
+
+      } else if (movementDirection === 'vertical') {
+        buttonMouseUp();
+        // Manejar solo movimientos verticales para el slider
+        if ((isAtTop && dy > 0) || (isAtBottom && dy < 0)) {
+          moveNavigation(currentPosY);
+        }
+
+      }
+
+
+    }
+
+    // Valores iniciales de las variables
+    let maxVelocity = 15.0; // Velocidad máxima permitida en px/ms
+    let flickThresholdSpeed = 0.5; // Velocidad en px/ms
+    let flickThresholdDistance = 50; // Distancia mínima en px
+
+    // Función para actualizar las variables de configuración  // Función para actualizar las variables de configuración
+
+
+    function endInteraction(event, currentPosX, currentPosY) {
+
+      if (!isDragging) return;
+
+      isDragging = false;
+      slider.classList.remove('grabbing');
+
+      const dx = currentPosX - startPos;
+      let absDx = Math.abs(dx);
+
+      if (movementDirection === 'horizontal') {
+        const firstPosition = previousPositions[0];
+        const lastPosition = previousPositions[previousPositions.length - 1];
+        const distance = lastPosition.pos - firstPosition.pos;
+        const timeElapsed = lastPosition.time - firstPosition.time;
+        const velocity = distance / timeElapsed;
+
+
+        const absVelocity = Math.min(Math.abs(velocity), maxVelocity);
+
+
+        // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
+        if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 0) {
+          thresholdObserver = 0.2;
+          setupIntersectionObserver()
+          let destination = lastTransform + velocity * 400; // El factor de 500 ajusta la 'inercia'
+
+          // Limitar el destino para no desbordar los límites del slider
+          destination = Math.max(destination, -sliderWidth);
+          destination = Math.min(destination, 0);
+
+          // Anima hacia el destino con desaceleración
+          animateToDestination(destination);
+
+        } else {
+
+          let newTransform = transform;
+
+          // if (Math.abs(dx) > 0 && movementDirection === 'horizontal') {
+          //     newTransform = lastTransform + dx + (velocity * 250); // Momentum efectivo
+          // }
+
+          snapToClosestItem(newTransform);
+
+        }
+
+      } else {
+
+        // Llamar a snapToClosestItem si no hay desplazamiento significativo
+        if (stopInertia) {
+          const style = window.getComputedStyle(slider);
+          const matrix = new WebKitCSSMatrix(style.transform);
+          snapToClosestItem(matrix.m41);
+
+
+        }
+      }
+
+      // Calcula la distancia a cada punto de anclaje
+      const distanceToTop = Math.abs(currentY - topPoint);
+      const distanceToBottom = Math.abs(currentY - bottomPoint);
+
+      // Determina el punto más cercano
+      const targetY = distanceToTop < distanceToBottom ? topPoint : bottomPoint;
+      const dy = currentPosY - startPosY;
+      if (movementDirection === 'vertical') {
+        if (targetY === topPoint) {
+          ajustarElementos();
+          isAtTop = true;
+          isAtBottom = false;
+        } else if (targetY === bottomPoint) {
+          restablecerElementos();
+          isAtTop = false;
+          isAtBottom = true;
+        }
+      }
+
+      // Mueve el botón al punto más cercano con una transición suave
+      navigation.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+      navigation.style.transform = `translateY(${targetY - initialY}px)`;
+      currentY = targetY;
+
+      // Remove animating class after the animation ends
+      slider.addEventListener('transitionend', () => {
+        slider.classList.remove('animating');
+        logCurrentCenteredItem();
+        logSliderPercentage();
+        valorTra();
+        draggingAffter = false;
+      }, { once: true });
+
+      logCurrentCenteredItem();
+      logSliderPercentage();
+      valorTra();
+      movementDirection = null;
+      stopInertia = false;
+      const sliderItems = document.querySelectorAll('.slider-item');
+      const itemCount = sliderItems.length;  // Uso itemCount para reflejar el total de ítems en el slider
+      if (itemCount <= 3) {
+
+      }
+
+      previousPositions = []; // Clear the buffer after ending interaction
+
+      // Verificar y ajustar el translateX del slider al final con un retraso de 500 ms
+      setTimeout(() => {
+        const sliderWidthSnap = slider.clientWidth - slider.scrollWidth;
+        const currentTransform = new WebKitCSSMatrix(window.getComputedStyle(slider).transform).m41;
+
+        if (currentTransform > 0) {
+          slider.style.transform = `translateX(0)`;
+          lastTransform = 0;
+        } else if (currentTransform < sliderWidthSnap) {
+          slider.style.transform = `translateX(${sliderWidthSnap}px)`;
+          lastTransform = sliderWidthSnap;
+        }
+      }, 10); // 500 ms de retraso
+
+    }
+    let accumulatedTime = 0; // Tiempo acumulado
+    let stepTime = 16.67; // Aproximadamente 60 FPS, cada frame toma aproximadamente 16.67ms
+    let maxSpeed = 100; // Velocidad máxima en píxeles por frame
+    let minSpeed = 5; // Velocidad mínima en píxeles por frame para hacer snap
+    let decelerationFactor = 0.95; // Factor de desaceleración
+
+    function updateConfig() {
+      maxVelocity = parseFloat(document.getElementById('maxVelocity').value);
+      flickThresholdSpeed = parseFloat(document.getElementById('flickThresholdSpeed').value);
+      flickThresholdDistance = parseInt(document.getElementById('flickThresholdDistance').value);
+      minSpeed = parseFloat(document.getElementById('minSpeed').value);
+      decelerationFactor = parseFloat(document.getElementById('decelerationFactor').value);
+
+
+    }
+
+    // Configurar los valores iniciales en el formulario
+    document.getElementById('maxVelocity').value = maxVelocity;
+    document.getElementById('flickThresholdSpeed').value = flickThresholdSpeed;
+    document.getElementById('flickThresholdDistance').value = flickThresholdDistance;
+    document.getElementById('minSpeed').value = minSpeed;
+    document.getElementById('decelerationFactor').value = decelerationFactor;
+
+
+    function animateToDestination(destination) {
+      lastTransform = transform; // Asegúrate de que lastTransform se actualice con la posición actual
+      let currentTransform = lastTransform;
+      console.log(thresholdObserver)
+
+
+      const step = () => {
+        // Calcular el paso de desaceleración con interpolación más suave
+        let delta = (destination - currentTransform) * (0.08 + 0.12 / (1 + Math.abs(destination - currentTransform)));
+
+        // Limitar la velocidad máxima
+        if (Math.abs(delta) > maxSpeed) {
+          delta = maxSpeed * Math.sign(delta);
+        }
+
+        // Aplicar el factor de desaceleración
+        delta *= decelerationFactor;
+
+        currentTransform += delta;
+
+        // Aplicar el transform actualizado
+        slider.style.transform = `translateX(${currentTransform}px)`;
+
+        // Chequear si estamos cerca del destino o si la velocidad es menor que la velocidad mínima
+        if (Math.abs(destination - currentTransform) > 1 && Math.abs(delta) > minSpeed) {
+
+          animationFrameId = requestAnimationFrame(step); // Continuar la animación
+          accumulatedTime += stepTime; // Acumular tiempo
+        } else {
+          animationFrameId = null;
+          lastTransform = currentTransform;
+
+          // Calcular el snap al ítem más cercano cuando estemos cerca del final
+          snapToClosestItem(currentTransform);
+        }
+      };
+
+      animationFrameId = requestAnimationFrame(step); // Iniciar la animación
+    }
+
+
+
+
+    function snapToClosestItem(currentTransform) {
+      const sliderWidthSnap = slider.clientWidth - slider.scrollWidth;
+
+      // Limitar el currentTransform dentro de los límites permitidos
+      currentTransform = Math.max(Math.min(currentTransform, 0), sliderWidthSnap);
+
+      const items = slider.querySelectorAll('.slider-item');
+      const itemWidth = items[0].clientWidth;
+      const numberOfItems = items.length;
+
+      // Calcula la posición del slider en relación con su punto inicial
+      const absoluteTransform = Math.abs(currentTransform);
+
+      // Encuentra el índice del elemento que está más cercano al centro visual del viewport
+      const centeredItemIndex = Math.floor((absoluteTransform + (slider.clientWidth / 2)) / itemWidth);
+
+      // Verifica los límites para asegurar que el índice está dentro del rango válido
+      let closestIndex = Math.min(Math.max(centeredItemIndex, 0), numberOfItems - 1);
+
+      // Ajusta el índice si es el primer o último elemento
+      if (closestIndex === 0 && numberOfItems > 1) closestIndex = 1;
+      if (closestIndex === numberOfItems - 1 && numberOfItems > 1) closestIndex = numberOfItems - 2;
+
+      // Calcula el nuevo transform para centrar el ítem seleccionado
+      let newTransform = -(closestIndex * itemWidth) + (slider.clientWidth / 2 - itemWidth / 2);
+
+      // Limitar el nuevo transform dentro de los límites permitidos
+      newTransform = Math.max(Math.min(newTransform, 0), sliderWidthSnap);
+
+      // Aplica el nuevo transform con una transición suave
+      slider.style.transition = 'transform 0.2s cubic-bezier(0.5, 1.5, 0.55, 1)';
+      slider.style.transform = `translateX(${newTransform}px)`;
+      lastTransform = newTransform;
+      // playSound('soundAppear');
+
+      setTimeout(() => {
+        const BorTransform = new WebKitCSSMatrix(window.getComputedStyle(slider).transform).m41;
+        // Comparar currentTransform con newTransform
+        if (Math.abs(BorTransform - newTransform) < 0.1) { // Umbral pequeño para evitar diferencias insignificantes
+        } else {
+          slider.style.transition = 'transform 0.1s cubic-bezier(0.5, 1.5, 0.55, 1)';
+          slider.style.transform = `translateX(${newTransform}px)`;
+        }
+
+      }, 310); // 500 ms de retraso
+
+
+    }
+
+
+
+    // Suponiendo que el resto de las funciones son similares y ajustan lastTransform según sea necesario.
+
+
+
+
+    function moveNavigation(currentPosY) {
+      buttonnav.forEach(button => {
+        button.style.opacity = '1';
+      });
+
+      let moveY = currentPosY - startPosY;
+
+
+      let dy = currentY - initialY;
+
+      let resistanceFactor = isAtTop ? 2 - Math.abs(dy) / 500 : 6 + Math.abs(dy) / 2000;
+      resistanceFactor = Math.max(1, resistanceFactor);
+
+      currentY += moveY / resistanceFactor;
+      if (currentY > initialY) currentY = initialY;
+
+      startPosY = currentPosY;
+      let distanceFactorMain = isAtTop ? 40 : 0;
+      let distanceFactorIcon = isAtTop ? 70 : 0;
+      // let distance = currentY - initialY;
+
+
+      buttonMain.forEach(function (elemento) {
+        elemento.style.transform = `translateY(${currentY - initialY + distanceFactorMain}px`;
+      });
+
+      icon.forEach(function (elemento) {
+        elemento.style.transform = `translateY(${currentY - initialY + distanceFactorIcon}px)`;
+      });
+
+      navigation.style.transform = `translateY(${currentY - initialY}px)`;
+
+    }
+
+
+    function logCurrentCenteredItem() {
+      const centerPosition = -transform + (slider.clientWidth / 2);
+      let itemWidth = slider.querySelector('.slider-item').clientWidth;
+      const centeredItemIndex = Math.floor(centerPosition / itemWidth);
+    }
+
+    function logSliderPercentage() {
+      const percentage = (Math.abs(transform) / sliderWidth) * 100;
+    }
+
+    /////////////////////////////////////////
+
+    /////////*********** re ajustar elementos ******************//////
+    //////////////////////////
+    let transitionClickButtons = "all 0.4s cubic-bezier(0.085, 0.980, 0.000, 0.995)";
+    function ajustarElementos() {
+      const sliderItems = document.querySelectorAll('.slider-item');
+      sliderItems.forEach(function (elemento) {
+        elemento.style.padding = '0px 0 20px 0';
+        // elemento.style.gap = '12px';
+      });
+
+      icon.forEach(function (elemento) {
+        elemento.style.transition = transitionClickButtons;
+        elemento.style.transform = 'translateY(-10px)';
+        elemento.style.height = '75%';
+      });
+
+      buttonMain.forEach(function (elemento) {
+        elemento.style.transition = transitionClickButtons;
+        // elemento.style.top = '-55px';
+        elemento.style.height = '75%';
+        elemento.style.transform = 'translateY(-40px)';
+      });
+
+      buttonnav.forEach(function (elemento) {
+        elemento.style.transition = transitionClickButtons;
+        elemento.style.transform = 'none';
+        elemento.style.height = '60%';
+        elemento.style.transform = 'translateY(4px)';
+      });
+
+      navigation.style.minHeight = '80px';
+      navigation.style.maxHeight = '80px';
+      navigation.style.height = '80px';
+      isAtTop = true;
+      isAtBottom = false;
+      initialY = 80;
+
+    }
+
+    function restablecerElementos() {
+      const sliderItems = document.querySelectorAll('.slider-item');
+      sliderItems.forEach(function (elemento) {
+        elemento.style.padding = '20px 0';
+        // elemento.style.gap = '20px';
+      });
+
+      icon.forEach(function (elemento) {
+        elemento.style.transition = transitionClickButtons;
+        elemento.style.transform = 'none';
+        elemento.style.height = '100%';
+      });
+
+      buttonMain.forEach(function (elemento) {
+        elemento.style.transition = transitionClickButtons;
+        // elemento.style.top = '0';
+        elemento.style.height = '100%';
+        elemento.style.transform = 'translateY(0px)';
+      });
+
+
+      buttonnav.forEach(function (elemento) {
+        elemento.style.transition = transitionClickButtons;
+        elemento.style.transform = 'translateY(10px)';
+        elemento.style.height = '70%';
+      });
+
+      navigation.style.minHeight = '100px';
+      navigation.style.maxHeight = '100px';
+      navigation.style.height = '100px';
+      isAtTop = false;
+      isAtBottom = true;
+      initialY = 0;
+
+    }
+
+    ///////////////********BOTONES********** *///////////////
+
+
+    const buttonStyles = {
+      green: {
+        border: '#029357 solid 4px',
+        boxShadow: '0px 5px #046d41, inset 0px 0px 0px 2px #2fd792'
+      },
+      yellow: {
+        border: '#fec902 solid 4px',
+        boxShadow: '0px 5px #be8d15, inset 0px 0px 0px 2px #fee15a'
+      },
+      blue: {
+        border: '#1c9cd3 solid 4px',
+        boxShadow: '0px 5px #2178a0, inset 0px 0px 0px 2px #41b8f7'
+      },
+      black: {
+        border: 'var(--lightblack-color) solid 4px',
+        boxShadow: '0px 5px var(--darkblack-color), inset 0px 0px 0px 2px var(--ultralightblakc-color)'
+      }
+    };
+
+    let currentButton = null;
+
+    function buttonClicked(event, color, btn) {
+      const button = event.currentTarget;
+      currentButton = button; // Guardar el botón actual
+
+      let translateUp = 0;
+
+      if (initialY === 0) {
+        translateUp = 5;
+      } else {
+        if (btn === 'center') {
+          translateUp = -35;
+        } else if (btn === 'up') {
+          translateUp = -5;
+        } else { // Cualquier otro valor de btn
+          translateUp = 9;
+        }
+      }
+
+      button.style.transform = `translateY(${translateUp}px)`;
+      button.style.boxShadow = 'none';
+
+      window.addEventListener('mouseup', buttonMouseUp);
+      window.addEventListener('touchend', buttonMouseUp);
+    }
+
+    function buttonMouseUp(event) {
+      if (!currentButton) return;
+
+
+      let translateDown = 0;
+      const btn = currentButton.getAttribute('data-btn');
+      const color = currentButton.getAttribute('data-color');
+
+      if (initialY !== 0) {
+        if (btn === 'center') {
+          translateDown = -40;
+        } else if (btn === 'up') {
+          translateDown = -10;
+        } else { // Cualquier otro valor de btn
+          translateDown = 4;
+        }
+      }
+
+      currentButton.style.transform = `translateY(${translateDown}px)`;
+      currentButton.style.boxShadow = buttonStyles[color].boxShadow;
+
+      window.removeEventListener('mouseup', buttonMouseUp);
+      window.removeEventListener('touchend', buttonMouseUp);
+      currentButton = null; // Limpiar el botón actual
+    }
+
+    ////////////////////********Recursos**********/////////////////////////
+    const relleno = document.querySelector('.recurso-relleno');
+
+    function changeNumberValue(element, targetValue, duration) {
+      const startValue = parseInt(element.textContent);
+      const increment = (targetValue - startValue) / (duration / 10);
+      let currentValue = startValue;
+
+      const interval = setInterval(function () {
+        currentValue += increment;
+        element.textContent = Math.round(currentValue);
+
+        if ((increment > 0 && currentValue >= targetValue) || (increment < 0 && currentValue <= targetValue)) {
+          element.textContent = targetValue;
+          clearInterval(interval);
+        }
+      }, 10);
+    }
+
+    const soldierNumber = document.querySelector('.point-soldier');
+    const foodNumber = document.querySelector('.point-food');
+    const woodNumber = document.querySelector('.point-wood');
+    const slavesNumber = document.querySelector('.point-slaves');
+    const actionButton = document.querySelector('.action-button');
+
+    actionButton.addEventListener('click', function () {
+      changeNumberValue(soldierNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 500 en 2 segundos
+      changeNumberValue(foodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 750 en 1.5 segundos
+      changeNumberValue(woodNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 1000 en 1 segundo
+      changeNumberValue(slavesNumber, generateRandomNumber(), 2000); // Cambiar gradualmente a 250 en 2.5 segundos
+
+    });
+
+    function generateRandomNumber() {
+      return Math.floor(Math.random() * 1000);
+    }
+
+    //////function obtener valor del trnalaste
+    function valorTra() {
+      const sliderElement = document.getElementById('slider');
+      const style = window.getComputedStyle(sliderElement);
+      const matrixString = style.getPropertyValue('transform');
+
+      let translateX = 0; // Valor predeterminado si no se encuentra coincidencia
+
+      // Verifica si matrixString es válido y extrae translateX
+      if (matrixString && matrixString !== 'none') {
+        const matrixMatch = matrixString.match(/matrix.*\((.+)\)/);
+        if (matrixMatch) {
+          const values = matrixMatch[1].split(', ');
+          translateX = parseFloat(values[4]);
+        }
+      }
+
+      // Calcula el ancho del slider
+      const sliderWidth = sliderElement.clientWidth;
+      const scrollLeft = sliderElement.scrollLeft;
+
+      // Determina la posición total que el slider puede desplazarse
+      const maxTranslateX = -(sliderElement.scrollWidth - sliderWidth);
+
+      // Calcula el porcentaje de translateX
+      const porcentaje = ((translateX - scrollLeft) / maxTranslateX) * 100;
+
+      // Limita el porcentaje entre 0 y 100
+      const porcentajeLimitado = Math.max(0, Math.min(100, porcentaje));
+      let porcentajeFinal = 0;
+      let movFinal = 0
+      let herOne = 0
+      if (porcentajeLimitado <= 25 && herOne !== 0) {
+        porcentajeFinal = 0
+        herOne, movFinal = 0
+      } else if (porcentajeLimitado >= 25 && porcentajeLimitado <= 50 && herOne !== 1) {
+        porcentajeFinal = 25
+        herOne, movFinal = 1
+      } else if (porcentajeLimitado >= 50 && porcentajeLimitado <= 75 && herOne !== 2) {
+        porcentajeFinal = 50
+        herOne, movFinal = 2
+      } else if (porcentajeLimitado >= 75 && herOne !== 3) {
+        porcentajeFinal = 75
+        herOne, movFinal = 3
+      }
+
+      // relleno.style.left = porcentajeFinal + '%';
+      // document.querySelectorAll('.recursos-item').forEach(item => {
+      //     item.classList.remove('active');
+      // });
+
+      // // Agregar la clase active al elemento actual
+      // document.querySelectorAll('.recursos-item')[movFinal].classList.add('active');
+    }
+
+
+    ///****** agregar quitar botones *****/
+
+
+
+
+
+
+    function adjustSliderItems() {
+      const sliderItems = document.querySelectorAll('.slider-item');
+      const itemCount = sliderItems.length;  // Uso itemCount para reflejar el total de ítems en el slider
+
+      // Remover clases y resetear transiciones
+      sliderItems.forEach(item => {
+        const icons = item.querySelectorAll('.icon');
+        const primaryButtons = item.querySelectorAll('.button-container');
+
+        [item, ...icons, ...primaryButtons].forEach(el => {
+          el.style.transition = transitionClickButtons;
+          el.classList.remove('full-width', 'half-width');
+        });
+
+        // Aplicar clases basadas en la cantidad de ítems
+        if (itemCount === 1) {
+
+          [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('full-width'));
+
+
+        } else if (itemCount === 2) {
+          [item, ...icons, ...primaryButtons].forEach(el => el.classList.add('half-width'));
+        } else if (itemCount === 3) {
+          // Aplica transiciones personalizadas para tres ítems
+
+        }
+      });
+
+      slider.style.width = '100%';
+    }
+
+
+
+    ///****** agregar quitar botones fin*****/
+    let nextItemIndex = 0;  // Inicializa el contador para seguir el próximo ítem a agregar
+
+    const sliderItems = [
+      {
+        color: 'green',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Power',
+        buttonText: 'Botón',
+        action: 'up'
+      },
+      {
+        color: 'green',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Life',
+        buttonText: 'Botón',
+        action: 'center'
+      },
+      {
+        color: 'green',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Rate fire',
+        buttonText: 'Botón',
+        action: 'center'
+      },
+      {
+        color: 'blue',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Arco',
+        buttonText: 'Botón',
+        action: 'up'
+      },
+      {
+        color: 'blue',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Cañon',
+        buttonText: 'Botón',
+        action: 'center'
+      },
+      {
+        color: 'blue',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Espada',
+        buttonText: 'Botón',
+        action: 'center'
+      },
+      {
+        color: 'yellow',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Madera',
+        buttonText: 'Botón',
+        action: 'up'
+      },
+      {
+        color: 'yellow',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Comida',
+        buttonText: 'Botón',
+        action: 'center'
+      },
+      {
+        color: 'yellow',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Piedra',
+        buttonText: 'Botón',
+        action: 'center'
+      },
+      {
+        color: 'black',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'FA',
+        buttonText: 'Botón',
+        action: 'up'
+      },
+      {
+        color: 'black',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Entrenar',
+        buttonText: 'Botón',
+        action: 'center'
+      },
+      {
+        color: 'black',
+        icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNsaXBQYXRoIGlkPSJJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIi8+PC9jbGlwUGF0aD48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcGF0aD0idXJsKCNJY29uaWZ5SWQxOTEyNDAzNWQ2ODY4YjVkNDApIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMjRBRTVGIi8+PHBhdGggZmlsbD0iI0U1N0QyNSIgZD0iTTM0IDUwLjVhMi41IDIuNSAwIDAgMCAyLjUgMi41aDY2YTIuNSAyLjUgMCAxIDAgMC01aC02NmEyLjUgMi41IDAgMCAwLTIuNSAyLjUiLz48cGF0aCBmaWxsPSIjRkJGMDYzIiBkPSJtMjMgMzFsMTYgMTdoNDRMNjcgMzF6Ii8+PHBhdGggZmlsbD0iI0YwQzQxOSIgZD0ibTY3IDcwbDE2LTE3SDM5TDIzIDcweiIvPjwvZz48L3N2Zz4=',
+        buttonLabel: 'Descansar',
+        buttonText: 'Botón',
+        action: 'center'
+      }
+    ];
+
+    let timeOut = 0;
+    function addAllItemsWithDelay() {
+      if (isPageLoaded) {
+        timeOut = 200;
+      } else {
+        timeOut = 0;
+      }
+
+      sliderItems.forEach((item, index) => {
+        setTimeout(() => {
+          createAndAddSliderItem(item.buttonLabel);
+        }, timeOut * index);
+      });
+    }
+
+
+    function createAndAddSliderItem(buttonLabelToMatch) {
+      const slider = document.getElementById('slider');
+
+      // Comprobar si el ítem ya existe en el slider para evitar duplicados
+      const existingItem = Array.from(slider.querySelectorAll('.slider-item')).find(item =>
+        item.getAttribute('data-label') === buttonLabelToMatch
+      );
+
+      if (existingItem) {
+
+        return;
+      }
+
+      const itemData = sliderItems.find(item => item.buttonLabel === buttonLabelToMatch);
+      if (itemData) {
+        const newItem = createSliderItemElement(itemData);
+
+        // Determinar la posición correcta para insertar el nuevo ítem
+        const nextIndex = sliderItems.findIndex(item => item.buttonLabel === buttonLabelToMatch) + 1;
+        const nextItemData = sliderItems.slice(nextIndex).find(item => slider.querySelector(`.slider-item[data-label="${item.buttonLabel}"]`));
+        const nextElement = nextItemData ? slider.querySelector(`.slider-item[data-label="${nextItemData.buttonLabel}"]`) : null;
+
+        // Insertar el nuevo ítem en la posición correcta
+        if (nextElement) {
+          slider.insertBefore(newItem, nextElement);
+        } else {
+          slider.appendChild(newItem); // Si no hay un siguiente ítem definido, añadir al final
+        }
+
+        navigation.style.transform = "translateY(1px)"
+
+
+        adjustSliderItems();
+        updateDOMSelectors();
+        if (isPageLoaded) {
+          animateItem(newItem, true);
+        }
+        updateSliderWidth(newItem, true); // Asegurarte de que se ajusta el translateX correctamente
+        restablecerElementos();
+        setupIntersectionObserver();
+      } else {
+
+      }
+
+    }
+
+
+    function createSliderItemElement(itemData) {
+      const item = document.createElement('div');
+      item.className = 'slider-item';
+      item.setAttribute('data-label', itemData.buttonLabel);
+      item.innerHTML = `
+        <div class="icon">
+            <button onmousedown="buttonClicked(event, '${itemData.color}', 'up')" ontouchstart="buttonClicked(event, '${itemData.color}', 'up')" class="primary-button primary-button-${itemData.color}" data-color="${itemData.color}" data-btn="up" >
+                ${itemData.buttonLabel}
+            </button>
+        </div>
+        <div class="button-container">
+            <button ontouchstart="buttonClicked(event, '${itemData.color}', 'center')" onmousedown="buttonClicked(event, '${itemData.color}', 'center')" class="animate-button button button-${itemData.color}" data-color="${itemData.color}" data-btn="center">
+                <img src="${itemData.icon}"/> ${itemData.buttonText}
+            </button>
+        </div>
+    `;
+      return item;
+    }
+
+
+
+
+    function updateDOMSelectors() {
+      // Reasigna los selectores después de cualquier cambio en el DOM
+      icon = document.querySelectorAll('.primary-button');
+      buttonMain = document.querySelectorAll('.button');
+      buttonnav = document.querySelectorAll('.navigation-container button');
+    }
+
+
+    function playSound(soundId) {
+
+      const originalSound = document.getElementById(soundId);
+      if (originalSound && isPageLoaded) {
+        const soundClone = originalSound.cloneNode();
+        soundClone.play();
+        soundClone.addEventListener('ended', () => {
+          soundClone.remove(); // Elimina el clon después de reproducir el sonido
+        });
+      } else {
+
+      }
+
+    }
+
+
+
+    function animateItem(item, appearing) {
+      const primaryButton = item.querySelector('.primary-button');
+      const animatedButton = item.querySelector('.animate-button');
+
+      const handleTransitionEnd = (event) => {
+        if (event.propertyName === 'transform' || event.propertyName === 'opacity') {
+          // Asegúrate de que el evento 'transitionend' se dispare solo para las propiedades 'transform' o 'opacity'
+          primaryButton.removeEventListener('transitionend', handleTransitionEnd);
+          animatedButton.removeEventListener('transitionend', handleTransitionEnd);
+
+          // Cambia el estilo de transición aquí
+          primaryButton.style.transition = transitionClickButtons;
+          animatedButton.style.transition = transitionClickButtons;
+        }
+      };
+
+      if (appearing) {
+        // Configurar estado inicial para la animación de aparición
+        primaryButton.style.transform = 'scale(0)';
+        animatedButton.style.transform = 'scale(0)';
+        primaryButton.style.opacity = '0';
+        animatedButton.style.opacity = '0';
+
+        setTimeout(() => {
+          // Aplicar la animación de aparición
+          primaryButton.style.transition = 'transform 0.1s ease-out, opacity 0.1s ease-out';
+          animatedButton.style.transition = 'transform 0.1s ease-out, opacity 0.1s ease-out';
+          primaryButton.style.transform = 'scale(1)';
+          animatedButton.style.transform = 'scale(1)';
+          primaryButton.style.opacity = '1';
+          animatedButton.style.opacity = '1';
+          // playSound('soundAppear');
+
+          // Agregar el manejador de evento 'transitionend'
+          primaryButton.addEventListener('transitionend', handleTransitionEnd);
+          animatedButton.addEventListener('transitionend', handleTransitionEnd);
+        }, 10); // Pequeño retraso para asegurar que el DOM está listo
+
+      } else {
+        // Configurar la transición para la animación de desaparición
+        primaryButton.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
+        animatedButton.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
+
+        setTimeout(() => {
+          // Aplicar la animación de desaparición
+          primaryButton.style.transform = 'scale(0)';
+          animatedButton.style.transform = 'scale(0)';
+          primaryButton.style.opacity = '0';
+          animatedButton.style.opacity = '0';
+          // playSound('soundDisappear');
+
+          // Agregar el manejador de evento 'transitionend'
+          primaryButton.addEventListener('transitionend', handleTransitionEnd);
+          animatedButton.addEventListener('transitionend', handleTransitionEnd);
+        }, 10);
+      }
+    }
+
+
+    function initializeDropdowns() {
+      const availableItems = document.getElementById('availableItems');
+      const addedItems = document.getElementById('addedItems');
+
+      fillDropdown(availableItems);
+      fillDropdown(addedItems);
+
+      // Escuchar cambios en el dropdown de ítems disponibles para agregar
+      availableItems.onchange = function () {
+        if (this.value !== '') {
+          createAndAddSliderItem(this.value);  // Intenta añadir el ítem seleccionado
+        }
+      };
+
+      // Escuchar cambios en el dropdown de ítems agregados para eliminar
+      addedItems.onchange = function () {
+        if (this.value !== '') {
+          removeSliderItemByName(this.value);  // Intenta eliminar el ítem seleccionado
+        }
+      };
+    }
+
+    function fillDropdown(dropdown) {
+      dropdown.innerHTML = '';  // Limpia el dropdown
+      const defaultOption = document.createElement('option');
+      defaultOption.textContent = 'Seleccione un ítem';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      dropdown.appendChild(defaultOption);
+
+      sliderItems.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.buttonLabel;
+        option.textContent = item.buttonLabel;
+        dropdown.appendChild(option);
+      });
+    }
+
+    function removeSliderItemByName(buttonLabelToRemove) {
+      const slider = document.getElementById('slider');
+      const allItems = Array.from(slider.querySelectorAll('.slider-item'));
+      const itemIndex = allItems.findIndex(item => item.getAttribute('data-label') === buttonLabelToRemove);
+
+      if (itemIndex === -1) {
+        return;
+      }
+      const itemToRemove = allItems[itemIndex];
+
+      // Si no es el primer ítem, obtenemos el ítem a la izquierda
+      const itemToLeft = itemIndex > 0 ? allItems[itemIndex - 1] : null;
+
+      // Remover el ítem del DOM
+      slider.removeChild(itemToRemove);
+
+      if (itemIndex === 0) {
+        // Si se elimina el primer ítem, restablece el slider a la posición inicial
+        lastTransform = 0;
+        slider.style.transform = `translateX(0)`;
+      } else if (itemIndex === allItems.length - 1) {
+        // Si se elimina el último ítem, centrar en el ítem a la izquierda del eliminado si es el último
+        if (itemToLeft) {
+          updateSliderWidth(itemToLeft, false);
+        }
+      } else {
+        // Actualizar el ancho del slider y centrar el ítem a la izquierda
+        if (itemToLeft) {
+          updateSliderWidth(itemToLeft, false);
+        }
+      }
+
+      updateDOMSelectors(); // Actualizar los selectores DOM
+      adjustSliderItems();
+      animateItem(itemToRemove, false); // Animación para la eliminación
+    }
+
+
+
+  </script>
 </body>
 
 </html>
