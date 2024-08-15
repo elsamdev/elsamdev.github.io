@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const buttonRect = button.getBoundingClientRect();
             const parentRect = button.parentElement.getBoundingClientRect();
             colorBackground.style.width = `${buttonRect.width}px`;
-            colorBackground.style.left = `${buttonRect.left - parentRect.left}px`;
+            // colorBackground.style.left = `${buttonRect.left - parentRect.left}px`;
 
             // Marca el botón como activo
             buttons.forEach(btn => btn.classList.remove('active'));
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function playSound() {
     if (!sound) return;
     var audio = new Audio('slidersoundvolumen.wav'); // Reemplaza con la ruta de tu archivo de sonido
-    audio.play();
+    // audio.play();
 }
 
 // Crear el Intersection Observer para reproducción de sonido
