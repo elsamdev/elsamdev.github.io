@@ -1,47 +1,58 @@
-<html><head><base href="https://fantasy-character-sprite-generator.example.com/">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fantasy Character Sprite Generator</title>
-<style>
-  body {
-    font-family: 'Courier New', monospace;
-    background-color: #1a1a2e;
-    color: #e0e0e0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  h1 {
-    color: #00ff99;
-    text-shadow: 2px 2px 4px rgba(0, 255, 153, 0.3);
-  }
-  #canvas {
-    border: 2px solid #00ff99;
-    background-color: #0f0f1a;
-  }
-  #controls {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-  button, select {
-    background-color: #00ff99;
-    color: #1a1a2e;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  button:hover, select:hover {
-    background-color: #00cc7a;
-    transform: translateY(-2px);
-  }
-</style>
+<html>
+
+<head>
+  <base href="https://fantasy-character-sprite-generator.example.com/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fantasy Character Sprite Generator</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #1a1a2e;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #00ff99;
+      text-shadow: 2px 2px 4px rgba(0, 255, 153, 0.3);
+    }
+
+    #canvas {
+      border: 2px solid #00ff99;
+      background-color: #0f0f1a;
+    }
+
+    #controls {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    button,
+    select {
+      background-color: #00ff99;
+      color: #1a1a2e;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button:hover,
+    select:hover {
+      background-color: #00cc7a;
+      transform: translateY(-2px);
+    }
+  </style>
 </head>
+
 <body>
   <h1>Fantasy Character Sprite Generator</h1>
   <canvas id="canvas" width="64" height="64"></canvas>
@@ -73,18 +84,24 @@
     const colors = {
       skin: {
         human: ['#ffdab9', '#f0e68c', '#d2691e', '#8b4513', '#ffe4b5'],
-        elf: ['#f0fff0', '#98fb98', '#90ee90', '#7cfc00'],
+        elf: ['#fef9f5', '#fef3ec', '#fdede2', '#fde7d9', '#fcd0b4', '#dcb69d'],
         dwarf: ['#cd853f', '#deb887', '#d2691e', '#8b4513'],
         orc: ['#9acd32', '#6b8e23', '#556b2f', '#3cb371']
       },
-      hair: ['#ffd700', '#8b4513', '#a0522d', '#c0c0c0', '#36454f', '#800000', '#4b0082'],
+      hair: {
+        human: ['#ffd700', '#38761d', '#93b7ea', '#c0c0c0', '#36454f', '#800000', '#4b0082'],
+        elf: ['#ffffbf', '#fafbfd', '#6ed38a', '#e6e6fa', '#e5be01', '#ffd74b', '#fff400'],
+        dwarf: ['#b8860b', '#cd853f', '#8b4513', '#a0522d', '#d2691e', '#800000'],
+        orc: ['#32cd32', '#228b22', '#006400', '#adff2f', '#7fff00', '#00ff00']
+      },
       clothing: {
         mage: ['#4169e1', '#9932cc', '#228b22', '#b22222', '#4b0082', '#800080', '#008080'],
         warrior: ['#8b0000', '#b8860b', '#bdb76b', '#a9a9a9', '#2f4f4f'],
         archer: ['#006400', '#228b22', '#8fbc8f', '#20b2aa', '#2e8b57'],
         thief: ['#2f4f4f', '#696969', '#778899', '#708090', '#4682b4']
       },
-      shoes: ['#8b4513', '#36454f', '#800000', '#4b0082', '#000000']
+      shoes: ['#8b4513', '#36454f', '#800000', '#4b0082', '#000000'],
+      weaponDetails: ['#ffd700', '#ff69b4', '#00ffff', '#ff4500', '#32cd32', '#9400d3']
     };
 
     function randomChoice(arr) {
@@ -94,8 +111,8 @@
     function drawPixel(x, y, color) {
       ctx.fillStyle = color;
       ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+      // currentSprite.push({ x, y, color: color });  // You might want to track this if needed.
     }
-
     function generateSprite() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       currentSprite = [];
@@ -104,7 +121,11 @@
       const profession = document.getElementById('professionSelect').value;
 
       const skinColor = randomChoice(colors.skin[race]);
-      const hairColor = randomChoice(colors.hair);
+      let hairColor;
+      do {
+        hairColor = randomChoice(colors.hair[race]);
+      } while (hairColor === skinColor || isSimilarColor(hairColor, skinColor));
+
       const clothingColor = randomChoice(colors.clothing[profession]);
       const shoesColor = randomChoice(colors.shoes);
 
@@ -112,81 +133,328 @@
       for (let y = 2; y < 6; y++) {
         for (let x = 6; x < 10; x++) {
           drawPixel(x, y, skinColor);
-          currentSprite.push({x, y, color: skinColor});
+          currentSprite.push({ x, y, color: skinColor });
         }
       }
 
-      // Generate hair (race-specific styles)
-      const hairStyle = Math.floor(Math.random() * 3);
+      // Generate hair and race-specific features
+      const hairStyle = Math.floor(Math.random() * 6); // Now 6 hairstyles for more variety
       switch (race) {
         case 'human':
           switch (hairStyle) {
             case 0: // Short hair
+              console.log('case 0');
               for (let y = 1; y < 3; y++) {
                 for (let x = 5; x < 11; x++) {
                   drawPixel(x, y, hairColor);
-                  currentSprite.push({x, y, color: hairColor});
+                  currentSprite.push({ x, y, color: hairColor });
                 }
               }
               break;
             case 1: // Long hair
-              for (let y = 1; y < 8; y++) {
-                for (let x = 5; x < 11; x++) {
-                  if (y < 3 || (x > 5 && x < 10)) {
-                    drawPixel(x, y, hairColor);
-                    currentSprite.push({x, y, color: hairColor});
-                  }
-                }
-              }
+              console.log('case 1');
+              // for (let y = 1; y < 8; y++) {
+              //   for (let x = 5; x < 11; x++) {
+              //     if (y < 3 || (x > 5 && x < 10)) {
+              //       drawPixel(x, y, hairColor);
+              //       currentSprite.push({ x, y, color: hairColor });
+              //     }
+              //   }
+              // }
               break;
             case 2: // Bald with beard
+              console.log('case 2');
               for (let y = 5; y < 7; y++) {
                 for (let x = 5; x < 11; x++) {
                   drawPixel(x, y, hairColor);
-                  currentSprite.push({x, y, color: hairColor});
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              break;
+            case 3: // Mohawk
+              for (let y = 0; y < 3; y++) {
+                for (let x = 7; x < 9; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              break;
+            case 4: // Ponytail
+              for (let y = 1; y < 3; y++) {
+                for (let x = 6; x < 10; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              for (let y = 3; y < 8; y++) {
+                drawPixel(8, y, hairColor);
+                currentSprite.push({ x: 8, y, color: hairColor });
+              }
+              break;
+            case 5: // Curly hair
+              for (let y = 1; y < 4; y++) {
+                for (let x = 5; x < 11; x++) {
+                  if (Math.random() > 0.3) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
                 }
               }
               break;
           }
           break;
         case 'elf':
-          // Long, flowing hair
-          for (let y = 0; y < 10; y++) {
-            for (let x = 4; x < 12; x++) {
-              if (y < 2 || (x > 5 && x < 10)) {
-                drawPixel(x, y, hairColor);
-                currentSprite.push({x, y, color: hairColor});
+          switch (hairStyle) {
+            case 0: // Long, flowing hair
+              console.log('case 0');
+              for (let y = 0; y < 8; y++) {
+                for (let x = 5; x < 10; x++) {
+                  if (y < 2 || x === 6 || x === 9) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
+                }
               }
-            }
+              const leafColor = '#32cd32';
+              drawPixel(5, 0, leafColor);
+              drawPixel(10, 0, leafColor);
+              drawPixel(6, 1, leafColor);
+              drawPixel(9, 1, leafColor);
+              currentSprite.push({ x: 5, y: 0, color: leafColor });
+              currentSprite.push({ x: 10, y: 0, color: leafColor });
+              currentSprite.push({ x: 6, y: 1, color: leafColor });
+              currentSprite.push({ x: 9, y: 1, color: leafColor });
+              break;
+            case 1: // Braided crown
+              console.log('case 1');
+              for (let y = 1; y < 3; y++) {
+                for (let x = 5; x < 11; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              for (let x = 5; x < 11; x += 2) {
+                drawPixel(x, 0, hairColor);
+                currentSprite.push({ x, y: 0, color: hairColor });
+              }
+              break;
+            case 2: // Side-swept bangs
+              console.log('case 2');
+              for (let y = 1; y < 6; y++) {
+                for (let x = 5; x < 11; x++) {
+                  if (y < 3 || (x > 8 && x < 10)) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
+                }
+              }
+
+              drawPixel(9, 4, '#32cd32');
+              drawPixel(9, 2, '#32cd32');
+              currentSprite.push({ x: 9, y: 4, color: '#32cd32' });
+              currentSprite.push({ x: 9, y: 2, color: '#32cd32' });
+              drawPixel(8, 1, '#32cd32');
+
+              currentSprite.push({ x: 8, y: 1, color: '#32cd32' });
+
+              break;
+            case 3: // High ponytail
+              console.log("case 3");
+              for (let y = 0; y < 8; y++) {
+                for (let x = 5; x < 10; x++) {
+                  if (y < 2 || x === 6 || x === 9) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
+                }
+              }
+              break;
+            case 4: // Leafy hair ornaments
+              console.log("case 4");
+              for (let y = 1; y < 4; y++) {
+                for (let x = 5; x < 11; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              const leafColor2 = '#32cd32';
+              drawPixel(5, 0, leafColor2);
+              drawPixel(10, 0, leafColor2);
+              drawPixel(6, 1, leafColor2);
+              drawPixel(9, 1, leafColor2);
+              currentSprite.push({ x: 5, y: 0, color: leafColor2 });
+              currentSprite.push({ x: 10, y: 0, color: leafColor2 });
+              currentSprite.push({ x: 6, y: 1, color: leafColor2 });
+              currentSprite.push({ x: 9, y: 1, color: leafColor2 });
+              break;
+            case 5: // Shaved sides with long top
+              for (let y = 1; y < 6; y++) {
+                for (let x = 5; x < 11; x++) {
+                  if (y < 3 || (x > 8 && x < 10)) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
+                }
+              }
+
+              break;
           }
-          // Pointy ears
-          drawPixel(5, 3, skinColor);
-          drawPixel(10, 3, skinColor);
-          currentSprite.push({x: 5, y: 3, color: skinColor});
-          currentSprite.push({x: 10, y: 3, color: skinColor});
+          // Improved pointy ears
+          drawPixel(4, 2, skinColor);
+          drawPixel(5, 2, skinColor);
+          drawPixel(4, 3, skinColor);
+          drawPixel(11, 2, skinColor);
+          drawPixel(10, 2, skinColor);
+          drawPixel(11, 3, skinColor);
+          currentSprite.push({ x: 4, y: 2, color: skinColor });
+          currentSprite.push({ x: 5, y: 2, color: skinColor });
+          currentSprite.push({ x: 4, y: 3, color: skinColor });
+          currentSprite.push({ x: 11, y: 2, color: skinColor });
+          currentSprite.push({ x: 10, y: 2, color: skinColor });
+          currentSprite.push({ x: 11, y: 3, color: skinColor });
+
+          // Add ear details
+          const earDetailColor = randomChoice(['#ffffff', '#fffafa', '#f0fff0']);
+          drawPixel(4, 2, earDetailColor);
+          drawPixel(11, 2, earDetailColor);
+          currentSprite.push({ x: 4, y: 2, color: earDetailColor });
+          currentSprite.push({ x: 11, y: 2, color: earDetailColor });
           break;
         case 'dwarf':
-          // Bushy beard
-          for (let y = 4; y < 8; y++) {
-            for (let x = 4; x < 12; x++) {
-              drawPixel(x, y, hairColor);
-              currentSprite.push({x, y, color: hairColor});
-            }
+          switch (hairStyle) {
+            case 0: // Bushy beard and hair
+              for (let y = 1; y < 8; y++) {
+                for (let x = 4; x < 12; x++) {
+                  if (y < 3 || y > 4) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
+                }
+              }
+              break;
+            case 1: // Long braided beard
+              for (let y = 4; y < 12; y++) {
+                for (let x = 5; x < 11; x++) {
+                  if (x === 6 || x === 9 || y < 6) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
+                }
+              }
+              break;
+            case 2: // Mohawk with beard
+              for (let y = 0; y < 3; y++) {
+                for (let x = 7; x < 9; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              for (let y = 4; y < 8; y++) {
+                for (let x = 5; x < 11; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              break;
+            case 3: // Bald with elaborate beard
+              for (let y = 4; y < 10; y++) {
+                for (let x = 4; x < 12; x++) {
+                  if (y < 6 || (x > 5 && x < 10)) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
+                }
+              }
+              break;
+            case 4: // Twin braids and mustache
+              for (let y = 1; y < 10; y++) {
+                drawPixel(5, y, hairColor);
+                drawPixel(10, y, hairColor);
+                currentSprite.push({ x: 5, y, color: hairColor });
+                currentSprite.push({ x: 10, y, color: hairColor });
+              }
+              for (let x = 6; x < 10; x++) {
+                drawPixel(x, 5, hairColor);
+                currentSprite.push({ x, y: 5, color: hairColor });
+              }
+              break;
+            case 5: // Wild, unkempt hair and beard
+              for (let y = 1; y < 9; y++) {
+                for (let x = 4; x < 12; x++) {
+                  if (Math.random() > 0.3) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({ x, y, color: hairColor });
+                  }
+                }
+              }
+              break;
           }
           break;
         case 'orc':
-          // Mohawk
-          for (let y = 0; y < 3; y++) {
-            for (let x = 7; x < 9; x++) {
-              drawPixel(x, y, hairColor);
-              currentSprite.push({x, y, color: hairColor});
-            }
+          switch (hairStyle) {
+            case 0: // Mohawk
+              for (let y = 0; y < 3; y++) {
+                for (let x = 7; x < 9; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              break;
+            case 1: // Topknot
+              for (let y = 0; y < 4; y++) {
+                for (let x = 7; x < 9; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              drawPixel(6, 1, hairColor);
+              drawPixel(9, 1, hairColor);
+              currentSprite.push({ x: 6, y: 1, color: hairColor });
+              currentSprite.push({ x: 9, y: 1, color: hairColor });
+              break;
+            case 2: // Dreadlocks
+
+              for (let y = 1; y < 8; y++) {
+                for (let x = 5; x < 11; x += 2) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+
+              break;
+            case 3: // Bald with war paint
+              const warPaintColor = randomChoice(['#ff0000', '#ffffff', '#ffff00']);
+              drawPixel(6, 2, warPaintColor);
+              drawPixel(9, 2, warPaintColor);
+              drawPixel(7, 3, warPaintColor);
+              drawPixel(8, 3, warPaintColor);
+              currentSprite.push({ x: 6, y: 2, color: warPaintColor });
+              currentSprite.push({ x: 9, y: 2, color: warPaintColor });
+              currentSprite.push({ x: 7, y: 3, color: warPaintColor });
+              currentSprite.push({ x: 8, y: 3, color: warPaintColor });
+              break;
+            case 4: // Spiked hair
+              for (let y = 0; y < 3; y++) {
+                for (let x = 5; x < 11; x += 2) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              break;
+            case 5: // Side-shaved with long top
+              for (let y = 1; y < 5; y++) {
+                for (let x = 7; x < 11; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({ x, y, color: hairColor });
+                }
+              }
+              break;
           }
           // Tusks
           drawPixel(6, 5, '#ffffff');
           drawPixel(9, 5, '#ffffff');
-          currentSprite.push({x: 6, y: 5, color: '#ffffff'});
-          currentSprite.push({x: 9, y: 5, color: '#ffffff'});
+          currentSprite.push({ x: 6, y: 5, color: '#ffffff' });
+          currentSprite.push({ x: 9, y: 5, color: '#ffffff' });
           break;
       }
 
@@ -198,55 +466,90 @@
             for (let x = 4; x < 12; x++) {
               if (Math.random() > 0.2) {
                 drawPixel(x, y, clothingColor);
-                currentSprite.push({x, y, color: clothingColor});
+                currentSprite.push({ x, y, color: clothingColor });
               }
             }
           }
-          // Staff
-          for (let y = 5; y < 15; y++) {
-            drawPixel(3, y, '#8b4513');
-            currentSprite.push({x: 3, y, color: '#8b4513'});
+          // Improved staff design with random color details
+          const staffColor = '#8b4513';
+          const gemColor = randomChoice(colors.weaponDetails);
+          const detailColor = randomChoice(colors.weaponDetails);
+
+          // Staff shaft
+          for (let y = 4; y < 15; y++) {
+            drawPixel(3, y, staffColor);
+            currentSprite.push({ x: 3, y, color: staffColor });
           }
-          drawPixel(2, 4, '#ffd700');
-          drawPixel(3, 3, '#ffd700');
-          drawPixel(4, 4, '#ffd700');
-          currentSprite.push({x: 2, y: 4, color: '#ffd700'});
-          currentSprite.push({x: 3, y: 3, color: '#ffd700'});
-          currentSprite.push({x: 4, y: 4, color: '#ffd700'});
-          // Hands
+
+          // Staff head
+          drawPixel(2, 3, staffColor);
+          drawPixel(4, 3, staffColor);
+          drawPixel(1, 2, detailColor);
+          drawPixel(5, 2, detailColor);
+          drawPixel(3, 1, detailColor);
+          drawPixel(3, 2, gemColor);
+
+          currentSprite.push({ x: 2, y: 3, color: staffColor });
+          currentSprite.push({ x: 4, y: 3, color: staffColor });
+          currentSprite.push({ x: 1, y: 2, color: detailColor });
+          currentSprite.push({ x: 5, y: 2, color: detailColor });
+          currentSprite.push({ x: 3, y: 1, color: detailColor });
+          currentSprite.push({ x: 3, y: 2, color: gemColor });
+
+          // Random decorative details on staff
+          for (let y = 5; y < 14; y += 3) {
+            drawPixel(2, y, detailColor);
+            drawPixel(4, y, detailColor);
+            currentSprite.push({ x: 2, y, color: detailColor });
+            currentSprite.push({ x: 4, y, color: detailColor });
+          }
+
+          // Hands holding staff
           drawPixel(4, 9, skinColor);
           drawPixel(4, 10, skinColor);
-          drawPixel(11, 9, skinColor);
-          drawPixel(11, 10, skinColor);
-          currentSprite.push({x: 4, y: 9, color: skinColor});
-          currentSprite.push({x: 4, y: 10, color: skinColor});
-          currentSprite.push({x: 11, y: 9, color: skinColor});
-          currentSprite.push({x: 11, y: 10, color: skinColor});
+          currentSprite.push({ x: 4, y: 9, color: skinColor });
+          currentSprite.push({ x: 4, y: 10, color: skinColor });
           break;
         case 'warrior':
           // Armor
           for (let y = 6; y < 14; y++) {
             for (let x = 5; x < 11; x++) {
               drawPixel(x, y, clothingColor);
-              currentSprite.push({x, y, color: clothingColor});
+              currentSprite.push({ x, y, color: clothingColor });
             }
           }
-          // Sword
-          for (let y = 7; y < 15; y++) {
-            drawPixel(12, y, '#c0c0c0');
-            currentSprite.push({x: 12, y, color: '#c0c0c0'});
+          // Improved sword design with random color details
+          const bladeColor = '#c0c0c0';
+          const hiltColor = randomChoice(['#ffd700', '#c0c0c0', '#8b4513']);
+          const swordDetailColor = randomChoice(colors.weaponDetails);
+
+          // Sword blade
+          for (let y = 6; y < 15; y++) {
+            drawPixel(12, y, bladeColor);
+            currentSprite.push({ x: 12, y, color: bladeColor });
           }
-          drawPixel(11, 6, '#ffd700');
-          currentSprite.push({x: 11, y: 6, color: '#ffd700'});
-          // Hands (with gauntlets)
-          drawPixel(4, 9, '#a9a9a9');
-          drawPixel(4, 10, '#a9a9a9');
-          drawPixel(11, 9, '#a9a9a9');
-          drawPixel(11, 10, '#a9a9a9');
-          currentSprite.push({x: 4, y: 9, color: '#a9a9a9'});
-          currentSprite.push({x: 4, y: 10, color: '#a9a9a9'});
-          currentSprite.push({x: 11, y: 9, color: '#a9a9a9'});
-          currentSprite.push({x: 11, y: 10, color: '#a9a9a9'});
+
+          // Sword edge highlight
+          for (let y = 7; y < 14; y++) {
+            drawPixel(13, y, swordDetailColor);
+            currentSprite.push({ x: 13, y, color: swordDetailColor });
+          }
+
+          // Sword hilt
+          drawPixel(11, 6, hiltColor);
+          drawPixel(13, 6, hiltColor);
+          drawPixel(12, 5, hiltColor);
+          drawPixel(12, 4, swordDetailColor);
+          currentSprite.push({ x: 11, y: 6, color: hiltColor });
+          currentSprite.push({ x: 13, y: 6, color: hiltColor });
+          currentSprite.push({ x: 12, y: 5, color: hiltColor });
+          currentSprite.push({ x: 12, y: 4, color: swordDetailColor });
+
+          // Hands holding sword
+          drawPixel(11, 9, skinColor);
+          drawPixel(11, 10, skinColor);
+          currentSprite.push({ x: 11, y: 9, color: skinColor });
+          currentSprite.push({ x: 11, y: 10, color: skinColor });
           break;
         case 'archer':
           // Light armor
@@ -254,28 +557,66 @@
             for (let x = 5; x < 11; x++) {
               if (Math.random() > 0.3) {
                 drawPixel(x, y, clothingColor);
-                currentSprite.push({x, y, color: clothingColor});
+                currentSprite.push({ x, y, color: clothingColor });
               }
             }
           }
-          // Bow
-          for (let y = 6; y < 14; y++) {
-            drawPixel(3, y, '#8b4513');
-            currentSprite.push({x: 3, y, color: '#8b4513'});
+          // Improved bow design with random color details
+          const bowColor = '#8b4513';
+          const stringColor = '#ffffff';
+          const bowDetailColor = randomChoice(colors.weaponDetails);
+
+          // Bow curve (larger and more visible)
+          drawPixel(11, 4, bowColor);
+          drawPixel(12, 5, bowColor);
+          drawPixel(13, 6, bowColor);
+          drawPixel(14, 7, bowColor);
+          drawPixel(14, 8, bowColor);
+          drawPixel(14, 9, bowColor);
+          drawPixel(14, 10, bowColor);
+          drawPixel(13, 11, bowColor);
+          drawPixel(12, 12, bowColor);
+          drawPixel(11, 13, bowColor);
+
+          // Bow details
+          drawPixel(12, 4, bowDetailColor);
+          drawPixel(13, 5, bowDetailColor);
+          drawPixel(15, 8, bowDetailColor);
+          drawPixel(15, 9, bowDetailColor);
+          drawPixel(13, 12, bowDetailColor);
+          drawPixel(12, 13, bowDetailColor);
+
+          // Straight bowstring
+          for (let y = 4; y <= 13; y++) {
+            drawPixel(10, y, stringColor);
+            currentSprite.push({ x: 10, y, color: stringColor });
           }
-          drawPixel(2, 7, '#f4a460');
-          drawPixel(2, 12, '#f4a460');
-          currentSprite.push({x: 2, y: 7, color: '#f4a460'});
-          currentSprite.push({x: 2, y: 12, color: '#f4a460'});
-          // Hands (with fingerless gloves)
-          drawPixel(4, 9, skinColor);
-          drawPixel(4, 10, '#8b4513');
+
+          // Add bow pixels to currentSprite
+          currentSprite.push({ x: 11, y: 4, color: bowColor });
+          currentSprite.push({ x: 12, y: 5, color: bowColor });
+          currentSprite.push({ x: 13, y: 6, color: bowColor });
+          currentSprite.push({ x: 14, y: 7, color: bowColor });
+          currentSprite.push({ x: 14, y: 8, color: bowColor });
+          currentSprite.push({ x: 14, y: 9, color: bowColor });
+          currentSprite.push({ x: 14, y: 10, color: bowColor });
+          currentSprite.push({ x: 13, y: 11, color: bowColor });
+          currentSprite.push({ x: 12, y: 12, color: bowColor });
+          currentSprite.push({ x: 11, y: 13, color: bowColor });
+
+          // Add bow detail pixels to currentSprite
+          currentSprite.push({ x: 12, y: 4, color: bowDetailColor });
+          currentSprite.push({ x: 13, y: 5, color: bowDetailColor });
+          currentSprite.push({ x: 15, y: 8, color: bowDetailColor });
+          currentSprite.push({ x: 15, y: 9, color: bowDetailColor });
+          currentSprite.push({ x: 13, y: 12, color: bowDetailColor });
+          currentSprite.push({ x: 12, y: 13, color: bowDetailColor });
+
+          // Hands holding bow
+          drawPixel(11, 8, skinColor);
           drawPixel(11, 9, skinColor);
-          drawPixel(11, 10, '#8b4513');
-          currentSprite.push({x: 4, y: 9, color: skinColor});
-          currentSprite.push({x: 4, y: 10, color: '#8b4513'});
-          currentSprite.push({x: 11, y: 9, color: skinColor});
-          currentSprite.push({x: 11, y: 10, color: '#8b4513'});
+          currentSprite.push({ x: 11, y: 8, color: skinColor });
+          currentSprite.push({ x: 11, y: 9, color: skinColor });
           break;
         case 'thief':
           // Cloak
@@ -283,51 +624,139 @@
             for (let x = 4; x < 12; x++) {
               if (Math.random() > 0.4) {
                 drawPixel(x, y, clothingColor);
-                currentSprite.push({x, y, color: clothingColor});
+                currentSprite.push({ x, y, color: clothingColor });
               }
             }
           }
-          // Dagger
-          for (let y = 12; y < 15; y++) {
-            drawPixel(11, y, '#c0c0c0');
-            currentSprite.push({x: 11, y, color: '#c0c0c0'});
+          // Improved dual dagger design with random color details
+          const daggerBladeColor = '#c0c0c0';
+          const daggerHiltColor = randomChoice(['#ffd700', '#c0c0c0', '#8b4513']);
+          const daggerDetailColor = randomChoice(colors.weaponDetails);
+
+          // Left dagger
+          // Blade
+          for (let y = 11; y < 15; y++) {
+            drawPixel(3, y, daggerBladeColor);
+            currentSprite.push({ x: 3, y, color: daggerBladeColor });
           }
-          drawPixel(10, 11, '#ffd700');
-          currentSprite.push({x: 10, y: 11, color: '#ffd700'});
-          // Hands (with dark gloves)
-          drawPixel(4, 9, '#2f4f4f');
-          drawPixel(4, 10, '#2f4f4f');
-          drawPixel(11, 9, '#2f4f4f');
-          drawPixel(11, 10, '#2f4f4f');
-          currentSprite.push({x: 4, y: 9, color: '#2f4f4f'});
-          currentSprite.push({x: 4, y: 10, color: '#2f4f4f'});
-          currentSprite.push({x: 11, y: 9, color: '#2f4f4f'});
-          currentSprite.push({x: 11, y: 10, color: '#2f4f4f'});
+
+          // Edge highlight
+          for (let y = 12; y < 15; y++) {
+            drawPixel(2, y, daggerDetailColor);
+            currentSprite.push({ x: 2, y, color: daggerDetailColor });
+          }
+
+          // Hilt
+          drawPixel(2, 11, daggerHiltColor);
+          drawPixel(4, 11, daggerHiltColor);
+          drawPixel(3, 10, daggerHiltColor);
+          drawPixel(3, 9, daggerDetailColor);
+          currentSprite.push({ x: 2, y: 11, color: daggerHiltColor });
+          currentSprite.push({ x: 4, y: 11, color: daggerHiltColor });
+          currentSprite.push({ x: 3, y: 10, color: daggerHiltColor });
+          currentSprite.push({ x: 3, y: 9, color: daggerDetailColor });
+
+          // Right dagger
+          // Blade
+          for (let y = 11; y < 15; y++) {
+            drawPixel(12, y, daggerBladeColor);
+            currentSprite.push({ x: 12, y, color: daggerBladeColor });
+          }
+
+          // Edge highlight
+          for (let y = 12; y < 15; y++) {
+            drawPixel(13, y, daggerDetailColor);
+            currentSprite.push({ x: 13, y, color: daggerDetailColor });
+          }
+
+          // Hilt
+          drawPixel(11, 11, daggerHiltColor);
+          drawPixel(13, 11, daggerHiltColor);
+          drawPixel(12, 10, daggerHiltColor);
+          drawPixel(12, 9, daggerDetailColor);
+          currentSprite.push({ x: 11, y: 11, color: daggerHiltColor });
+          currentSprite.push({ x: 13, y: 11, color: daggerHiltColor });
+          currentSprite.push({ x: 12, y: 10, color: daggerHiltColor });
+          currentSprite.push({ x: 12, y: 9, color: daggerDetailColor });
+
+          // Hands holding daggers
+          drawPixel(4, 12, skinColor);
+          drawPixel(4, 13, skinColor);
+          drawPixel(11, 12, skinColor);
+          drawPixel(11, 13, skinColor);
+          currentSprite.push({ x: 4, y: 12, color: skinColor });
+          currentSprite.push({ x: 4, y: 13, color: skinColor });
+          currentSprite.push({ x: 11, y: 12, color: skinColor });
+          currentSprite.push({ x: 11, y: 13, color: skinColor });
           break;
       }
 
-      // Generate feet
-      for (let y = 14; y < 16; y++) {
-        for (let x = 5; x < 11; x++) {
-          if (x < 8) {
-            drawPixel(x, y, shoesColor);
-            currentSprite.push({x, y, color: shoesColor});
-          } else if (x > 8) {
-            drawPixel(x, y, shoesColor);
-            currentSprite.push({x, y, color: shoesColor});
-          }
-        }
-      }
+      // Generate shoes
+      const shoeColor = randomChoice(colors.shoes);
+      drawPixel(5, 14, shoeColor);
+      drawPixel(6, 14, shoeColor);
+      drawPixel(9, 14, shoeColor);
+      drawPixel(10, 14, shoeColor);
+      drawPixel(5, 15, shoeColor);
+      drawPixel(6, 15, shoeColor);
+      drawPixel(9, 15, shoeColor);
+      drawPixel(10, 15, shoeColor);
+
+      currentSprite.push({ x: 5, y: 14, color: shoeColor });
+      currentSprite.push({ x: 6, y: 14, color: shoeColor });
+      currentSprite.push({ x: 9, y: 14, color: shoeColor });
+      currentSprite.push({ x: 10, y: 14, color: shoeColor });
+      currentSprite.push({ x: 5, y: 15, color: shoeColor });
+      currentSprite.push({ x: 6, y: 15, color: shoeColor });
+      currentSprite.push({ x: 9, y: 15, color: shoeColor });
+      currentSprite.push({ x: 10, y: 15, color: shoeColor });
+
+      // Generate eyes
+      // drawPixel(7, 3, '#000000');
+      // drawPixel(8, 3, '#000000');
+      // currentSprite.push({ x: 7, y: 3, color: '#000000' });
+      // currentSprite.push({ x: 8, y: 3, color: '#000000' });
+
+      // Generate mouth
+      // drawPixel(7, 4, '#000000');
+      // drawPixel(8, 4, '#000000');
+      // currentSprite.push({ x: 7, y: 4, color: '#000000' });
+      // currentSprite.push({ x: 8, y: 4, color: '#000000' });
     }
 
     function downloadSprite() {
+      const dataURL = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = 'fantasy_character_sprite.png';
-      link.href = canvas.toDataURL();
+      link.href = dataURL;
+      link.download = 'fantasy_sprite.png';
       link.click();
     }
 
-    // Generate initial sprite
+    function isSimilarColor(color1, color2) {
+      const rgb1 = hexToRgb(color1);
+      const rgb2 = hexToRgb(color2);
+      const threshold = 50; // Adjust this value to change sensitivity
+
+      const diff = Math.sqrt(
+        Math.pow(rgb1.r - rgb2.r, 2) +
+        Math.pow(rgb1.g - rgb2.g, 2) +
+        Math.pow(rgb1.b - rgb2.b, 2)
+      );
+
+      return diff < threshold;
+    }
+
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
+
     generateSprite();
   </script>
-</body></html>
+</body>
+
+</html>
