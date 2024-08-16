@@ -1,0 +1,196 @@
+<html>
+
+<head>
+    <base href="" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Generators</title>
+    <style>
+        @font-face {
+            font-family: 'PixelFont';
+            src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        }
+
+        body {
+            font-family: 'PixelFont', monospace;
+            background-color: #f0e6ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .pixel-bg {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        header {
+            background-color: #d4c5f9;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4a0e78;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #3a3a3a;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .generator-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+        }
+
+        .generator-button {
+            width: 200px;
+            height: 200px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-family: 'PixelFont', monospace;
+            font-size: 1rem;
+            color: #fff;
+            text-shadow: 2px 2px #000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generator-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'%3E%3C/path%3E%3C/svg%3E");
+            z-index: 1;
+        }
+
+        .generator-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .generator-button .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        #character-generator {
+            background-color: #7fb2f0;
+        }
+
+        #fantasy-monster-generator {
+            background-color: #7fd4a6;
+        }
+
+        #lovecraftian-creature-generator {
+            background-color: #b57edc;
+        }
+
+        footer {
+            background-color: #c4b5e8;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .social-links a {
+            color: #4a0e78;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .copyright {
+            color: #3a3a3a;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        @keyframes pixelate {
+            0% {
+                filter: blur(0px);
+            }
+
+            50% {
+                filter: blur(2px);
+            }
+
+            100% {
+                filter: blur(0px);
+            }
+        }
+    </style>
+</head>
+
+<body class="pixel-bg">
+    <header>
+        <h1>Creative Generators</h1>
+        <p>Explore our unique generators and bring your imagination to life! Click on a generator to start creating.</p>
+    </header>
+
+    <main>
+        <div class="generator-grid">
+            <button id="8bitcharacterGenerator" class="generator-button">
+                <div class="icon">👤</div>
+                Character Generator
+            </button>
+            <button id="8bitcreaturesgenerator" class="generator-button">
+                <div class="icon">🐉</div>
+                Fantasy Monster Generator
+            </button>
+            <button id="8bitlovecraftgenerator" class="generator-button">
+                <div class="icon">🐙</div>
+                Lovecraftian Creature Generator
+            </button>
+        </div>
+    </main>
+
+    <footer>
+
+        <div class="copyright">© 2023 Creative Generators. All rights reserved.</div>
+    </footer>
+
+    <script>
+        const buttons = document.querySelectorAll('.generator-button');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const generatorType = e.currentTarget.id;
+                animateTransition(() => {
+                    window.location.href = `/${generatorType}.html`;
+                });
+            });
+        });
+
+        function animateTransition(callback) {
+            document.body.style.animation = 'pixelate 0.5s ease-in-out';
+            setTimeout(() => {
+                document.body.style.animation = '';
+                callback();
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>
