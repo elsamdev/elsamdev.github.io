@@ -57,6 +57,28 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
             max-width: 1200px;
+            width: 100%;
+            /* Asegura que la cuadrícula use todo el ancho disponible */
+        }
+
+        /* Media query para pantallas medianas (tabletas) */
+        @media (max-width: 768px) {
+            .generator-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* Cambia a 2 columnas */
+                gap: 1.5rem;
+                /* Reduce el espacio entre los elementos */
+            }
+        }
+
+        /* Media query para pantallas pequeñas (móviles) */
+        @media (max-width: 480px) {
+            .generator-grid {
+                grid-template-columns: 1fr;
+                /* Cambia a 1 columna */
+                gap: 1rem;
+                /* Reduce aún más el espacio entre los elementos */
+            }
         }
 
         .generator-button {
