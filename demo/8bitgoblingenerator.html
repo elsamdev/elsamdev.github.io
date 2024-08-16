@@ -1,0 +1,399 @@
+<html>
+
+<head>
+  <base href="https://fantasy-creature-sprite-generator.example.com/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fantasy Creature Sprite Generator</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #1a1a2e;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #00ff99;
+      text-shadow: 2px 2px 4px rgba(0, 255, 153, 0.3);
+    }
+
+    #canvas {
+      border: 2px solid #00ff99;
+      background-color: #0f0f1a;
+    }
+
+    #controls {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    button,
+    select {
+      background-color: #00ff99;
+      color: #1a1a2e;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button:hover,
+    select:hover {
+      background-color: #00cc7a;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Fantasy Creature Sprite Generator</h1>
+  <canvas id="canvas" width="64" height="64"></canvas>
+  <div id="controls">
+    <select id="creatureSelect">
+      <option value="goblin">Goblin</option>
+      <option value="troll">Troll</option>
+      <option value="minotaur">Minotaur</option>
+    </select>
+    <button onclick="generateSprite()">Generate New Creature</button>
+    <button onclick="downloadSprite()">Download Sprite</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const pixelSize = 4;
+    const spriteSize = 16;
+    let currentSprite;
+
+    const colors = {
+      skin: {
+        goblin: ['#7cfc00', '#32cd32', '#228b22', '#006400', '#8fbc8f'],
+        troll: ['#808000', '#6b8e23', '#556b2f', '#698b69', '#2e8b57'],
+        minotaur: ['#8B4513', '#A0522D', '#CD853F', '#DEB887', '#D2691E']
+      },
+      eyes: ['#ff0000', '#ffff00', '#00ffff', '#ff00ff', '#ffffff'],
+      clothing: ['#8b4513', '#a0522d', '#cd853f', '#deb887', '#f4a460'],
+      accessories: ['#ffd700', '#daa520', '#b8860b', '#cd853f', '#d2691e'],
+      horns: ['#F4A460', '#D2691E', '#8B4513', '#A52A2A', '#800000']
+    };
+
+    function randomChoice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function drawPixel(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    }
+
+    function generateSprite() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      currentSprite = [];
+
+      const creatureType = document.getElementById('creatureSelect').value;
+      const skinColor = randomChoice(colors.skin[creatureType]);
+      const eyeColor = randomChoice(colors.eyes);
+      const clothingColor = randomChoice(colors.clothing);
+      const accessoryColor = randomChoice(colors.accessories);
+
+      if (creatureType === 'goblin') {
+        generateGoblin(skinColor, eyeColor, clothingColor, accessoryColor);
+      } else if (creatureType === 'troll') {
+        generateTroll(skinColor, eyeColor, clothingColor, accessoryColor);
+      } else if (creatureType === 'minotaur') {
+        generateMinotaur(skinColor, eyeColor, clothingColor, accessoryColor);
+      }
+    }
+
+    function generateGoblin(skinColor, eyeColor, clothingColor, accessoryColor) {
+      // Head
+      for (let y = 3; y < 8; y++) {
+        for (let x = 5; x < 11; x++) {
+          drawPixel(x, y, skinColor);
+          currentSprite.push({ x, y, color: skinColor });
+        }
+      }
+
+      // Ears
+      drawPixel(4, 4, skinColor);
+      drawPixel(4, 5, skinColor);
+      drawPixel(11, 4, skinColor);
+      drawPixel(11, 5, skinColor);
+      currentSprite.push({ x: 4, y: 4, color: skinColor });
+      currentSprite.push({ x: 4, y: 5, color: skinColor });
+      currentSprite.push({ x: 11, y: 4, color: skinColor });
+      currentSprite.push({ x: 11, y: 5, color: skinColor });
+
+      // Eyes
+      drawPixel(6, 5, eyeColor);
+      drawPixel(9, 5, eyeColor);
+      currentSprite.push({ x: 6, y: 5, color: eyeColor });
+      currentSprite.push({ x: 9, y: 5, color: eyeColor });
+
+      // Nose
+      drawPixel(7, 6, '#8b4513');
+      drawPixel(8, 6, '#8b4513');
+      currentSprite.push({ x: 7, y: 6, color: '#8b4513' });
+      currentSprite.push({ x: 8, y: 6, color: '#8b4513' });
+
+      // Mouth
+      drawPixel(7, 7, '#ff0000');
+      drawPixel(8, 7, '#ff0000');
+      currentSprite.push({ x: 7, y: 7, color: '#ff0000' });
+      currentSprite.push({ x: 8, y: 7, color: '#ff0000' });
+
+      // Body
+      for (let y = 8; y < 14; y++) {
+        for (let x = 5; x < 11; x++) {
+          drawPixel(x, y, clothingColor);
+          currentSprite.push({ x, y, color: clothingColor });
+        }
+      }
+
+      // Arms
+      for (let y = 8; y < 12; y++) {
+        drawPixel(4, y, skinColor);
+        drawPixel(11, y, skinColor);
+        currentSprite.push({ x: 4, y, color: skinColor });
+        currentSprite.push({ x: 11, y, color: skinColor });
+      }
+
+      // Hands
+      drawPixel(3, 11, skinColor);
+      drawPixel(3, 12, skinColor);
+      drawPixel(12, 11, skinColor);
+      drawPixel(12, 12, skinColor);
+      currentSprite.push({ x: 3, y: 11, color: skinColor });
+      currentSprite.push({ x: 3, y: 12, color: skinColor });
+      currentSprite.push({ x: 12, y: 11, color: skinColor });
+      currentSprite.push({ x: 12, y: 12, color: skinColor });
+
+      // Legs
+      for (let y = 14; y < 16; y++) {
+        drawPixel(6, y, skinColor);
+        drawPixel(9, y, skinColor);
+        currentSprite.push({ x: 6, y, color: skinColor });
+        currentSprite.push({ x: 9, y, color: skinColor });
+      }
+
+      // Feet
+      drawPixel(5, 15, skinColor);
+      drawPixel(10, 15, skinColor);
+      currentSprite.push({ x: 5, y: 15, color: skinColor });
+      currentSprite.push({ x: 10, y: 15, color: skinColor });
+
+      // Accessory (e.g., belt)
+      for (let x = 5; x < 11; x++) {
+        drawPixel(x, 11, accessoryColor);
+        currentSprite.push({ x, y: 11, color: accessoryColor });
+      }
+    }
+
+    function generateTroll(skinColor, eyeColor, clothingColor, accessoryColor) {
+      // Head
+      for (let y = 1; y < 7; y++) {
+        for (let x = 4; x < 12; x++) {
+          drawPixel(x, y, skinColor);
+          currentSprite.push({ x, y, color: skinColor });
+        }
+      }
+
+      // Hair
+      const hairColor = '#8b4513';
+      for (let y = 0; y < 2; y++) {
+        for (let x = 3; x < 13; x++) {
+          if (Math.random() > 0.3) {
+            drawPixel(x, y, hairColor);
+            currentSprite.push({ x, y, color: hairColor });
+          }
+        }
+      }
+
+      // Eyes
+      drawPixel(6, 3, eyeColor);
+      drawPixel(9, 3, eyeColor);
+      currentSprite.push({ x: 6, y: 3, color: eyeColor });
+      currentSprite.push({ x: 9, y: 3, color: eyeColor });
+
+      // Nose
+      drawPixel(7, 4, '#8b4513');
+      drawPixel(8, 4, '#8b4513');
+      currentSprite.push({ x: 7, y: 4, color: '#8b4513' });
+      currentSprite.push({ x: 8, y: 4, color: '#8b4513' });
+
+      // Mouth
+      for (let x = 6; x < 10; x++) {
+        drawPixel(x, 5, '#ff0000');
+        currentSprite.push({ x, y: 5, color: '#ff0000' });
+      }
+
+      // Body
+      for (let y = 7; y < 14; y++) {
+        for (let x = 3; x < 13; x++) {
+          drawPixel(x, y, clothingColor);
+          currentSprite.push({ x, y, color: clothingColor });
+        }
+      }
+
+      // Arms
+      for (let y = 7; y < 13; y++) {
+        drawPixel(2, y, skinColor);
+        drawPixel(13, y, skinColor);
+        currentSprite.push({ x: 2, y, color: skinColor });
+        currentSprite.push({ x: 13, y, color: skinColor });
+      }
+
+      // Hands
+      drawPixel(1, 12, skinColor);
+      drawPixel(1, 13, skinColor);
+      drawPixel(14, 12, skinColor);
+      drawPixel(14, 13, skinColor);
+      currentSprite.push({ x: 1, y: 12, color: skinColor });
+      currentSprite.push({ x: 1, y: 13, color: skinColor });
+      currentSprite.push({ x: 14, y: 12, color: skinColor });
+      currentSprite.push({ x: 14, y: 13, color: skinColor });
+
+      // Legs
+      for (let y = 14; y < 16; y++) {
+        drawPixel(5, y, skinColor);
+        drawPixel(10, y, skinColor);
+        currentSprite.push({ x: 5, y, color: skinColor });
+        currentSprite.push({ x: 10, y, color: skinColor });
+      }
+
+      // Feet
+      drawPixel(4, 15, skinColor);
+      drawPixel(11, 15, skinColor);
+      currentSprite.push({ x: 4, y: 15, color: skinColor });
+      currentSprite.push({ x: 11, y: 15, color: skinColor });
+
+      // Accessory (e.g., necklace)
+      for (let x = 6; x < 10; x++) {
+        drawPixel(x, 7, accessoryColor);
+        currentSprite.push({ x, y: 7, color: accessoryColor });
+      }
+    }
+
+
+    function generateMinotaur(skinColor, eyeColor, clothingColor, accessoryColor) {
+      const hornColor = randomChoice(colors.horns);
+
+      // Head
+      for (let y = 2; y < 8; y++) {
+        for (let x = 4; x < 12; x++) {
+          drawPixel(x, y, skinColor);
+          currentSprite.push({ x, y, color: skinColor });
+        }
+      }
+
+      // Horns (more defined)
+      drawPixel(3, 1, hornColor);
+      drawPixel(3, 2, hornColor);
+      drawPixel(4, 0, hornColor);
+      drawPixel(4, 1, hornColor);
+      drawPixel(5, 0, hornColor);
+      drawPixel(12, 1, hornColor);
+      drawPixel(12, 2, hornColor);
+      drawPixel(11, 0, hornColor);
+      drawPixel(11, 1, hornColor);
+      drawPixel(10, 0, hornColor);
+      currentSprite.push(...[
+        { x: 3, y: 1, color: hornColor },
+        { x: 3, y: 2, color: hornColor },
+        { x: 4, y: 0, color: hornColor },
+        { x: 4, y: 1, color: hornColor },
+        { x: 5, y: 0, color: hornColor },
+        { x: 12, y: 1, color: hornColor },
+        { x: 12, y: 2, color: hornColor },
+        { x: 11, y: 0, color: hornColor },
+        { x: 11, y: 1, color: hornColor },
+        { x: 10, y: 0, color: hornColor }
+      ]);
+
+      // Eyes
+      drawPixel(6, 4, eyeColor);
+      drawPixel(9, 4, eyeColor);
+      currentSprite.push({ x: 6, y: 4, color: eyeColor });
+      currentSprite.push({ x: 9, y: 4, color: eyeColor });
+
+      // Nose
+      drawPixel(7, 5, '#8b4513');
+      drawPixel(8, 5, '#8b4513');
+      currentSprite.push({ x: 7, y: 5, color: '#8b4513' });
+      currentSprite.push({ x: 8, y: 5, color: '#8b4513' });
+
+      // Mouth
+      for (let x = 6; x < 10; x++) {
+        drawPixel(x, 6, '#ff0000');
+        currentSprite.push({ x, y: 6, color: '#ff0000' });
+      }
+
+      // Body
+      for (let y = 8; y < 14; y++) {
+        for (let x = 3; x < 13; x++) {
+          drawPixel(x, y, clothingColor);
+          currentSprite.push({ x, y, color: clothingColor });
+        }
+      }
+
+      // Arms
+      for (let y = 8; y < 13; y++) {
+        drawPixel(2, y, skinColor);
+        drawPixel(13, y, skinColor);
+        currentSprite.push({ x: 2, y, color: skinColor });
+        currentSprite.push({ x: 13, y, color: skinColor });
+      }
+
+      // Hands
+      drawPixel(1, 12, skinColor);
+      drawPixel(1, 13, skinColor);
+      drawPixel(14, 12, skinColor);
+      drawPixel(14, 13, skinColor);
+      currentSprite.push({ x: 1, y: 12, color: skinColor });
+      currentSprite.push({ x: 1, y: 13, color: skinColor });
+      currentSprite.push({ x: 14, y: 12, color: skinColor });
+      currentSprite.push({ x: 14, y: 13, color: skinColor });
+
+      // Legs
+      for (let y = 14; y < 16; y++) {
+        drawPixel(5, y, skinColor);
+        drawPixel(10, y, skinColor);
+        currentSprite.push({ x: 5, y, color: skinColor });
+        currentSprite.push({ x: 10, y, color: skinColor });
+      }
+
+      // Hooves
+      drawPixel(4, 15, '#000000');
+      drawPixel(11, 15, '#000000');
+      currentSprite.push({ x: 4, y: 15, color: '#000000' });
+      currentSprite.push({ x: 11, y: 15, color: '#000000' });
+
+      // Accessory (e.g., belt)
+      for (let x = 3; x < 13; x++) {
+        drawPixel(x, 11, accessoryColor);
+        currentSprite.push({ x, y: 11, color: accessoryColor });
+      }
+    }
+
+    function downloadSprite() {
+      const link = document.createElement('a');
+      link.download = 'creature_sprite.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Generate initial sprite
+    generateSprite();
+  </script>
+</body>
+
+</html>
