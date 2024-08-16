@@ -61,6 +61,7 @@
       <option value="goblin">Goblin</option>
       <option value="troll">Troll</option>
       <option value="minotaur">Minotaur</option>
+      <option value="werewolf">Werewolf</option>
     </select>
     <button onclick="generateSprite()">Generate New Creature</button>
     <button onclick="downloadSprite()">Download Sprite</button>
@@ -78,12 +79,14 @@
       skin: {
         goblin: ['#7cfc00', '#32cd32', '#228b22', '#006400', '#8fbc8f'],
         troll: ['#808000', '#6b8e23', '#556b2f', '#698b69', '#2e8b57'],
-        minotaur: ['#8B4513', '#A0522D', '#CD853F', '#DEB887', '#D2691E']
+        minotaur: ['#8B4513', '#A0522D', '#CD853F', '#DEB887', '#D2691E'],
+        werewolf: ['#8B4513', '#A52A2A', '#D2691E', '#CD853F', '#DEB887']
       },
       eyes: ['#ff0000', '#ffff00', '#00ffff', '#ff00ff', '#ffffff'],
       clothing: ['#8b4513', '#a0522d', '#cd853f', '#deb887', '#f4a460'],
       accessories: ['#ffd700', '#daa520', '#b8860b', '#cd853f', '#d2691e'],
-      horns: ['#F4A460', '#D2691E', '#8B4513', '#A52A2A', '#800000']
+      horns: ['#F4A460', '#D2691E', '#8B4513', '#A52A2A', '#800000'],
+      fur: ['#8B4513', '#A52A2A', '#D2691E', '#CD853F', '#DEB887']
     };
 
     function randomChoice(arr) {
@@ -105,12 +108,19 @@
       const clothingColor = randomChoice(colors.clothing);
       const accessoryColor = randomChoice(colors.accessories);
 
-      if (creatureType === 'goblin') {
-        generateGoblin(skinColor, eyeColor, clothingColor, accessoryColor);
-      } else if (creatureType === 'troll') {
-        generateTroll(skinColor, eyeColor, clothingColor, accessoryColor);
-      } else if (creatureType === 'minotaur') {
-        generateMinotaur(skinColor, eyeColor, clothingColor, accessoryColor);
+      switch (creatureType) {
+        case 'goblin':
+          generateGoblin(skinColor, eyeColor, clothingColor, accessoryColor);
+          break;
+        case 'troll':
+          generateTroll(skinColor, eyeColor, clothingColor, accessoryColor);
+          break;
+        case 'minotaur':
+          generateMinotaur(skinColor, eyeColor, clothingColor, accessoryColor);
+          break;
+        case 'werewolf':
+          generateWerewolf(skinColor, eyeColor, clothingColor, accessoryColor);
+          break;
       }
     }
 
@@ -382,6 +392,113 @@
         drawPixel(x, 11, accessoryColor);
         currentSprite.push({ x, y: 11, color: accessoryColor });
       }
+    }
+
+    function generateWerewolf(skinColor, eyeColor, clothingColor, accessoryColor) {
+      const furColor = randomChoice(colors.fur);
+
+      // Head
+      for (let y = 2; y < 8; y++) {
+        for (let x = 4; x < 12; x++) {
+          drawPixel(x, y, furColor);
+          currentSprite.push({ x, y, color: furColor });
+        }
+      }
+
+      // Ears (well-defined)
+      drawPixel(3, 1, furColor);
+      drawPixel(4, 0, furColor);
+      drawPixel(5, 1, furColor);
+      drawPixel(12, 1, furColor);
+      drawPixel(11, 0, furColor);
+      drawPixel(10, 1, furColor);
+      currentSprite.push(...[
+        { x: 3, y: 1, color: furColor },
+        { x: 4, y: 0, color: furColor },
+        { x: 5, y: 1, color: furColor },
+        { x: 12, y: 1, color: furColor },
+        { x: 11, y: 0, color: furColor },
+        { x: 10, y: 1, color: furColor }
+      ]);
+
+      // Inner ears
+      drawPixel(4, 1, '#FFA07A');
+      drawPixel(11, 1, '#FFA07A');
+      currentSprite.push({ x: 4, y: 1, color: '#FFA07A' });
+      currentSprite.push({ x: 11, y: 1, color: '#FFA07A' });
+
+      // Eyes
+      drawPixel(6, 4, eyeColor);
+      drawPixel(9, 4, eyeColor);
+      currentSprite.push({ x: 6, y: 4, color: eyeColor });
+      currentSprite.push({ x: 9, y: 4, color: eyeColor });
+
+      // Nose
+      drawPixel(7, 5, '#000000');
+      drawPixel(8, 5, '#000000');
+      currentSprite.push({ x: 7, y: 5, color: '#000000' });
+      currentSprite.push({ x: 8, y: 5, color: '#000000' });
+
+      // Mouth (well-defined)
+      for (let x = 5; x < 11; x++) {
+        drawPixel(x, 6, '#8B0000');
+        currentSprite.push({ x, y: 6, color: '#8B0000' });
+      }
+      // Teeth
+      drawPixel(6, 7, '#FFFFFF');
+      drawPixel(9, 7, '#FFFFFF');
+      currentSprite.push({ x: 6, y: 7, color: '#FFFFFF' });
+      currentSprite.push({ x: 9, y: 7, color: '#FFFFFF' });
+
+      // Body
+      for (let y = 8; y < 14; y++) {
+        for (let x = 3; x < 13; x++) {
+          drawPixel(x, y, furColor);
+          currentSprite.push({ x, y, color: furColor });
+        }
+      }
+
+      // Arms
+      for (let y = 8; y < 13; y++) {
+        drawPixel(2, y, furColor);
+        drawPixel(13, y, furColor);
+        currentSprite.push({ x: 2, y, color: furColor });
+        currentSprite.push({ x: 13, y, color: furColor });
+      }
+
+      // Hands (claws)
+      drawPixel(1, 12, '#000000');
+      drawPixel(1, 13, '#000000');
+      drawPixel(14, 12, '#000000');
+      drawPixel(14, 13, '#000000');
+      currentSprite.push({ x: 1, y: 12, color: '#000000' });
+      currentSprite.push({ x: 1, y: 13, color: '#000000' });
+      currentSprite.push({ x: 14, y: 12, color: '#000000' });
+      currentSprite.push({ x: 14, y: 13, color: '#000000' });
+
+      // Legs
+      for (let y = 14; y < 16; y++) {
+        drawPixel(5, y, furColor);
+        drawPixel(10, y, furColor);
+        currentSprite.push({ x: 5, y, color: furColor });
+        currentSprite.push({ x: 10, y, color: furColor });
+      }
+
+      // Feet (claws)
+      drawPixel(4, 15, '#000000');
+      drawPixel(11, 15, '#000000');
+      currentSprite.push({ x: 4, y: 15, color: '#000000' });
+      currentSprite.push({ x: 11, y: 15, color: '#000000' });
+
+      // Torn clothing
+      for (let x = 5; x < 11; x++) {
+        drawPixel(x, 10, clothingColor);
+        currentSprite.push({ x, y: 10, color: clothingColor });
+      }
+      drawPixel(6, 11, clothingColor);
+      drawPixel(9, 11, clothingColor);
+      currentSprite.push({ x: 6, y: 11, color: clothingColor });
+      currentSprite.push({ x: 9, y: 11, color: clothingColor });
     }
 
     function downloadSprite() {
