@@ -1,0 +1,333 @@
+<html><head><base href="https://fantasy-character-sprite-generator.example.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fantasy Character Sprite Generator</title>
+<style>
+  body {
+    font-family: 'Courier New', monospace;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    color: #00ff99;
+    text-shadow: 2px 2px 4px rgba(0, 255, 153, 0.3);
+  }
+  #canvas {
+    border: 2px solid #00ff99;
+    background-color: #0f0f1a;
+  }
+  #controls {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  button, select {
+    background-color: #00ff99;
+    color: #1a1a2e;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  button:hover, select:hover {
+    background-color: #00cc7a;
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+  <h1>Fantasy Character Sprite Generator</h1>
+  <canvas id="canvas" width="64" height="64"></canvas>
+  <div id="controls">
+    <select id="raceSelect">
+      <option value="human">Human</option>
+      <option value="elf">Elf</option>
+      <option value="dwarf">Dwarf</option>
+      <option value="orc">Orc</option>
+    </select>
+    <select id="professionSelect">
+      <option value="mage">Mage</option>
+      <option value="warrior">Warrior</option>
+      <option value="archer">Archer</option>
+      <option value="thief">Thief</option>
+    </select>
+    <button onclick="generateSprite()">Generate New Character</button>
+    <button onclick="downloadSprite()">Download Sprite</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const pixelSize = 4;
+    const spriteSize = 16;
+    let currentSprite;
+
+    const colors = {
+      skin: {
+        human: ['#ffdab9', '#f0e68c', '#d2691e', '#8b4513', '#ffe4b5'],
+        elf: ['#f0fff0', '#98fb98', '#90ee90', '#7cfc00'],
+        dwarf: ['#cd853f', '#deb887', '#d2691e', '#8b4513'],
+        orc: ['#9acd32', '#6b8e23', '#556b2f', '#3cb371']
+      },
+      hair: ['#ffd700', '#8b4513', '#a0522d', '#c0c0c0', '#36454f', '#800000', '#4b0082'],
+      clothing: {
+        mage: ['#4169e1', '#9932cc', '#228b22', '#b22222', '#4b0082', '#800080', '#008080'],
+        warrior: ['#8b0000', '#b8860b', '#bdb76b', '#a9a9a9', '#2f4f4f'],
+        archer: ['#006400', '#228b22', '#8fbc8f', '#20b2aa', '#2e8b57'],
+        thief: ['#2f4f4f', '#696969', '#778899', '#708090', '#4682b4']
+      },
+      shoes: ['#8b4513', '#36454f', '#800000', '#4b0082', '#000000']
+    };
+
+    function randomChoice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function drawPixel(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    }
+
+    function generateSprite() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      currentSprite = [];
+
+      const race = document.getElementById('raceSelect').value;
+      const profession = document.getElementById('professionSelect').value;
+
+      const skinColor = randomChoice(colors.skin[race]);
+      const hairColor = randomChoice(colors.hair);
+      const clothingColor = randomChoice(colors.clothing[profession]);
+      const shoesColor = randomChoice(colors.shoes);
+
+      // Generate head
+      for (let y = 2; y < 6; y++) {
+        for (let x = 6; x < 10; x++) {
+          drawPixel(x, y, skinColor);
+          currentSprite.push({x, y, color: skinColor});
+        }
+      }
+
+      // Generate hair (race-specific styles)
+      const hairStyle = Math.floor(Math.random() * 3);
+      switch (race) {
+        case 'human':
+          switch (hairStyle) {
+            case 0: // Short hair
+              for (let y = 1; y < 3; y++) {
+                for (let x = 5; x < 11; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({x, y, color: hairColor});
+                }
+              }
+              break;
+            case 1: // Long hair
+              for (let y = 1; y < 8; y++) {
+                for (let x = 5; x < 11; x++) {
+                  if (y < 3 || (x > 5 && x < 10)) {
+                    drawPixel(x, y, hairColor);
+                    currentSprite.push({x, y, color: hairColor});
+                  }
+                }
+              }
+              break;
+            case 2: // Bald with beard
+              for (let y = 5; y < 7; y++) {
+                for (let x = 5; x < 11; x++) {
+                  drawPixel(x, y, hairColor);
+                  currentSprite.push({x, y, color: hairColor});
+                }
+              }
+              break;
+          }
+          break;
+        case 'elf':
+          // Long, flowing hair
+          for (let y = 0; y < 10; y++) {
+            for (let x = 4; x < 12; x++) {
+              if (y < 2 || (x > 5 && x < 10)) {
+                drawPixel(x, y, hairColor);
+                currentSprite.push({x, y, color: hairColor});
+              }
+            }
+          }
+          // Pointy ears
+          drawPixel(5, 3, skinColor);
+          drawPixel(10, 3, skinColor);
+          currentSprite.push({x: 5, y: 3, color: skinColor});
+          currentSprite.push({x: 10, y: 3, color: skinColor});
+          break;
+        case 'dwarf':
+          // Bushy beard
+          for (let y = 4; y < 8; y++) {
+            for (let x = 4; x < 12; x++) {
+              drawPixel(x, y, hairColor);
+              currentSprite.push({x, y, color: hairColor});
+            }
+          }
+          break;
+        case 'orc':
+          // Mohawk
+          for (let y = 0; y < 3; y++) {
+            for (let x = 7; x < 9; x++) {
+              drawPixel(x, y, hairColor);
+              currentSprite.push({x, y, color: hairColor});
+            }
+          }
+          // Tusks
+          drawPixel(6, 5, '#ffffff');
+          drawPixel(9, 5, '#ffffff');
+          currentSprite.push({x: 6, y: 5, color: '#ffffff'});
+          currentSprite.push({x: 9, y: 5, color: '#ffffff'});
+          break;
+      }
+
+      // Generate body (profession-specific)
+      switch (profession) {
+        case 'mage':
+          // Robe
+          for (let y = 6; y < 14; y++) {
+            for (let x = 4; x < 12; x++) {
+              if (Math.random() > 0.2) {
+                drawPixel(x, y, clothingColor);
+                currentSprite.push({x, y, color: clothingColor});
+              }
+            }
+          }
+          // Staff
+          for (let y = 5; y < 15; y++) {
+            drawPixel(3, y, '#8b4513');
+            currentSprite.push({x: 3, y, color: '#8b4513'});
+          }
+          drawPixel(2, 4, '#ffd700');
+          drawPixel(3, 3, '#ffd700');
+          drawPixel(4, 4, '#ffd700');
+          currentSprite.push({x: 2, y: 4, color: '#ffd700'});
+          currentSprite.push({x: 3, y: 3, color: '#ffd700'});
+          currentSprite.push({x: 4, y: 4, color: '#ffd700'});
+          // Hands
+          drawPixel(4, 9, skinColor);
+          drawPixel(4, 10, skinColor);
+          drawPixel(11, 9, skinColor);
+          drawPixel(11, 10, skinColor);
+          currentSprite.push({x: 4, y: 9, color: skinColor});
+          currentSprite.push({x: 4, y: 10, color: skinColor});
+          currentSprite.push({x: 11, y: 9, color: skinColor});
+          currentSprite.push({x: 11, y: 10, color: skinColor});
+          break;
+        case 'warrior':
+          // Armor
+          for (let y = 6; y < 14; y++) {
+            for (let x = 5; x < 11; x++) {
+              drawPixel(x, y, clothingColor);
+              currentSprite.push({x, y, color: clothingColor});
+            }
+          }
+          // Sword
+          for (let y = 7; y < 15; y++) {
+            drawPixel(12, y, '#c0c0c0');
+            currentSprite.push({x: 12, y, color: '#c0c0c0'});
+          }
+          drawPixel(11, 6, '#ffd700');
+          currentSprite.push({x: 11, y: 6, color: '#ffd700'});
+          // Hands (with gauntlets)
+          drawPixel(4, 9, '#a9a9a9');
+          drawPixel(4, 10, '#a9a9a9');
+          drawPixel(11, 9, '#a9a9a9');
+          drawPixel(11, 10, '#a9a9a9');
+          currentSprite.push({x: 4, y: 9, color: '#a9a9a9'});
+          currentSprite.push({x: 4, y: 10, color: '#a9a9a9'});
+          currentSprite.push({x: 11, y: 9, color: '#a9a9a9'});
+          currentSprite.push({x: 11, y: 10, color: '#a9a9a9'});
+          break;
+        case 'archer':
+          // Light armor
+          for (let y = 6; y < 14; y++) {
+            for (let x = 5; x < 11; x++) {
+              if (Math.random() > 0.3) {
+                drawPixel(x, y, clothingColor);
+                currentSprite.push({x, y, color: clothingColor});
+              }
+            }
+          }
+          // Bow
+          for (let y = 6; y < 14; y++) {
+            drawPixel(3, y, '#8b4513');
+            currentSprite.push({x: 3, y, color: '#8b4513'});
+          }
+          drawPixel(2, 7, '#f4a460');
+          drawPixel(2, 12, '#f4a460');
+          currentSprite.push({x: 2, y: 7, color: '#f4a460'});
+          currentSprite.push({x: 2, y: 12, color: '#f4a460'});
+          // Hands (with fingerless gloves)
+          drawPixel(4, 9, skinColor);
+          drawPixel(4, 10, '#8b4513');
+          drawPixel(11, 9, skinColor);
+          drawPixel(11, 10, '#8b4513');
+          currentSprite.push({x: 4, y: 9, color: skinColor});
+          currentSprite.push({x: 4, y: 10, color: '#8b4513'});
+          currentSprite.push({x: 11, y: 9, color: skinColor});
+          currentSprite.push({x: 11, y: 10, color: '#8b4513'});
+          break;
+        case 'thief':
+          // Cloak
+          for (let y = 6; y < 14; y++) {
+            for (let x = 4; x < 12; x++) {
+              if (Math.random() > 0.4) {
+                drawPixel(x, y, clothingColor);
+                currentSprite.push({x, y, color: clothingColor});
+              }
+            }
+          }
+          // Dagger
+          for (let y = 12; y < 15; y++) {
+            drawPixel(11, y, '#c0c0c0');
+            currentSprite.push({x: 11, y, color: '#c0c0c0'});
+          }
+          drawPixel(10, 11, '#ffd700');
+          currentSprite.push({x: 10, y: 11, color: '#ffd700'});
+          // Hands (with dark gloves)
+          drawPixel(4, 9, '#2f4f4f');
+          drawPixel(4, 10, '#2f4f4f');
+          drawPixel(11, 9, '#2f4f4f');
+          drawPixel(11, 10, '#2f4f4f');
+          currentSprite.push({x: 4, y: 9, color: '#2f4f4f'});
+          currentSprite.push({x: 4, y: 10, color: '#2f4f4f'});
+          currentSprite.push({x: 11, y: 9, color: '#2f4f4f'});
+          currentSprite.push({x: 11, y: 10, color: '#2f4f4f'});
+          break;
+      }
+
+      // Generate feet
+      for (let y = 14; y < 16; y++) {
+        for (let x = 5; x < 11; x++) {
+          if (x < 8) {
+            drawPixel(x, y, shoesColor);
+            currentSprite.push({x, y, color: shoesColor});
+          } else if (x > 8) {
+            drawPixel(x, y, shoesColor);
+            currentSprite.push({x, y, color: shoesColor});
+          }
+        }
+      }
+    }
+
+    function downloadSprite() {
+      const link = document.createElement('a');
+      link.download = 'fantasy_character_sprite.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Generate initial sprite
+    generateSprite();
+  </script>
+</body></html>
