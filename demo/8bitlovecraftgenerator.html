@@ -1,0 +1,303 @@
+<html><head><base href="https://lovecraftian-rpg-creature-generator.example.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lovecraftian RPG Creature Generator</title>
+<style>
+  body {
+    font-family: 'Courier New', monospace;
+    background-color: #000;
+    color: #0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
+    margin-bottom: 20px;
+  }
+  #canvas {
+    border: 4px solid #0f0;
+    box-shadow: 0 0 20px #0f0;
+    image-rendering: pixelated;
+  }
+  #controls {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  button, select {
+    background-color: #000;
+    color: #0f0;
+    border: 2px solid #0f0;
+    padding: 10px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  button:hover, select:hover {
+    background-color: #0f0;
+    color: #000;
+    box-shadow: 0 0 10px #0f0;
+  }
+  #description {
+    margin-top: 20px;
+    max-width: 600px;
+    text-align: center;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+  <h1>Lovecraftian RPG Creature Generator</h1>
+  <canvas id="canvas" width="128" height="128"></canvas>
+  <div id="controls">
+    <select id="creatureSelect">
+      <option value="cthulhu">Cthulhu</option>
+      <option value="shoggoth">Shoggoth</option>
+      <option value="deepOne">Deep One</option>
+      <option value="nyarlathotep">Nyarlathotep</option>
+      <option value="yogSothoth">Yog-Sothoth</option>
+    </select>
+    <button onclick="generateCreature()">Generate New Creature</button>
+    <button onclick="downloadCreature()">Download Creature</button>
+  </div>
+  <p id="description"></p>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const pixelSize = 4;
+    const spriteSize = 32;
+    let currentCreature;
+
+    const colors = {
+      cthulhu: ['#1a472a', '#2d724b', '#3a8d5f', '#5dbb92'],
+      shoggoth: ['#000000', '#1a1a1a', '#333333', '#4d4d4d'],
+      deepOne: ['#0d4a6b', '#1a7eb1', '#26a8e8', '#5cc3ff'],
+      nyarlathotep: ['#1a0d26', '#2e1a40', '#3d2652', '#4d3366'],
+      yogSothoth: ['#4a0e4e', '#690f70', '#8a1493', '#a919b7']
+    };
+
+    const descriptions = {
+      cthulhu: "A colossal entity with a squid-like head, numerous tentacles, and bat-like wings. Its mere presence instills madness.",
+      shoggoth: "An amorphous mass of protoplasmic flesh, constantly shifting and sprouting eyes across its surface.",
+      deepOne: "A humanoid creature with amphibious features, webbed appendages, and bulging eyes that speak of ancient, aquatic horrors.",
+      nyarlathotep: "A shape-shifting entity of pure chaos, its form a swirling mass of darkness and malevolence.",
+      yogSothoth: "An incomprehensible being of spheres and dimensions, existing beyond human perception of space and time."
+    };
+
+    function randomChoice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function drawPixel(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    }
+
+    function generateCreature() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      currentCreature = [];
+
+      const creatureType = document.getElementById('creatureSelect').value;
+      const mainColor = randomChoice(colors[creatureType]);
+
+      switch (creatureType) {
+        case 'cthulhu':
+          drawCthulhu(mainColor);
+          break;
+        case 'shoggoth':
+          drawShoggoth(mainColor);
+          break;
+        case 'deepOne':
+          drawDeepOne(mainColor);
+          break;
+        case 'nyarlathotep':
+          drawNyarlathotep(mainColor);
+          break;
+        case 'yogSothoth':
+          drawYogSothoth(mainColor);
+          break;
+      }
+
+      document.getElementById('description').textContent = descriptions[creatureType];
+    }
+
+    function drawCthulhu(mainColor) {
+      // Body
+      for (let y = 12; y < 28; y++) {
+        for (let x = 8; x < 24; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Head
+      for (let y = 4; y < 12; y++) {
+        for (let x = 10; x < 22; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Eyes
+      drawPixel(13, 7, '#ff0000');
+      drawPixel(18, 7, '#ff0000');
+      currentCreature.push({x: 13, y: 7, color: '#ff0000'});
+      currentCreature.push({x: 18, y: 7, color: '#ff0000'});
+
+      // Tentacles
+      for (let i = 0; i < 6; i++) {
+        const startX = 10 + i * 2;
+        for (let y = 12; y < 16; y++) {
+          drawPixel(startX, y, mainColor);
+          currentCreature.push({x: startX, y, color: mainColor});
+        }
+      }
+
+      // Wings
+      for (let y = 8; y < 20; y++) {
+        drawPixel(6, y, mainColor);
+        drawPixel(25, y, mainColor);
+        currentCreature.push({x: 6, y, color: mainColor});
+        currentCreature.push({x: 25, y, color: mainColor});
+      }
+    }
+
+    function drawShoggoth(mainColor) {
+      // Amorphous body
+      for (let y = 4; y < 28; y++) {
+        for (let x = 4; x < 28; x++) {
+          if (Math.random() > 0.2) {
+            drawPixel(x, y, mainColor);
+            currentCreature.push({x, y, color: mainColor});
+          }
+        }
+      }
+
+      // Random eyes
+      for (let i = 0; i < 10; i++) {
+        const x = Math.floor(Math.random() * 24) + 4;
+        const y = Math.floor(Math.random() * 24) + 4;
+        drawPixel(x, y, '#ffffff');
+        drawPixel(x + 1, y, '#ff0000');
+        currentCreature.push({x, y, color: '#ffffff'});
+        currentCreature.push({x: x + 1, y, color: '#ff0000'});
+      }
+    }
+
+    function drawDeepOne(mainColor) {
+      // Body
+      for (let y = 12; y < 28; y++) {
+        for (let x = 10; x < 22; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Head
+      for (let y = 6; y < 12; y++) {
+        for (let x = 12; x < 20; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Eyes
+      drawPixel(14, 8, '#ffffff');
+      drawPixel(17, 8, '#ffffff');
+      currentCreature.push({x: 14, y: 8, color: '#ffffff'});
+      currentCreature.push({x: 17, y: 8, color: '#ffffff'});
+
+      // Fins
+      for (let y = 10; y < 20; y++) {
+        drawPixel(8, y, mainColor);
+        drawPixel(23, y, mainColor);
+        currentCreature.push({x: 8, y, color: mainColor});
+        currentCreature.push({x: 23, y, color: mainColor});
+      }
+
+      // Webbed hands
+      for (let x = 8; x < 12; x++) {
+        drawPixel(x, 22, mainColor);
+        drawPixel(x + 12, 22, mainColor);
+        currentCreature.push({x, y: 22, color: mainColor});
+        currentCreature.push({x: x + 12, y: 22, color: mainColor});
+      }
+    }
+
+    function drawNyarlathotep(mainColor) {
+      // Shifting form
+      for (let y = 4; y < 28; y++) {
+        for (let x = 4; x < 28; x++) {
+          if (Math.random() > 0.4) {
+            const color = randomChoice(colors.nyarlathotep);
+            drawPixel(x, y, color);
+            currentCreature.push({x, y, color: color});
+          }
+        }
+      }
+
+      // Glowing eyes
+      drawPixel(12, 10, '#ff0000');
+      drawPixel(20, 10, '#ff0000');
+      currentCreature.push({x: 12, y: 10, color: '#ff0000'});
+      currentCreature.push({x: 20, y: 10, color: '#ff0000'});
+
+      // Tentacles
+      for (let i = 0; i < 4; i++) {
+        const startX = 8 + i * 5;
+        for (let y = 28; y < 32; y++) {
+          drawPixel(startX, y, mainColor);
+          currentCreature.push({x: startX, y, color: mainColor});
+        }
+      }
+    }
+
+    function drawYogSothoth(mainColor) {
+      // Spheres
+      for (let i = 0; i < 20; i++) {
+        const x = Math.floor(Math.random() * 24) + 4;
+        const y = Math.floor(Math.random() * 24) + 4;
+        const radius = Math.floor(Math.random() * 3) + 2;
+        
+        for (let dy = -radius; dy <= radius; dy++) {
+          for (let dx = -radius; dx <= radius; dx++) {
+            if (dx*dx + dy*dy <= radius*radius) {
+              const color = randomChoice(colors.yogSothoth);
+              drawPixel(x + dx, y + dy, color);
+              currentCreature.push({x: x + dx, y: y + dy, color: color});
+            }
+          }
+        }
+      }
+
+      // Dimensional rifts
+      for (let i = 0; i < 5; i++) {
+        const startX = Math.floor(Math.random() * 24) + 4;
+        const startY = Math.floor(Math.random() * 24) + 4;
+        for (let j = 0; j < 8; j++) {
+          const x = startX + Math.floor(Math.random() * 5) - 2;
+          const y = startY + Math.floor(Math.random() * 5) - 2;
+          drawPixel(x, y, '#ffffff');
+          currentCreature.push({x, y, color: '#ffffff'});
+        }
+      }
+    }
+
+    function downloadCreature() {
+      const link = document.createElement('a');
+      link.download = 'lovecraftian_creature.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Generate initial creature
+    generateCreature();
+  </script>
+</body></html>

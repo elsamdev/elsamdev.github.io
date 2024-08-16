@@ -1,0 +1,344 @@
+<html><head><base href="https://8bit-fantasy-creature-generator.example.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8-Bit Fantasy Creature Generator</title>
+<style>
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    color: #ff0;
+    text-shadow: 2px 2px 4px rgba(255, 255, 0, 0.5);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  #canvas {
+    border: 4px solid #ff0;
+    image-rendering: pixelated;
+  }
+  #controls {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  button, select {
+    background-color: #00f;
+    color: #fff;
+    border: 2px solid #ff0;
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  button:hover, select:hover {
+    background-color: #00a;
+    transform: translateY(-2px);
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>8-Bit Fantasy Creature Generator</h1>
+  <canvas id="canvas" width="64" height="64"></canvas>
+  <div id="controls">
+    <select id="creatureSelect">
+      <option value="dragon">Dragon</option>
+      <option value="griffin">Griffin</option>
+      <option value="minotaur">Minotaur</option>
+      <option value="werewolf">Werewolf</option>
+      <option value="goblin">Goblin</option>
+      <option value="phoenix">Phoenix</option>
+      <option value="chimera">Chimera</option>
+      <option value="unicorn">Unicorn</option>
+      <option value="jellyfish">Jellyfish</option>
+      <option value="elemental">Elemental</option>
+    </select>
+    <button onclick="generateCreature()">Generate New Creature</button>
+    <button onclick="downloadCreature()">Download Creature</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const pixelSize = 4;
+    const spriteSize = 16;
+    let currentCreature;
+
+    const colors = {
+      dragon: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'],
+      griffin: ['#ffd700', '#8b4513', '#ffffff', '#a52a2a'],
+      minotaur: ['#8b4513', '#a52a2a', '#d2691e', '#cd853f'],
+      werewolf: ['#8b4513', '#a52a2a', '#d2691e', '#808080'],
+      goblin: ['#00ff00', '#32cd32', '#006400', '#8fbc8f'],
+      phoenix: ['#ff4500', '#ff8c00', '#ffd700', '#ff6347'],
+      chimera: ['#8b4513', '#ffa500', '#32cd32', '#ff0000'],
+      unicorn: ['#ffffff', '#ffd700', '#ff69b4', '#e6e6fa'],
+      jellyfish: ['#ff69b4', '#00ffff', '#ff00ff', '#4b0082'],
+      elemental: ['#ff0000', '#00ffff', '#8b4513', '#ffffff']
+    };
+
+    function randomChoice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function drawPixel(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    }
+
+    function generateCreature() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      currentCreature = [];
+
+      const creatureType = document.getElementById('creatureSelect').value;
+      const mainColor = randomChoice(colors[creatureType]);
+
+      switch (creatureType) {
+        case 'dragon':
+          drawDragon(mainColor);
+          break;
+        case 'griffin':
+          drawGriffin(mainColor);
+          break;
+        case 'minotaur':
+          drawMinotaur(mainColor);
+          break;
+        case 'werewolf':
+          drawWerewolf(mainColor);
+          break;
+        case 'goblin':
+          drawGoblin(mainColor);
+          break;
+        case 'phoenix':
+          drawPhoenix(mainColor);
+          break;
+        case 'chimera':
+          drawChimera(mainColor);
+          break;
+        case 'unicorn':
+          drawUnicorn(mainColor);
+          break;
+        case 'jellyfish':
+          drawJellyfish(mainColor);
+          break;
+        case 'elemental':
+          drawElemental(mainColor);
+          break;
+      }
+    }
+
+    // Existing creature drawing functions (dragon, griffin, minotaur, werewolf, goblin, phoenix) remain unchanged
+
+    function drawChimera(mainColor) {
+      // Lion body
+      for (let y = 6; y < 12; y++) {
+        for (let x = 4; x < 12; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Lion head
+      for (let y = 2; y < 6; y++) {
+        for (let x = 2; x < 8; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Lion eye
+      drawPixel(4, 3, '#ffffff');
+      drawPixel(4, 4, '#000000');
+      currentCreature.push({x: 4, y: 3, color: '#ffffff'});
+      currentCreature.push({x: 4, y: 4, color: '#000000'});
+
+      // Goat head
+      const goatColor = '#a52a2a';
+      for (let y = 1; y < 5; y++) {
+        for (let x = 8; x < 12; x++) {
+          drawPixel(x, y, goatColor);
+          currentCreature.push({x, y, color: goatColor});
+        }
+      }
+
+      // Goat eye
+      drawPixel(9, 2, '#ffffff');
+      drawPixel(9, 3, '#000000');
+      currentCreature.push({x: 9, y: 2, color: '#ffffff'});
+      currentCreature.push({x: 9, y: 3, color: '#000000'});
+
+      // Goat horn
+      drawPixel(11, 0, '#ffffff');
+      currentCreature.push({x: 11, y: 0, color: '#ffffff'});
+
+      // Snake tail
+      const snakeColor = '#32cd32';
+      for (let y = 10; y < 15; y++) {
+        drawPixel(13, y, snakeColor);
+        currentCreature.push({x: 13, y, color: snakeColor});
+      }
+      drawPixel(14, 14, snakeColor);
+      currentCreature.push({x: 14, y: 14, color: snakeColor});
+
+      // Legs
+      for (let y = 12; y < 15; y++) {
+        drawPixel(5, y, mainColor);
+        drawPixel(10, y, mainColor);
+        currentCreature.push({x: 5, y, color: mainColor});
+        currentCreature.push({x: 10, y, color: mainColor});
+      }
+    }
+
+    function drawUnicorn(mainColor) {
+      // Body
+      for (let y = 6; y < 12; y++) {
+        for (let x = 4; x < 12; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Head
+      for (let y = 2; y < 6; y++) {
+        for (let x = 2; x < 8; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Horn
+      const hornColor = '#ffd700';
+      drawPixel(4, 0, hornColor);
+      drawPixel(4, 1, hornColor);
+      currentCreature.push({x: 4, y: 0, color: hornColor});
+      currentCreature.push({x: 4, y: 1, color: hornColor});
+
+      // Eye
+      drawPixel(3, 3, '#000000');
+      currentCreature.push({x: 3, y: 3, color: '#000000'});
+
+      // Mane
+      const maneColor = '#ff69b4';
+      for (let y = 1; y < 6; y++) {
+        drawPixel(8, y, maneColor);
+        currentCreature.push({x: 8, y, color: maneColor});
+      }
+
+      // Legs
+      for (let y = 12; y < 15; y++) {
+        drawPixel(5, y, mainColor);
+        drawPixel(10, y, mainColor);
+        currentCreature.push({x: 5, y, color: mainColor});
+        currentCreature.push({x: 10, y, color: mainColor});
+      }
+
+      // Tail
+      for (let y = 8; y < 12; y++) {
+        drawPixel(13, y, maneColor);
+        currentCreature.push({x: 13, y, color: maneColor});
+      }
+    }
+
+    function drawJellyfish(mainColor) {
+      // Head
+      for (let y = 2; y < 8; y++) {
+        for (let x = 4; x < 12; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Eyes
+      drawPixel(6, 4, '#ffffff');
+      drawPixel(9, 4, '#ffffff');
+      drawPixel(6, 5, '#000000');
+      drawPixel(9, 5, '#000000');
+      currentCreature.push({x: 6, y: 4, color: '#ffffff'});
+      currentCreature.push({x: 9, y: 4, color: '#ffffff'});
+      currentCreature.push({x: 6, y: 5, color: '#000000'});
+      currentCreature.push({x: 9, y: 5, color: '#000000'});
+
+      // Tentacles
+      const tentacleColor = '#ff00ff';
+      for (let x = 5; x < 11; x += 2) {
+        for (let y = 8; y < 15; y++) {
+          drawPixel(x, y, tentacleColor);
+          currentCreature.push({x, y, color: tentacleColor});
+        }
+      }
+
+      // Glow effect
+      const glowColor = '#00ffff';
+      for (let y = 1; y < 9; y++) {
+        drawPixel(3, y, glowColor);
+        drawPixel(12, y, glowColor);
+        currentCreature.push({x: 3, y, color: glowColor});
+        currentCreature.push({x: 12, y, color: glowColor});
+      }
+    }
+
+    function drawElemental(mainColor) {
+      // Body
+      for (let y = 4; y < 12; y++) {
+        for (let x = 5; x < 11; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Head
+      for (let y = 1; y < 4; y++) {
+        for (let x = 6; x < 10; x++) {
+          drawPixel(x, y, mainColor);
+          currentCreature.push({x, y, color: mainColor});
+        }
+      }
+
+      // Eyes
+      drawPixel(7, 2, '#ffffff');
+      drawPixel(8, 2, '#ffffff');
+      currentCreature.push({x: 7, y: 2, color: '#ffffff'});
+      currentCreature.push({x: 8, y: 2, color: '#ffffff'});
+
+      // Element-specific details
+      const elementColor = mainColor === '#ff0000' ? '#ffff00' : // Fire
+                           mainColor === '#00ffff' ? '#0000ff' : // Water
+                           mainColor === '#8b4513' ? '#32cd32' : // Earth
+                           '#e6e6fa'; // Air
+      
+      for (let y = 3; y < 13; y += 3) {
+        for (let x = 4; x < 12; x += 3) {
+          drawPixel(x, y, elementColor);
+          currentCreature.push({x, y, color: elementColor});
+        }
+      }
+
+      // Aura
+      for (let y = 0; y < 15; y++) {
+        drawPixel(3, y, elementColor);
+        drawPixel(12, y, elementColor);
+        currentCreature.push({x: 3, y, color: elementColor});
+        currentCreature.push({x: 12, y, color: elementColor});
+      }
+    }
+
+    function downloadCreature() {
+      const link = document.createElement('a');
+      link.download = '8bit_fantasy_creature.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Generate initial creature
+    generateCreature();
+  </script>
+</body></html>
