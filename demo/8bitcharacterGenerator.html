@@ -55,6 +55,8 @@
 
 <body>
   <h1>Fantasy Character Sprite Generator</h1>
+  <button id="animateButton" onclick="startAnimationDef()">Defense</button>
+  <button id="animateButton" onclick="startAnimationAtk()">Atk</button>
   <canvas id="canvas" width="64" height="64"></canvas>
   <div id="controls">
     <select id="raceSelect">
@@ -80,6 +82,16 @@
     const pixelSize = 4;
     const spriteSize = 16;
     let currentSprite;
+    let spriteYPosition = 0;  // Variable para la posición en Y del sprite
+    let spriteXPosition = 0;  // Variable para la posición en X del sprite
+    let startXPosition = 0;   // Variable para almacenar la posición inicial en X
+    let targetXPosition = 0;  // Variable para la posición X objetivo
+    let directionY = 1;  // Controla la dirección del movimiento en Y (1 para abajo, -1 para arriba)
+    let directionX = 0;  // Controla la dirección del movimiento en X (1 para adelante, -1 para atrás)
+    let currentProfession;  // Variable para almacenar la profesión actual
+    let animationFrameId;  // Variable para almacenar el ID del requestAnimationFrame
+    let isAnimating = false;  // Variable para controlar si la animación está en curso
+
 
     const colors = {
       skin: {
@@ -119,6 +131,7 @@
 
       const race = document.getElementById('raceSelect').value;
       const profession = document.getElementById('professionSelect').value;
+      currentProfession = document.getElementById('professionSelect').value;
 
       const skinColor = randomChoice(colors.skin[race]);
       let hairColor;
@@ -722,6 +735,19 @@
       // drawPixel(8, 4, '#000000');
       // currentSprite.push({ x: 7, y: 4, color: '#000000' });
       // currentSprite.push({ x: 8, y: 4, color: '#000000' });
+
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+
+
+      const animateButton = document.getElementById('animateButton');
+      if (currentProfession === 'mage') {
+        animateButton.disabled = false;
+      } else {
+        animateButton.disabled = true;
+      }
     }
 
     function downloadSprite() {
@@ -755,7 +781,122 @@
       } : null;
     }
 
+
+
+    function animateSprite() {
+      // Limpiar el canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Dibujar el sprite en la nueva posición X e Y
+      drawSprite(spriteXPosition, spriteYPosition);
+
+      // Actualizar la posición Y para el siguiente frame
+      spriteYPosition += directionY;
+
+      // Mover en la dirección X hacia la posición objetivo
+      if (directionX !== 0) {
+        spriteXPosition += directionX;
+        if ((directionX > 0 && spriteXPosition >= targetXPosition) ||
+          (directionX < 0 && spriteXPosition <= targetXPosition)) {
+          // Cuando el sprite alcanza la posición objetivo, detener el movimiento en X
+          directionX = 0;
+        }
+      }
+
+      // Invertir la dirección en Y si el sprite alcanza los límites del canvas
+      if (spriteYPosition > canvas.height - spriteSize * pixelSize) {
+        directionY = -1;
+      }
+
+      // Detener la animación cuando el sprite regrese a la posición inicial en Y
+      if (spriteYPosition <= -1 && directionY === -1) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+
+        spriteYPosition = 0;  // Resetear la posición del sprite para la próxima animación
+        spriteXPosition = 0;  // Resetear la posición en X también
+        directionY = 1;  // Resetear la dirección para la próxima animación
+
+      } else {
+        // Añadir efecto de daño
+
+        // Solicitar el siguiente frame de la animación
+        animationFrameId = requestAnimationFrame(animateSprite);
+      }
+    }
+
+    function drawSprite(xOffset, yOffset) {
+      currentSprite.forEach(pixel => {
+        drawPixel(pixel.x + xOffset, pixel.y + yOffset, pixel.color);
+      });
+
+
+    }
+
+    function startAnimationDef() {
+
+      if (currentProfession === 'mage' && !isAnimating) {
+
+        console.log("defense");
+        isAnimating = true;  // Marcar que la animación está en curso
+        spriteYPosition = 0;  // Resetear la posición en Y del sprite al iniciar la animación
+        spriteXPosition = 0;  // Resetear la posición en X del sprite al iniciar la animación
+        directionY = 1;  // Resetear la dirección en Y
+        directionX = -1;  // Mover hacia atrás
+        targetXPosition = -10;  // Ajustar según cuánto quieras mover hacia atrás
+        animateSprite();  // Iniciar la animación
+        flashRedOverlay()
+        endAnimation()
+
+      }
+    }
+
+    function startAnimationAtk() {
+      if (currentProfession === 'mage' && !isAnimating) {
+        console.log("atk");
+        isAnimating = true;  // Marcar que la animación está en curso
+        spriteYPosition = 0;  // Resetear la posición en Y del sprite al iniciar la animación
+        spriteXPosition = 0;  // Resetear la posición en X del sprite al iniciar la animación
+        directionY = 1;  // Resetear la dirección en Y
+        directionX = 1;  // Mover hacia adelante
+        targetXPosition = 10;  // Ajustar según cuánto quieras mover hacia adelante
+        animateSprite();  // Iniciar la animación
+        endAnimation()
+
+      }
+    }
+
+    function endAnimation() {
+
+      setTimeout(() => {
+        directionY = 0;  // Resetear la dirección en Y
+        directionX = 0;  // Mover hacia atrás
+        targetXPosition = 0;  // Ajustar según cuánto quieras mover hacia atrás
+        animateSprite();  // Iniciar la animación
+        isAnimating = false;  // Marcar que la animación ha terminado
+      }, 50)
+    }
+    function flashRedOverlay() {
+
+      // Guardar el estado actual del contexto
+      ctx.save();
+
+      // Establecer el color rojo semitransparente
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'; // 50% de transparencia
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Si isAnimating es verdadero, continúa ejecutando el overlay
+      if (isAnimating) {
+        requestAnimationFrame(flashRedOverlay); // Volver a ejecutar en el siguiente frame
+      } else {
+        // Restaurar el estado del contexto solo cuando la animación termine
+        ctx.restore();
+      }
+    }
+
+    // Iniciar la generación del sprite
     generateSprite();
+
   </script>
 </body>
 
