@@ -1,220 +1,157 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <base href="" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Generators</title>
+    <title>Draw Sprite with Particles</title>
     <style>
-        @font-face {
-            font-family: 'PixelFont';
-            src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        }
-
         body {
-            font-family: 'PixelFont', monospace;
-            background-color: #f0e6ff;
-            margin: 0;
-            padding: 0;
+            font-family: 'Courier New', monospace;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .pixel-bg {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
-        }
-
-        header {
-            background-color: #d4c5f9;
-            padding: 2rem;
-            text-align: center;
+            align-items: center;
+            padding: 20px;
         }
 
         h1 {
-            color: #4a0e78;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            color: #00ff99;
+            text-shadow: 2px 2px 4px rgba(0, 255, 153, 0.3);
         }
 
-        p {
-            color: #3a3a3a;
-            font-size: 1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        main {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-
-        .generator-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            width: 100%;
-            /* Asegura que la cuadrícula use todo el ancho disponible */
-        }
-
-        /* Media query para pantallas medianas (tabletas) */
-        @media (max-width: 768px) {
-            .generator-grid {
-                grid-template-columns: repeat(2, 1fr);
-                /* Cambia a 2 columnas */
-                gap: 1.5rem;
-                /* Reduce el espacio entre los elementos */
-            }
-        }
-
-        /* Media query para pantallas pequeñas (móviles) */
-        @media (max-width: 480px) {
-            .generator-grid {
-                grid-template-columns: 1fr;
-                /* Cambia a 1 columna */
-                gap: 1rem;
-                /* Reduce aún más el espacio entre los elementos */
-            }
-        }
-
-        .generator-button {
-            width: 200px;
-            height: 200px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            font-family: 'PixelFont', monospace;
-            font-size: 1rem;
-            color: #fff;
-            text-shadow: 2px 2px #000;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .canvas-container {
             position: relative;
-            overflow: hidden;
+            width: 64px;
+            height: 64px;
+            margin-top: 20px;
         }
 
-        .generator-button::before {
-            content: '';
+        #canvas {
+            border: 2px solid #00ff99;
+            background-color: #0f0f1a;
+        }
+
+        #particleCanvas {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'%3E%3C/path%3E%3C/svg%3E");
-            z-index: 1;
+            pointer-events: none;
         }
 
-        .generator-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        textarea {
+            width: 400px;
+            height: 200px;
+            background-color: #0f0f1a;
+            color: #e0e0e0;
+            border: 2px solid #00ff99;
+            font-family: 'Courier New', monospace;
+            margin-top: 20px;
         }
 
-        .generator-button .icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        button {
+            background-color: #00ff99;
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
         }
 
-        #character-generator {
-            background-color: #7fb2f0;
-        }
-
-        #fantasy-monster-generator {
-            background-color: #7fd4a6;
-        }
-
-        #lovecraftian-creature-generator {
-            background-color: #b57edc;
-        }
-
-        footer {
-            background-color: #c4b5e8;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .social-links a {
-            color: #4a0e78;
-            text-decoration: none;
-            margin: 0 0.5rem;
-            font-size: 1.5rem;
-        }
-
-        .copyright {
-            color: #3a3a3a;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-        }
-
-        @keyframes pixelate {
-            0% {
-                filter: blur(0px);
-            }
-
-            50% {
-                filter: blur(2px);
-            }
-
-            100% {
-                filter: blur(0px);
-            }
+        button:hover {
+            background-color: #00cc7a;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 
-<body class="pixel-bg">
-    <header>
-        <h1>Creative Generators</h1>
-        <p>Explore our unique generators and bring your imagination to life! Click on a generator to start creating.</p>
-    </header>
-
-    <main>
-        <div class="generator-grid">
-            <button id="8bitcharacterGenerator" class="generator-button">
-                <div class="icon">👤</div>
-                Character Generator
-            </button>
-            <button id="8bitcreaturesgenerator" class="generator-button">
-                <div class="icon">🐉</div>
-                Fantasy Monster Generator
-            </button>
-            <button id="8bitlovecraftgenerator" class="generator-button">
-                <div class="icon">🐙</div>
-                Lovecraftian Creature Generator
-            </button>
-            <button id="8bitgoblingenerator" class="generator-button">
-                <div class="icon">👽</div>
-                Humanoids Creature Generator
-            </button>
-        </div>
-    </main>
-
-    <footer>
-
-        <div class="copyright">© 2023 Creative Generators. All rights reserved.</div>
-    </footer>
+<body>
+    <h1>Draw Sprite with Particles</h1>
+    <textarea id="spriteJSONInput" placeholder="Paste your sprite JSON here"></textarea>
+    <button onclick="loadSpriteAndAnimateParticles()">Draw Sprite</button>
+    <div class="canvas-container">
+        <canvas id="canvas" width="64" height="64"></canvas>
+        <canvas id="particleCanvas" width="64" height="64"></canvas>
+    </div>
 
     <script>
-        const buttons = document.querySelectorAll('.generator-button');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const particleCanvas = document.getElementById('particleCanvas');
+        const particleCtx = particleCanvas.getContext('2d');
+        const pixelSize = 4;
+        let particles = [];
+        let animationFrameId;
 
-        buttons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const generatorType = e.currentTarget.id;
-                animateTransition(() => {
-                    window.location.href = `/demo/${generatorType}.html`;
-                });
+        function drawPixel(x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        }
+
+        function drawSpriteFromJSON(spriteJSON) {
+            const spriteData = typeof spriteJSON === 'string' ? JSON.parse(spriteJSON) : spriteJSON;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            spriteData.forEach(pixel => {
+                drawPixel(pixel.x, pixel.y, pixel.color);
             });
-        });
+        }
 
-        function animateTransition(callback) {
-            document.body.style.animation = 'pixelate 0.5s ease-in-out';
-            setTimeout(() => {
-                document.body.style.animation = '';
-                callback();
-            }, 500);
+        function loadSpriteAndAnimateParticles() {
+            const spriteJSONInput = document.getElementById('spriteJSONInput').value;
+            drawSpriteFromJSON(spriteJSONInput);
+            startParticleAnimation();
+        }
+
+        function createParticle() {
+            return {
+                x: Math.random() * particleCanvas.width,
+                y: Math.random() * particleCanvas.height,
+                size: Math.random() * 2 + 1,
+                speedX: Math.random() * 2 - 1,
+                speedY: Math.random() * 2 - 1,
+                color: 'rgba(0, 255, 153, 0.7)'
+            };
+        }
+
+        function updateParticles() {
+            particles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                // Rebotar en los bordes del canvas
+                if (p.x <= 0 || p.x >= particleCanvas.width) p.speedX *= -1;
+                if (p.y <= 0 || p.y >= particleCanvas.height) p.speedY *= -1;
+            });
+        }
+
+        function drawParticles() {
+            particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            particles.forEach(p => {
+                particleCtx.fillStyle = p.color;
+                particleCtx.beginPath();
+                particleCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                particleCtx.fill();
+            });
+        }
+
+        function animateParticles() {
+            updateParticles();
+            drawParticles();
+            animationFrameId = requestAnimationFrame(animateParticles);
+        }
+
+        function startParticleAnimation() {
+            particles = [];
+            // Crear nuevas partículas
+            for (let i = 0; i < 50; i++) {
+                particles.push(createParticle());
+            }
+            // Iniciar la animación de partículas
+            cancelAnimationFrame(animationFrameId);  // Cancelar cualquier animación previa
+            animateParticles();
         }
     </script>
 </body>

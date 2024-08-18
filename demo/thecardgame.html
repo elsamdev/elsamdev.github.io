@@ -1,0 +1,1036 @@
+<html>
+
+<head>
+    <base href="https://websim.cardgame.com/">
+    <title>Roguelike Card Game with Battle Animations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #e94560;
+            --text-color: #fff;
+            --card-color: #0f3460;
+            --attack-color: #ff6b6b;
+            --health-color: #4ecdc4;
+            --shield-color: #feca57;
+            --poison-color: #54a0ff;
+            --heal-color: #2ecc71;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #game-container {
+            background-color: var(--secondary-color);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 100%;
+            width: 100%;
+            max-height: 100vh;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        #battle-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .player-area {
+            width: 100%;
+            text-align: center;
+        }
+
+        .hand {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card-container {
+            width: calc(30% - 20px);
+            max-width: 150px;
+            aspect-ratio: 2.5 / 3.5;
+            border: 2px solid white;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            background-color: var(--card-color);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            perspective: 1000px;
+            box-sizing: border-box;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card.selected {
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        #opponent-hand .card-inner {
+            transform: rotateX(180deg);
+        }
+
+        #opponent-hand .card-inner.show-front {
+            transform: rotateX(0deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 16px;
+        }
+
+        .card-back {
+            background-color: var(--accent-color);
+            transform: rotateX(180deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .card-type {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .attack {
+            color: var(--attack-color);
+        }
+
+        .health {
+            color: var(--health-color);
+        }
+
+        .shield {
+            color: var(--shield-color);
+        }
+
+        .poison {
+            color: var(--poison-color);
+        }
+
+        .heal {
+            color: var(--heal-color);
+        }
+
+        #message-box {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            max-width: 200px;
+            font-size: 14px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #c62d4a;
+        }
+
+        .button:disabled {
+            background-color: #7a7a7a;
+            cursor: not-allowed;
+        }
+
+        #deck-counters {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        #battle-button-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            10% {
+                transform: translate(-1px, -2px) rotate(-1deg);
+            }
+
+            20% {
+                transform: translate(-3px, 0px) rotate(1deg);
+            }
+
+            30% {
+                transform: translate(3px, 2px) rotate(0deg);
+            }
+
+            40% {
+                transform: translate(1px, -1px) rotate(1deg);
+            }
+
+            50% {
+                transform: translate(-1px, 2px) rotate(-1deg);
+            }
+
+            60% {
+                transform: translate(-3px, 1px) rotate(0deg);
+            }
+
+            70% {
+                transform: translate(3px, 1px) rotate(-1deg);
+            }
+
+            80% {
+                transform: translate(-1px, -1px) rotate(1deg);
+            }
+
+            90% {
+                transform: translate(1px, 2px) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(1px, -2px) rotate(-1deg);
+            }
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .card.battle-animation {
+            animation: shake 0.5s;
+            animation-iteration-count: infinite;
+        }
+
+        .card.destroy-animation {
+            animation: explode 0.5s forwards;
+        }
+
+        #tooltip-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        #tooltip-button:hover {
+            background-color: #c62d4a;
+        }
+
+        #tooltip-content {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 300px;
+            display: none;
+        }
+
+        #tooltip-content.active {
+            display: block;
+        }
+
+        /* Hamburger menu styles */
+        .hamburger-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            width: 30px;
+            height: 25px;
+        }
+
+        .hamburger-icon {
+            width: 30px;
+            height: 3px;
+            background-color: var(--text-color);
+            position: absolute;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger-icon:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger-icon:nth-child(2) {
+            top: 10px;
+        }
+
+        .hamburger-icon:nth-child(3) {
+            top: 20px;
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(1) {
+            transform: translateY(10px) rotate(45deg);
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active .hamburger-icon:nth-child(3) {
+            transform: translateY(-10px) rotate(-45deg);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            display: flex;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                width: calc(33.33% - 20px);
+                max-width: 120px;
+            }
+
+            .card-type {
+                font-size: 12px;
+            }
+
+            .card-stats {
+                font-size: 10px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Add this new button just before the closing </div> of #game-container -->
+    <button id="tooltip-button">?</button>
+    <div id="tooltip-content">
+        <h3>Game Rules:</h3>
+        <ul>
+            <li>Each player starts with a deck of 12 cards and a hand of 3 cards.</li>
+            <li>Select one card from your hand and one from your opponent's hand to battle.</li>
+            <li>Cards have different types with unique abilities:</li>
+            <ul>
+                <li>Normal: Basic attack and health</li>
+                <li>Healer: Heals itself each turn</li>
+                <li>Defender: Has a shield that regenerates</li>
+                <li>Poison: Applies poison damage over time</li>
+                <li>DoubleAtk: Attacks an additional random enemy card</li>
+            </ul>
+            <li>Battle continues until one player has no cards left in hand and deck.</li>
+        </ul>
+    </div>
+
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="hamburger-icon"></div>
+        <div class="hamburger-icon"></div>
+        <div class="hamburger-icon"></div>
+    </div>
+
+    <div class="menu-overlay">
+        <button id="restart-button" class="button">Restart Game</button>
+        <button id="toggle-opponent-cards" class="button">Show/Hide Opponent Cards</button>
+    </div>
+
+    <div id="game-container">
+        <div id="battle-area">
+            <div class="player-area" id="opponent-area">
+                <h2>Opponent</h2>
+                <div class="hand" id="opponent-hand"></div>
+            </div>
+            <div id="battle-button-container">
+                <button id="battle-button" class="button" disabled>Battle!</button>
+            </div>
+            <div class="player-area" id="player-area">
+                <h2>Player</h2>
+                <div class="hand" id="player-hand"></div>
+            </div>
+        </div>
+        <div id="deck-counters">
+            <div id="player-deck-count">Player Deck: 12</div>
+            <div id="opponent-deck-count">Opponent Deck: 12</div>
+        </div>
+        <div id="message-box"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script>
+
+        function toggleMenu() {
+            const menuOverlay = document.querySelector('.menu-overlay');
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            menuOverlay.classList.toggle('active');
+            hamburgerMenu.classList.toggle('active');
+        }
+
+
+        // Add this new code at the end of the script section
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const tooltipButton = document.getElementById('tooltip-button');
+            const tooltipContent = document.getElementById('tooltip-content');
+
+            tooltipButton.addEventListener('click', () => {
+                tooltipContent.classList.toggle('active');
+            });
+
+            // Close tooltip when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!tooltipButton.contains(event.target) && !tooltipContent.contains(event.target)) {
+                    tooltipContent.classList.remove('active');
+                }
+            });
+        });
+        class Card {
+            constructor(type, attack, health) {
+                this.type = type;
+                this.attack = attack;
+                this.health = health;
+                this.maxHealth = health;
+                this.shield = type === 'Defender' ? 2 : 0;
+                this.poison = 0;
+                this.healAmount = type === 'Healer' ? 1 : 0;
+            }
+
+            takeDamage(damage) {
+                if (this.type === 'Defender' && this.shield > 0) {
+                    if (damage > this.shield) {
+                        const remainingDamage = damage - this.shield;
+                        this.shield = 0;
+                        this.health -= remainingDamage;
+                    } else {
+                        this.shield -= damage;
+                    }
+                } else {
+                    this.health -= damage;
+                }
+                this.health = Math.max(0, this.health);
+            }
+
+            heal() {
+                if (this.type === 'Healer') {
+                    this.health = Math.min(this.health + this.healAmount, this.maxHealth);
+                }
+            }
+
+            applyPoison(amount) {
+                this.poison += amount;
+            }
+
+            applyPoisonDamage() {
+                if (this.poison > 0) {
+                    this.health -= this.poison;
+                    this.health = Math.max(0, this.health);
+                    return this.poison;
+                }
+                return 0;
+            }
+
+            regenerateShield() {
+                if (this.type === 'Defender') {
+                    this.shield = Math.min(this.shield + 1, 2);
+                }
+            }
+        }
+
+        class Player {
+            constructor(isOpponent = false) {
+                this.savedDeck = []; // Array para guardar las cartas generadas
+                this.deck = this.generateDeck();
+                this.hand = [];
+                this.isOpponent = isOpponent;
+                this.selectedCard = null;
+            }
+
+            generateDeck() {
+                const types = ['Normal', 'Healer', 'Defender', 'Poison', 'DoubleAtk'];
+                const deck = Array.from({ length: 12 }, () => {
+                    const type = types[Math.floor(Math.random() * types.length)];
+                    const attack = Math.floor(Math.random() * 5) + 1;
+                    const health = Math.floor(Math.random() * 5) + 5;
+                    const card = new Card(type, attack, health);
+
+                    // Guardar la información de la carta en el array
+                    this.savedDeck.push({
+                        type: card.type,
+                        attack: card.attack,
+                        health: card.health,
+                        shield: card.shield,  // Si es Defender
+                        poison: card.poison,  // Si es Poison
+                        healAmount: card.healAmount // Si es Healer
+                    });
+
+                    return card;
+                });
+
+                // Mostrar en la consola las cartas generadas
+                console.log(`${this.isOpponent ? 'Opponent' : 'Player'}'s generated deck:`, this.savedDeck);
+                console.log(`${this.isOpponent ? 'Opponent' : 'Player'}'s generated deck:`, JSON.stringify(this.savedDeck, null, 2));
+                return deck;
+            }
+
+            reconstructDeckFromSaved() {
+                return this.savedDeck.map(cardData => {
+                    const card = new Card(cardData.type, cardData.attack, cardData.health);
+                    card.shield = cardData.shield;
+                    card.poison = cardData.poison;
+                    card.healAmount = cardData.healAmount;
+                    return card;
+                });
+            }
+            drawCard() {
+                if (this.deck.length > 0 && this.hand.length < 3) {
+                    const card = this.deck.pop();
+                    this.hand.push(card);
+
+                    return card;
+                }
+                return null;
+            }
+
+
+            removeDeadCards() {
+                this.hand = this.hand.filter(card => card.health > 0);
+            }
+
+            selectCard(index) {
+                this.selectedCard = this.hand[index];
+            }
+
+            applyEffectsToAllCards() {
+                let message = '';
+                this.hand.forEach(card => {
+                    const poisonDamage = card.applyPoisonDamage();
+                    if (poisonDamage > 0) {
+                        message += `${this.isOpponent ? 'Opponent' : 'Player'}'s ${card.type} took ${poisonDamage} poison damage. `;
+                    }
+                    if (card.type === 'Healer') {
+                        const previousHealth = card.health;
+                        card.heal();
+                        const healedAmount = card.health - previousHealth;
+                        if (healedAmount > 0) {
+                            message += `${this.isOpponent ? 'Opponent' : 'Player'}'s ${card.type} healed for ${healedAmount}. `;
+                        }
+                    }
+                    card.regenerateShield();
+                });
+                return message;
+            }
+        }
+
+        class Game {
+            constructor() {
+                this.player = new Player();
+                this.opponent = new Player(true);
+                this.messageBox = document.getElementById('message-box');
+                this.battleButton = document.getElementById('battle-button');
+                this.restartButton = document.getElementById('restart-button');
+                this.toggleOpponentCardsButton = document.getElementById('toggle-opponent-cards');
+                this.playerDeckCount = document.getElementById('player-deck-count');
+                this.opponentDeckCount = document.getElementById('opponent-deck-count');
+                this.showOpponentCards = false;
+            }
+
+            start() {
+                this.shuffleDeck(this.player.deck);
+                this.shuffleDeck(this.opponent.deck);
+                this.dealInitialHands();
+                this.renderHands();
+                this.updateDeckCounts();
+                this.showMessage("Select a card for both players to battle with!");
+                this.battleButton.onclick = () => this.battle();
+                this.restartButton.onclick = () => this.restart();
+                this.toggleOpponentCardsButton.onclick = () => this.toggleOpponentCards();
+            }
+
+            dealInitialHands() {
+                for (let i = 0; i < 3; i++) {
+                    this.player.drawCard();
+                    this.opponent.drawCard();
+                }
+            }
+
+            renderHands() {
+                this.renderPlayerHand();
+                this.renderOpponentHand();
+            }
+
+            renderPlayerHand() {
+                const playerHand = document.getElementById('player-hand');
+                playerHand.innerHTML = '';
+                this.player.hand.forEach((card, index) => {
+                    const cardContainer = this.createCardContainer(card, index, false);
+                    playerHand.appendChild(cardContainer);
+                });
+            }
+
+            renderOpponentHand() {
+                const opponentHand = document.getElementById('opponent-hand');
+                opponentHand.innerHTML = '';
+                this.opponent.hand.forEach((card, index) => {
+                    const cardContainer = this.createCardContainer(card, index, true);
+                    opponentHand.appendChild(cardContainer);
+                });
+            }
+
+            createCardContainer(card, index, isOpponent) {
+                const cardContainer = document.createElement('div');
+                cardContainer.className = 'card-container';
+                const cardElement = this.createCardElement(card, isOpponent);
+                cardContainer.appendChild(cardElement);
+
+                if (isOpponent) {
+                    cardContainer.onclick = () => this.selectOpponentCard(index);
+                } else {
+                    cardContainer.onclick = () => this.selectPlayerCard(index);
+                }
+
+                return cardContainer;
+            }
+
+            createCardElement(card, isOpponent) {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.innerHTML = `
+                <div class="card-inner ${this.showOpponentCards && isOpponent ? 'show-front' : ''}">
+                    <div class="card-front">
+                        <div class="card-type">${card.type}</div>
+                        <div class="card-stats">
+                            <span class="attack">A: ${card.attack}</span>
+                            <span class="health">H: ${card.health}</span>
+                        </div>
+                        ${card.type === 'Defender' ? `<div class="shield">Shield: ${card.shield}</div>` : ''}
+                        ${card.poison > 0 ? `<div class="poison">Poison: ${card.poison}</div>` : ''}
+                        ${card.type === 'Healer' ? `<div class="heal">Heal: ${card.healAmount}</div>` : ''}
+                    </div>
+                    <div class="card-back">
+                        ?
+                    </div>
+                </div>
+            `;
+                return cardElement;
+            }
+
+            selectPlayerCard(index) {
+                this.player.selectCard(index);
+                document.querySelectorAll('#player-hand .card-container').forEach((container, i) => {
+                    container.querySelector('.card').classList.toggle('selected', i === index);
+                });
+                this.checkBattleReady();
+            }
+
+            selectOpponentCard(index) {
+                this.opponent.selectCard(index);
+                document.querySelectorAll('#opponent-hand .card-container').forEach((container, i) => {
+                    container.querySelector('.card').classList.toggle('selected', i === index);
+                });
+                this.checkBattleReady();
+            }
+
+            checkBattleReady() {
+                if (this.player.selectedCard && this.opponent.selectedCard) {
+                    this.battleButton.disabled = false;
+                    this.showMessage("Both players have selected their cards. Ready for battle!");
+                } else {
+                    this.battleButton.disabled = true;
+                }
+            }
+
+            battle() {
+                if (this.player.selectedCard && this.opponent.selectedCard) {
+                    let battleLog = '';
+
+                    // Apply effects to all cards before battle
+                    battleLog += this.player.applyEffectsToAllCards();
+                    battleLog += this.opponent.applyEffectsToAllCards();
+
+                    // Animate battle
+                    this.animateBattle().then(() => {
+                        // Resolve combat between selected cards
+                        battleLog += this.resolveCombat(this.player.selectedCard, this.opponent.selectedCard);
+
+                        const playerCardDestroyed = this.player.selectedCard.health <= 0;
+                        const opponentCardDestroyed = this.opponent.selectedCard.health <= 0;
+
+                        this.player.removeDeadCards();
+                        this.opponent.removeDeadCards();
+
+                        if (this.opponent.hand.length === 0 && this.opponent.deck.length === 0) {
+                            this.endGame("Player wins!");
+                            return;
+                        }
+
+                        if (this.player.hand.length === 0 && this.player.deck.length === 0) {
+                            this.endGame("Opponent wins!");
+                            return;
+                        }
+
+                        // Handle card destruction and replacement
+                        this.handleCardDestruction(playerCardDestroyed, opponentCardDestroyed).then(() => {
+                            while (this.opponent.hand.length < 3 && this.opponent.deck.length > 0) {
+                                this.opponent.drawCard();
+                            }
+
+                            while (this.player.hand.length < 3 && this.player.deck.length > 0) {
+                                this.player.drawCard();
+                            }
+
+                            this.renderHands();
+                            this.updateDeckCounts();
+                            this.player.selectedCard = null;
+                            this.opponent.selectedCard = null;
+                            this.battleButton.disabled = true;
+                            this.showMessage(battleLog + "\n\nSelect cards for both players for the next battle!");
+                        });
+                    });
+                }
+            }
+
+            animateBattle() {
+                return new Promise((resolve) => {
+                    const playerCard = document.querySelector('#player-hand .card-container .card.selected');
+                    const opponentCard = document.querySelector('#opponent-hand .card-container .card.selected');
+
+                    if (playerCard && opponentCard) {
+                        const playerCardContainer = playerCard.parentElement;
+                        const opponentCardContainer = opponentCard.parentElement;
+
+                        // Calcula la distancia que cada carta necesita moverse hacia el centro
+                        const playerCardRect = playerCardContainer.getBoundingClientRect();
+                        const opponentCardRect = opponentCardContainer.getBoundingClientRect();
+                        const centerX = (playerCardRect.left + opponentCardRect.right) / 2;
+
+                        const playerXMove = centerX - playerCardRect.left - playerCardRect.width / 2;
+                        const opponentXMove = centerX - opponentCardRect.right + opponentCardRect.width / 2;
+
+                        // Mueve las cartas hacia el centro y luego colisionan
+                        gsap.to(playerCard, {
+                            x: playerXMove,
+                            y: -50, // Puedes ajustar este valor para cambiar la altura de la colisión
+                            duration: 0.5,
+                            onComplete: () => {
+                                gsap.to(playerCard, {
+                                    x: 0,
+                                    y: 0,
+                                    duration: 0.5,
+                                    onComplete: () => {
+                                        resolve();
+                                    }
+                                });
+                            }
+                        });
+
+                        gsap.to(opponentCard, {
+                            x: opponentXMove,
+                            y: 50, // Este valor debe ser simétrico al de la carta del jugador
+                            duration: 0.5,
+                            onComplete: () => {
+                                gsap.to(opponentCard, {
+                                    x: 0,
+                                    y: 0,
+                                    duration: 0.5
+                                });
+                            }
+                        });
+                    } else {
+                        resolve();
+                    }
+                });
+            }
+
+
+            handleCardDestruction(playerCardDestroyed, opponentCardDestroyed) {
+                return new Promise((resolve) => {
+                    const playerCard = document.querySelector('#player-hand .card-container .card.selected');
+                    const opponentCard = document.querySelector('#opponent-hand .card-container .card.selected');
+
+                    const animateDestruction = (card) => {
+                        return new Promise((resolveDestruction) => {
+                            card.classList.add('destroy-animation');
+                            setTimeout(() => {
+                                card.classList.remove('destroy-animation');
+                                resolveDestruction();
+                            }, 500);
+                        });
+                    };
+
+                    const animateReplacement = (cardContainer, isPlayer) => {
+                        const oldCard = cardContainer.querySelector('.card');
+                        const newCard = this.createCardElement(isPlayer ? this.player.hand[this.player.hand.length - 1] : this.opponent.hand[this.opponent.hand.length - 1], !isPlayer);
+                        newCard.style.opacity = '0';
+                        cardContainer.replaceChild(newCard, oldCard);
+
+                        gsap.to(newCard, {
+                            opacity: 1,
+                            duration: 0.5,
+                            onComplete: () => {
+                                if (isPlayer) {
+                                    cardContainer.onclick = () => this.selectPlayerCard(Array.from(cardContainer.parentNode.children).indexOf(cardContainer));
+                                } else {
+                                    cardContainer.onclick = () => this.selectOpponentCard(Array.from(cardContainer.parentNode.children).indexOf(cardContainer));
+                                }
+                            }
+                        });
+                    };
+
+                    const promises = [];
+
+                    if (playerCardDestroyed) {
+                        promises.push(animateDestruction(playerCard).then(() => animateReplacement(playerCard.parentNode, true)));
+                    }
+
+                    if (opponentCardDestroyed) {
+                        promises.push(animateDestruction(opponentCard).then(() => animateReplacement(opponentCard.parentNode, false)));
+                    }
+
+                    Promise.all(promises).then(resolve);
+                });
+            }
+
+            resolveCombat(playerCard, opponentCard) {
+                let combatLog = `${playerCard.type} battles ${opponentCard.type}! `;
+
+                // Battle
+                opponentCard.takeDamage(playerCard.attack);
+                playerCard.takeDamage(opponentCard.attack);
+
+                // Apply poison
+                if (playerCard.type === 'Poison') {
+                    opponentCard.applyPoison(playerCard.attack);
+                    combatLog += `${opponentCard.type} is poisoned! `;
+                }
+                if (opponentCard.type === 'Poison') {
+                    playerCard.applyPoison(opponentCard.attack);
+                    combatLog += `${playerCard.type} is poisoned! `;
+                }
+
+                // Double attack
+                if (playerCard.type === 'DoubleAtk') {
+                    const secondTarget = this.getRandomCard(this.opponent);
+                    if (secondTarget) {
+                        combatLog += `${playerCard.type} attacks ${secondTarget.type} as well! `;
+                        secondTarget.takeDamage(playerCard.attack);
+                    }
+                }
+                if (opponentCard.type === 'DoubleAtk') {
+                    const secondTarget = this.getRandomCard(this.player);
+                    if (secondTarget) {
+                        combatLog += `${opponentCard.type} attacks ${secondTarget.type} as well! `;
+                        secondTarget.takeDamage(opponentCard.attack);
+                    }
+                }
+
+                return combatLog;
+            }
+
+            getRandomCard(player) {
+                const availableCards = player.hand.filter(card => card.health > 0);
+                return availableCards[Math.floor(Math.random() * availableCards.length)];
+            }
+
+            endGame(message) {
+                this.showMessage(message);
+                document.querySelectorAll('.card-container').forEach(container => container.onclick = null);
+                this.battleButton.disabled = true;
+            }
+
+            updateDeckCounts() {
+                this.playerDeckCount.textContent = `Player Deck: ${this.player.deck.length}`;
+                this.opponentDeckCount.textContent = `Opponent Deck: ${this.opponent.deck.length}`;
+            }
+
+            showMessage(message) {
+                this.messageBox.textContent = message;
+                gsap.from(this.messageBox, { opacity: 0, y: -20, duration: 0.5 });
+                setTimeout(() => {
+                    gsap.to(this.messageBox, { opacity: 0, duration: 0.5, delay: 3 });
+                }, 3000);
+            }
+
+            toggleOpponentCards() {
+                this.showOpponentCards = !this.showOpponentCards;
+                const opponentCards = document.querySelectorAll('#opponent-hand .card-inner');
+                opponentCards.forEach(card => {
+                    card.classList.toggle('show-front', this.showOpponentCards);
+                });
+                toggleMenu(); // Close the menu after toggling opponent cards
+            }
+
+            restart() {
+                const choice = prompt("Choose an option:\n1. New deck\n2. Use the same deck\n3. Pass a custom deck (JSON format)");
+
+                if (choice === "1") {
+                    // Opción 1: Crear un nuevo mazo
+                    this.player = new Player();
+                    this.opponent = new Player(true);
+                } else if (choice === "2") {
+                    // Opción 2: Usar el mismo mazo
+                    this.player.deck = this.player.reconstructDeckFromSaved();
+                    this.opponent.deck = this.opponent.reconstructDeckFromSaved();
+                } else if (choice === "3") {
+                    // Opción 3: Pasar un mazo personalizado
+                    const customDeckInput = prompt("Enter your custom deck as a JSON array:");
+                    try {
+                        const customDeck = JSON.parse(customDeckInput);
+                        this.player.deck = this.buildDeckFromArray(customDeck);
+                        this.opponent = new Player(true); // Mantener el oponente con un mazo nuevo o el mismo
+                    } catch (error) {
+                        alert("Invalid JSON format. Restarting with a new deck.");
+                        this.player = new Player();
+                        this.opponent = new Player(true);
+                    }
+                } else {
+                    alert("Invalid option. Restarting with a new deck.");
+                    this.player = new Player();
+                    this.opponent = new Player(true);
+                }
+
+
+
+
+                this.showOpponentCards = false;
+                this.start();
+                // Barajar los mazos después de decidir el tipo de reinicio
+                this.shuffleDeck(this.player.deck);
+                this.shuffleDeck(this.opponent.deck);
+                toggleMenu(); // Cerrar el menú después de reiniciar
+            }
+
+            shuffleDeck(deck) {
+                for (let i = deck.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [deck[i], deck[j]] = [deck[j], deck[i]]; // Intercambia elementos
+                }
+            }
+            buildDeckFromArray(deckArray) {
+                return deckArray.map(cardData => {
+                    const card = new Card(cardData.type, cardData.attack, cardData.health);
+                    card.shield = cardData.shield;
+                    card.poison = cardData.poison;
+                    card.healAmount = cardData.healAmount;
+                    return card;
+                });
+            }
+        }
+
+        const game = new Game();
+        game.start();
+    </script>
+</body>
+
+</html>

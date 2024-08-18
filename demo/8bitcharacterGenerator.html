@@ -14,6 +14,7 @@
       flex-direction: column;
       align-items: center;
       padding: 20px;
+
     }
 
     h1 {
@@ -21,9 +22,21 @@
       text-shadow: 2px 2px 4px rgba(0, 255, 153, 0.3);
     }
 
-    #canvas {
+    .canva-container {
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+
+    #canvas,
+    #character-weapon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       border: 2px solid #00ff99;
-      background-color: #0f0f1a;
+      background-color: transparent;
     }
 
     #controls {
@@ -56,8 +69,11 @@
 <body>
   <h1>Fantasy Character Sprite Generator</h1>
   <button id="animateButton" onclick="startAnimationDef()">Defense</button>
-  <button id="animateButton" onclick="startAnimationAtk()">Atk</button>
-  <canvas id="canvas" width="64" height="64"></canvas>
+  <button id="animateButton" onclick="startWeaponAnimationAtk()">Atk</button>
+  <div class="canva-container"><canvas id="canvas" width="64" height="64"></canvas>
+    <canvas id="character-weapon" width="64" height="64"></canvas>
+  </div>
+
   <div id="controls">
     <select id="raceSelect">
       <option value="human">Human</option>
@@ -73,6 +89,7 @@
     </select>
     <button onclick="generateSprite()">Generate New Character</button>
     <button onclick="downloadSprite()">Download Sprite</button>
+    <button onclick="copyCanvasToClipboard()">Copy Canvas to Clipboard</button>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
@@ -483,45 +500,45 @@
               }
             }
           }
-          // Improved staff design with random color details
-          const staffColor = '#8b4513';
-          const gemColor = randomChoice(colors.weaponDetails);
-          const detailColor = randomChoice(colors.weaponDetails);
+          // // Improved staff design with random color details
+          // const staffColor = '#8b4513';
+          // const gemColor = randomChoice(colors.weaponDetails);
+          // const detailColor = randomChoice(colors.weaponDetails);
 
-          // Staff shaft
-          for (let y = 4; y < 15; y++) {
-            drawPixel(3, y, staffColor);
-            currentSprite.push({ x: 3, y, color: staffColor });
-          }
+          // // Staff shaft
+          // for (let y = 4; y < 15; y++) {
+          //   drawPixel(3, y, staffColor);
+          //   currentSprite.push({ x: 3, y, color: staffColor });
+          // }
 
-          // Staff head
-          drawPixel(2, 3, staffColor);
-          drawPixel(4, 3, staffColor);
-          drawPixel(1, 2, detailColor);
-          drawPixel(5, 2, detailColor);
-          drawPixel(3, 1, detailColor);
-          drawPixel(3, 2, gemColor);
+          // // Staff head
+          // drawPixel(2, 3, staffColor);
+          // drawPixel(4, 3, staffColor);
+          // drawPixel(1, 2, detailColor);
+          // drawPixel(5, 2, detailColor);
+          // drawPixel(3, 1, detailColor);
+          // drawPixel(3, 2, gemColor);
 
-          currentSprite.push({ x: 2, y: 3, color: staffColor });
-          currentSprite.push({ x: 4, y: 3, color: staffColor });
-          currentSprite.push({ x: 1, y: 2, color: detailColor });
-          currentSprite.push({ x: 5, y: 2, color: detailColor });
-          currentSprite.push({ x: 3, y: 1, color: detailColor });
-          currentSprite.push({ x: 3, y: 2, color: gemColor });
+          // currentSprite.push({ x: 2, y: 3, color: staffColor });
+          // currentSprite.push({ x: 4, y: 3, color: staffColor });
+          // currentSprite.push({ x: 1, y: 2, color: detailColor });
+          // currentSprite.push({ x: 5, y: 2, color: detailColor });
+          // currentSprite.push({ x: 3, y: 1, color: detailColor });
+          // currentSprite.push({ x: 3, y: 2, color: gemColor });
 
-          // Random decorative details on staff
-          for (let y = 5; y < 14; y += 3) {
-            drawPixel(2, y, detailColor);
-            drawPixel(4, y, detailColor);
-            currentSprite.push({ x: 2, y, color: detailColor });
-            currentSprite.push({ x: 4, y, color: detailColor });
-          }
+          // // Random decorative details on staff
+          // for (let y = 5; y < 14; y += 3) {
+          //   drawPixel(2, y, detailColor);
+          //   drawPixel(4, y, detailColor);
+          //   currentSprite.push({ x: 2, y, color: detailColor });
+          //   currentSprite.push({ x: 4, y, color: detailColor });
+          // }
 
-          // Hands holding staff
-          drawPixel(4, 9, skinColor);
-          drawPixel(4, 10, skinColor);
-          currentSprite.push({ x: 4, y: 9, color: skinColor });
-          currentSprite.push({ x: 4, y: 10, color: skinColor });
+          // // Hands holding staff
+          // drawPixel(4, 9, skinColor);
+          // drawPixel(4, 10, skinColor);
+          // currentSprite.push({ x: 4, y: 9, color: skinColor });
+          // currentSprite.push({ x: 4, y: 10, color: skinColor });
           break;
         case 'warrior':
           // Armor
@@ -735,6 +752,8 @@
       // drawPixel(8, 4, '#000000');
       // currentSprite.push({ x: 7, y: 4, color: '#000000' });
       // currentSprite.push({ x: 8, y: 4, color: '#000000' });
+      drawWeapon(skinColor);
+
 
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -749,7 +768,81 @@
         animateButton.disabled = true;
       }
     }
+    let weaponPixels = []; // Array para almacenar los píxeles del weapon
+    function drawWeapon(skinColor) {
+      const weaponCanvas = document.getElementById('character-weapon');
+      const weaponCtx = weaponCanvas.getContext('2d');
+      weaponCtx.clearRect(0, 0, weaponCanvas.width, weaponCanvas.height);
 
+      const profession = document.getElementById('professionSelect').value;
+      weaponPixels = [];
+
+      switch (profession) {
+        case 'mage':
+          // Improved staff design with random color details
+          const staffColor = '#8b4513';
+          const gemColor = randomChoice(colors.weaponDetails);
+          const detailColor = randomChoice(colors.weaponDetails);
+
+          // Staff shaft
+          for (let y = 4; y < 15; y++) {
+            weaponPixels.push({ x: 3, y, color: staffColor });
+          }
+
+          // Agrega los elementos que representan la mano del mago
+          weaponPixels.push({ x: 4, y: 9, color: skinColor });
+          weaponPixels.push({ x: 4, y: 10, color: skinColor });
+
+          // Agrega los detalles del staff
+          for (let y = 5; y < 14; y += 3) {
+            weaponPixels.push({ x: 2, y, color: detailColor });
+            weaponPixels.push({ x: 4, y, color: detailColor });
+          }
+
+          // Agrega más elementos al array `weaponPixels` usando `push()`
+          weaponPixels.push(
+            { x: 2, y: 3, color: staffColor },
+            { x: 4, y: 3, color: staffColor },
+            { x: 1, y: 2, color: detailColor },
+            { x: 5, y: 2, color: detailColor },
+            { x: 3, y: 1, color: detailColor },
+            { x: 3, y: 2, color: gemColor }
+          );
+
+          break;
+
+          break;
+        case 'warrior':
+          weaponPixels = [
+            { x: 12, y: 6, color: '#c0c0c0' },
+            { x: 12, y: 7, color: '#c0c0c0' },
+            { x: 12, y: 8, color: '#ffd700' },
+            // Añade más píxeles según el diseño de la espada
+          ];
+          break;
+        case 'archer':
+          weaponPixels = [
+            { x: 11, y: 4, color: '#8b4513' },
+            { x: 12, y: 5, color: '#ffffff' },
+            { x: 13, y: 6, color: '#ff4500' },
+            // Añade más píxeles según el diseño del arco
+          ];
+          break;
+        case 'thief':
+          weaponPixels = [
+            { x: 3, y: 10, color: '#c0c0c0' },
+            { x: 2, y: 11, color: '#ffd700' },
+            { x: 12, y: 10, color: '#8b4513' },
+            // Añade más píxeles según el diseño de las dagas
+          ];
+          break;
+      }
+
+      weaponPixels.forEach(pixel => {
+        weaponCtx.fillStyle = pixel.color;
+        weaponCtx.fillRect(pixel.x * pixelSize, pixel.y * pixelSize, pixelSize, pixelSize);
+      });
+    }
     function downloadSprite() {
       const dataURL = canvas.toDataURL('image/png');
       const link = document.createElement('a');
@@ -836,7 +929,6 @@
     function startAnimationDef() {
 
       if (currentProfession === 'mage' && !isAnimating) {
-
         console.log("defense");
         isAnimating = true;  // Marcar que la animación está en curso
         spriteYPosition = 0;  // Resetear la posición en Y del sprite al iniciar la animación
@@ -892,6 +984,113 @@
         // Restaurar el estado del contexto solo cuando la animación termine
         ctx.restore();
       }
+    }
+
+    // Variables para animación del weapon
+    let weaponYPosition = 0;
+    let weaponXPosition = 0;
+    let weaponDirectionY = 1;
+    let weaponDirectionX = 0;
+    let weaponTargetXPosition = 0;
+
+    function animateWeapon() {
+      const weaponCanvas = document.getElementById('character-weapon');
+      const weaponCtx = weaponCanvas.getContext('2d');
+
+      // Limpiar el canvas del weapon
+      weaponCtx.clearRect(0, 0, weaponCanvas.width, weaponCanvas.height);
+
+      // Dibujar el weapon en la nueva posición X e Y
+      drawWeaponAtPosition(weaponXPosition, weaponYPosition);
+
+      // Actualizar la posición Y para el siguiente frame
+      weaponYPosition += weaponDirectionY;
+
+      // Mover en la dirección X hacia la posición objetivo
+      if (weaponDirectionX !== 0) {
+        weaponXPosition += weaponDirectionX;
+        if ((weaponDirectionX > 0 && weaponXPosition >= weaponTargetXPosition) ||
+          (weaponDirectionX < 0 && weaponXPosition <= weaponTargetXPosition)) {
+          // Cuando el weapon alcanza la posición objetivo, detener el movimiento en X
+          weaponDirectionX = 0;
+        }
+      }
+
+      // Invertir la dirección en Y si el weapon alcanza los límites del canvas
+      if (weaponYPosition > weaponCanvas.height - spriteSize * pixelSize) {
+        weaponDirectionY = -1;
+      }
+
+      // Detener la animación cuando el weapon regrese a la posición inicial en Y
+      if (weaponYPosition <= -1 && weaponDirectionY === -1) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+
+        weaponYPosition = 0;  // Resetear la posición del weapon para la próxima animación
+        weaponXPosition = 0;  // Resetear la posición en X también
+        weaponDirectionY = 1;  // Resetear la dirección para la próxima animación
+
+      } else {
+        // Solicitar el siguiente frame de la animación
+        animationFrameId = requestAnimationFrame(animateWeapon);
+      }
+    }
+    function drawWeaponAtPosition(xOffset, yOffset) {
+      const weaponCanvas = document.getElementById('character-weapon');
+      const weaponCtx = weaponCanvas.getContext('2d');
+
+      // Limpiar el canvas antes de dibujar
+      weaponCtx.clearRect(0, 0, weaponCanvas.width, weaponCanvas.height);
+
+      // Dibujar solo los píxeles del weapon en la nueva posición
+      weaponPixels.forEach(pixel => {
+        weaponCtx.fillStyle = pixel.color;
+        weaponCtx.fillRect((pixel.x + xOffset) * pixelSize, (pixel.y + yOffset) * pixelSize, pixelSize, pixelSize);
+      });
+    }
+
+    function startWeaponAnimationDef() {
+      if (currentProfession === 'mage' && !isAnimating) {
+        isAnimating = true;  // Marcar que la animación está en curso
+        weaponYPosition = 0;  // Resetear la posición en Y del weapon al iniciar la animación
+        weaponXPosition = 0;  // Resetear la posición en X del weapon al iniciar la animación
+        weaponDirectionY = 1;  // Resetear la dirección en Y
+        weaponDirectionX = -1;  // Mover hacia atrás
+        weaponTargetXPosition = -10;  // Ajustar según cuánto quieras mover hacia atrás
+        animateWeapon();  // Iniciar la animación del weapon
+        flashRedOverlay();
+        endWeaponAnimation();
+      }
+    }
+
+    function startWeaponAnimationAtk() {
+      if (currentProfession === 'mage' && !isAnimating) {
+        isAnimating = true;  // Marcar que la animación está en curso
+        weaponYPosition = 0;  // Resetear la posición en Y del weapon al iniciar la animación
+        weaponXPosition = 0;  // Resetear la posición en X del weapon al iniciar la animación
+        weaponDirectionY = 3;  // Resetear la dirección en Y
+        weaponDirectionX = 3;  // Mover hacia adelante
+        weaponTargetXPosition = 10;  // Ajustar según cuánto quieras mover hacia adelante
+        animateWeapon();  // Iniciar la animación del weapon
+        endWeaponAnimation();
+      }
+    }
+
+    function endWeaponAnimation() {
+      setTimeout(() => {
+        weaponDirectionY = 0;  // Resetear la dirección en Y
+        weaponDirectionX = 0;  // Mover hacia atrás
+        weaponTargetXPosition = 0;  // Ajustar según cuánto quieras mover hacia atrás
+        animateWeapon();  // Iniciar la animación
+        isAnimating = false;  // Marcar que la animación ha terminado
+      }, 500);
+    }
+
+
+    async function copyCanvasToClipboard() {
+      const spriteJSON = JSON.stringify(currentSprite, null, 2); // Convertir a JSON con formato
+      console.log(spriteJSON); // Mostrar en la consola
+      alert('JSON generado:\n' + spriteJSON); // Mostrar en un alert (opcional)
     }
 
     // Iniciar la generación del sprite
