@@ -1,0 +1,336 @@
+<html><head><base href="https://example.com/pixel-art-generator/">
+<title>Pixel Art Generator with Drag and Drop and Copy-Paste</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+  .container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .canvas-container {
+    position: relative;
+    margin: 10px 0;
+  }
+  canvas {
+    border: 1px solid #ddd;
+  }
+  #gridCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+  input, button, select {
+    margin: 10px 0;
+  }
+  #pixelSize {
+    width: 50px;
+  }
+  #copyButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  #copyButton:hover {
+    background-color: #45a049;
+  }
+  #copyButton:active {
+    background-color: #3e8e41;
+  }
+  #dropZone {
+    border: 2px dashed #ccc;
+    border-radius: 20px;
+    width: 300px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #888;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+  #dropZone.dragover {
+    background-color: #e1e1e1;
+    border-color: #999;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Image to Pixel Art Converter</h1>
+    <div id="dropZone">Drag & Drop, Click to Upload, or Paste Image</div>
+    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+    <br>
+    <label for="pixelSizeMode">Pixel Size Mode:</label>
+    <select id="pixelSizeMode">
+      <option value="auto">Auto</option>
+      <option value="manual">Manual</option>
+    </select>
+    <br>
+    <div id="manualSizeInput" style="display: none;">
+      <label for="pixelSize">Pixel Size:</label>
+      <input type="number" id="pixelSize" value="10" min="1" max="50">
+    </div>
+    <br>
+    <button id="convertBtn">Convert to Pixel Art</button>
+    <br>
+    <div class="canvas-container">
+      <canvas id="outputCanvas"></canvas>
+      <canvas id="gridCanvas"></canvas>
+    </div>
+    <br>
+    <button id="copyButton">Copy JSON to Clipboard</button>
+  </div>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const dropZone = document.getElementById('dropZone');
+    const pixelSizeModeSelect = document.getElementById('pixelSizeMode');
+    const manualSizeInput = document.getElementById('manualSizeInput');
+    const pixelSizeInput = document.getElementById('pixelSize');
+    const convertBtn = document.getElementById('convertBtn');
+    const outputCanvas = document.getElementById('outputCanvas');
+    const gridCanvas = document.getElementById('gridCanvas');
+    const copyButton = document.getElementById('copyButton');
+    const ctx = outputCanvas.getContext('2d');
+    const gridCtx = gridCanvas.getContext('2d');
+
+    let pixelData = [];
+    let pixelatedWidth = 0;
+    let pixelatedHeight = 0;
+    let currentPixelSize = 0;
+
+    // Drag and drop functionality
+    dropZone.addEventListener('click', () => imageInput.click());
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        imageInput.files = e.dataTransfer.files;
+        handleImage(file);
+      }
+    });
+
+    // Copy-paste functionality
+    document.addEventListener('paste', (e) => {
+      const items = e.clipboardData.items;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          handleImage(blob);
+          break;
+        }
+      }
+    });
+
+    imageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        handleImage(file);
+      }
+    });
+
+    function handleImage(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          dropZone.style.backgroundImage = `url(${img.src})`;
+          dropZone.style.backgroundSize = 'cover';
+          dropZone.style.backgroundPosition = 'center';
+          dropZone.innerHTML = '';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    pixelSizeModeSelect.addEventListener('change', function() {
+      manualSizeInput.style.display = this.value === 'manual' ? 'block' : 'none';
+    });
+
+    convertBtn.addEventListener('click', convertToPixelArt);
+    copyButton.addEventListener('click', copyJSONToClipboard);
+
+    function convertToPixelArt() {
+      const file = imageInput.files[0];
+      if (!file && !dropZone.style.backgroundImage) {
+        alert('Please select an image first.');
+        return;
+      }
+
+      const img = new Image();
+      img.onload = function() {
+        let pixelSize;
+        if (pixelSizeModeSelect.value === 'auto') {
+          pixelSize = calculateAutoPixelSize(img.width, img.height);
+        } else {
+          pixelSize = parseInt(pixelSizeInput.value);
+        }
+
+        currentPixelSize = pixelSize;
+        pixelatedWidth = Math.floor(img.width / pixelSize);
+        pixelatedHeight = Math.floor(img.height / pixelSize);
+
+        outputCanvas.width = pixelatedWidth * pixelSize;
+        outputCanvas.height = pixelatedHeight * pixelSize;
+        gridCanvas.width = outputCanvas.width;
+        gridCanvas.height = outputCanvas.height;
+
+        ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+        gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+
+        pixelData = [];
+
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCanvas.width = pixelatedWidth;
+        tempCanvas.height = pixelatedHeight;
+        tempCtx.drawImage(img, 0, 0, pixelatedWidth, pixelatedHeight);
+
+        for (let y = 0; y < pixelatedHeight; y++) {
+          for (let x = 0; x < pixelatedWidth; x++) {
+            const pixelDataPoint = tempCtx.getImageData(x, y, 1, 1).data;
+            const r = pixelDataPoint[0];
+            const g = pixelDataPoint[1];
+            const b = pixelDataPoint[2];
+            const a = pixelDataPoint[3] / 255;
+
+            ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+          }
+        }
+
+        applyPostProcessing();
+        drawGrid();
+        updatePixelData();
+      };
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Use the background image from the drop zone
+        img.src = dropZone.style.backgroundImage.slice(4, -1).replace(/"/g, "");
+      }
+    }
+
+    function calculateAutoPixelSize(width, height) {
+      const targetPixels = 5000;
+      const imagePixels = width * height;
+      const ratio = Math.sqrt(imagePixels / targetPixels);
+      return Math.max(1, Math.round(ratio));
+    }
+
+    function applyPostProcessing() {
+      const imageData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = Math.min(255, data[i] * 1.1);
+        data[i + 1] = Math.min(255, data[i + 1] * 1.1);
+        data[i + 2] = Math.min(255, data[i + 2] * 1.1);
+
+        for (let j = 0; j < 3; j++) {
+          data[i + j] = ((data[i + j] / 255 - 0.5) * 1.2 + 0.5) * 255;
+        }
+
+        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] += (data[i] - avg) * 0.2;
+        data[i + 1] += (data[i + 1] - avg) * 0.2;
+        data[i + 2] += (data[i + 2] - avg) * 0.2;
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    function drawGrid() {
+      gridCtx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+      gridCtx.lineWidth = 1;
+
+      for (let x = 0; x <= pixelatedWidth; x++) {
+        gridCtx.beginPath();
+        gridCtx.moveTo(x * currentPixelSize, 0);
+        gridCtx.lineTo(x * currentPixelSize, gridCanvas.height);
+        gridCtx.stroke();
+      }
+
+      for (let y = 0; y <= pixelatedHeight; y++) {
+        gridCtx.beginPath();
+        gridCtx.moveTo(0, y * currentPixelSize);
+        gridCtx.lineTo(gridCanvas.width, y * currentPixelSize);
+        gridCtx.stroke();
+      }
+    }
+
+    function updatePixelData() {
+      pixelData = [];
+      for (let y = 0; y < pixelatedHeight; y++) {
+        for (let x = 0; x < pixelatedWidth; x++) {
+          const pixelColor = ctx.getImageData(x * currentPixelSize, y * currentPixelSize, 1, 1).data;
+          const r = pixelColor[0];
+          const g = pixelColor[1];
+          const b = pixelColor[2];
+          const a = pixelColor[3] / 255;
+
+          pixelData.push({
+            x: x,
+            y: y,
+            color: `rgba(${r},${g},${b},${a})`
+          });
+        }
+      }
+    }
+
+    function copyJSONToClipboard() {
+      if (pixelData.length === 0) {
+        alert('Please convert an image to pixel art first.');
+        return;
+      }
+
+      const jsonCanvas = {
+        width: pixelatedWidth,
+        height: pixelatedHeight,
+        pixels: pixelData
+      };
+
+      const jsonString = JSON.stringify(jsonCanvas, null, 2);
+
+      navigator.clipboard.writeText(jsonString).then(function() {
+        alert('JSON data copied to clipboard!');
+      }, function(err) {
+        console.error('Could not copy text: ', err);
+        alert('Failed to copy JSON data. Please check console for details.');
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,687 @@
+<html>
+
+<head>
+    <base href="https://websimdatabase.storage.googleapis.com/">
+    <title>Resizable Pixel Art RPG Card Creator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            background-color: #0a0a1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        #card-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            image-rendering: pixelated;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        #controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        button {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="card-container">
+        <canvas id="card"></canvas>
+    </div>
+    <div id="controls">
+        <div class="control-group">
+            <label for="hp-input">HP:</label>
+            <input type="number" id="hp-input" value="100" min="0" max="999">
+        </div>
+        <div class="control-group">
+            <label for="atk-input">ATK:</label>
+            <input type="number" id="atk-input" value="15" min="0" max="999">
+        </div>
+        <div class="control-group">
+            <label for="poison-input">Poison:</label>
+            <input type="number" id="poison-input" value="0" min="0" max="9">
+        </div>
+        <div class="control-group">
+            <label for="burn-input">Burn:</label>
+            <input type="number" id="burn-input" value="0" min="0" max="9">
+        </div>
+        <div class="control-group">
+            <label for="freeze-input">Freeze:</label>
+            <input type="number" id="freeze-input" value="0" min="0" max="9">
+        </div>
+        <div class="control-group">
+            <label for="size-input">Card Size (%):</label>
+            <input type="number" id="size-input" value="100" min="50" max="200" step="10">
+        </div>
+    </div>
+    <div id="ability-selector">
+        <button onclick="changeAbility('fireball')">Fireball</button>
+        <button onclick="changeAbility('heal')">Heal</button>
+        <button onclick="changeAbility('shield')">Shield</button>
+        <button onclick="changeAbility('poison')">Poison</button>
+    </div>
+    <div id="immunity-selector">
+        <button onclick="toggleImmunity('poison')">Toggle Poison Immunity</button>
+        <button onclick="toggleImmunity('fire')">Toggle Fire Immunity</button>
+        <button onclick="toggleImmunity('ice')">Toggle Ice Immunity</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('card');
+        const ctx = canvas.getContext('2d');
+
+        let currentAbility = 'fireball';
+        let negativeStates = {
+            poison: 0,
+            burn: 0,
+            freeze: 0
+        };
+        let immunities = {
+            poison: false,
+            fire: false,
+            ice: false
+        };
+        let hp = 10;
+        let atk = 15;
+        let currentOverlayIndex = 0;
+        let cardSize = 100; // percentage of original size
+
+        // Original card dimensions
+        const originalWidth = 250;
+        const originalHeight = 350;
+
+        // Animation variables
+        let animatedValues = {
+            hp: 100,
+            atk: 15,
+            poison: 0,
+            burn: 0,
+            freeze: 0
+        };
+        let isAnimating = false;
+
+        function resizeCard(percentage) {
+            cardSize = percentage;
+            canvas.width = originalWidth * (percentage / 100);
+            canvas.height = originalHeight * (percentage / 100);
+            drawCard();
+        }
+
+        function drawPixelText(text, x, y, size, color, shadowColor, maxWidth) {
+            const scale = cardSize / 100;
+            ctx.font = `${size * scale}px 'Press Start 2P'`;
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = shadowColor;
+            ctx.fillText(text, x * scale + scale, y * scale + scale, maxWidth * scale);
+            ctx.fillStyle = color;
+            ctx.fillText(text, x * scale, y * scale, maxWidth * scale);
+        }
+
+        function drawHeart(x, y, size, color) {
+            const scale = cardSize / 100;
+            ctx.fillStyle = color;
+            ctx.fillRect((x + size / 4) * scale, y * scale, (size / 2) * scale, (size / 4) * scale);
+            ctx.fillRect(x * scale, (y + size / 4) * scale, size * scale, (size / 2) * scale);
+            ctx.fillRect((x + size / 4) * scale, (y + 3 * size / 4) * scale, (size / 2) * scale, (size / 4) * scale);
+        }
+
+        function drawSword(x, y, size, color) {
+            const scale = cardSize / 100;
+            ctx.fillStyle = color;
+            ctx.fillRect((x + size / 2 - 1) * scale, y * scale, 2 * scale, size * scale);
+            ctx.fillRect(x * scale, (y + size / 4) * scale, size * scale, 2 * scale);
+            ctx.fillRect((x + size / 4) * scale, (y + size - 4) * scale, (size / 2) * scale, 4 * scale);
+        }
+
+        function drawTexturedBackground(x, y, width, height, color1, color2) {
+            const scale = cardSize / 100;
+            const pattern = ctx.createPattern(createNoiseTexture(16, 16, color1, color2), 'repeat');
+            ctx.fillStyle = pattern;
+            ctx.fillRect(x * scale, y * scale, width * scale, height * scale);
+        }
+
+        function drawGradientBackgroundFullcard(x, y, width, height, color1, color2, color3) {
+            const scale = cardSize / 100;
+
+            // Crear un gradiente lineal de arriba hacia abajo
+            const gradient = ctx.createLinearGradient(0, y * scale, 0, (y + height) * scale);
+
+            // Añadir los tres colores al gradiente
+            gradient.addColorStop(0, color1); // Parte superior
+            gradient.addColorStop(0.5, color2); // Mitad
+            gradient.addColorStop(1, color3); // Parte inferior
+
+            // Aplicar el gradiente al fondo
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x * scale, y * scale, width * scale, height * scale);
+        }
+
+        function createNoiseTexture(width, height, color1, color2) {
+            const offscreenCanvas = document.createElement('canvas');
+            offscreenCanvas.width = width;
+            offscreenCanvas.height = height;
+            const offscreenCtx = offscreenCanvas.getContext('2d');
+            const imageData = offscreenCtx.createImageData(width, height);
+
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                const color = Math.random() > 0.5 ? color1 : color2;
+                imageData.data[i] = parseInt(color.substr(1, 2), 16);
+                imageData.data[i + 1] = parseInt(color.substr(3, 2), 16);
+                imageData.data[i + 2] = parseInt(color.substr(5, 2), 16);
+                imageData.data[i + 3] = 255;
+            }
+
+            offscreenCtx.putImageData(imageData, 0, 0);
+            return offscreenCanvas;
+        }
+
+        function drawDoubleBorder(x, y, width, height, outerColor1, outerColor2, innerColor) {
+            const scale = cardSize / 100;
+            const outerBorderWidth = 10 * scale;
+            const innerBorderWidth = 2 * scale;
+
+            // Draw outer border
+            for (let i = 0; i < outerBorderWidth; i++) {
+                const gradient = ctx.createLinearGradient(x * scale + i, y * scale + i, (x + width) * scale - i, (y + height) * scale - i);
+                gradient.addColorStop(0, outerColor1);
+                gradient.addColorStop(0.5, outerColor2);
+                gradient.addColorStop(1, outerColor1);
+
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x * scale + i, y * scale + i, width * scale - 2 * i, height * scale - 2 * i);
+            }
+
+            // Draw inner border
+            ctx.strokeStyle = innerColor;
+            ctx.lineWidth = innerBorderWidth;
+            ctx.strokeRect(x * scale + outerBorderWidth, y * scale + outerBorderWidth,
+                width * scale - 2 * outerBorderWidth, height * scale - 2 * outerBorderWidth);
+        }
+
+        function drawFireball(x, y, size) {
+            const scale = cardSize / 100;
+            ctx.fillStyle = '#FF4500';
+            ctx.beginPath();
+            ctx.moveTo(x * scale, (y + size) * scale);
+            ctx.quadraticCurveTo((x + size / 2) * scale, (y - size / 2) * scale, (x + size) * scale, (y + size) * scale);
+            ctx.quadraticCurveTo((x + size / 2) * scale, (y + size * 1.5) * scale, x * scale, (y + size) * scale);
+            ctx.fill();
+
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.moveTo((x + size / 4) * scale, (y + size) * scale);
+            ctx.quadraticCurveTo((x + size / 2) * scale, y * scale, (x + size * 3 / 4) * scale, (y + size) * scale);
+            ctx.quadraticCurveTo((x + size / 2) * scale, (y + size * 1.25) * scale, (x + size / 4) * scale, (y + size) * scale);
+            ctx.fill();
+        }
+
+        function drawHeal(x, y, size) {
+            const scale = cardSize / 100;
+            ctx.fillStyle = '#00FF00';
+            ctx.fillRect((x + size / 3) * scale, y * scale, (size / 3) * scale, size * scale);
+            ctx.fillRect(x * scale, (y + size / 3) * scale, size * scale, (size / 3) * scale);
+        }
+
+        function drawShield(x, y, size) {
+            const scale = cardSize / 100;
+            ctx.fillStyle = '#4169E1';
+            ctx.beginPath();
+            ctx.moveTo((x + size / 2) * scale, y * scale);
+            ctx.lineTo((x + size) * scale, (y + size / 4) * scale);
+            ctx.lineTo((x + size) * scale, (y + size * 3 / 4) * scale);
+            ctx.lineTo((x + size / 2) * scale, (y + size) * scale);
+            ctx.lineTo(x * scale, (y + size * 3 / 4) * scale);
+            ctx.lineTo(x * scale, (y + size / 4) * scale);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#6495ED';
+            ctx.beginPath();
+            ctx.moveTo((x + size / 2) * scale, (y + size / 4) * scale);
+            ctx.lineTo((x + size * 3 / 4) * scale, (y + size / 2) * scale);
+            ctx.lineTo((x + size / 2) * scale, (y + size * 3 / 4) * scale);
+            ctx.lineTo((x + size / 4) * scale, (y + size / 2) * scale);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawPoison(x, y, size) {
+            const scale = cardSize / 100;
+            ctx.fillStyle = '#800080';
+            ctx.beginPath();
+            ctx.moveTo((x + size / 3) * scale, y * scale);
+            ctx.lineTo((x + size * 2 / 3) * scale, y * scale);
+            ctx.lineTo((x + size) * scale, (y + size * 2 / 3) * scale);
+            ctx.lineTo((x + size * 2 / 3) * scale, (y + size) * scale);
+            ctx.lineTo((x + size / 3) * scale, (y + size) * scale);
+            ctx.lineTo(x * scale, (y + size * 2 / 3) * scale);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect((x + size * 3 / 8) * scale, (y + size / 3) * scale, (size / 4) * scale, (size / 4) * scale);
+            ctx.fillRect((x + size * 5 / 16) * scale, (y + size * 7 / 16) * scale, (size * 3 / 8) * scale, (size / 4) * scale);
+            ctx.fillStyle = '#800080';
+            ctx.fillRect((x + size * 7 / 16) * scale, (y + size * 3 / 8) * scale, (size / 8) * scale, (size / 8) * scale);
+            ctx.fillRect((x + size * 9 / 16) * scale, (y + size * 3 / 8) * scale, (size / 8) * scale, (size / 8) * scale);
+            ctx.fillRect((x + size * 7 / 16) * scale, (y + size * 9 / 16) * scale, (size / 8) * scale, (size / 8) * scale);
+        }
+
+        function drawNegativeStateIcon(x, y, size, state) {
+            const scale = cardSize / 100;
+            switch (state) {
+                case 'poison':
+                    ctx.fillStyle = '#800080';
+                    ctx.beginPath();
+                    ctx.arc((x + size / 2) * scale, (y + size / 2) * scale, (size / 2) * scale, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect((x + size * 3 / 8) * scale, (y + size / 3) * scale, (size / 4) * scale, (size / 4) * scale);
+                    break;
+                case 'burn':
+                    ctx.fillStyle = '#FF4500';
+                    ctx.beginPath();
+                    ctx.moveTo((x + size / 2) * scale, y * scale);
+                    ctx.lineTo((x + size * 3 / 4) * scale, (y + size / 2) * scale);
+                    ctx.lineTo((x + size / 2) * scale, (y + size * 3 / 4) * scale);
+                    ctx.lineTo((x + size / 4) * scale, (y + size / 2) * scale);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+                case 'freeze':
+                    ctx.fillStyle = '#00FFFF';
+                    ctx.beginPath();
+                    ctx.moveTo((x + size / 2) * scale, y * scale);
+                    ctx.lineTo((x + size) * scale, (y + size / 2) * scale);
+                    ctx.lineTo((x + size / 2) * scale, (y + size) * scale);
+                    ctx.lineTo(x * scale, (y + size / 2) * scale);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+            }
+        }
+
+        function drawImmunityIcon(x, y, size, type) {
+            const scale = cardSize / 100;
+            switch (type) {
+                case 'poison':
+                    ctx.fillStyle = '#800080';
+                    ctx.beginPath();
+                    ctx.arc((x + size / 2) * scale, (y + size / 2) * scale, (size / 2) * scale, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect((x + size * 3 / 8) * scale, (y + size / 3) * scale, (size / 4) * scale, (size / 4) * scale);
+                    break;
+                case 'fire':
+                    ctx.fillStyle = '#FF4500';
+                    ctx.beginPath();
+                    ctx.moveTo((x + size / 2) * scale, y * scale);
+                    ctx.lineTo((x + size * 3 / 4) * scale, (y + size / 2) * scale);
+                    ctx.lineTo((x + size / 2) * scale, (y + size * 3 / 4) * scale);
+                    ctx.lineTo((x + size / 4) * scale, (y + size / 2) * scale);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+                case 'ice':
+                    ctx.fillStyle = '#00FFFF';
+                    ctx.beginPath();
+                    ctx.moveTo((x + size / 2) * scale, y * scale);
+                    ctx.lineTo((x + size) * scale, (y + size / 2) * scale);
+                    ctx.lineTo((x + size / 2) * scale, (y + size) * scale);
+                    ctx.lineTo(x * scale, (y + size / 2) * scale);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+            }
+
+            // Draw a shield overlay to indicate immunity
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 2 * scale;
+            ctx.beginPath();
+            ctx.arc((x + size / 2) * scale, (y + size / 2) * scale, (size / 2 + 2) * scale, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+
+        function drawCard() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Card background (now inside the border)
+            // drawTexturedBackground(12, 12, 226, 326, '#1a0a2e', '#2a1a4e');
+            drawGradientBackgroundFullcard(12, 12, 226, 326, '#4B0082', '#3d5053', '#329797');
+            // Outer frame with inner white border
+            drawDoubleBorder(0, 0, 250, 350, '#8B4513', '#D2691E', '#FFFFFF');
+
+            // Crear el gradiente para el título
+            const titleGradient = ctx.createLinearGradient(12, 12, 238, 72);
+            titleGradient.addColorStop(0, '#4B0082');
+            titleGradient.addColorStop(1, '#4B0082');
+
+            // Aplicar el gradiente al rectángulo del título
+            ctx.fillStyle = titleGradient;
+            ctx.fillRect(12 * cardSize / 100, 12 * cardSize / 100, 226 * cardSize / 100, 70 * cardSize / 100);
+
+            // Crear un gradiente vertical para el difuminado en el borde inferior
+            const fadeGradient = ctx.createLinearGradient(0, (12 + 70) * cardSize / 100, 0, (12 + 90) * cardSize / 100);
+            fadeGradient.addColorStop(0, 'rgba(75, 0, 130, 1)'); // Color del borde
+            fadeGradient.addColorStop(1, 'rgba(75, 0, 130, 0)'); // Transparencia hacia abajo
+
+            // Aplicar el gradiente de difuminado
+            ctx.fillStyle = fadeGradient;
+            ctx.fillRect(12 * cardSize / 100, (12 + 70) * cardSize / 100, 226 * cardSize / 100, 20 * cardSize / 100);
+
+            // Title text
+            drawPixelText('PIXEL HERO', 25, 30, 16, '#FFD700', '#000000', 200);
+
+
+            // Negative state icons and values
+            let yOffset = 85;
+            if (animatedValues.poison > 0) {
+                drawNegativeStateIcon(195, yOffset, 20, 'poison');
+                drawPixelText(`-${Math.round(animatedValues.poison)}`, 215, yOffset + 5, 10, '#FF00FF', '#000000', 30);
+                yOffset += 25;
+            }
+            if (animatedValues.burn > 0) {
+                drawNegativeStateIcon(195, yOffset, 20, 'burn');
+                drawPixelText(`-${Math.round(animatedValues.burn)}`, 215, yOffset + 5, 10, '#FF4500', '#000000', 30);
+                yOffset += 25;
+            }
+            if (animatedValues.freeze > 0) {
+                drawNegativeStateIcon(195, yOffset, 20, 'freeze');
+                drawPixelText(`-${Math.round(animatedValues.freeze)}`, 215, yOffset + 5, 10, '#00FFFF', '#000000', 30);
+            }
+
+
+
+
+
+            // Crear el gradiente para el rectángulo
+            const statsGradient = ctx.createLinearGradient(12, 12, 238, 72);
+            statsGradient.addColorStop(0, '#329797');
+            statsGradient.addColorStop(1, '#329797');
+
+            // Aplicar el gradiente al rectángulo
+            ctx.fillStyle = statsGradient;
+            ctx.fillRect(12 * cardSize / 100, 230 * cardSize / 100, 226 * cardSize / 100, 110 * cardSize / 100);
+
+            // Crear un gradiente vertical para el difuminado en el borde superior
+            const statsFadeGradient = ctx.createLinearGradient(0, (230 - 20) * cardSize / 100, 0, 230 * cardSize / 100);
+
+            // Agregar stops para combinar el gradiente de transparencia con el color sólido
+            statsFadeGradient.addColorStop(0, 'rgba(50, 151, 151, 0)'); // Transparencia en la parte superior
+            statsFadeGradient.addColorStop(1, 'rgba(50, 151, 151, 1)'); // Color sólido hacia abajo
+
+            // Aplicar el gradiente de difuminado en el borde superior
+            ctx.fillStyle = statsFadeGradient;
+            ctx.fillRect(12 * cardSize / 100, 210 * cardSize / 100, 226 * cardSize / 100, 20 * cardSize / 100);
+
+
+            // Character image frame
+            drawDoubleBorder(25, 80, 200, 160, '#8B4513', '#D2691E', '#FFFFFF');
+
+            // Character image placeholder
+            drawTexturedBackground(28, 83, 194, 154, '#D2B48C', '#DEB887');
+
+            // Stats background
+            drawTexturedBackground(12, 252, 226, 86, '#2F4F4F', '#3D5A5A');
+
+            // Draw stats
+            drawHeart(20, 260, 20, '#8B0000');
+            drawPixelText(`HP: ${Math.round(animatedValues.hp)}`, 50, 265, 10, '#FFA07A', '#000000', 170);
+
+            drawSword(20, 290, 20, '#4682B4');
+            drawPixelText(`ATK: ${Math.round(animatedValues.atk)}`, 50, 295, 10, '#ADD8E6', '#000000', 170);
+
+            const hasImmunities = immunities.poison || immunities.fire || immunities.ice;
+            if (hasImmunities) {
+                // Immunities
+                const immunityGradient = ctx.createLinearGradient(130 * cardSize / 100, 260 * cardSize / 100, 230 * cardSize / 100, 300 * cardSize / 100);
+                immunityGradient.addColorStop(0, '#006400');
+                immunityGradient.addColorStop(1, '#228B22');
+                ctx.fillStyle = immunityGradient;
+                ctx.fillRect(130 * cardSize / 100, 260 * cardSize / 100, 100 * cardSize / 100, 40 * cardSize / 100);
+                drawPixelText('IMMUNE', 140, 265, 8, '#7FFF00', '#000000', 80);
+
+                let immunityX = 140;
+                let immunityY = 280;
+                if (immunities.poison) {
+                    drawImmunityIcon(immunityX, immunityY, 15, 'poison');
+                    immunityX += 20;
+                }
+                if (immunities.fire) {
+                    drawImmunityIcon(immunityX, immunityY, 15, 'fire');
+                    immunityX += 20;
+                }
+                if (immunities.ice) {
+                    drawImmunityIcon(immunityX, immunityY, 15, 'ice');
+                }
+            }
+
+            // Special ability: Dynamic
+            let abilityGradient, abilityName, abilityEffect;
+            switch (currentAbility) {
+                case 'fireball':
+                    abilityGradient = ctx.createLinearGradient(130 * cardSize / 100, 310 * cardSize / 100, 230 * cardSize / 100, 330 * cardSize / 100);
+                    abilityGradient.addColorStop(0, '#8B0000');
+                    abilityGradient.addColorStop(1, '#FF4500');
+                    abilityName = 'FIREBALL';
+                    abilityEffect = 'DMG: 40';
+                    break;
+                case 'heal':
+                    abilityGradient = ctx.createLinearGradient(130 * cardSize / 100, 310 * cardSize / 100, 230 * cardSize / 100, 330 * cardSize / 100);
+                    abilityGradient.addColorStop(0, '#006400');
+                    abilityGradient.addColorStop(1, '#00FF00');
+                    abilityName = 'HEAL';
+                    abilityEffect = 'HP+: 30';
+                    break;
+                case 'shield':
+                    abilityGradient = ctx.createLinearGradient(130 * cardSize / 100, 310 * cardSize / 100, 230 * cardSize / 100, 330 * cardSize / 100);
+                    abilityGradient.addColorStop(0, '#00008B');
+                    abilityGradient.addColorStop(1, '#4169E1');
+                    abilityName = 'SHIELD';
+                    abilityEffect = 'DEF+: 20';
+                    break;
+                case 'poison':
+                    abilityGradient = ctx.createLinearGradient(130 * cardSize / 100, 310 * cardSize / 100, 230 * cardSize / 100, 330 * cardSize / 100);
+                    abilityGradient.addColorStop(0, '#4B0082');
+                    abilityGradient.addColorStop(1, '#800080');
+                    abilityName = 'POISON';
+                    abilityEffect = 'DOT: 10';
+                    break;
+            }
+
+            // Adjust ability position based on immunities
+            const abilityY = hasImmunities ? 310 : 260;
+            ctx.fillStyle = abilityGradient;
+            ctx.fillRect(130 * cardSize / 100, abilityY * cardSize / 100, 100 * cardSize / 100, 30 * cardSize / 100);
+
+            if (currentAbility === 'fireball') {
+                drawFireball(132, abilityY + 2, 16);
+            } else if (currentAbility === 'heal') {
+                drawHeal(132, abilityY + 2, 16);
+            } else if (currentAbility === 'shield') {
+                drawShield(132, abilityY + 2, 16);
+            } else if (currentAbility === 'poison') {
+                drawPoison(132, abilityY + 2, 16);
+            }
+
+            drawPixelText(abilityName, 155, abilityY + 2, 7, '#FFD700', '#000000', 70);
+            drawPixelText(abilityEffect, 155, abilityY + 12, 6, '#FFD700', '#000000', 70);
+
+            // Draw dynamic overlay for negative states
+            drawDynamicOverlay();
+        }
+
+        function drawDynamicOverlay() {
+            const activeStates = Object.entries(negativeStates).filter(([_, value]) => value > 0);
+            if (activeStates.length > 0) {
+                const [currentState] = activeStates[currentOverlayIndex % activeStates.length];
+                const color = currentState === 'poison' ? 'rgba(128, 0, 128, 0.2)' :
+                    currentState === 'burn' ? 'rgba(255, 69, 0, 0.2)' :
+                        'rgba(0, 255, 255, 0.2)';
+                ctx.fillStyle = color;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function changeAbility(ability) {
+            currentAbility = ability;
+            drawCard();
+        }
+
+        function toggleImmunity(type) {
+            immunities[type] = !immunities[type];
+            drawCard();
+        }
+
+        function animateValue(key, targetValue, duration = 500) {
+            const startValue = animatedValues[key];
+            const startTime = Date.now();
+
+            function update() {
+                const currentTime = Date.now();
+                const elapsed = currentTime - startTime;
+
+                if (elapsed < duration) {
+                    const progress = elapsed / duration;
+                    animatedValues[key] = startValue + (targetValue - startValue) * progress;
+                    drawCard();
+                    requestAnimationFrame(update);
+                } else {
+                    animatedValues[key] = targetValue;
+                    drawCard();
+                    isAnimating = false;
+                }
+            }
+
+            isAnimating = true;
+            update();
+        }
+
+        // Update values based on input changes
+        document.getElementById('hp-input').addEventListener('input', (e) => {
+            const newValue = parseInt(e.target.value) || 0;
+            animateValue('hp', newValue);
+            hp = newValue;
+        });
+
+        document.getElementById('atk-input').addEventListener('input', (e) => {
+            const newValue = parseInt(e.target.value) || 0;
+            animateValue('atk', newValue);
+            atk = newValue;
+        });
+
+        document.getElementById('poison-input').addEventListener('input', (e) => {
+            const newValue = parseInt(e.target.value) || 0;
+            animateValue('poison', newValue);
+            negativeStates.poison = newValue;
+        });
+
+        document.getElementById('burn-input').addEventListener('input', (e) => {
+            const newValue = parseInt(e.target.value) || 0;
+            animateValue('burn', newValue);
+            negativeStates.burn = newValue;
+        });
+
+        document.getElementById('freeze-input').addEventListener('input', (e) => {
+            const newValue = parseInt(e.target.value) || 0;
+            animateValue('freeze', newValue);
+            negativeStates.freeze = newValue;
+        });
+
+        document.getElementById('size-input').addEventListener('input', (e) => {
+            const newSize = parseInt(e.target.value) || 100;
+            resizeCard(newSize);
+        });
+
+        // Initial card draw
+        resizeCard(100);
+
+        canvas.addEventListener('mousemove', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            if (x > 0 && x < canvas.width && y > 0 && y < canvas.height) {
+                canvas.style.cursor = 'pointer';
+                drawDoubleBorder(0, 0, 250, 350, `hsl(${Date.now() % 360}, 100%, 50%)`, '#D2691E', '#FFFFFF');
+            } else {
+                canvas.style.cursor = 'default';
+                drawDoubleBorder(0, 0, 250, 350, '#8B4513', '#D2691E', '#FFFFFF');
+            }
+        });
+
+        function exportCard() {
+            const link = document.createElement('a');
+            link.download = 'pixel-rpg-card-resizable.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Uncomment to enable export functionality
+        // canvas.addEventListener('click', exportCard);
+
+        // Function to update the overlay every second
+        function updateOverlay() {
+            const activeStates = Object.entries(negativeStates).filter(([_, value]) => value > 0);
+            if (activeStates.length > 1) {
+                currentOverlayIndex++;
+                drawCard();
+            }
+        }
+
+        // Start the overlay update interval
+        setInterval(updateOverlay, 1000);
+    </script>
+</body>
+
+</html>

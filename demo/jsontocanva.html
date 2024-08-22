@@ -1,117 +1,166 @@
-<!DOCTYPE html>
-<html lang="es">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON a Canvas con Zoom y Tamaño de Píxel Ajustable</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        canvas {
-            border: 1px solid black;
-            margin-top: 20px;
-        }
-
-        textarea {
-            width: 300px;
-            height: 150px;
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 5px;
-        }
-
-        input[type="number"] {
-            margin: 5px;
-            padding: 5px;
-            font-size: 16px;
-            width: 80px;
-        }
-    </style>
+    <base href="https://websim.creation.engine/" target="_blank">
 </head>
 
 <body>
 
-    <h1>Convertir JSON a Imagen en Canvas con Zoom y Tamaño de Píxel</h1>
-    <textarea id="jsonInput" placeholder="Pega aquí tu JSON..."></textarea>
-    <button id="drawButton">Dibujar Imagen</button>
-    <div>
-        <button id="zoomIn">Zoom +</button>
-        <button id="zoomOut">Zoom -</button>
-        <label for="pixelSizeInput">Tamaño de Píxel:</label>
-        <input type="number" id="pixelSizeInput" value="1" min="1">
-    </div>
-    <canvas id="canvas"></canvas>
+    I understand. You want to be able to adjust the size of the pixels and have the canvas container automatically
+    update to fit the new size of the pixel-based image. Here's an updated version that accomplishes this:
 
-    <script>
-        let scale = 1;
-        let pixelSize = 1;
-        let jsonData;
+    <!DOCTYPE html>
+    <html lang="es">
 
-        document.getElementById('drawButton').addEventListener('click', function () {
-            const jsonInput = document.getElementById('jsonInput').value;
-            try {
-                jsonData = JSON.parse(jsonInput);
-                pixelSize = parseInt(document.getElementById('pixelSizeInput').value);
-                scale = 1;  // Resetea el zoom cuando se dibuja una nueva imagen
-                updateCanvasSize(jsonData);
-                drawCanvas(jsonData);
-            } catch (error) {
-                alert("El JSON es inválido. Por favor, revisa su estructura.");
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JSON a Canvas con Zoom y Tamaño de Píxel Ajustable</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 20px;
             }
-        });
 
-        document.getElementById('zoomIn').addEventListener('click', function () {
-            if (jsonData) {
-                scale *= 1.2;
-                updateCanvasSize(jsonData);
-                drawCanvas(jsonData);
+            canvas {
+                border: 1px solid black;
+                margin-top: 20px;
             }
-        });
 
-        document.getElementById('zoomOut').addEventListener('click', function () {
-            if (jsonData) {
-                scale /= 1.2;
-                updateCanvasSize(jsonData);
-                drawCanvas(jsonData);
+            textarea {
+                width: 300px;
+                height: 150px;
+                margin-bottom: 20px;
             }
-        });
 
-        function updateCanvasSize(data) {
-            const canvas = document.getElementById('canvas');
-            canvas.width = data.width * scale * pixelSize;
-            canvas.height = data.height * scale * pixelSize;
-        }
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                margin: 5px;
+            }
 
-        function drawCanvas(data) {
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
+            input[type="number"] {
+                margin: 5px;
+                padding: 5px;
+                font-size: 16px;
+                width: 80px;
+            }
+        </style>
+    </head>
 
-            // Limpia el canvas antes de redibujar
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    <body>
 
-            // Dibuja los píxeles escalados
-            data.pixels.forEach(pixel => {
-                ctx.fillStyle = pixel.color;
-                ctx.fillRect(
-                    pixel.x * scale * pixelSize,
-                    pixel.y * scale * pixelSize,
-                    scale * pixelSize,
-                    scale * pixelSize
-                );
+        <h1>Convertir JSON a Imagen en Canvas con Zoom y Tamaño de Píxel</h1>
+        <textarea id="jsonInput" placeholder="Pega aquí tu JSON..."></textarea>
+        <button id="drawButton">Dibujar Imagen</button>
+        <div>
+            <button id="zoomIn">Zoom +</button>
+            <button id="zoomOut">Zoom -</button>
+            <label for="pixelSizeInput">Tamaño de Píxel:</label>
+            <input type="number" id="pixelSizeInput" value="8" min="1">
+            <button id="updatePixelSize">Actualizar Tamaño de Píxel</button>
+        </div>
+        <canvas id="canvas"></canvas>
+
+        <script>
+            let scale = 1;
+            let pixelSize = 8;
+            let jsonData;
+
+            document.getElementById('drawButton').addEventListener('click', function () {
+                const jsonInput = document.getElementById('jsonInput').value;
+                try {
+                    jsonData = JSON.parse(jsonInput);
+                    pixelSize = parseInt(document.getElementById('pixelSizeInput').value);
+                    scale = 1;  // Resetea el zoom cuando se dibuja una nueva imagen
+                    updateCanvasSize();
+                    drawCanvas();
+                } catch (error) {
+                    alert("El JSON es inválido. Por favor, revisa su estructura.");
+                }
             });
-        }
-    </script>
+
+            document.getElementById('zoomIn').addEventListener('click', function () {
+                if (jsonData) {
+                    scale *= 1.2;
+                    updateCanvasSize();
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById('zoomOut').addEventListener('click', function () {
+                if (jsonData) {
+                    scale /= 1.2;
+                    updateCanvasSize();
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById('updatePixelSize').addEventListener('click', function () {
+                if (jsonData) {
+                    pixelSize = parseInt(document.getElementById('pixelSizeInput').value);
+                    updateCanvasSize();
+                    drawCanvas();
+                }
+            });
+
+            function updateCanvasSize() {
+                const canvas = document.getElementById('canvas');
+                if (jsonData && jsonData.width && jsonData.height) {
+                    canvas.width = jsonData.width * pixelSize * scale;
+                    canvas.height = jsonData.height * pixelSize * scale;
+                }
+            }
+
+            function drawCanvas() {
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Limpia el canvas antes de redibujar
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (!jsonData || !jsonData.pixels) {
+                    return;
+                }
+
+                // Dibuja los píxeles escalados
+                jsonData.pixels.forEach(pixel => {
+                    ctx.fillStyle = pixel.color;
+                    ctx.fillRect(
+                        pixel.x * pixelSize * scale,
+                        pixel.y * pixelSize * scale,
+                        pixelSize * scale,
+                        pixelSize * scale
+                    );
+                });
+            }
+
+        </script>
+
+    </body>
+
+    </html>
+
+    This updated version does the following:
+
+    1. The `updateCanvasSize()` function now calculates the canvas size based on the JSON data's width and height, the
+    current pixel size, and the zoom scale.
+
+    2. The canvas will automatically resize when you change the pixel size or zoom level.
+
+    3. The `drawCanvas()` function now draws the pixels at their new size, filling the entire canvas.
+
+    4. The "Actualizar Tamaño de Píxel" button now updates both the pixel size and redraws the canvas.
+
+    5. Removed the separate canvas size inputs as the canvas now automatically sizes itself based on the pixel size and
+    image dimensions.
+
+    This implementation will draw the pixels at a larger size and update the container (canvas) to fit the new size of
+    the pixel-based image. You can adjust the pixel size using the input field and "Actualizar Tamaño de Píxel" button,
+    and the canvas will resize accordingly.
 
 </body>
 

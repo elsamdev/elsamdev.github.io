@@ -1,0 +1,768 @@
+<html>
+
+<head>
+    <base href="https://roguelike-card-generator.com/">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Press+Start+2P&family=Roboto+Slab:wght@400;700&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #2c3e50;
+            font-family: 'Roboto Slab', serif;
+            padding: 20px
+        }
+
+        #app-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px
+        }
+
+        #card-container,
+        #controls {
+            background-color: #34495e;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px
+        }
+
+        #card-container {
+            position: relative;
+            width: 350px;
+            height: 500px
+        }
+
+        #cardCanvas,
+        #overlayCanvas,
+        #valueCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2)
+        }
+
+        #controls {
+            width: 300px
+        }
+
+        .control-group {
+            margin-bottom: 15px
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ecf0f1
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #7f8c8d;
+            border-radius: 4px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            font-family: 'Roboto Slab', serif
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 5px 0;
+            width: 100%
+        }
+
+        button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+        }
+
+        #customColorInputs {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 10px
+        }
+
+        #customColorInputs label {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 5px 0;
+            color: white
+        }
+
+        #customColorInputs input[type="color"] {
+            margin-top: 5px;
+            width: 100%
+        }
+
+        #liveControls {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #2c3e50;
+            border-radius: 10px
+        }
+
+        .live-control {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px
+        }
+
+        .live-control button {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            padding: 0;
+            margin: 0 5px
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-container">
+        <div id="card-container"><canvas id="cardCanvas" width="350" height="500"></canvas><canvas id="overlayCanvas"
+                width="350" height="500"></canvas><canvas id="valueCanvas" width="350" height="500"></canvas></div>
+        <div id="controls">
+            <div class="control-group"><label for="titleInput">Title:</label><input type="text" id="titleInput"
+                    placeholder="Enter card title"></div>
+            <div class="control-group"><label for="descriptionInput">Description:</label><textarea id="descriptionInput"
+                    placeholder="Enter card description"></textarea></div>
+            <div class="control-group"><label for="healthInput">Health:</label><input type="number" id="healthInput"
+                    min="1" max="10" placeholder="1-10"></div>
+            <div class="control-group"><label for="attackInput">Attack:</label><input type="number" id="attackInput"
+                    min="1" max="10" placeholder="1-10"></div>
+            <div class="control-group"><label for="cardTypeSelect">Card Type:</label><select id="cardTypeSelect">
+                    <option value="normal">Normal</option>
+                    <option value="shielder">Shielder</option>
+                    <option value="poisoner">Poisoner</option>
+                    <option value="heal">Heal</option>
+                </select></div>
+            <div class="control-group"><label for="specialValueInput">Special Value:</label><input type="number"
+                    id="specialValueInput" min="0" max="10" placeholder="0-10"></div>
+            <div class="control-group"><label for="poisonInput">Poison Stacks:</label><input type="number"
+                    id="poisonInput" min="0" max="5" placeholder="0-5"></div>
+            <div class="control-group"><label for="raritySelect">Rarity:</label><select id="raritySelect">
+                    <option value="common">Common</option>
+                    <option value="uncommon">Uncommon</option>
+                    <option value="rare">Rare</option>
+                    <option value="legendary">Legendary</option>
+                </select></div><button id="generateBtn">Generate Card</button><button id="downloadBtn">Download
+                Card</button><select id="colorPaletteSelect">
+                <option value="default">Default Palette</option>
+                <option value="dark">Dark Palette</option>
+                <option value="vibrant">Vibrant Palette</option>
+                <option value="pastel">Pastel Palette</option>
+                <option value="custom">Custom Palette</option>
+            </select>
+            <div id="customColorInputs"><label>Background<input type="color" id="customBackground"
+                        value="#f4e9d6"></label><label>Border<input type="color" id="customBorder"
+                        value="#6d4c41"></label><label>Title<input type="color" id="customTitle"
+                        value="#4e342e"></label><label>Description<input type="color" id="customDescription"
+                        value="#5d4037"></label><label>Frame<input type="color" id="customFrame"
+                        value="#8d6e63"></label><label>Health<input type="color" id="customHealth"
+                        value="#d32f2f"></label><label>Attack<input type="color" id="customAttack"
+                        value="#f57f17"></label><label>Special<input type="color" id="customSpecial"
+                        value="#1976d2"></label></div>
+            <div id="liveControls">
+                <div class="live-control"><label>Health:</label><button id="decreaseHealth">-</button><span
+                        id="liveHealth">1</span><button id="increaseHealth">+</button></div>
+                <div class="live-control"><label>Poison Stacks:</label><button id="decreasePoison">-</button><span
+                        id="livePoison">0</span><button id="increasePoison">+</button></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('cardCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const overlayCanvas = document.getElementById('overlayCanvas');
+        const overlayCtx = overlayCanvas.getContext('2d');
+
+        const valueCanvas = document.getElementById('valueCanvas');
+        const valueCtx = valueCanvas.getContext('2d');
+
+        const cardWidth = 350;
+        const cardHeight = 500;
+
+        // Card components heights
+        const titleHeight = cardHeight * 0.15;
+        const imageHeight = cardHeight * 0.35;
+        const descriptionHeight = cardHeight * 0.30;
+        const attributesHeight = cardHeight * 0.20;
+
+        // Improved color palettes
+        const colorPalettes = {
+            default: {
+                background: '#f5e6d3',
+                border: '#8d6e63',
+                title: '#4e342e',
+                description: '#5d4037',
+                attributes: '#4e342e',
+                frame: '#a1887f',
+                iconBackground: 'rgba(161, 136, 127, 0.8)',
+                health: '#d32f2f',
+                attack: '#f57f17',
+                special: '#1976d2',
+                poison: '#4caf50'
+            },
+            dark: {
+                background: '#2c3e50',
+                border: '#34495e',
+                title: '#ecf0f1',
+                description: '#bdc3c7',
+                attributes: '#ecf0f1',
+                frame: '#607d8b',
+                iconBackground: 'rgba(96, 125, 139, 0.8)',
+                health: '#e74c3c',
+                attack: '#f39c12',
+                special: '#3498db',
+                poison: '#2ecc71'
+            },
+            vibrant: {
+                background: '#ffd54f',
+                border: '#ff6f00',
+                title: '#4a148c',
+                description: '#1b5e20',
+                attributes: '#4a148c',
+                frame: '#ff4081',
+                iconBackground: 'rgba(255, 64, 129, 0.8)',
+                health: '#d50000',
+                attack: '#ff6d00',
+                special: '#2962ff',
+                poison: '#00c853'
+            },
+            pastel: {
+                background: '#fff9c4',
+                border: '#ffcc80',
+                title: '#ce93d8',
+                description: '#a5d6a7',
+                attributes: '#ce93d8',
+                frame: '#ffab91',
+                iconBackground: 'rgba(255, 171, 145, 0.8)',
+                health: '#ef9a9a',
+                attack: '#ffe082',
+                special: '#90caf9',
+                poison: '#a5d6a7'
+            }
+        };
+
+        let currentPalette = colorPalettes.default;
+
+        // Fonts
+        const fonts = {
+            title: '"Press Start 2P", cursive',
+            description: '16px "MedievalSharp", cursive',
+            attributes: 'bold 20px "Roboto Slab", serif',
+            iconText: 'bold 22px "Press Start 2P", cursive'
+        };
+
+        function drawCard(title, imageSrc, description, attributes, rarity, cardType, specialValue, poisonStacks) {
+            // Clear all canvases
+            ctx.clearRect(0, 0, cardWidth, cardHeight);
+            overlayCtx.clearRect(0, 0, cardWidth, cardHeight);
+            valueCtx.clearRect(0, 0, cardWidth, cardHeight);
+
+            // Draw card background with pixel texture
+            drawPixelBackground();
+
+            // Draw decorative frame
+            drawDecorativeFrame(rarity);
+
+            // Draw inner border
+            ctx.strokeStyle = currentPalette.border;
+            ctx.lineWidth = 3;
+            ctx.strokeRect(18, 18, cardWidth - 36, cardHeight - 36);
+
+            // Draw ornamental corners
+            drawOrnamentalCorner(18, 18, 40, 0);
+            drawOrnamentalCorner(cardWidth - 18, 18, 40, Math.PI / 2);
+            drawOrnamentalCorner(18, cardHeight - 18, 40, -Math.PI / 2);
+            drawOrnamentalCorner(cardWidth - 18, cardHeight - 18, 40, Math.PI);
+
+            // Draw title background
+            const titleGradient = ctx.createLinearGradient(0, 0, cardWidth, titleHeight);
+            titleGradient.addColorStop(0, `${currentPalette.frame}E6`);
+            titleGradient.addColorStop(1, `${currentPalette.frame}80`);
+            ctx.fillStyle = titleGradient;
+            ctx.fillRect(18, 18, cardWidth - 36, titleHeight);
+
+            // Draw title with adaptive font size
+            ctx.fillStyle = currentPalette.title;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.save();
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+
+            // Adjust font size to fit the title
+            let fontSize = 32; // Start with the maximum font size
+            ctx.font = `bold ${fontSize}px ${fonts.title}`;
+            while (ctx.measureText(title).width > cardWidth - 56 && fontSize > 12) {
+                fontSize--;
+                ctx.font = `bold ${fontSize}px ${fonts.title}`;
+            }
+
+            ctx.fillText(title, cardWidth / 2, titleHeight / 2 + 18);
+            ctx.restore();
+
+            // Draw image placeholder
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillRect(23, titleHeight + 5, cardWidth - 46, imageHeight - 10);
+            ctx.fillStyle = '#888';
+            ctx.font = '16px Arial';
+            ctx.fillText('Image Placeholder', cardWidth / 2, titleHeight + imageHeight / 2);
+
+            // Draw description background
+            const descGradient = ctx.createLinearGradient(0, titleHeight + imageHeight, 0, titleHeight + imageHeight + descriptionHeight);
+            descGradient.addColorStop(0, `${currentPalette.frame}4D`);
+            descGradient.addColorStop(1, `${currentPalette.frame}80`);
+            ctx.fillStyle = descGradient;
+            ctx.fillRect(23, titleHeight + imageHeight, cardWidth - 46, descriptionHeight);
+
+            // Draw description
+            ctx.fillStyle = currentPalette.description;
+            ctx.font = fonts.description;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            const lines = wrapText(ctx, description, cardWidth - 56);
+            const lineHeight = 24;
+            const totalTextHeight = lines.length * lineHeight;
+            const startY = titleHeight + imageHeight + (descriptionHeight - totalTextHeight) / 2;
+            lines.forEach((line, index) => {
+                ctx.fillText(line, cardWidth / 2, startY + (index * lineHeight));
+            });
+
+            // Draw attributes
+            drawAttributes(attributes, cardType, specialValue);
+
+            // Draw rarity icon
+            drawRarityIcon(rarity);
+
+            // Draw poison stacks if applicable
+            if (poisonStacks > 0) {
+                drawPoisonStacks(poisonStacks);
+            }
+        }
+
+        function drawPixelBackground() {
+            const pixelSize = 10;
+            for (let x = 0; x < cardWidth; x += pixelSize) {
+                for (let y = 0; y < cardHeight; y += pixelSize) {
+                    ctx.fillStyle = lightenColor(currentPalette.background, Math.random() * 10);
+                    ctx.fillRect(x, y, pixelSize, pixelSize);
+                }
+            }
+        }
+
+        function drawDecorativeFrame(rarity) {
+            const gradient = ctx.createLinearGradient(0, 0, cardWidth, cardHeight);
+            switch (rarity) {
+                case 'uncommon':
+                    gradient.addColorStop(0, '#C0C0C0');
+                    gradient.addColorStop(1, '#A0A0A0');
+                    break;
+                case 'rare':
+                    gradient.addColorStop(0, '#FFD700');
+                    gradient.addColorStop(1, '#FFA500');
+                    break;
+                case 'legendary':
+                    gradient.addColorStop(0, '#FF4500');
+                    gradient.addColorStop(1, '#8B0000');
+                    break;
+                default:
+                    gradient.addColorStop(0, currentPalette.frame);
+                    gradient.addColorStop(1, darkenColor(currentPalette.frame, 20));
+            }
+
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 14;
+            ctx.strokeRect(7, 7, cardWidth - 14, cardHeight - 14);
+        }
+
+        function drawOrnamentalCorner(x, y, size, rotation) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotation);
+
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(size, 0);
+            ctx.arcTo(0, 0, 0, size, size);
+            ctx.lineTo(0, 0);
+            ctx.fillStyle = currentPalette.frame;
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(6, 6);
+            ctx.lineTo(size - 6, 6);
+            ctx.arcTo(6, 6, 6, size - 6, size - 12);
+            ctx.lineTo(6, 6);
+            ctx.strokeStyle = currentPalette.border;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Add pixel art flourish
+            const pixelSize = 3;
+            for (let i = 0; i < 5; i++) {
+                ctx.fillStyle = i % 2 === 0 ? currentPalette.border : currentPalette.title;
+                ctx.fillRect(size - 15 + (i * pixelSize), 15, pixelSize, pixelSize);
+                ctx.fillRect(15, size - 15 + (i * pixelSize), pixelSize, pixelSize);
+            }
+
+            ctx.restore();
+        }
+
+        function drawAttributes(attributes, cardType, specialValue) {
+            const startY = cardHeight - attributesHeight;
+            const iconSize = 60;
+            const padding = 15;
+            const totalWidth = (iconSize + padding) * 3 - padding;
+            const startX = (cardWidth - totalWidth) / 2;
+
+            // Health icon
+            drawAttributeIcon(startX, startY + padding, iconSize, attributes.health.toString(), currentPalette.health);
+
+            // Attack icon
+            drawAttributeIcon(startX + iconSize + padding, startY + padding, iconSize, attributes.attack.toString(), currentPalette.attack);
+
+            // Special icon based on card type
+            let specialColor;
+            switch (cardType) {
+                case 'shielder':
+                    specialColor = currentPalette.special;
+                    break;
+                case 'poisoner':
+                    specialColor = currentPalette.poison;
+                    break;
+                case 'heal':
+                    specialColor = '#4caf50'; // Green color for healing
+                    break;
+                default:
+                    specialColor = currentPalette.special;
+            }
+            drawAttributeIcon(startX + (iconSize + padding) * 2, startY + padding, iconSize, specialValue.toString(), specialColor);
+        }
+
+        function drawAttributeIcon(x, y, size, text, color) {
+            // Draw hexagon shape
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const angle = (i * Math.PI) / 3;
+                const xPoint = x + size / 2 + (size / 2) * Math.cos(angle);
+                const yPoint = y + size / 2 + (size / 2) * Math.sin(angle);
+                if (i === 0) {
+                    ctx.moveTo(xPoint, yPoint);
+                } else {
+                    ctx.lineTo(xPoint, yPoint);
+                }
+            }
+            ctx.closePath();
+
+            // Fill hexagon
+            const gradient = ctx.createRadialGradient(
+                x + size / 2, y + size / 2, 0,
+                x + size / 2, y + size / 2, size / 2
+            );
+            gradient.addColorStop(0, lightenColor(color, 20));
+            gradient.addColorStop(1, color);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Add a subtle inner shadow
+            ctx.save();
+            ctx.clip();
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+            ctx.fill();
+            ctx.restore();
+
+            // Draw text on value canvas
+            valueCtx.fillStyle = 'white';
+            valueCtx.font = fonts.iconText;
+            valueCtx.textAlign = 'center';
+            valueCtx.textBaseline = 'middle';
+            valueCtx.fillText(text, x + size / 2, y + size / 2);
+
+            // Add a subtle border
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Add pixel art accents
+            const pixelSize = 4;
+            for (let i = 0; i < 6; i++) {
+                const angle = (i * Math.PI) / 3;
+                const xPoint = x + size / 2 + (size / 2 + pixelSize) * Math.cos(angle);
+                const yPoint = y + size / 2 + (size / 2 + pixelSize) * Math.sin(angle);
+                ctx.fillStyle = i % 2 === 0 ? lightenColor(color, 30) : darkenColor(color, 20);
+                ctx.fillRect(xPoint - pixelSize / 2, yPoint - pixelSize / 2, pixelSize, pixelSize);
+            }
+        }
+
+        function drawRarityIcon(rarity) {
+            const iconSize = 40;
+            const x = cardWidth - iconSize - 10;
+            const y = 10;
+
+            ctx.beginPath();
+            ctx.moveTo(x + iconSize / 2, y);
+            ctx.lineTo(x + iconSize, y + iconSize * 0.75);
+            ctx.lineTo(x + iconSize / 2, y + iconSize);
+            ctx.lineTo(x, y + iconSize * 0.75);
+            ctx.closePath();
+
+            let gradient;
+            switch (rarity) {
+                case 'uncommon':
+                    gradient = ctx.createLinearGradient(x, y, x + iconSize, y + iconSize);
+                    gradient.addColorStop(0, '#C0C0C0');
+                    gradient.addColorStop(1, '#A0A0A0');
+                    break;
+                case 'rare':
+                    gradient = ctx.createLinearGradient(x, y, x + iconSize, y + iconSize);
+                    gradient.addColorStop(0, '#FFD700');
+                    gradient.addColorStop(1, '#FFA500');
+                    break;
+                case 'legendary':
+                    gradient = ctx.createLinearGradient(x, y, x + iconSize, y + iconSize);
+                    gradient.addColorStop(0, '#FF4500');
+                    gradient.addColorStop(1, '#8B0000');
+                    break;
+                default:
+                    gradient = ctx.createLinearGradient(x, y, x + iconSize, y + iconSize);
+                    gradient.addColorStop(0, '#8B4513');
+                    gradient.addColorStop(1, '#D2691E');
+            }
+
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Add a glowing effect
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.fill();
+            ctx.shadowColor = 'transparent';
+        }
+
+        function drawPoisonStacks(stacks) {
+            const iconSize = 30;
+            const x = 10;
+            const y = 10;
+
+            ctx.beginPath();
+            ctx.arc(x + iconSize / 2, y + iconSize / 2, iconSize / 2, 0, 2 * Math.PI);
+            ctx.fillStyle = currentPalette.poison;
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            valueCtx.font = 'bold 16px Arial';
+            valueCtx.fillStyle = 'white';
+            valueCtx.textAlign = 'center';
+            valueCtx.textBaseline = 'middle';
+            valueCtx.fillText('☠', x + iconSize / 2, y + iconSize / 2 - 2);
+            valueCtx.fillText(stacks.toString(), x + iconSize / 2, y + iconSize / 2 + 10);
+        }
+
+        function wrapText(context, text, maxWidth) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const width = context.measureText(currentLine + " " + word).width;
+                if (width < maxWidth) {
+                    currentLine += " " + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        function generateCard() {
+            const titles = ['Pixel Warrior', 'Retro Hero', 'Bit Crusader', '8-Bit Champion'];
+            const descriptions = [
+                'A pixelated warrior from the golden age of gaming. Strikes with nostalgic fury!',
+                'This hero has stood the test of time, pixel by pixel. Ready for any challenge!',
+                'Armed with sword and shield, this crusader fights evil one block at a time.',
+                'A true legend of the 8-bit realm, capable of defeating any low-res foe.'
+            ];
+
+            let title = document.getElementById('titleInput').value.trim();
+            let description = document.getElementById('descriptionInput').value.trim();
+            let health = parseInt(document.getElementById('healthInput').value);
+            let attack = parseInt(document.getElementById('attackInput').value);
+            let cardType = document.getElementById('cardTypeSelect').value;
+            let specialValue = parseInt(document.getElementById('specialValueInput').value);
+            let poisonStacks = parseInt(document.getElementById('poisonInput').value);
+            let rarity = document.getElementById('raritySelect').value;
+
+            if (!title) title = titles[Math.floor(Math.random() * titles.length)];
+            if (!description) description = descriptions[Math.floor(Math.random() * descriptions.length)];
+            if (isNaN(health) || health < 1 || health > 10) health = Math.floor(Math.random() * 10) + 1;
+            if (isNaN(attack) || attack < 1 || attack > 10) attack = Math.floor(Math.random() * 10) + 1;
+            if (isNaN(specialValue) || specialValue < 0 || specialValue > 10) specialValue = Math.floor(Math.random() * 11);
+            if (isNaN(poisonStacks) || poisonStacks < 0 || poisonStacks > 5) poisonStacks = 0;
+
+            const attributes = {
+                health: health,
+                attack: attack
+            };
+
+            drawCard(title, '', description, attributes, rarity, cardType, specialValue, poisonStacks);
+
+            // Update live control displays
+            document.getElementById('liveHealth').textContent = health;
+            document.getElementById('livePoison').textContent = poisonStacks;
+        }
+
+        function lightenColor(color, percent) {
+            const num = parseInt(color.replace("#", ""), 16),
+                amt = Math.round(2.55 * percent),
+                R = (num >> 16) + amt,
+                B = (num >> 8 & 0x00FF) + amt,
+                G = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + (B < 255 ? B < 1 ? 0 : B : 255) * 0x100 + (G < 255 ? G < 1 ? 0 : G : 255)).toString(16).slice(1);
+        }
+
+        function darkenColor(color, percent) {
+            const num = parseInt(color.replace("#", ""), 16),
+                amt = Math.round(2.55 * percent),
+                R = (num >> 16) - amt,
+                B = (num >> 8 & 0x00FF) - amt,
+                G = (num & 0x0000FF) - amt;
+            return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + (B < 255 ? B < 1 ? 0 : B : 255) * 0x100 + (G < 255 ? G < 1 ? 0 : G : 255)).toString(16).slice(1);
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', generateCard);
+
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = cardWidth;
+            tempCanvas.height = cardHeight;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            tempCtx.drawImage(canvas, 0, 0);
+            tempCtx.drawImage(overlayCanvas, 0, 0);
+            tempCtx.drawImage(valueCanvas, 0, 0);
+
+            const dataURL = tempCanvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'roguelike-card.png';
+            link.href = dataURL;
+            link.click();
+        });
+
+        const colorPaletteSelect = document.getElementById('colorPaletteSelect');
+        const customColorInputs = document.getElementById('customColorInputs');
+
+        colorPaletteSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'custom') {
+                customColorInputs.style.display = 'flex';
+                updateCustomPalette();
+            } else {
+                customColorInputs.style.display = 'none';
+                currentPalette = colorPalettes[e.target.value];
+                generateCard();
+            }
+        });
+
+        function updateCustomPalette() {
+            colorPalettes.custom = {
+                background: document.getElementById('customBackground').value,
+                border: document.getElementById('customBorder').value,
+                title: document.getElementById('customTitle').value,
+                description: document.getElementById('customDescription').value,
+                frame: document.getElementById('customFrame').value,
+                health: document.getElementById('customHealth').value,
+                attack: document.getElementById('customAttack').value,
+                special: document.getElementById('customSpecial').value,
+                attributes: document.getElementById('customTitle').value,
+                iconBackground: `${document.getElementById('customFrame').value}CC`,
+                poison: '#4caf50'
+            };
+            currentPalette = colorPalettes.custom;
+            generateCard();
+        }
+
+        customColorInputs.addEventListener('change', updateCustomPalette);
+
+        // Live control functions
+        function updateLiveValue(attribute, change) {
+            const input = document.getElementById(`${attribute}Input`);
+            const display = document.getElementById(`live${attribute.charAt(0).toUpperCase() + attribute.slice(1)}`);
+            let value = parseInt(input.value) || 0;
+            value += change;
+
+            // Enforce limits
+            if (attribute === 'health') {
+                value = Math.max(1, Math.min(value, 10));
+            } else if (attribute === 'poison') {
+                value = Math.max(0, Math.min(value, 5));
+            }
+
+            input.value = value;
+            display.textContent = value;
+            generateCard();
+        }
+
+        document.getElementById('decreaseHealth').addEventListener('click', () => updateLiveValue('health', -1));
+        document.getElementById('increaseHealth').addEventListener('click', () => updateLiveValue('health', 1));
+        document.getElementById('decreasePoison').addEventListener('click', () => updateLiveValue('poison', -1));
+        document.getElementById('increasePoison').addEventListener('click', () => updateLiveValue('poison', 1));
+
+        // Initial card generation
+        generateCard();
+    </script>
+</body>
+
+</html>

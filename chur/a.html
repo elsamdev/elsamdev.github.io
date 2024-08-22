@@ -508,6 +508,10 @@
       width: 93%;
     }
 
+    .button-container img {
+      width: 20%;
+    }
+
     .button {
       width: 93%;
     }
@@ -522,6 +526,10 @@
       width: 95%;
     }
 
+    .button-container img {
+      width: 15%;
+    }
+
     .button {
       width: 95%;
     }
@@ -534,6 +542,10 @@
   @media (min-width: 958px) {
     .primary-button {
       width: 96%;
+    }
+
+    .button-container img {
+      width: 10%;
     }
 
     .button {
@@ -989,45 +1001,45 @@
 
     let thresholdObserver = 1;
 
-    function setupIntersectionObserver() {
-      const observerOptionsShow = {
-        root: null, // observa dentro del viewport
-        rootMargin: '0px',
-        threshold: thresholdObserver // Se ajusta para que el evento se dispare cuando el elemento esté completamente visible
-      };
+    // function setupIntersectionObserver() {
+    //   const observerOptionsShow = {
+    //     root: null, // observa dentro del viewport
+    //     rootMargin: '0px',
+    //     threshold: thresholdObserver // Se ajusta para que el evento se dispare cuando el elemento esté completamente visible
+    //   };
 
-      const observerOptionsHide = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
-      };
+    //   const observerOptionsHide = {
+    //     root: null,
+    //     rootMargin: '0px',
+    //     threshold: 0.1 // Se ajusta para que el evento se dispare cuando el elemento esté al menos un 50% fuera de la vista
+    //   };
 
-      const observerShow = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Si el elemento se intersecta completamente y no ha reproducido el sonido antes
-            if (!entry.target.hasAttribute('soundPlayed')) {
-              playSound('soundDisappear'); // Reproduce el sonido asociado
-              entry.target.setAttribute('soundPlayed', 'true'); // Marca que el sonido se ha reproducido
-            }
-          }
-        });
-      }, observerOptionsShow);
+    //   const observerShow = new IntersectionObserver((entries) => {
+    //     entries.forEach(entry => {
+    //       if (entry.isIntersecting) {
+    //         // Si el elemento se intersecta completamente y no ha reproducido el sonido antes
+    //         if (!entry.target.hasAttribute('soundPlayed')) {
+    //           playSound('soundDisappear'); // Reproduce el sonido asociado
+    //           entry.target.setAttribute('soundPlayed', 'true'); // Marca que el sonido se ha reproducido
+    //         }
+    //       }
+    //     });
+    //   }, observerOptionsShow);
 
-      const observerHide = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) {
-            // Si el elemento está al menos un 50% fuera de la vista
-            entry.target.removeAttribute('soundPlayed'); // Elimina el atributo para permitir la reproducción del sonido nuevamente
-          }
-        });
-      }, observerOptionsHide);
+    //   const observerHide = new IntersectionObserver((entries) => {
+    //     entries.forEach(entry => {
+    //       if (!entry.isIntersecting) {
+    //         // Si el elemento está al menos un 50% fuera de la vista
+    //         entry.target.removeAttribute('soundPlayed'); // Elimina el atributo para permitir la reproducción del sonido nuevamente
+    //       }
+    //     });
+    //   }, observerOptionsHide);
 
-      document.querySelectorAll('.icon').forEach(icon => {
-        observerShow.observe(icon);
-        observerHide.observe(icon);
-      });
-    }
+    //   document.querySelectorAll('.icon').forEach(icon => {
+    //     observerShow.observe(icon);
+    //     observerHide.observe(icon);
+    //   });
+    // }
 
 
 
@@ -1147,7 +1159,7 @@
         // Solo aplicar momentum si el desplazamiento horizontal es mayor que un umbral específico
         if (absVelocity > flickThresholdSpeed && absDx > flickThresholdDistance && Math.abs(dx) > 0) {
           thresholdObserver = 0.2;
-          setupIntersectionObserver()
+          // setupIntersectionObserver()
           let destination = lastTransform + velocity * 400; // El factor de 500 ajusta la 'inercia'
 
           // Limitar el destino para no desbordar los límites del slider
@@ -1840,7 +1852,7 @@
         }
         updateSliderWidth(newItem, true); // Asegurarte de que se ajusta el translateX correctamente
         restablecerElementos();
-        setupIntersectionObserver();
+        // setupIntersectionObserver();
       } else {
 
       }

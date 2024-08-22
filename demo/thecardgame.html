@@ -78,12 +78,13 @@
         .card {
             width: 100%;
             height: 100%;
-            background-color: var(--card-color);
+            /* background-color: var(--card-color); */
+            background: radial-gradient(circle, rgba(28, 126, 163, 1) 0%, rgba(50, 140, 255, 1) 52%, rgba(0, 52, 255, 1) 100%);
             border-radius: 10px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 15px;
+            /* padding: 15px; */
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: absolute;
@@ -91,6 +92,13 @@
             left: 0;
             perspective: 1000px;
             box-sizing: border-box;
+            border: 3px solid white;
+            /* Borde interno blanco */
+            box-shadow: 0 0 5px rgba(0, 255, 255, 1),
+                /* Sombra neón sólida alrededor */
+                0 0 6px rgba(0, 255, 255, 0.9),
+                0 0 7px rgba(0, 255, 255, 0.8),
+                0 0 8px rgba(0, 255, 255, 0.4);
         }
 
         .card:hover {
@@ -150,15 +158,60 @@
             display: flex;
             justify-content: space-between;
             font-size: 12px;
+            width: 103%;
+            position: absolute;
+            bottom: 0;
+            left: -1.5%;
+        }
+
+        other {
+            background: radial-gradient(circle, rgba(252, 164, 109, 1) 0%, rgba(255, 139, 50, 1) 50%, rgba(250, 92, 0, 1) 100%);
+            border-radius: 50%;
+            text-align: center;
+            border: 2px white solid;
+            width: 40px;
+            /* Asegúrate de que el ancho y el alto sean iguales */
+            height: 40px;
+            /* Igual que el ancho para mantenerlo redondo */
+            display: flex;
+            /* Para centrar el contenido verticalmente y horizontalmente */
+            justify-content: center;
+            /* Centra el contenido horizontalmente */
+            align-items: center;
+            /* Centra el contenido verticalmente */
+            font-weight: 600;
+        }
+
+        .attack,
+        .health {
+            /* background: radial-gradient(circle, rgba(252, 164, 109, 1) 0%, rgba(255, 139, 50, 1) 50%, rgba(250, 92, 0, 1) 100%); */
+            text-align: center;
+            border: 2px white solid;
+            width: 40px;
+            /* Asegúrate de que el ancho y el alto sean iguales */
+            height: 40px;
+            /* Igual que el ancho para mantenerlo redondo */
+            display: flex;
+            /* Para centrar el contenido verticalmente y horizontalmente */
+            justify-content: center;
+            /* Centra el contenido horizontalmente */
+            align-items: center;
+            /* Centra el contenido verticalmente */
+            font-weight: 600;
         }
 
         .attack {
-            color: var(--attack-color);
+            /* color: var(--attack-color); */
+            background: radial-gradient(circle, rgba(255, 76, 76, 1) 0%, rgba(204, 0, 0, 1) 50%, rgba(102, 0, 0, 1) 100%);
+
         }
 
         .health {
-            color: var(--health-color);
+            /* color: var(--health-color); */
+            background: radial-gradient(circle, rgba(102, 255, 102, 1) 0%, rgba(34, 193, 34, 1) 50%, rgba(0, 128, 0, 1) 100%);
+
         }
+
 
         .shield {
             color: var(--shield-color);
@@ -472,6 +525,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script>
 
+        const pixelSize = 2;
+
+        const heartPixels = [
+            [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+            [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+            [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+            [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ];
+
         function toggleMenu() {
             const menuOverlay = document.querySelector('.menu-overlay');
             const hamburgerMenu = document.querySelector('.hamburger-menu');
@@ -496,6 +574,313 @@
                 }
             });
         });
+
+        class Heart {
+            constructor(container, currentLife, maxHealth) {
+                this.container = container;
+
+                this.wrapper = document.createElement('div');
+                this.wrapper.className = 'heart-wrapper';
+                this.container.appendChild(this.wrapper);
+
+                this.heartDisplay = document.createElement('div');
+                this.heartDisplay.className = 'heart-display';
+                this.wrapper.appendChild(this.heartDisplay);
+
+                this.heartCanvas = document.createElement('canvas');
+                this.heartCtx = this.heartCanvas.getContext('2d');
+                this.heartBorderCanvas = document.createElement('canvas');
+                this.heartBorderCtx = this.heartBorderCanvas.getContext('2d');
+                this.heartNumberCanvas = document.createElement('canvas');
+                this.heartNumberCtx = this.heartNumberCanvas.getContext('2d');
+
+                this.heartDisplay.appendChild(this.heartCanvas);
+                this.heartDisplay.appendChild(this.heartBorderCanvas);
+                this.heartDisplay.appendChild(this.heartNumberCanvas);
+
+                this.percentDisplay = document.createElement('p');
+                this.percentDisplay.className = 'percent-display';
+                this.wrapper.appendChild(this.percentDisplay);
+
+                this.controls = document.createElement('div');
+                this.controls.className = 'heart-controls';
+                this.wrapper.appendChild(this.controls);
+
+                // Ensure these are properly defined before use
+                this.maxLifeInput = document.createElement('input');
+                this.maxLifeInput.type = 'number';
+                this.maxLifeInput.min = '1';
+                this.maxLifeInput.value = maxHealth;  // Asignar initialHealth aquí
+                this.controls.appendChild(this.maxLifeInput);
+
+                this.currentLifeInput = document.createElement('input');
+                this.currentLifeInput.type = 'number';
+                this.currentLifeInput.min = '0';
+                this.currentLifeInput.value = currentLife;  // Asignar initialHealth aquí
+                this.controls.appendChild(this.currentLifeInput);
+
+                // Define the buttons after the inputs
+                this.updateButton = document.createElement('button');
+                this.updateButton.textContent = 'Update';
+                this.controls.appendChild(this.updateButton);
+
+                this.removeButton = document.createElement('button');
+                this.removeButton.textContent = 'Remove';
+                this.removeButton.style.backgroundColor = '#e74c3c';
+                this.controls.appendChild(this.removeButton);
+
+                // Now that updateButton is defined, attach the event listener
+                this.updateButton.addEventListener('click', () => this.updateValues());
+                this.removeButton.addEventListener('click', () => this.remove());
+
+                // Rest of the initialization
+                this.heartCanvas.width = heartPixels[0].length * pixelSize;
+                this.heartCanvas.height = heartPixels.length * pixelSize;
+                this.heartBorderCanvas.width = this.heartCanvas.width;
+                this.heartBorderCanvas.height = this.heartCanvas.height;
+                this.heartNumberCanvas.width = this.heartCanvas.width;
+                this.heartNumberCanvas.height = this.heartCanvas.height;
+
+                this.currentLifePercent = (currentLife / maxHealth) * 100; // Ajusta según la salud inicial
+                this.targetLifePercent = this.currentLifePercent;
+                this.lifeAnimationInterval = null;
+                console.log(this.currentLifePercent, this.targetLifePercent)
+                this.drawPixelHeart(this.currentLifePercent);
+                this.drawPixelNumber(this.heartNumberCtx, currentLife, this.heartNumberCanvas.width, this.heartNumberCanvas.height);
+                this.drawBorder(this.heartBorderCtx, heartPixels);
+
+                this.addParticleEffect();
+            }
+
+            drawPixelHeart(percent) {
+                this.heartCtx.clearRect(0, 0, this.heartCanvas.width, this.heartCanvas.height);
+
+                for (let y = 0; y < heartPixels.length; y++) {
+                    for (let x = 0; x < heartPixels[y].length; x++) {
+                        if (heartPixels[y][x] === 1) {
+                            const pixelX = x * pixelSize;
+                            const pixelY = y * pixelSize;
+
+                            const gradient = this.heartCtx.createRadialGradient(
+                                pixelX + pixelSize / 2, pixelY + pixelSize / 2, 0,
+                                pixelX + pixelSize / 2, pixelY + pixelSize / 2, pixelSize / 2
+                            );
+                            gradient.addColorStop(0, '#ff3366');
+                            gradient.addColorStop(1, '#ff0033');
+
+                            this.heartCtx.fillStyle = gradient;
+                            this.heartCtx.fillRect(pixelX, pixelY, pixelSize, pixelSize);
+                        }
+                    }
+                }
+
+                this.heartCtx.globalCompositeOperation = 'destination-in';
+                this.heartCtx.fillStyle = 'black';
+                const clipHeight = this.heartCanvas.height * (percent / 100);
+                this.heartCtx.fillRect(0, this.heartCanvas.height - clipHeight, this.heartCanvas.width, clipHeight);
+
+                this.heartCtx.globalCompositeOperation = 'source-over';
+            }
+
+            drawBorder(ctx, pixels) {
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+
+                for (let y = 0; y < pixels.length; y++) {
+                    for (let x = 0; x < pixels[y].length; x++) {
+                        if (pixels[y][x] !== 0) {
+                            const pixelX = x * pixelSize;
+                            const pixelY = y * pixelSize;
+
+                            if (x === 0 || pixels[y][x - 1] === 0) {
+                                ctx.beginPath();
+                                ctx.moveTo(pixelX, pixelY);
+                                ctx.lineTo(pixelX, pixelY + pixelSize);
+                                ctx.stroke();
+                            }
+                            if (x === pixels[y].length - 1 || pixels[y][x + 1] === 0) {
+                                ctx.beginPath();
+                                ctx.moveTo(pixelX + pixelSize, pixelY);
+                                ctx.lineTo(pixelX + pixelSize, pixelY + pixelSize);
+                                ctx.stroke();
+                            }
+                            if (y === 0 || pixels[y - 1][x] === 0) {
+                                ctx.beginPath();
+                                ctx.moveTo(pixelX, pixelY);
+                                ctx.lineTo(pixelX + pixelSize, pixelY);
+                                ctx.stroke();
+                            }
+                            if (y === pixels.length - 1 || pixels[y + 1][x] === 0) {
+                                ctx.beginPath();
+                                ctx.moveTo(pixelX, pixelY + pixelSize);
+                                ctx.lineTo(pixelX + pixelSize, pixelY + pixelSize);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                }
+            }
+
+            drawPixelNumber(ctx, number, canvasWidth, canvasHeight) {
+                ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+                const maxWidth = canvasWidth * 0.5;
+                const maxHeight = canvasHeight * 0.5;
+
+                const digits = number.toString().split('');
+                const digitWidth = 4;
+                const digitHeight = 5;
+                const spacing = 1;
+
+                const totalDigitWidth = (digits.length * digitWidth) + ((digits.length - 1) * spacing);
+
+                const maxPixelSizeWidth = maxWidth / totalDigitWidth;
+                const maxPixelSizeHeight = maxHeight / digitHeight;
+                const numberPixelSize = Math.floor(Math.min(maxPixelSizeWidth, maxPixelSizeHeight));
+
+                const actualWidth = totalDigitWidth * numberPixelSize;
+                const actualHeight = digitHeight * numberPixelSize;
+
+                const startX = Math.round((canvasWidth - actualWidth) / 2);
+                const startY = Math.round((canvasHeight - actualHeight) / 2);
+
+                const digitPatterns = {
+                    '0': [[1, 1, 1], [1, 0, 1], [1, 0, 1], [1, 0, 1], [1, 1, 1]],
+                    '1': [[0, 1, 0], [1, 1, 0], [0, 1, 0], [0, 1, 0], [1, 1, 1]],
+                    '2': [[1, 1, 1], [0, 0, 1], [1, 1, 1], [1, 0, 0], [1, 1, 1]],
+                    '3': [[1, 1, 1], [0, 0, 1], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
+                    '4': [[1, 0, 1], [1, 0, 1], [1, 1, 1], [0, 0, 1], [0, 0, 1]],
+                    '5': [[1, 1, 1], [1, 0, 0], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
+                    '6': [[1, 1, 1], [1, 0, 0], [1, 1, 1], [1, 0, 1], [1, 1, 1]],
+                    '7': [[1, 1, 1], [0, 0, 1], [0, 1, 0], [0, 1, 0], [0, 1, 0]],
+                    '8': [[1, 1, 1], [1, 0, 1], [1, 1, 1], [1, 0, 1], [1, 1, 1]],
+                    '9': [[1, 1, 1], [1, 0, 1], [1, 1, 1], [0, 0, 1], [1, 1, 1]]
+                };
+
+                ctx.fillStyle = '#ffffff';
+
+                digits.forEach((digit, index) => {
+                    const pattern = digitPatterns[digit];
+                    const digitX = startX + (index * ((digitWidth * numberPixelSize) + (spacing * numberPixelSize)));
+
+                    for (let y = 0; y < pattern.length; y++) {
+                        for (let x = 0; x < pattern[y].length; x++) {
+                            if (pattern[y][x] === 1) {
+                                ctx.fillRect(
+                                    Math.round(digitX + (x * numberPixelSize)),
+                                    Math.round(startY + (y * numberPixelSize)),
+                                    numberPixelSize,
+                                    numberPixelSize
+                                );
+                            }
+                        }
+                    }
+                });
+            }
+
+            animateHeart() {
+                if (this.currentLifePercent !== this.targetLifePercent) {
+                    if (this.currentLifePercent < this.targetLifePercent) {
+                        this.currentLifePercent++;
+                    } else {
+                        this.currentLifePercent--;
+                    }
+
+                    this.drawPixelHeart(this.currentLifePercent);
+                    this.percentDisplay.textContent = this.currentLifePercent.toFixed(1) + '%';
+
+                    const maxLife = parseInt(this.maxLifeInput.value);
+                    const currentLife = Math.round((this.currentLifePercent / 100) * maxLife);
+                    this.drawPixelNumber(this.heartNumberCtx, currentLife, this.heartNumberCanvas.width, this.heartNumberCanvas.height);
+
+                    if (this.currentLifePercent === this.targetLifePercent) {
+                        clearInterval(this.lifeAnimationInterval);
+                    }
+                }
+            }
+
+            updateValues() {
+                const maxLife = parseInt(this.maxLifeInput.value);
+                let currentLife = parseInt(this.currentLifeInput.value);
+
+                if (maxLife < 1) this.maxLifeInput.value = maxLife = 1;
+
+                currentLife = Math.max(0, Math.min(maxLife, currentLife));
+                this.currentLifeInput.value = currentLife;
+
+                this.targetLifePercent = (currentLife / maxLife) * 100;
+
+                if (this.lifeAnimationInterval) clearInterval(this.lifeAnimationInterval);
+
+                const lifeSteps = Math.abs(this.targetLifePercent - this.currentLifePercent);
+                const lifeIntervalTime = 1000 / lifeSteps;
+
+                this.lifeAnimationInterval = setInterval(() => this.animateHeart(), lifeIntervalTime);
+            }
+
+            remove() {
+                this.container.removeChild(this.wrapper);
+            }
+
+            addParticleEffect() {
+                this.heartCanvas.addEventListener('click', (e) => {
+                    const rect = this.heartCanvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    this.createParticles(this.heartCanvas, x, y, '#ff3366');
+                });
+            }
+
+            createParticles(canvas, x, y, color) {
+                const ctx = canvas.getContext('2d');
+                const particles = [];
+
+                for (let i = 0; i < 10; i++) {
+                    particles.push({
+                        x: x,
+                        y: y,
+                        vx: Math.random() * 4 - 2,
+                        vy: Math.random() * -3 - 1,
+                        size: Math.random() * 3 + 1,
+                        color: color,
+                        life: 30
+                    });
+                }
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    for (let i = 0; i < particles.length; i++) {
+                        const p = particles[i];
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.life--;
+
+                        if (p.life <= 0) {
+                            particles.splice(i, 1);
+                            i--;
+                            continue;
+                        }
+
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(p.x, p.y, p.size, p.size);
+                    }
+
+                    if (particles.length > 0) {
+                        requestAnimationFrame(animateParticles);
+                    }
+                }
+
+                animateParticles();
+            }
+
+            updateHeart(percent) {
+                this.currentLifePercent = 100;
+                this.drawPixelHeart(this.currentLifePercent);
+            }
+        }
+
         class Card {
             constructor(type, attack, health) {
                 this.type = type;
@@ -508,6 +893,7 @@
             }
 
             takeDamage(damage) {
+
                 if (this.type === 'Defender' && this.shield > 0) {
                     if (damage > this.shield) {
                         const remainingDamage = damage - this.shield;
@@ -520,6 +906,7 @@
                     this.health -= damage;
                 }
                 this.health = Math.max(0, this.health);
+
             }
 
             heal() {
@@ -579,8 +966,8 @@
                 });
 
                 // Mostrar en la consola las cartas generadas
-                console.log(`${this.isOpponent ? 'Opponent' : 'Player'}'s generated deck:`, this.savedDeck);
-                console.log(`${this.isOpponent ? 'Opponent' : 'Player'}'s generated deck:`, JSON.stringify(this.savedDeck, null, 2));
+                // console.log(`${this.isOpponent ? 'Opponent' : 'Player'}'s generated deck:`, this.savedDeck);
+                // console.log(`${this.isOpponent ? 'Opponent' : 'Player'}'s generated deck:`, JSON.stringify(this.savedDeck, null, 2));
                 return deck;
             }
 
@@ -688,11 +1075,17 @@
                 });
             }
 
+
+
             createCardContainer(card, index, isOpponent) {
                 const cardContainer = document.createElement('div');
                 cardContainer.className = 'card-container';
                 const cardElement = this.createCardElement(card, isOpponent);
                 cardContainer.appendChild(cardElement);
+
+                const heartContainer = cardElement.querySelector('.heart-display');
+                const heart = new Heart(heartContainer, card.health, card.maxHealth);  // Pasa card.health como initialHealth
+                heart.updateHeart(card.health);  // Actualiza el corazón basado en la salud de la carta
 
                 if (isOpponent) {
                     cardContainer.onclick = () => this.selectOpponentCard(index);
@@ -703,28 +1096,32 @@
                 return cardContainer;
             }
 
+
+
             createCardElement(card, isOpponent) {
                 const cardElement = document.createElement('div');
                 cardElement.className = 'card';
                 cardElement.innerHTML = `
-                <div class="card-inner ${this.showOpponentCards && isOpponent ? 'show-front' : ''}">
-                    <div class="card-front">
-                        <div class="card-type">${card.type}</div>
-                        <div class="card-stats">
-                            <span class="attack">A: ${card.attack}</span>
-                            <span class="health">H: ${card.health}</span>
-                        </div>
-                        ${card.type === 'Defender' ? `<div class="shield">Shield: ${card.shield}</div>` : ''}
-                        ${card.poison > 0 ? `<div class="poison">Poison: ${card.poison}</div>` : ''}
-                        ${card.type === 'Healer' ? `<div class="heal">Heal: ${card.healAmount}</div>` : ''}
-                    </div>
-                    <div class="card-back">
-                        ?
-                    </div>
-                </div>
-            `;
+    <div class="card-inner ${this.showOpponentCards && isOpponent ? 'show-front' : ''}">
+        <div class="card-front">
+            <div class="card-type">${card.type}</div>
+            <div class="heart-display"></div> <!-- Contenedor para el corazón -->
+            <div class="card-stats">
+                <span class="attack">A: ${card.attack}</span>
+                <span class="health">H: ${card.health}</span>
+            </div>
+            ${card.type === 'Defender' ? `<div class="shield">Shield: ${card.shield}</div>` : ''}
+            ${card.poison > 0 ? `<div class="poison">Poison: ${card.poison}</div>` : ''}
+            ${card.type === 'Healer' ? `<div class="heal">Heal: ${card.healAmount}</div>` : ''}
+        </div>
+        <div class="card-back">
+            ?
+        </div>
+    </div>
+    `;
                 return cardElement;
             }
+
 
             selectPlayerCard(index) {
                 this.player.selectCard(index);
