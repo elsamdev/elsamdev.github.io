@@ -1,336 +1,462 @@
-<html><head><base href="https://example.com/pixel-art-generator/">
-<title>Pixel Art Generator with Drag and Drop and Copy-Paste</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f0f0f0;
-    padding: 20px;
-  }
-  .container {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  .canvas-container {
-    position: relative;
-    margin: 10px 0;
-  }
-  canvas {
-    border: 1px solid #ddd;
-  }
-  #gridCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-  }
-  input, button, select {
-    margin: 10px 0;
-  }
-  #pixelSize {
-    width: 50px;
-  }
-  #copyButton {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  #copyButton:hover {
-    background-color: #45a049;
-  }
-  #copyButton:active {
-    background-color: #3e8e41;
-  }
-  #dropZone {
-    border: 2px dashed #ccc;
-    border-radius: 20px;
-    width: 300px;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #888;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-  }
-  #dropZone.dragover {
-    background-color: #e1e1e1;
-    border-color: #999;
-  }
-</style>
+<html>
+
+<head>
+  <base href="https://example.com/pixel-art-generator/">
+  <title>Pixel Art Generator with Color Reduction and Palette Change</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    input[type="number"] {
+      width: 50px;
+      padding: 5px;
+      margin-right: 10px;
+    }
+
+    #gridCanvas {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    #paletteContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .palette-color {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+
+    .palette-color.selected {
+      border: 2px solid #ff0000;
+    }
+
+    #customPaletteInput {
+      margin-top: 10px;
+    }
+
+    #dropZone {
+      border: 2px dashed #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    #dropZone.drag-over {
+      background-color: #e0e0e0;
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
-    <h1>Image to Pixel Art Converter</h1>
-    <div id="dropZone">Drag & Drop, Click to Upload, or Paste Image</div>
-    <input type="file" id="imageInput" accept="image/*" style="display: none;">
-    <br>
-    <label for="pixelSizeMode">Pixel Size Mode:</label>
-    <select id="pixelSizeMode">
-      <option value="auto">Auto</option>
-      <option value="manual">Manual</option>
-    </select>
-    <br>
-    <div id="manualSizeInput" style="display: none;">
-      <label for="pixelSize">Pixel Size:</label>
-      <input type="number" id="pixelSize" value="10" min="1" max="50">
+    <h1>Pixel Art Generator</h1>
+    <div id="dropZone">
+      Drag and drop an image here or click to select a file
+      <input type="file" id="fileInput" accept="image/*" style="display: none;">
     </div>
+    <canvas id="outputCanvas"></canvas>
+    <canvas id="gridCanvas"></canvas>
     <br>
-    <button id="convertBtn">Convert to Pixel Art</button>
+    <label for="pixelSize">Pixel Size:</label>
+    <input type="number" id="pixelSize" value="10" min="1" max="100">
+    <button id="convertBtn" class="button">Convert to Pixel Art</button>
+    <button id="copyJsonBtn" class="button">Copy JSON</button>
     <br>
-    <div class="canvas-container">
-      <canvas id="outputCanvas"></canvas>
-      <canvas id="gridCanvas"></canvas>
-    </div>
+    <label for="colorReduction">Color Reduction:</label>
+    <input type="number" id="colorReduction" value="64" min="2" max="256">
+    <button id="reduceColorsBtn" class="button">Reduce Colors</button>
     <br>
-    <button id="copyButton">Copy JSON to Clipboard</button>
+    <button id="changePaletteBtn" class="button">Change Color Palette</button>
+    <div id="paletteContainer"></div>
+    <input type="color" id="customPaletteInput">
+    <button id="addCustomColorBtn" class="button">Add Custom Color</button>
   </div>
 
   <script>
-    const imageInput = document.getElementById('imageInput');
+    const fileInput = document.getElementById('fileInput');
     const dropZone = document.getElementById('dropZone');
-    const pixelSizeModeSelect = document.getElementById('pixelSizeMode');
-    const manualSizeInput = document.getElementById('manualSizeInput');
-    const pixelSizeInput = document.getElementById('pixelSize');
-    const convertBtn = document.getElementById('convertBtn');
     const outputCanvas = document.getElementById('outputCanvas');
     const gridCanvas = document.getElementById('gridCanvas');
-    const copyButton = document.getElementById('copyButton');
     const ctx = outputCanvas.getContext('2d');
     const gridCtx = gridCanvas.getContext('2d');
+    const convertBtn = document.getElementById('convertBtn');
+    const copyJsonBtn = document.getElementById('copyJsonBtn');
+    const pixelSizeInput = document.getElementById('pixelSize');
+    const reduceColorsBtn = document.getElementById('reduceColorsBtn');
+    const colorReductionInput = document.getElementById('colorReduction');
+    const changePaletteBtn = document.getElementById('changePaletteBtn');
+    const paletteContainer = document.getElementById('paletteContainer');
+    const customPaletteInput = document.getElementById('customPaletteInput');
+    const addCustomColorBtn = document.getElementById('addCustomColorBtn');
 
+    let originalImage = null;
     let pixelData = [];
-    let pixelatedWidth = 0;
-    let pixelatedHeight = 0;
-    let currentPixelSize = 0;
+    let currentPalette = [];
+    let selectedPaletteIndex = -1;
 
-    // Drag and drop functionality
-    dropZone.addEventListener('click', () => imageInput.click());
+    dropZone.addEventListener('click', () => fileInput.click());
     dropZone.addEventListener('dragover', (e) => {
       e.preventDefault();
-      dropZone.classList.add('dragover');
+      dropZone.classList.add('drag-over');
     });
     dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('dragover');
+      dropZone.classList.remove('drag-over');
     });
-    dropZone.addEventListener('drop', (e) => {
+    dropZone.addEventListener('drop', handleFileDrop);
+    fileInput.addEventListener('change', handleFileSelect);
+    convertBtn.addEventListener('click', convertToPixelArt);
+    copyJsonBtn.addEventListener('click', copyJsonToClipboard);
+    reduceColorsBtn.addEventListener('click', reduceColors);
+    changePaletteBtn.addEventListener('click', changePalette);
+    addCustomColorBtn.addEventListener('click', addCustomColor);
+
+    document.addEventListener('paste', handlePasteEvent);
+
+    function handleFileDrop(e) {
       e.preventDefault();
-      dropZone.classList.remove('dragover');
+      dropZone.classList.remove('drag-over');
       const file = e.dataTransfer.files[0];
       if (file && file.type.startsWith('image/')) {
-        imageInput.files = e.dataTransfer.files;
-        handleImage(file);
+        loadImage(file);
       }
-    });
+    }
 
-    // Copy-paste functionality
-    document.addEventListener('paste', (e) => {
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (file) {
+        loadImage(file);
+      }
+    }
+
+    function handlePasteEvent(e) {
       const items = e.clipboardData.items;
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.indexOf('image') !== -1) {
           const blob = items[i].getAsFile();
-          handleImage(blob);
+          loadImage(blob);
           break;
         }
       }
-    });
+    }
 
-    imageInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        handleImage(file);
-      }
-    });
-
-    function handleImage(file) {
+    function loadImage(file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          dropZone.style.backgroundImage = `url(${img.src})`;
-          dropZone.style.backgroundSize = 'cover';
-          dropZone.style.backgroundPosition = 'center';
-          dropZone.innerHTML = '';
+        originalImage = new Image();
+        originalImage.onload = () => {
+          outputCanvas.width = originalImage.width;
+          outputCanvas.height = originalImage.height;
+          ctx.drawImage(originalImage, 0, 0);
+          gridCanvas.width = outputCanvas.width;
+          gridCanvas.height = outputCanvas.height;
         };
-        img.src = e.target.result;
+        originalImage.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    pixelSizeModeSelect.addEventListener('change', function() {
-      manualSizeInput.style.display = this.value === 'manual' ? 'block' : 'none';
-    });
-
-    convertBtn.addEventListener('click', convertToPixelArt);
-    copyButton.addEventListener('click', copyJSONToClipboard);
-
     function convertToPixelArt() {
-      const file = imageInput.files[0];
-      if (!file && !dropZone.style.backgroundImage) {
-        alert('Please select an image first.');
-        return;
-      }
+      if (!originalImage) return;
 
-      const img = new Image();
-      img.onload = function() {
-        let pixelSize;
-        if (pixelSizeModeSelect.value === 'auto') {
-          pixelSize = calculateAutoPixelSize(img.width, img.height);
-        } else {
-          pixelSize = parseInt(pixelSizeInput.value);
-        }
+      const pixelSize = parseInt(pixelSizeInput.value);
+      const width = Math.floor(originalImage.width / pixelSize);
+      const height = Math.floor(originalImage.height / pixelSize);
 
-        currentPixelSize = pixelSize;
-        pixelatedWidth = Math.floor(img.width / pixelSize);
-        pixelatedHeight = Math.floor(img.height / pixelSize);
+      outputCanvas.width = width * pixelSize;
+      outputCanvas.height = height * pixelSize;
+      gridCanvas.width = outputCanvas.width;
+      gridCanvas.height = outputCanvas.height;
 
-        outputCanvas.width = pixelatedWidth * pixelSize;
-        outputCanvas.height = pixelatedHeight * pixelSize;
-        gridCanvas.width = outputCanvas.width;
-        gridCanvas.height = outputCanvas.height;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(originalImage, 0, 0, width, height);
+      ctx.drawImage(outputCanvas, 0, 0, width, height, 0, 0, outputCanvas.width, outputCanvas.height);
 
-        ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
-        gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
-
-        pixelData = [];
-
-        const tempCanvas = document.createElement('canvas');
-        const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = pixelatedWidth;
-        tempCanvas.height = pixelatedHeight;
-        tempCtx.drawImage(img, 0, 0, pixelatedWidth, pixelatedHeight);
-
-        for (let y = 0; y < pixelatedHeight; y++) {
-          for (let x = 0; x < pixelatedWidth; x++) {
-            const pixelDataPoint = tempCtx.getImageData(x, y, 1, 1).data;
-            const r = pixelDataPoint[0];
-            const g = pixelDataPoint[1];
-            const b = pixelDataPoint[2];
-            const a = pixelDataPoint[3] / 255;
-
-            ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
-            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-          }
-        }
-
-        applyPostProcessing();
-        drawGrid();
-        updatePixelData();
-      };
-
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      } else {
-        // Use the background image from the drop zone
-        img.src = dropZone.style.backgroundImage.slice(4, -1).replace(/"/g, "");
-      }
-    }
-
-    function calculateAutoPixelSize(width, height) {
-      const targetPixels = 5000;
-      const imagePixels = width * height;
-      const ratio = Math.sqrt(imagePixels / targetPixels);
-      return Math.max(1, Math.round(ratio));
-    }
-
-    function applyPostProcessing() {
-      const imageData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
-      const data = imageData.data;
-
-      for (let i = 0; i < data.length; i += 4) {
-        data[i] = Math.min(255, data[i] * 1.1);
-        data[i + 1] = Math.min(255, data[i + 1] * 1.1);
-        data[i + 2] = Math.min(255, data[i + 2] * 1.1);
-
-        for (let j = 0; j < 3; j++) {
-          data[i + j] = ((data[i + j] / 255 - 0.5) * 1.2 + 0.5) * 255;
-        }
-
-        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        data[i] += (data[i] - avg) * 0.2;
-        data[i + 1] += (data[i + 1] - avg) * 0.2;
-        data[i + 2] += (data[i + 2] - avg) * 0.2;
-      }
-
-      ctx.putImageData(imageData, 0, 0);
-    }
-
-    function drawGrid() {
-      gridCtx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-      gridCtx.lineWidth = 1;
-
-      for (let x = 0; x <= pixelatedWidth; x++) {
-        gridCtx.beginPath();
-        gridCtx.moveTo(x * currentPixelSize, 0);
-        gridCtx.lineTo(x * currentPixelSize, gridCanvas.height);
-        gridCtx.stroke();
-      }
-
-      for (let y = 0; y <= pixelatedHeight; y++) {
-        gridCtx.beginPath();
-        gridCtx.moveTo(0, y * currentPixelSize);
-        gridCtx.lineTo(gridCanvas.width, y * currentPixelSize);
-        gridCtx.stroke();
-      }
+      updatePixelData();
+      drawGrid();
+      changePalette();
     }
 
     function updatePixelData() {
+      const pixelSize = parseInt(pixelSizeInput.value);
+      const width = outputCanvas.width / pixelSize;
+      const height = outputCanvas.height / pixelSize;
       pixelData = [];
-      for (let y = 0; y < pixelatedHeight; y++) {
-        for (let x = 0; x < pixelatedWidth; x++) {
-          const pixelColor = ctx.getImageData(x * currentPixelSize, y * currentPixelSize, 1, 1).data;
-          const r = pixelColor[0];
-          const g = pixelColor[1];
-          const b = pixelColor[2];
-          const a = pixelColor[3] / 255;
 
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const imageData = ctx.getImageData(x * pixelSize, y * pixelSize, 1, 1);
+          const [r, g, b, a] = imageData.data;
           pixelData.push({
-            x: x,
-            y: y,
-            color: `rgba(${r},${g},${b},${a})`
+            x,
+            y,
+            color: `rgba(${r},${g},${b},${a / 255})`
           });
         }
       }
     }
 
-    function copyJSONToClipboard() {
+    function drawGrid() {
+      const pixelSize = parseInt(pixelSizeInput.value);
+      gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+      gridCtx.strokeStyle = 'rgba(200, 200, 200, 0.5)';
+      gridCtx.lineWidth = 0.5;
+
+      for (let x = 0; x <= gridCanvas.width; x += pixelSize) {
+        gridCtx.beginPath();
+        gridCtx.moveTo(x, 0);
+        gridCtx.lineTo(x, gridCanvas.height);
+        gridCtx.stroke();
+      }
+
+      for (let y = 0; y <= gridCanvas.height; y += pixelSize) {
+        gridCtx.beginPath();
+        gridCtx.moveTo(0, y);
+        gridCtx.lineTo(gridCanvas.width, y);
+        gridCtx.stroke();
+      }
+    }
+
+    function copyJsonToClipboard() {
+      const pixelSize = parseInt(pixelSizeInput.value);
+      const jsonData = {
+        width: outputCanvas.width / pixelSize,
+        height: outputCanvas.height / pixelSize,
+        pixels: pixelData
+      };
+      const jsonString = JSON.stringify(jsonData, null, 2);
+      navigator.clipboard.writeText(jsonString).then(() => {
+        alert('JSON copied to clipboard!');
+      });
+    }
+
+    function reduceColors() {
       if (pixelData.length === 0) {
         alert('Please convert an image to pixel art first.');
         return;
       }
 
-      const jsonCanvas = {
-        width: pixelatedWidth,
-        height: pixelatedHeight,
-        pixels: pixelData
-      };
+      const numColors = parseInt(colorReductionInput.value);
+      const pixels = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+      const data = pixels.data;
 
-      const jsonString = JSON.stringify(jsonCanvas, null, 2);
+      // Use K-means clustering to reduce colors
+      const colors = [];
+      for (let i = 0; i < data.length; i += 4) {
+        colors.push([data[i], data[i + 1], data[i + 2]]);
+      }
 
-      navigator.clipboard.writeText(jsonString).then(function() {
-        alert('JSON data copied to clipboard!');
-      }, function(err) {
-        console.error('Could not copy text: ', err);
-        alert('Failed to copy JSON data. Please check console for details.');
+      const kMeans = new KMeans(colors, numColors);
+      const reducedColors = kMeans.run();
+
+      for (let i = 0; i < data.length; i += 4) {
+        const originalColor = [data[i], data[i + 1], data[i + 2]];
+        const closestColor = findClosestColor(originalColor, reducedColors);
+        data[i] = closestColor[0];
+        data[i + 1] = closestColor[1];
+        data[i + 2] = closestColor[2];
+      }
+
+      ctx.putImageData(pixels, 0, 0);
+      updatePixelData();
+      drawGrid();
+      changePalette();
+    }
+
+    class KMeans {
+      constructor(data, k) {
+        this.data = data;
+        this.k = k;
+        this.centroids = [];
+        this.assignments = [];
+      }
+
+      run(maxIterations = 100) {
+        this.initializeCentroids();
+
+        for (let i = 0; i < maxIterations; i++) {
+          const oldCentroids = [...this.centroids];
+          this.assignPointsToCentroids();
+          this.updateCentroids();
+
+          if (this.centroidsEqual(oldCentroids, this.centroids)) {
+            break;
+          }
+        }
+
+        return this.centroids;
+      }
+
+      initializeCentroids() {
+        const uniqueColors = [...new Set(this.data.map(color => color.join(',')))].map(color => color.split(',').map(Number));
+        this.centroids = uniqueColors.slice(0, this.k);
+        while (this.centroids.length < this.k) {
+          this.centroids.push(this.data[Math.floor(Math.random() * this.data.length)]);
+        }
+      }
+
+      assignPointsToCentroids() {
+        this.assignments = this.data.map(point => {
+          const distances = this.centroids.map(centroid => this.distance(point, centroid));
+          return distances.indexOf(Math.min(...distances));
+        });
+      }
+
+      updateCentroids() {
+        this.centroids = this.centroids.map((_, i) => {
+          const assignedPoints = this.data.filter((_, j) => this.assignments[j] === i);
+          return assignedPoints.length > 0
+            ? assignedPoints.reduce((sum, point) => sum.map((v, i) => v + point[i]), [0, 0, 0]).map(v => v / assignedPoints.length)
+            : this.data[Math.floor(Math.random() * this.data.length)];
+        });
+      }
+
+      distance(a, b) {
+        return Math.sqrt(a.reduce((sum, v, i) => sum + Math.pow(v - b[i], 2), 0));
+      }
+
+      centroidsEqual(a, b) {
+        return a.every((centroid, i) => centroid.every((value, j) => Math.abs(value - b[i][j]) < 0.001));
+      }
+    }
+
+    function findClosestColor(color, palette) {
+      return palette.reduce((closest, current) => {
+        const currentDistance = Math.sqrt(
+          Math.pow(color[0] - current[0], 2) +
+          Math.pow(color[1] - current[1], 2) +
+          Math.pow(color[2] - current[2], 2)
+        );
+        return currentDistance < closest.distance ? { color: current, distance: currentDistance } : closest;
+      }, { color: null, distance: Infinity }).color;
+    }
+
+    function changePalette() {
+      if (pixelData.length === 0) {
+        alert('Please convert an image to pixel art first.');
+        return;
+      }
+
+      // Extract current colors from pixelData
+      const uniqueColors = [...new Set(pixelData.map(pixel => pixel.color))];
+      currentPalette = uniqueColors.map(color => {
+        const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/);
+        return match ? `#${parseInt(match[1]).toString(16).padStart(2, '0')}${parseInt(match[2]).toString(16).padStart(2, '0')}${parseInt(match[3]).toString(16).padStart(2, '0')}` : color;
       });
+
+      updatePaletteDisplay();
+    }
+
+    function updatePaletteDisplay() {
+      paletteContainer.innerHTML = '';
+      currentPalette.forEach((color, index) => {
+        const colorElement = document.createElement('div');
+        colorElement.className = 'palette-color';
+        colorElement.style.backgroundColor = color;
+        colorElement.addEventListener('click', () => selectPaletteColor(index));
+        paletteContainer.appendChild(colorElement);
+      });
+    }
+
+    function selectPaletteColor(index) {
+      const colorElements = paletteContainer.querySelectorAll('.palette-color');
+      colorElements.forEach(el => el.classList.remove('selected'));
+      colorElements[index].classList.add('selected');
+      selectedPaletteIndex = index;
+      customPaletteInput.value = currentPalette[index];
+    }
+
+    function addCustomColor() {
+      const newColor = customPaletteInput.value;
+      if (selectedPaletteIndex !== -1) {
+        currentPalette[selectedPaletteIndex] = newColor;
+      } else {
+        currentPalette.push(newColor);
+      }
+      updatePaletteDisplay();
+      applyNewPalette();
+    }
+
+    function applyNewPalette() {
+      if (pixelData.length === 0) return;
+
+      const imageData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3] / 255;
+
+        const originalColor = `rgba(${r},${g},${b},${a})`;
+        const originalIndex = pixelData.findIndex(pixel => pixel.color === originalColor);
+
+        if (originalIndex !== -1) {
+          const paletteIndex = originalIndex % currentPalette.length;
+          const newColor = hexToRgb(currentPalette[paletteIndex]);
+
+          data[i] = newColor.r;
+          data[i + 1] = newColor.g;
+          data[i + 2] = newColor.b;
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+      updatePixelData();
+      drawGrid();
+    }
+
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
     }
   </script>
 </body>
+
 </html>
