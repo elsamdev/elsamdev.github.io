@@ -162,6 +162,7 @@
             position: absolute;
             bottom: 0;
             left: -1.5%;
+            display: none;
         }
 
         other {
@@ -448,6 +449,37 @@
             display: flex;
         }
 
+        .heart-wrapper {
+            display: flex;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+
+        .heart-display {
+            display: flex;
+            position: relative;
+
+        }
+
+        .heart-canvas {
+            position: relative;
+        }
+
+        .border-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .number-canvas {
+
+            position: absolute;
+            top: 4;
+            left: 3;
+        }
+
         @media (max-width: 768px) {
             .card {
                 width: calc(33.33% - 20px);
@@ -527,6 +559,8 @@
 
         const pixelSize = 2;
 
+
+
         const heartPixels = [
             [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
             [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
@@ -575,10 +609,53 @@
             });
         });
 
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.life = 100;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.size *= 0.95;
+                this.life--;
+            }
+
+            draw(ctx) {
+                if (this.life > 0 && this.size > 0) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+        }
+
         class Heart {
             constructor(container, currentLife, maxHealth) {
                 this.container = container;
+                this.maxHealth = maxHealth;
+                this.currentLife = currentLife;
+                this.currentLifePercent = (currentLife / maxHealth) * 100;
+                this.pixelSize = 5;
+                this.particles = [];
+                this.isDrawing = false;
+                this.animationInProgress = false;
 
+                this.setupCanvas();
+                this.drawHeart(this.currentLifePercent);
+                this.drawBorder();
+                this.drawNumber(this.currentLife);
+            }
+
+            setupCanvas() {
                 this.wrapper = document.createElement('div');
                 this.wrapper.className = 'heart-wrapper';
                 this.container.appendChild(this.wrapper);
@@ -587,299 +664,232 @@
                 this.heartDisplay.className = 'heart-display';
                 this.wrapper.appendChild(this.heartDisplay);
 
-                this.heartCanvas = document.createElement('canvas');
+                this.heartCanvas = this.createCanvas('heart-canvas');
+                this.borderCanvas = this.createCanvas('border-canvas');
+                this.numberCanvas = this.createCanvas('number-canvas');
+
                 this.heartCtx = this.heartCanvas.getContext('2d');
-                this.heartBorderCanvas = document.createElement('canvas');
-                this.heartBorderCtx = this.heartBorderCanvas.getContext('2d');
-                this.heartNumberCanvas = document.createElement('canvas');
-                this.heartNumberCtx = this.heartNumberCanvas.getContext('2d');
-
-                this.heartDisplay.appendChild(this.heartCanvas);
-                this.heartDisplay.appendChild(this.heartBorderCanvas);
-                this.heartDisplay.appendChild(this.heartNumberCanvas);
-
-                this.percentDisplay = document.createElement('p');
-                this.percentDisplay.className = 'percent-display';
-                this.wrapper.appendChild(this.percentDisplay);
-
-                this.controls = document.createElement('div');
-                this.controls.className = 'heart-controls';
-                this.wrapper.appendChild(this.controls);
-
-                // Ensure these are properly defined before use
-                this.maxLifeInput = document.createElement('input');
-                this.maxLifeInput.type = 'number';
-                this.maxLifeInput.min = '1';
-                this.maxLifeInput.value = maxHealth;  // Asignar initialHealth aquí
-                this.controls.appendChild(this.maxLifeInput);
-
-                this.currentLifeInput = document.createElement('input');
-                this.currentLifeInput.type = 'number';
-                this.currentLifeInput.min = '0';
-                this.currentLifeInput.value = currentLife;  // Asignar initialHealth aquí
-                this.controls.appendChild(this.currentLifeInput);
-
-                // Define the buttons after the inputs
-                this.updateButton = document.createElement('button');
-                this.updateButton.textContent = 'Update';
-                this.controls.appendChild(this.updateButton);
-
-                this.removeButton = document.createElement('button');
-                this.removeButton.textContent = 'Remove';
-                this.removeButton.style.backgroundColor = '#e74c3c';
-                this.controls.appendChild(this.removeButton);
-
-                // Now that updateButton is defined, attach the event listener
-                this.updateButton.addEventListener('click', () => this.updateValues());
-                this.removeButton.addEventListener('click', () => this.remove());
-
-                // Rest of the initialization
-                this.heartCanvas.width = heartPixels[0].length * pixelSize;
-                this.heartCanvas.height = heartPixels.length * pixelSize;
-                this.heartBorderCanvas.width = this.heartCanvas.width;
-                this.heartBorderCanvas.height = this.heartCanvas.height;
-                this.heartNumberCanvas.width = this.heartCanvas.width;
-                this.heartNumberCanvas.height = this.heartCanvas.height;
-
-                this.currentLifePercent = (currentLife / maxHealth) * 100; // Ajusta según la salud inicial
-                this.targetLifePercent = this.currentLifePercent;
-                this.lifeAnimationInterval = null;
-                console.log(this.currentLifePercent, this.targetLifePercent)
-                this.drawPixelHeart(this.currentLifePercent);
-                this.drawPixelNumber(this.heartNumberCtx, currentLife, this.heartNumberCanvas.width, this.heartNumberCanvas.height);
-                this.drawBorder(this.heartBorderCtx, heartPixels);
-
-                this.addParticleEffect();
+                this.borderCtx = this.borderCanvas.getContext('2d');
+                this.numberCtx = this.numberCanvas.getContext('2d');
             }
 
-            drawPixelHeart(percent) {
+            createCanvas(className) {
+                const canvas = document.createElement('canvas');
+                canvas.className = className;
+                canvas.width = 55;
+                canvas.height = 50;
+                this.heartDisplay.appendChild(canvas);
+                return canvas;
+            }
+
+            drawHeart(percent) {
+                this.isDrawing = true;
+                this.createParticles();
+                const targetHeight = this.heartCanvas.height * (percent / 100);
+                this.renderHeart(targetHeight);
+                this.currentLifePercent = percent;
+                this.isDrawing = false;
+            }
+
+            renderHeart(height) {
                 this.heartCtx.clearRect(0, 0, this.heartCanvas.width, this.heartCanvas.height);
+                this.handleParticles();
 
-                for (let y = 0; y < heartPixels.length; y++) {
-                    for (let x = 0; x < heartPixels[y].length; x++) {
-                        if (heartPixels[y][x] === 1) {
-                            const pixelX = x * pixelSize;
-                            const pixelY = y * pixelSize;
+                const heartPixels = [
+                    [0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0],
+                    [0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+                    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+                    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+                    [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+                ];
 
+                for (let y = 0; y < this.heartCanvas.height; y += this.pixelSize) {
+                    for (let x = 0; x < this.heartCanvas.width; x += this.pixelSize) {
+                        const pixelRow = Math.floor(y / this.pixelSize);
+                        const pixelCol = Math.floor(x / this.pixelSize);
+
+                        if (heartPixels[pixelRow] && heartPixels[pixelRow][pixelCol] === 1 && y >= this.heartCanvas.height - height) {
                             const gradient = this.heartCtx.createRadialGradient(
-                                pixelX + pixelSize / 2, pixelY + pixelSize / 2, 0,
-                                pixelX + pixelSize / 2, pixelY + pixelSize / 2, pixelSize / 2
+                                x + this.pixelSize / 2, y + this.pixelSize / 2, 0,
+                                x + this.pixelSize / 2, y + this.pixelSize / 2, this.pixelSize / 2
                             );
                             gradient.addColorStop(0, '#ff3366');
                             gradient.addColorStop(1, '#ff0033');
-
                             this.heartCtx.fillStyle = gradient;
-                            this.heartCtx.fillRect(pixelX, pixelY, pixelSize, pixelSize);
-                        }
-                    }
-                }
-
-                this.heartCtx.globalCompositeOperation = 'destination-in';
-                this.heartCtx.fillStyle = 'black';
-                const clipHeight = this.heartCanvas.height * (percent / 100);
-                this.heartCtx.fillRect(0, this.heartCanvas.height - clipHeight, this.heartCanvas.width, clipHeight);
-
-                this.heartCtx.globalCompositeOperation = 'source-over';
-            }
-
-            drawBorder(ctx, pixels) {
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                ctx.strokeStyle = '#ffffff';
-                ctx.lineWidth = 2;
-
-                for (let y = 0; y < pixels.length; y++) {
-                    for (let x = 0; x < pixels[y].length; x++) {
-                        if (pixels[y][x] !== 0) {
-                            const pixelX = x * pixelSize;
-                            const pixelY = y * pixelSize;
-
-                            if (x === 0 || pixels[y][x - 1] === 0) {
-                                ctx.beginPath();
-                                ctx.moveTo(pixelX, pixelY);
-                                ctx.lineTo(pixelX, pixelY + pixelSize);
-                                ctx.stroke();
-                            }
-                            if (x === pixels[y].length - 1 || pixels[y][x + 1] === 0) {
-                                ctx.beginPath();
-                                ctx.moveTo(pixelX + pixelSize, pixelY);
-                                ctx.lineTo(pixelX + pixelSize, pixelY + pixelSize);
-                                ctx.stroke();
-                            }
-                            if (y === 0 || pixels[y - 1][x] === 0) {
-                                ctx.beginPath();
-                                ctx.moveTo(pixelX, pixelY);
-                                ctx.lineTo(pixelX + pixelSize, pixelY);
-                                ctx.stroke();
-                            }
-                            if (y === pixels.length - 1 || pixels[y + 1][x] === 0) {
-                                ctx.beginPath();
-                                ctx.moveTo(pixelX, pixelY + pixelSize);
-                                ctx.lineTo(pixelX + pixelSize, pixelY + pixelSize);
-                                ctx.stroke();
-                            }
+                            this.heartCtx.fillRect(x, y, this.pixelSize, this.pixelSize);
                         }
                     }
                 }
             }
 
-            drawPixelNumber(ctx, number, canvasWidth, canvasHeight) {
-                ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            drawBorder() {
+                const heartPixels = [
+                    [0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0],
+                    [0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+                    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+                    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+                    [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+                ];
 
-                const maxWidth = canvasWidth * 0.5;
-                const maxHeight = canvasHeight * 0.5;
+                this.borderCtx.clearRect(0, 0, this.borderCanvas.width, this.borderCanvas.height);
+                this.borderCtx.strokeStyle = '#cccccc';
+                this.borderCtx.lineWidth = 0.5;
 
-                const digits = number.toString().split('');
-                const digitWidth = 4;
-                const digitHeight = 5;
-                const spacing = 1;
+                for (let y = 0; y < heartPixels.length; y++) {
+                    for (let x = 0; x < heartPixels[y].length; x++) {
+                        if (heartPixels[y][x] !== 0) {
+                            const pixelX = x * this.pixelSize;
+                            const pixelY = y * this.pixelSize;
+                            this.drawBorderLine(x, y, heartPixels, pixelX, pixelY);
+                        }
+                    }
+                }
+            }
 
-                const totalDigitWidth = (digits.length * digitWidth) + ((digits.length - 1) * spacing);
+            drawBorderLine(x, y, heartPixels, pixelX, pixelY) {
+                if (x === 0 || heartPixels[y][x - 1] === 0) {
+                    this.drawLine(pixelX, pixelY, pixelX, pixelY + this.pixelSize);
+                }
+                if (x === heartPixels[y].length - 1 || heartPixels[y][x + 1] === 0) {
+                    this.drawLine(pixelX + this.pixelSize, pixelY, pixelX + this.pixelSize, pixelY + this.pixelSize);
+                }
+                if (y === 0 || heartPixels[y - 1][x] === 0) {
+                    this.drawLine(pixelX, pixelY, pixelX + this.pixelSize, pixelY);
+                }
+                if (y === heartPixels.length - 1 || heartPixels[y + 1][x] === 0) {
+                    this.drawLine(pixelX, pixelY + this.pixelSize, pixelX + this.pixelSize, pixelY + this.pixelSize);
+                }
+            }
 
-                const maxPixelSizeWidth = maxWidth / totalDigitWidth;
-                const maxPixelSizeHeight = maxHeight / digitHeight;
-                const numberPixelSize = Math.floor(Math.min(maxPixelSizeWidth, maxPixelSizeHeight));
+            drawLine(startX, startY, endX, endY) {
+                this.borderCtx.beginPath();
+                this.borderCtx.moveTo(startX, startY);
+                this.borderCtx.lineTo(endX, endY);
+                this.borderCtx.stroke();
+            }
 
-                const actualWidth = totalDigitWidth * numberPixelSize;
-                const actualHeight = digitHeight * numberPixelSize;
+            updateLife(newLife) {
+                const newPercent = (newLife / this.maxHealth) * 100;
+                if (newPercent !== this.currentLifePercent && !this.animationInProgress) {
+                    this.animateLifeChange(newLife, newPercent);
+                }
+            }
 
-                const startX = Math.round((canvasWidth - actualWidth) / 2);
-                const startY = Math.round((canvasHeight - actualHeight) / 2);
+            animateLifeChange(newLife, newPercent) {
+                this.animationInProgress = true;
+                const startPercent = this.currentLifePercent;
+                const startLife = this.currentLife;
+                const duration = 500;
+                const startTime = Date.now();
 
-                const digitPatterns = {
-                    '0': [[1, 1, 1], [1, 0, 1], [1, 0, 1], [1, 0, 1], [1, 1, 1]],
-                    '1': [[0, 1, 0], [1, 1, 0], [0, 1, 0], [0, 1, 0], [1, 1, 1]],
-                    '2': [[1, 1, 1], [0, 0, 1], [1, 1, 1], [1, 0, 0], [1, 1, 1]],
-                    '3': [[1, 1, 1], [0, 0, 1], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
-                    '4': [[1, 0, 1], [1, 0, 1], [1, 1, 1], [0, 0, 1], [0, 0, 1]],
-                    '5': [[1, 1, 1], [1, 0, 0], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
-                    '6': [[1, 1, 1], [1, 0, 0], [1, 1, 1], [1, 0, 1], [1, 1, 1]],
-                    '7': [[1, 1, 1], [0, 0, 1], [0, 1, 0], [0, 1, 0], [0, 1, 0]],
-                    '8': [[1, 1, 1], [1, 0, 1], [1, 1, 1], [1, 0, 1], [1, 1, 1]],
-                    '9': [[1, 1, 1], [1, 0, 1], [1, 1, 1], [0, 0, 1], [1, 1, 1]]
+                const animate = () => {
+                    const now = Date.now();
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    const currentPercent = startPercent + (newPercent - startPercent) * progress;
+                    const currentLife = Math.round(startLife + (newLife - startLife) * progress);
+
+                    this.drawHeart(currentPercent);
+                    this.drawNumber(currentLife);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        this.currentLifePercent = newPercent;
+                        this.currentLife = newLife;
+                        this.particles = []; // Clear particles after animation
+                        this.drawHeart(this.currentLifePercent); // Redraw heart without particles
+                        this.animationInProgress = false;
+                    }
                 };
 
-                ctx.fillStyle = '#ffffff';
+                requestAnimationFrame(animate);
+            }
 
-                digits.forEach((digit, index) => {
-                    const pattern = digitPatterns[digit];
-                    const digitX = startX + (index * ((digitWidth * numberPixelSize) + (spacing * numberPixelSize)));
+            drawNumber(number) {
+                this.numberCtx.clearRect(0, 0, this.numberCanvas.width, this.numberCanvas.height);
 
-                    for (let y = 0; y < pattern.length; y++) {
-                        for (let x = 0; x < pattern[y].length; x++) {
-                            if (pattern[y][x] === 1) {
-                                ctx.fillRect(
-                                    Math.round(digitX + (x * numberPixelSize)),
-                                    Math.round(startY + (y * numberPixelSize)),
-                                    numberPixelSize,
-                                    numberPixelSize
+                const pixelSize = 4;
+                const digitWidth = 5;
+                const digitHeight = 7;
+                const spacing = 1;
+
+                const digits = [
+                    [[1, 1, 1], [1, 0, 1], [1, 0, 1], [1, 0, 1], [1, 1, 1]],
+                    [[0, 1, 0], [1, 1, 0], [0, 1, 0], [0, 1, 0], [1, 1, 1]],
+                    [[1, 1, 1], [0, 0, 1], [1, 1, 1], [1, 0, 0], [1, 1, 1]],
+                    [[1, 1, 1], [0, 0, 1], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
+                    [[1, 0, 1], [1, 0, 1], [1, 1, 1], [0, 0, 1], [0, 0, 1]],
+                    [[1, 1, 1], [1, 0, 0], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
+                    [[1, 1, 1], [1, 0, 0], [1, 1, 1], [1, 0, 1], [1, 1, 1]],
+                    [[1, 1, 1], [0, 0, 1], [0, 1, 0], [0, 1, 0], [0, 1, 0]],
+                    [[1, 1, 1], [1, 0, 1], [1, 1, 1], [1, 0, 1], [1, 1, 1]],
+                    [[1, 1, 1], [1, 0, 1], [1, 1, 1], [0, 0, 1], [1, 1, 1]]
+                ];
+
+                const numberStr = number.toString();
+                const totalWidth = numberStr.length * (digitWidth + spacing) - spacing;
+                let startX = (this.numberCanvas.width - totalWidth * pixelSize) / 2;
+                const startY = (this.numberCanvas.height - digitHeight * pixelSize) / 2;
+
+                this.numberCtx.fillStyle = '#ffffff';
+
+                for (let i = 0; i < numberStr.length; i++) {
+                    const digit = parseInt(numberStr[i]);
+                    const digitPattern = digits[digit];
+
+                    for (let y = 0; y < digitPattern.length; y++) {
+                        for (let x = 0; x < digitPattern[y].length; x++) {
+                            if (digitPattern[y][x] === 1) {
+                                this.numberCtx.fillRect(
+                                    startX + x * pixelSize,
+                                    startY + y * pixelSize,
+                                    pixelSize,
+                                    pixelSize
                                 );
                             }
                         }
                     }
-                });
-            }
 
-            animateHeart() {
-                if (this.currentLifePercent !== this.targetLifePercent) {
-                    if (this.currentLifePercent < this.targetLifePercent) {
-                        this.currentLifePercent++;
-                    } else {
-                        this.currentLifePercent--;
-                    }
-
-                    this.drawPixelHeart(this.currentLifePercent);
-                    this.percentDisplay.textContent = this.currentLifePercent.toFixed(1) + '%';
-
-                    const maxLife = parseInt(this.maxLifeInput.value);
-                    const currentLife = Math.round((this.currentLifePercent / 100) * maxLife);
-                    this.drawPixelNumber(this.heartNumberCtx, currentLife, this.heartNumberCanvas.width, this.heartNumberCanvas.height);
-
-                    if (this.currentLifePercent === this.targetLifePercent) {
-                        clearInterval(this.lifeAnimationInterval);
-                    }
+                    startX += (digitWidth + spacing) * pixelSize;
                 }
             }
 
-            updateValues() {
-                const maxLife = parseInt(this.maxLifeInput.value);
-                let currentLife = parseInt(this.currentLifeInput.value);
-
-                if (maxLife < 1) this.maxLifeInput.value = maxLife = 1;
-
-                currentLife = Math.max(0, Math.min(maxLife, currentLife));
-                this.currentLifeInput.value = currentLife;
-
-                this.targetLifePercent = (currentLife / maxLife) * 100;
-
-                if (this.lifeAnimationInterval) clearInterval(this.lifeAnimationInterval);
-
-                const lifeSteps = Math.abs(this.targetLifePercent - this.currentLifePercent);
-                const lifeIntervalTime = 1000 / lifeSteps;
-
-                this.lifeAnimationInterval = setInterval(() => this.animateHeart(), lifeIntervalTime);
-            }
-
-            remove() {
-                this.container.removeChild(this.wrapper);
-            }
-
-            addParticleEffect() {
-                this.heartCanvas.addEventListener('click', (e) => {
-                    const rect = this.heartCanvas.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    this.createParticles(this.heartCanvas, x, y, '#ff3366');
-                });
-            }
-
-            createParticles(canvas, x, y, color) {
-                const ctx = canvas.getContext('2d');
-                const particles = [];
-
-                for (let i = 0; i < 10; i++) {
-                    particles.push({
-                        x: x,
-                        y: y,
-                        vx: Math.random() * 4 - 2,
-                        vy: Math.random() * -3 - 1,
-                        size: Math.random() * 3 + 1,
-                        color: color,
-                        life: 30
-                    });
+            createParticles() {
+                if (!this.isDrawing) return;
+                const count = 5;
+                for (let i = 0; i < count; i++) {
+                    const particle = new Particle(
+                        this.heartCanvas.width / 2 + (Math.random() - 0.5) * 10,
+                        this.heartCanvas.height / 2 + (Math.random() - 0.5) * 10,
+                        "#ff3366"
+                    );
+                    this.particles.push(particle);
                 }
+            }
 
-                function animateParticles() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    for (let i = 0; i < particles.length; i++) {
-                        const p = particles[i];
-                        p.x += p.vx;
-                        p.y += p.vy;
-                        p.life--;
-
-                        if (p.life <= 0) {
-                            particles.splice(i, 1);
-                            i--;
-                            continue;
-                        }
-
-                        ctx.fillStyle = p.color;
-                        ctx.fillRect(p.x, p.y, p.size, p.size);
-                    }
-
-                    if (particles.length > 0) {
-                        requestAnimationFrame(animateParticles);
+            handleParticles() {
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    this.particles[i].update();
+                    this.particles[i].draw(this.heartCtx);
+                    if (this.particles[i].life <= 0 || this.particles[i].size <= 0) {
+                        this.particles.splice(i, 1);
                     }
                 }
-
-                animateParticles();
-            }
-
-            updateHeart(percent) {
-                this.currentLifePercent = 100;
-                this.drawPixelHeart(this.currentLifePercent);
             }
         }
+
 
         class Card {
             constructor(type, attack, health) {
@@ -890,6 +900,15 @@
                 this.shield = type === 'Defender' ? 2 : 0;
                 this.poison = 0;
                 this.healAmount = type === 'Healer' ? 1 : 0;
+
+                // Crear el elemento del corazón
+                this.heartContainer = document.createElement('div');
+                this.heart = new Heart(this.heartContainer, this.health, this.maxHealth);
+            }
+
+            updateHealth(newHealth) {
+                this.health = newHealth;
+                this.heart.updateLife(this.health); // Asegúrate de que el corazón se actualiza
             }
 
             takeDamage(damage) {
@@ -906,13 +925,14 @@
                     this.health -= damage;
                 }
                 this.health = Math.max(0, this.health);
-
+                this.updateHealth(this.health);
             }
 
             heal() {
                 if (this.type === 'Healer') {
                     this.health = Math.min(this.health + this.healAmount, this.maxHealth);
                 }
+                this.updateHealth(this.health);
             }
 
             applyPoison(amount) {
@@ -942,6 +962,7 @@
                 this.hand = [];
                 this.isOpponent = isOpponent;
                 this.selectedCard = null;
+
             }
 
             generateDeck() {
@@ -965,9 +986,6 @@
                     return card;
                 });
 
-                // Mostrar en la consola las cartas generadas
-                // console.log(`${this.isOpponent ? 'Opponent' : 'Player'}'s generated deck:`, this.savedDeck);
-                // console.log(`${this.isOpponent ? 'Opponent' : 'Player'}'s generated deck:`, JSON.stringify(this.savedDeck, null, 2));
                 return deck;
             }
 
@@ -1030,7 +1048,8 @@
                 this.toggleOpponentCardsButton = document.getElementById('toggle-opponent-cards');
                 this.playerDeckCount = document.getElementById('player-deck-count');
                 this.opponentDeckCount = document.getElementById('opponent-deck-count');
-                this.showOpponentCards = false;
+                this.showOpponentCards = true;
+
             }
 
             start() {
@@ -1078,14 +1097,12 @@
 
 
             createCardContainer(card, index, isOpponent) {
+
                 const cardContainer = document.createElement('div');
                 cardContainer.className = 'card-container';
                 const cardElement = this.createCardElement(card, isOpponent);
                 cardContainer.appendChild(cardElement);
 
-                const heartContainer = cardElement.querySelector('.heart-display');
-                const heart = new Heart(heartContainer, card.health, card.maxHealth);  // Pasa card.health como initialHealth
-                heart.updateHeart(card.health);  // Actualiza el corazón basado en la salud de la carta
 
                 if (isOpponent) {
                     cardContainer.onclick = () => this.selectOpponentCard(index);
@@ -1119,6 +1136,7 @@
         </div>
     </div>
     `;
+                cardElement.querySelector('.card-front').appendChild(card.heartContainer);
                 return cardElement;
             }
 
@@ -1305,6 +1323,7 @@
                 // Battle
                 opponentCard.takeDamage(playerCard.attack);
                 playerCard.takeDamage(opponentCard.attack);
+
 
                 // Apply poison
                 if (playerCard.type === 'Poison') {
