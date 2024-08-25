@@ -1,0 +1,322 @@
+<html>
+
+<head>
+    <base href="https://localhost:3000">
+</head>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELSAMDEV Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --text-color: #333;
+            --bg-color: #f5f5f5;
+            --accent-color: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .technologies {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .technologies img {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s ease;
+            filter: brightness(0) invert(1);
+        }
+
+        .technologies img:hover {
+            transform: scale(1.2);
+        }
+
+        .projects {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .projects h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .project-menu {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-menu button {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+        }
+
+        .project-menu button:hover,
+        .project-menu button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .swiper {
+            width: 100%;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 60%;
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .project-content p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .technologies {
+                flex-wrap: wrap;
+            }
+
+            .project-menu {
+                flex-wrap: wrap;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="fade-in">
+        <h1 class="logo">ELSAMDEV</h1>
+        <p class="tagline">Soluciones web profesionales y eficientes</p>
+        <div class="technologies">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                alt="JavaScript">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js">
+        </div>
+    </header>
+
+    <section class="projects fade-in">
+        <h2>Proyectos Destacados</h2>
+        <nav class="project-menu">
+            <button data-target="all" class="active">Todos</button>
+            <button data-target="web">Web</button>
+            <button data-target="app">Aplicaciones</button>
+            <button data-target="design">Diseño</button>
+        </nav>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" data-category="web">
+                    <img src="https://source.unsplash.com/random/400x300?business" alt="Proyecto Web Corporativo">
+                    <div class="project-content">
+                        <h3>Portal Corporativo</h3>
+                        <p>Desarrollo de un portal web responsivo y optimizado para una corporación multinacional.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide" data-category="app">
+                    <img src="https://source.unsplash.com/random/400x300?data" alt="Proyecto App de Análisis">
+                    <div class="project-content">
+                        <h3>Plataforma de Análisis de Datos</h3>
+                        <p>Creación de una aplicación web para visualización y análisis de big data empresarial.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide" data-category="design">
+                    <img src="https://source.unsplash.com/random/400x300?branding" alt="Proyecto Diseño de Marca">
+                    <div class="project-content">
+                        <h3>Identidad Corporativa</h3>
+                        <p>Desarrollo de identidad visual completa para una firma de servicios financieros.</p>
+                    </div>
+                </div>
+                <div class="swiper-slide" data-category="web">
+                    <img src="https://source.unsplash.com/random/400x300?ecommerce" alt="Proyecto E-commerce B2B">
+                    <div class="project-content">
+                        <h3>Plataforma E-commerce B2B</h3>
+                        <p>Implementación de una solución de comercio electrónico para transacciones entre empresas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 ELSAMDEV. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const swiper = new Swiper(".mySwiper", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                coverflowEffect: {
+                    rotate: 50,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 1,
+                    slideShadows: true,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                },
+            });
+
+            const buttons = document.querySelectorAll('.project-menu button');
+            const slides = document.querySelectorAll('.swiper-slide');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.getAttribute('data-target');
+
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    slides.forEach(slide => {
+                        if (target === 'all' || slide.getAttribute('data-category') === target) {
+                            slide.style.display = 'block';
+                        } else {
+                            slide.style.display = 'none';
+                        }
+                    });
+
+                    swiper.update();
+                    swiper.slideTo(0);
+                });
+            });
+        });
+
+        // Animación de fade-in para los elementos
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+    </script>
+</body>
+
+</html>
+
+</html>

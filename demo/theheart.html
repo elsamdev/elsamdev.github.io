@@ -1,398 +1,74 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <base href="https://localhost">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Heart with Invisible Particle Source</title>
+    <title>Prueba de Sonidos</title>
     <style>
         body {
-            background-color: #222;
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        .heart-container {
-            display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 20px;
         }
 
-        .heart-wrapper {
-            position: relative;
-            width: 55px;
-            height: 50px;
-        }
-
-        .heart-display {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .heart-canvas,
-        .border-canvas,
-        .number-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        #controls {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        button {
-            margin: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
             border: none;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            cursor: pointer;
+            background-color: #e94560;
+            color: #fff;
+            transition: background-color 0.3s ease;
         }
 
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #healthInput {
-            margin: 10px 0;
-            padding: 5px;
-            font-size: 16px;
-            width: 100px;
+        .button:hover {
+            background-color: #c62d4a;
         }
     </style>
 </head>
 
 <body>
-    <div class="heart-container">
-        <div id="heartDisplay"></div>
-        <div id="controls">
-            <button id="decreaseHealth">Decrease Health</button>
-            <button id="increaseHealth">Increase Health</button>
-            <input type="number" id="healthInput" min="0" max="100" value="100">
-            <button id="setHealth">Set Health</button>
-        </div>
-    </div>
+    <button id="playDamage" class="button">Probar Sonido de Daño</button>
+    <button id="playHeal" class="button">Probar Sonido de Curación</button>
+    <button id="playDestroy" class="button">Probar Sonido de Destrucción</button>
 
     <script>
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.color = color;
-                this.size = Math.random() * 5 + 1;
-                this.speedX = (Math.random() - 0.5) * 2;
-                this.speedY = (Math.random() - 0.5) * 2;
-                this.life = 100;
-            }
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.size *= 0.95;
-                this.life--;
-            }
+        // Asegúrate de que los archivos de audio estén en la misma carpeta que el HTML
+        const damageSound = new Audio('damage.mp3');
+        const healSound = new Audio('heal.mp3');
+        const destroySound = new Audio('destroy.mp3');
 
-            draw(ctx) {
-                if (this.life > 0 && this.size > 0) {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-            }
-        }
-
-        class Heart {
-            constructor(container, currentLife, maxHealth) {
-                this.container = container;
-                this.maxHealth = maxHealth;
-                this.currentLife = currentLife;
-                this.currentLifePercent = (currentLife / maxHealth) * 100;
-                this.pixelSize = 5;
-                this.particles = [];
-                this.isDrawing = false;
-                this.animationInProgress = false;
-
-                this.setupCanvas();
-                this.drawHeart(this.currentLifePercent);
-                this.drawBorder();
-                this.drawNumber(this.currentLife);
-            }
-
-            setupCanvas() {
-                this.wrapper = document.createElement('div');
-                this.wrapper.className = 'heart-wrapper';
-                this.container.appendChild(this.wrapper);
-
-                this.heartDisplay = document.createElement('div');
-                this.heartDisplay.className = 'heart-display';
-                this.wrapper.appendChild(this.heartDisplay);
-
-                this.heartCanvas = this.createCanvas('heart-canvas');
-                this.borderCanvas = this.createCanvas('border-canvas');
-                this.numberCanvas = this.createCanvas('number-canvas');
-
-                this.heartCtx = this.heartCanvas.getContext('2d');
-                this.borderCtx = this.borderCanvas.getContext('2d');
-                this.numberCtx = this.numberCanvas.getContext('2d');
-            }
-
-            createCanvas(className) {
-                const canvas = document.createElement('canvas');
-                canvas.className = className;
-                canvas.width = 55;
-                canvas.height = 50;
-                this.heartDisplay.appendChild(canvas);
-                return canvas;
-            }
-
-            drawHeart(percent) {
-                this.isDrawing = true;
-                this.createParticles();
-                const targetHeight = this.heartCanvas.height * (percent / 100);
-                this.renderHeart(targetHeight);
-                this.currentLifePercent = percent;
-                this.isDrawing = false;
-            }
-
-            renderHeart(height) {
-                this.heartCtx.clearRect(0, 0, this.heartCanvas.width, this.heartCanvas.height);
-                this.handleParticles();
-
-                const heartPixels = [
-                    [0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0],
-                    [0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0],
-                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-                    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-                    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
-                    [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-                ];
-
-                for (let y = 0; y < this.heartCanvas.height; y += this.pixelSize) {
-                    for (let x = 0; x < this.heartCanvas.width; x += this.pixelSize) {
-                        const pixelRow = Math.floor(y / this.pixelSize);
-                        const pixelCol = Math.floor(x / this.pixelSize);
-
-                        if (heartPixels[pixelRow] && heartPixels[pixelRow][pixelCol] === 1 && y >= this.heartCanvas.height - height) {
-                            const gradient = this.heartCtx.createRadialGradient(
-                                x + this.pixelSize / 2, y + this.pixelSize / 2, 0,
-                                x + this.pixelSize / 2, y + this.pixelSize / 2, this.pixelSize / 2
-                            );
-                            gradient.addColorStop(0, '#ff3366');
-                            gradient.addColorStop(1, '#ff0033');
-                            this.heartCtx.fillStyle = gradient;
-                            this.heartCtx.fillRect(x, y, this.pixelSize, this.pixelSize);
-                        }
-                    }
-                }
-            }
-
-            drawBorder() {
-                const heartPixels = [
-                    [0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0],
-                    [0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0],
-                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-                    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-                    [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
-                    [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-                ];
-
-                this.borderCtx.clearRect(0, 0, this.borderCanvas.width, this.borderCanvas.height);
-                this.borderCtx.strokeStyle = '#cccccc';
-                this.borderCtx.lineWidth = 0.5;
-
-                for (let y = 0; y < heartPixels.length; y++) {
-                    for (let x = 0; x < heartPixels[y].length; x++) {
-                        if (heartPixels[y][x] !== 0) {
-                            const pixelX = x * this.pixelSize;
-                            const pixelY = y * this.pixelSize;
-                            this.drawBorderLine(x, y, heartPixels, pixelX, pixelY);
-                        }
-                    }
-                }
-            }
-
-            drawBorderLine(x, y, heartPixels, pixelX, pixelY) {
-                if (x === 0 || heartPixels[y][x - 1] === 0) {
-                    this.drawLine(pixelX, pixelY, pixelX, pixelY + this.pixelSize);
-                }
-                if (x === heartPixels[y].length - 1 || heartPixels[y][x + 1] === 0) {
-                    this.drawLine(pixelX + this.pixelSize, pixelY, pixelX + this.pixelSize, pixelY + this.pixelSize);
-                }
-                if (y === 0 || heartPixels[y - 1][x] === 0) {
-                    this.drawLine(pixelX, pixelY, pixelX + this.pixelSize, pixelY);
-                }
-                if (y === heartPixels.length - 1 || heartPixels[y + 1][x] === 0) {
-                    this.drawLine(pixelX, pixelY + this.pixelSize, pixelX + this.pixelSize, pixelY + this.pixelSize);
-                }
-            }
-
-            drawLine(startX, startY, endX, endY) {
-                this.borderCtx.beginPath();
-                this.borderCtx.moveTo(startX, startY);
-                this.borderCtx.lineTo(endX, endY);
-                this.borderCtx.stroke();
-            }
-
-            updateLife(newLife) {
-                const newPercent = (newLife / this.maxHealth) * 100;
-                if (newPercent !== this.currentLifePercent && !this.animationInProgress) {
-                    this.animateLifeChange(newLife, newPercent);
-                }
-            }
-
-            animateLifeChange(newLife, newPercent) {
-                this.animationInProgress = true;
-                const startPercent = this.currentLifePercent;
-                const startLife = this.currentLife;
-                const duration = 500;
-                const startTime = Date.now();
-
-                const animate = () => {
-                    const now = Date.now();
-                    const elapsed = now - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-
-                    const currentPercent = startPercent + (newPercent - startPercent) * progress;
-                    const currentLife = Math.round(startLife + (newLife - startLife) * progress);
-
-                    this.drawHeart(currentPercent);
-                    this.drawNumber(currentLife);
-
-                    if (progress < 1) {
-                        requestAnimationFrame(animate);
-                    } else {
-                        this.currentLifePercent = newPercent;
-                        this.currentLife = newLife;
-                        this.particles = []; // Clear particles after animation
-                        this.drawHeart(this.currentLifePercent); // Redraw heart without particles
-                        this.animationInProgress = false;
-                    }
-                };
-
-                requestAnimationFrame(animate);
-            }
-
-            drawNumber(number) {
-                this.numberCtx.clearRect(0, 0, this.numberCanvas.width, this.numberCanvas.height);
-
-                const pixelSize = 4;
-                const digitWidth = 5;
-                const digitHeight = 7;
-                const spacing = 1;
-
-                const digits = [
-                    [[1, 1, 1], [1, 0, 1], [1, 0, 1], [1, 0, 1], [1, 1, 1]],
-                    [[0, 1, 0], [1, 1, 0], [0, 1, 0], [0, 1, 0], [1, 1, 1]],
-                    [[1, 1, 1], [0, 0, 1], [1, 1, 1], [1, 0, 0], [1, 1, 1]],
-                    [[1, 1, 1], [0, 0, 1], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
-                    [[1, 0, 1], [1, 0, 1], [1, 1, 1], [0, 0, 1], [0, 0, 1]],
-                    [[1, 1, 1], [1, 0, 0], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
-                    [[1, 1, 1], [1, 0, 0], [1, 1, 1], [1, 0, 1], [1, 1, 1]],
-                    [[1, 1, 1], [0, 0, 1], [0, 1, 0], [0, 1, 0], [0, 1, 0]],
-                    [[1, 1, 1], [1, 0, 1], [1, 1, 1], [1, 0, 1], [1, 1, 1]],
-                    [[1, 1, 1], [1, 0, 1], [1, 1, 1], [0, 0, 1], [1, 1, 1]]
-                ];
-
-                const numberStr = number.toString();
-                const totalWidth = numberStr.length * (digitWidth + spacing) - spacing;
-                let startX = (this.numberCanvas.width - totalWidth * pixelSize) / 2;
-                const startY = (this.numberCanvas.height - digitHeight * pixelSize) / 2;
-
-                this.numberCtx.fillStyle = '#ffffff';
-
-                for (let i = 0; i < numberStr.length; i++) {
-                    const digit = parseInt(numberStr[i]);
-                    const digitPattern = digits[digit];
-
-                    for (let y = 0; y < digitPattern.length; y++) {
-                        for (let x = 0; x < digitPattern[y].length; x++) {
-                            if (digitPattern[y][x] === 1) {
-                                this.numberCtx.fillRect(
-                                    startX + x * pixelSize,
-                                    startY + y * pixelSize,
-                                    pixelSize,
-                                    pixelSize
-                                );
-                            }
-                        }
-                    }
-
-                    startX += (digitWidth + spacing) * pixelSize;
-                }
-            }
-
-            createParticles() {
-                if (!this.isDrawing) return;
-                const count = 5;
-                for (let i = 0; i < count; i++) {
-                    const particle = new Particle(
-                        this.heartCanvas.width / 2 + (Math.random() - 0.5) * 10,
-                        this.heartCanvas.height / 2 + (Math.random() - 0.5) * 10,
-                        "#ff3366"
-                    );
-                    this.particles.push(particle);
-                }
-            }
-
-            handleParticles() {
-                for (let i = this.particles.length - 1; i >= 0; i--) {
-                    this.particles[i].update();
-                    this.particles[i].draw(this.heartCtx);
-                    if (this.particles[i].life <= 0 || this.particles[i].size <= 0) {
-                        this.particles.splice(i, 1);
-                    }
-                }
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const heartDisplay = document.getElementById('heartDisplay');
-            const heart = new Heart(heartDisplay, 100, 100);
-
-            const decreaseHealthBtn = document.getElementById('decreaseHealth');
-            const increaseHealthBtn = document.getElementById('increaseHealth');
-            const healthInput = document.getElementById('healthInput');
-            const setHealthBtn = document.getElementById('setHealth');
-
-            decreaseHealthBtn.addEventListener('click', () => {
-                const newHealth = Math.max(0, heart.currentLife - 10);
-                heart.updateLife(newHealth);
-                healthInput.value = newHealth;
-            });
-
-            increaseHealthBtn.addEventListener('click', () => {
-                const newHealth = Math.min(heart.maxHealth, heart.currentLife + 10);
-                heart.updateLife(newHealth);
-                healthInput.value = newHealth;
-            });
-
-            setHealthBtn.addEventListener('click', () => {
-                const newHealth = Math.min(heart.maxHealth, Math.max(0, parseInt(healthInput.value)));
-                heart.updateLife(newHealth);
-                healthInput.value = newHealth;
+        // Función para reproducir el sonido de daño
+        document.getElementById('playDamage').addEventListener('click', () => {
+            damageSound.play().catch(error => {
+                console.error('Error al reproducir el sonido de daño:', error);
             });
         });
+
+        // Función para reproducir el sonido de curación
+        document.getElementById('playHeal').addEventListener('click', () => {
+            healSound.play().catch(error => {
+                console.error('Error al reproducir el sonido de curación:', error);
+            });
+        });
+
+        // Función para reproducir el sonido de destrucción
+        document.getElementById('playDestroy').addEventListener('click', () => {
+            destroySound.play().catch(error => {
+                console.error('Error al reproducir el sonido de destrucción:', error);
+            });
+        });
+
     </script>
 </body>
 

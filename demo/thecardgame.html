@@ -165,6 +165,47 @@
 
         }
 
+        /* Borde Normal */
+        .card.normal {
+            border: 3px solid #CCCCCC;
+            /* Borde gris neutro */
+            border-radius: 10px;
+        }
+
+        /* Borde Healer */
+        .card.healer {
+            border: 3px solid #2ECC71;
+            /* Borde verde con efecto de brillo */
+            box-shadow: 0 0 15px #2ECC71;
+            border-radius: 10px;
+        }
+
+        /* Borde Defender */
+        .card.defender {
+            border: 3px solid #BDC3C7;
+            /* Borde metálico sólido */
+            border-radius: 10px;
+            background-image: linear-gradient(45deg, #bdc3c7, #2c3e50);
+            /* Textura metálica */
+        }
+
+        /* Borde Poison */
+        .card.poison {
+            border: 3px solid #8e44ad;
+            /* Borde morado oscuro */
+            box-shadow: 0 0 10px #8e44ad, 0 0 20px rgba(142, 68, 173, 0.5);
+            border-radius: 10px;
+        }
+
+        /* Borde DoubleAtk */
+        .card.doubleatk {
+            border: 3px solid #e74c3c;
+            /* Borde rojo dinámico */
+            box-shadow: 0 0 15px #e74c3c;
+            border-radius: 10px;
+        }
+
+
         other {
             background: radial-gradient(circle, rgba(252, 164, 109, 1) 0%, rgba(255, 139, 50, 1) 50%, rgba(250, 92, 0, 1) 100%);
             border-radius: 50%;
@@ -480,6 +521,25 @@
             left: 3;
         }
 
+        #turn-indicator {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-color);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-color);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #turn-text {
+            text-transform: uppercase;
+        }
+
+
         @media (max-width: 768px) {
             .card {
                 width: calc(33.33% - 20px);
@@ -503,6 +563,10 @@
 </head>
 
 <body>
+
+    <div id="turn-indicator">
+        <span id="turn-text"></span>
+    </div>
     <!-- Add this new button just before the closing </div> of #game-container -->
     <button id="tooltip-button">?</button>
     <div id="tooltip-content">
@@ -558,6 +622,7 @@
     <script>
 
         const pixelSize = 2;
+
 
 
 
@@ -637,6 +702,7 @@
                 }
             }
         }
+
 
         class Heart {
             constructor(container, currentLife, maxHealth) {
@@ -891,8 +957,11 @@
         }
 
 
+        let cardIdCounter = 0;
+
         class Card {
             constructor(type, attack, health) {
+                this.id = `card-${cardIdCounter++}`;  // Asignar un ID único a cada carta
                 this.type = type;
                 this.attack = attack;
                 this.health = health;
@@ -901,9 +970,17 @@
                 this.poison = 0;
                 this.healAmount = type === 'Healer' ? 1 : 0;
 
+                this.particles = []; // Inicializamos la lista de partículas
+
                 // Crear el elemento del corazón
                 this.heartContainer = document.createElement('div');
                 this.heart = new Heart(this.heartContainer, this.health, this.maxHealth);
+
+                // Añadir un canvas para las partículas
+                this.particleCanvas = document.createElement('canvas');
+                this.particleCanvas.width = 150; // Ajustar al tamaño de la carta
+                this.particleCanvas.height = 210;
+                this.particleCtx = this.particleCanvas.getContext('2d');
             }
 
             updateHealth(newHealth) {
@@ -911,8 +988,22 @@
                 this.heart.updateLife(this.health); // Asegúrate de que el corazón se actualiza
             }
 
-            takeDamage(damage) {
+            updateParticles() {
+                const cardElement = document.getElementById(this.id);
+                if (cardElement) {
+                    const ctx = cardElement.querySelector('.heart-canvas').getContext('2d');
+                    ctx.clearRect(0, 0, cardElement.clientWidth, cardElement.clientHeight);
+                    this.particles.forEach((particle, index) => {
+                        particle.update();
+                        particle.draw(ctx);
+                        if (particle.life <= 0 || particle.size <= 0) {
+                            this.particles.splice(index, 1);
+                        }
+                    });
+                }
+            }
 
+            takeDamage(damage) {
                 if (this.type === 'Defender' && this.shield > 0) {
                     if (damage > this.shield) {
                         const remainingDamage = damage - this.shield;
@@ -926,6 +1017,9 @@
                 }
                 this.health = Math.max(0, this.health);
                 this.updateHealth(this.health);
+
+                // Efecto de partículas y destello
+                this.triggerDamageEffect();
             }
 
             heal() {
@@ -933,7 +1027,83 @@
                     this.health = Math.min(this.health + this.healAmount, this.maxHealth);
                 }
                 this.updateHealth(this.health);
+
+
+                // Efecto de curación
+                this.triggerHealEffect();
             }
+
+            triggerDamageEffect() {
+                const cardElement = document.getElementById(this.id);
+                if (cardElement) {
+
+                    // Reproducir sonido de daño
+
+
+                    // Destello rojo
+                    cardElement.style.boxShadow = '0 0 15px red';
+                    setTimeout(() => cardElement.style.boxShadow = '', 200);
+
+                    // Partículas de daño
+                    for (let i = 0; i < 10; i++) {
+                        const particle = new Particle(
+                            this.particleCanvas.width / 2,
+                            this.particleCanvas.height / 2,
+                            'red'
+                        );
+                        this.particles.push(particle);
+                    }
+
+                    // Actualizar partículas
+                    this.updateParticles();
+                }
+            }
+
+            triggerHealEffect() {
+                const cardElement = document.getElementById(this.id);
+                if (cardElement) {
+
+                    // Reproducir sonido de curación
+
+
+
+                    // Resplandor verde
+                    cardElement.style.boxShadow = '0 0 15px green';
+                    setTimeout(() => cardElement.style.boxShadow = '', 200);
+
+                    // Partículas de curación
+                    for (let i = 0; i < 10; i++) {
+                        const particle = new Particle(
+                            this.particleCanvas.width / 2,
+                            this.particleCanvas.height / 2,
+                            'green'
+                        );
+                        this.particles.push(particle);
+                    }
+
+                    // Actualizar partículas
+                    this.updateParticles();
+                }
+            }
+
+            updateParticles() {
+                // Limpiar el canvas de partículas
+                this.particleCtx.clearRect(0, 0, this.particleCanvas.width, this.particleCanvas.height);
+
+                this.particles.forEach((particle, index) => {
+                    particle.update();
+                    particle.draw(this.particleCtx);
+                    if (particle.life <= 0 || particle.size <= 0) {
+                        this.particles.splice(index, 1);
+                    }
+                });
+
+                // Si hay partículas, seguimos actualizando
+                if (this.particles.length > 0) {
+                    requestAnimationFrame(() => this.updateParticles());
+                }
+            }
+
 
             applyPoison(amount) {
                 this.poison += amount;
@@ -1117,28 +1287,34 @@
 
             createCardElement(card, isOpponent) {
                 const cardElement = document.createElement('div');
-                cardElement.className = 'card';
+                cardElement.className = `card ${card.type.toLowerCase()}`;  // Añadir la clase 'card' y la clase específica del tipo
+                cardElement.id = card.id;  // Asignar el ID único al elemento del DOM
                 cardElement.innerHTML = `
-    <div class="card-inner ${this.showOpponentCards && isOpponent ? 'show-front' : ''}">
-        <div class="card-front">
-            <div class="card-type">${card.type}</div>
-            <div class="heart-display"></div> <!-- Contenedor para el corazón -->
-            <div class="card-stats">
-                <span class="attack">A: ${card.attack}</span>
-                <span class="health">H: ${card.health}</span>
+        <div class="card-inner ${this.showOpponentCards && isOpponent ? 'show-front' : ''}">
+            <div class="card-front">
+                <div class="card-type">${card.type}</div>
+                <div class="heart-display"></div> <!-- Contenedor para el corazón -->
+                <div class="card-stats">
+                    <span class="attack">A: ${card.attack}</span>
+                    <span class="health">H: ${card.health}</span>
+                </div>
+                ${card.type === 'Defender' ? `<div class="shield">Shield: ${card.shield}</div>` : ''}
+                ${card.poison > 0 ? `<div class="poison">Poison: ${card.poison}</div>` : ''}
+                ${card.type === 'Healer' ? `<div class="heal">Heal: ${card.healAmount}</div>` : ''}
             </div>
-            ${card.type === 'Defender' ? `<div class="shield">Shield: ${card.shield}</div>` : ''}
-            ${card.poison > 0 ? `<div class="poison">Poison: ${card.poison}</div>` : ''}
-            ${card.type === 'Healer' ? `<div class="heal">Heal: ${card.healAmount}</div>` : ''}
+            <div class="card-back">?</div>
         </div>
-        <div class="card-back">
-            ?
-        </div>
-    </div>
     `;
+
+                // Añadir el contenedor de corazón y el canvas de partículas
                 cardElement.querySelector('.card-front').appendChild(card.heartContainer);
+                cardElement.querySelector('.card-front').appendChild(card.particleCanvas); // Añadir el canvas de partículas
+
                 return cardElement;
             }
+
+
+
 
 
             selectPlayerCard(index) {
@@ -1170,15 +1346,21 @@
                 if (this.player.selectedCard && this.opponent.selectedCard) {
                     let battleLog = '';
 
-                    // Apply effects to all cards before battle
+                    // Verificar que las cartas aún existan en el DOM antes de continuar
+                    const playerCardElement = document.getElementById(this.player.selectedCard.id);
+                    const opponentCardElement = document.getElementById(this.opponent.selectedCard.id);
+
+                    if (!playerCardElement || !opponentCardElement) {
+                        console.warn('Una de las cartas seleccionadas ya no existe en el DOM.');
+                        return;
+                    }
+
+                    // Aplicar efectos a todas las cartas antes de la batalla
                     battleLog += this.player.applyEffectsToAllCards();
                     battleLog += this.opponent.applyEffectsToAllCards();
 
-                    // Animate battle
+                    // Animar la batalla y resolver el combate dentro de la animación
                     this.animateBattle().then(() => {
-                        // Resolve combat between selected cards
-                        battleLog += this.resolveCombat(this.player.selectedCard, this.opponent.selectedCard);
-
                         const playerCardDestroyed = this.player.selectedCard.health <= 0;
                         const opponentCardDestroyed = this.opponent.selectedCard.health <= 0;
 
@@ -1195,8 +1377,8 @@
                             return;
                         }
 
-                        // Handle card destruction and replacement
-                        this.handleCardDestruction(playerCardDestroyed, opponentCardDestroyed).then(() => {
+                        // Manejar la destrucción de cartas y reemplazo
+                        this.handleCardDestruction(playerCardElement, opponentCardElement, playerCardDestroyed, opponentCardDestroyed).then(() => {
                             while (this.opponent.hand.length < 3 && this.opponent.deck.length > 0) {
                                 this.opponent.drawCard();
                             }
@@ -1215,6 +1397,8 @@
                     });
                 }
             }
+
+
 
             animateBattle() {
                 return new Promise((resolve) => {
@@ -1236,15 +1420,22 @@
                         // Mueve las cartas hacia el centro y luego colisionan
                         gsap.to(playerCard, {
                             x: playerXMove,
-                            y: -50, // Puedes ajustar este valor para cambiar la altura de la colisión
+                            y: -50,
                             duration: 0.5,
                             onComplete: () => {
+                                // Resolver el combate entre las cartas seleccionadas durante la colisión
+                                const battleLog = this.resolveCombat(this.player.selectedCard, this.opponent.selectedCard);
+
+                                // Actualizar estados después del combate
+                                this.updateCardStates(playerCard, this.player.selectedCard);
+                                this.updateCardStates(opponentCard, this.opponent.selectedCard);
+
                                 gsap.to(playerCard, {
                                     x: 0,
                                     y: 0,
                                     duration: 0.5,
                                     onComplete: () => {
-                                        resolve();
+                                        resolve(battleLog);
                                     }
                                 });
                             }
@@ -1252,7 +1443,7 @@
 
                         gsap.to(opponentCard, {
                             x: opponentXMove,
-                            y: 50, // Este valor debe ser simétrico al de la carta del jugador
+                            y: 50,
                             duration: 0.5,
                             onComplete: () => {
                                 gsap.to(opponentCard, {
@@ -1269,53 +1460,58 @@
             }
 
 
-            handleCardDestruction(playerCardDestroyed, opponentCardDestroyed) {
+            updateCardStates(cardElement, card) {
+                if (cardElement && cardElement.querySelector('.health')) {
+                    // Actualizar la salud en la interfaz
+                    cardElement.querySelector('.health').textContent = `H: ${card.health}`;
+                    console.log(card.health)
+                    if (card.health <= 0) {
+                        // Si la salud llega a 0, desencadenar la animación de destrucción
+                        this.handleCardDestruction(cardElement);
+                    }
+                } else {
+                    console.error('cardElement o el elemento .health no existe:', cardElement);
+                }
+            }
+
+
+
+            handleCardDestruction(playerCardElement, opponentCardElement, playerCardDestroyed, opponentCardDestroyed) {
                 return new Promise((resolve) => {
-                    const playerCard = document.querySelector('#player-hand .card-container .card.selected');
-                    const opponentCard = document.querySelector('#opponent-hand .card-container .card.selected');
-
-                    const animateDestruction = (card) => {
-                        return new Promise((resolveDestruction) => {
-                            card.classList.add('destroy-animation');
-                            setTimeout(() => {
-                                card.classList.remove('destroy-animation');
-                                resolveDestruction();
-                            }, 500);
-                        });
-                    };
-
-                    const animateReplacement = (cardContainer, isPlayer) => {
-                        const oldCard = cardContainer.querySelector('.card');
-                        const newCard = this.createCardElement(isPlayer ? this.player.hand[this.player.hand.length - 1] : this.opponent.hand[this.opponent.hand.length - 1], !isPlayer);
-                        newCard.style.opacity = '0';
-                        cardContainer.replaceChild(newCard, oldCard);
-
-                        gsap.to(newCard, {
-                            opacity: 1,
-                            duration: 0.5,
-                            onComplete: () => {
-                                if (isPlayer) {
-                                    cardContainer.onclick = () => this.selectPlayerCard(Array.from(cardContainer.parentNode.children).indexOf(cardContainer));
-                                } else {
-                                    cardContainer.onclick = () => this.selectOpponentCard(Array.from(cardContainer.parentNode.children).indexOf(cardContainer));
-                                }
-                            }
-                        });
-                    };
-
                     const promises = [];
 
-                    if (playerCardDestroyed) {
-                        promises.push(animateDestruction(playerCard).then(() => animateReplacement(playerCard.parentNode, true)));
+                    if (playerCardDestroyed && playerCardElement) {
+                        promises.push(this.animateDestruction(playerCardElement));
                     }
 
-                    if (opponentCardDestroyed) {
-                        promises.push(animateDestruction(opponentCard).then(() => animateReplacement(opponentCard.parentNode, false)));
+                    if (opponentCardDestroyed && opponentCardElement) {
+                        promises.push(this.animateDestruction(opponentCardElement));
                     }
 
-                    Promise.all(promises).then(resolve);
+                    Promise.all(promises).then(() => resolve());
                 });
             }
+
+            animateDestruction(cardElement) {
+                return new Promise((resolve) => {
+                    if (cardElement && cardElement.classList) {
+
+
+                        cardElement.classList.add('destroy-animation');
+                        setTimeout(() => {
+                            if (cardElement && cardElement.parentNode) {
+                                cardElement.remove();  // Eliminar la carta del DOM
+                            }
+                            resolve();
+                        }, 500);
+                    } else {
+                        resolve();
+                    }
+                });
+            }
+
+
+
 
             resolveCombat(playerCard, opponentCard) {
                 let combatLog = `${playerCard.type} battles ${opponentCard.type}! `;
@@ -1323,7 +1519,6 @@
                 // Battle
                 opponentCard.takeDamage(playerCard.attack);
                 playerCard.takeDamage(opponentCard.attack);
-
 
                 // Apply poison
                 if (playerCard.type === 'Poison') {
@@ -1353,6 +1548,7 @@
 
                 return combatLog;
             }
+
 
             getRandomCard(player) {
                 const availableCards = player.hand.filter(card => card.health > 0);
