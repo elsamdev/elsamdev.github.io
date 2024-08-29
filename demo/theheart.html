@@ -1,74 +1,1282 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
+    <base href="https://websim.com/pixelart-creator-advanced/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba de Sonidos</title>
+    <title>Advanced Pixel Art Creator</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1a1a2e;
-            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .canvas-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-            gap: 20px;
+            position: relative;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            overflow: hidden;
         }
 
-        .button {
-            padding: 15px 30px;
-            font-size: 18px;
+        #canvas {
+            border: 2px solid #333;
+            border-radius: 5px;
+            cursor: crosshair;
+        }
+
+        .tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #colorPicker {
+            width: 50px;
+            height: 50px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            background-color: #e94560;
-            color: #fff;
-            transition: background-color 0.3s ease;
         }
 
-        .button:hover {
-            background-color: #c62d4a;
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button.active {
+            background-color: #2E7D32;
+        }
+
+        #undoButton,
+        #redoButton {
+            background-color: #f44336;
+        }
+
+        #undoButton:hover,
+        #redoButton:hover {
+            background-color: #d32f2f;
+        }
+
+        #exportedCode {
+            width: 100%;
+            height: 200px;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: monospace;
+        }
+
+        #imageImport {
+            display: none;
+        }
+
+        #imageControls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            gap: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 5px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        .shape-controls,
+        .size-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #shapeSize,
+        #brushSize {
+            width: 50px;
+        }
+
+        .canvas-size-controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .canvas-size-button {
+            background-color: #2196F3;
+        }
+
+        .canvas-size-button:hover {
+            background-color: #1976D2;
+        }
+
+        .canvas-size-button.active {
+            background-color: #0D47A1;
+        }
+
+        h1 {
+            color: #2E7D32;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .move-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .move-button {
+            background-color: #FF9800;
+        }
+
+        .move-button:hover {
+            background-color: #F57C00;
+        }
+
+        #colorPalette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .palette-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #ccc;
+        }
+
+        .palette-color.active {
+            border-color: #333;
+        }
+
+        #layersPanel {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        #layersList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .layer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+        }
+
+        .layer-visibility {
+            cursor: pointer;
+        }
+
+        #zoomControls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        #zoomLevel {
+            width: 50px;
+            text-align: center;
+        }
+
+        #colorManagement {
+            position: absolute;
+            top: 50px;
+            /* Puedes ajustar este valor para posicionar la herramienta más arriba o abajo */
+            right: 20px;
+            /* Espacio desde el lado derecho de la pantalla */
+            width: 250px;
+            /* Ancho del contenedor */
+            background-color: #ffffff;
+            /* Fondo blanco para el contenedor */
+            border: 2px solid #ccc;
+            /* Borde gris */
+            border-radius: 8px;
+            /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Sombra para darle un efecto flotante */
+            padding: 10px;
+            /* Espaciado interno */
+            z-index: 1000;
+            /* Asegura que esté en la parte superior de otros elementos */
+            font-family: 'Roboto', sans-serif;
+            /* Asegura que use la misma fuente que el resto de la app */
+        }
+
+        #colorManagement h3 {
+            margin-top: 0;
+            font-size: 16px;
+            text-align: center;
+            color: #333;
+        }
+
+        #colorList {
+            list-style-type: none;
+            /* Elimina los puntos de la lista */
+            padding: 0;
+            margin: 10px 0 0 0;
+            max-height: 300px;
+            /* Limita la altura de la lista */
+            overflow-y: auto;
+            /* Añade un scroll si la lista es demasiado larga */
+        }
+
+        #colorList li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            /* Línea que separa los items */
+            transition: background-color 0.3s;
+        }
+
+        #colorList li:hover {
+            background-color: #f9f9f9;
+            /* Cambia el fondo al pasar el ratón */
+        }
+
+        #colorList li div {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            /* Hace que el color de previsualización sea circular */
+            border: 1px solid #ccc;
+            /* Añade un borde para que sea más visible */
+        }
+
+        #colorList li button {
+            padding: 5px 8px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #colorList li button:hover {
+            background-color: #ddd;
+            /* Color de fondo al pasar el ratón */
+        }
+
+        #colorList li button:active {
+            transform: scale(0.95);
+            /* Efecto de presionado al hacer clic */
+        }
+
+        #colorList li button:first-child {
+            background-color: #f44336;
+            /* Color de fondo para el botón de eliminar */
+            color: white;
+        }
+
+        #colorList li button:first-child:hover {
+            background-color: #d32f2f;
+            /* Color al pasar el ratón para el botón de eliminar */
+        }
+
+        #colorList li button:last-child {
+            background-color: #4CAF50;
+            /* Color de fondo para el botón de modificar */
+            color: white;
+        }
+
+        #colorList li button:last-child:hover {
+            background-color: #388E3C;
+            /* Color al pasar el ratón para el botón de modificar */
+        }
+
+        #showColorsButton {
+            padding: 10px 15px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #showColorsButton:hover {
+            background-color: #1976D2;
+        }
+
+        #showColorsButton:active {
+            transform: scale(0.98);
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <button id="playDamage" class="button">Probar Sonido de Daño</button>
-    <button id="playHeal" class="button">Probar Sonido de Curación</button>
-    <button id="playDestroy" class="button">Probar Sonido de Destrucción</button>
+    <h1>Advanced Pixel Art Creator</h1>
+    <div id="colorManagement">
+        <h3>Color Management</h3>
+        <ul id="colorList"></ul>
+    </div>
+
+
+    <div class="container">
+        <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div class="tools">
+            <div class="color-picker">
+                <input type="color" id="colorPicker" value="#FF0000">
+                <span>Selected Color</span>
+            </div>
+            <div id="colorPalette"></div>
+            <div class="tool-group">
+                <button id="pencilButton" class="active">Pencil</button>
+                <button id="eraserButton">Eraser</button>
+                <button id="fillButton">Fill</button>
+                <button id="lineButton">Line</button>
+                <button id="rectangleButton">Rectangle</button>
+                <button id="circleButton">Circle</button>
+                <button id="symmetryButton">Symmetry</button>
+                <button id="eyedropperButton">Gotero</button>
+                <button id="selectionButton">Seleccionar</button>
+                <button id="showColorsButton">Manage Colors</button>
+
+            </div>
+            <div class="size-controls">
+                <label for="brushSize">Brush Size:</label>
+                <input type="number" id="brushSize" min="1" max="32" value="1">
+            </div>
+            <div class="shape-controls">
+                <label for="shapeSize">Shape Size:</label>
+                <input type="number" id="shapeSize" min="1" max="32" value="1">
+            </div>
+            <div class="tool-group">
+                <button id="undoButton">Undo</button>
+                <button id="redoButton">Redo</button>
+                <button id="clearButton">Clear Canvas</button>
+            </div>
+            <div class="tool-group">
+                <button id="importButton">Import Image</button>
+                <button id="exportButton">Export JavaScript</button>
+                <button id="saveButton">Save Project</button>
+                <button id="loadButton">Load Project</button>
+            </div>
+            <div class="canvas-size-controls">
+                <label for="canvasWidthInput">Width:</label>
+                <input type="number" id="canvasWidthInput" min="1" max="128" value="32">
+                <label for="canvasHeightInput">Height:</label>
+                <input type="number" id="canvasHeightInput" min="1" max="128" value="32">
+                <button id="resizeButton">Resize</button>
+            </div>
+            <div class="move-controls">
+                <button id="moveLeftButton" class="move-button">←</button>
+                <button id="moveUpButton" class="move-button">↑</button>
+                <button id="moveDownButton" class="move-button">↓</button>
+                <button id="moveRightButton" class="move-button">→</button>
+            </div>
+            <div id="zoomControls">
+                <button id="zoomInButton">Zoom In</button>
+                <button id="zoomOutButton">Zoom Out</button>
+                <input type="number" id="zoomLevel" value="100" readonly>
+                <span>%</span>
+            </div>
+        </div>
+        <div id="layersPanel">
+            <h3>Layers</h3>
+            <button id="addLayerButton">Add Layer</button>
+            <ul id="layersList"></ul>
+        </div>
+    </div>
+    <input type="file" id="imageImport" accept="image/*">
+    <div id="imageControls" style="display:none;">
+        <img id="imagePreview" alt="Imported image preview">
+        <label for="imageWidth">Image Width:</label>
+        <input type="range" id="imageWidth" min="1" max="128" value="32">
+        <label for="imageHeight">Image Height:</label>
+        <input type="range" id="imageHeight" min="1" max="128" value="32">
+        <button id="applyImageButton">Apply Image</button>
+    </div>
+    <textarea id="exportedCode" readonly></textarea>
 
     <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const undoButton = document.getElementById('undoButton');
+        const redoButton = document.getElementById('redoButton');
+        const exportButton = document.getElementById('exportButton');
+        const clearButton = document.getElementById('clearButton');
+        const importButton = document.getElementById('importButton');
+        const imageImport = document.getElementById('imageImport');
+        const imageControls = document.getElementById('imageControls');
+        const imagePreview = document.getElementById('imagePreview');
+        const imageWidth = document.getElementById('imageWidth');
+        const imageHeight = document.getElementById('imageHeight');
+        const applyImageButton = document.getElementById('applyImageButton');
+        const exportedCode = document.getElementById('exportedCode');
+        const pencilButton = document.getElementById('pencilButton');
+        const eraserButton = document.getElementById('eraserButton');
+        const fillButton = document.getElementById('fillButton');
+        const lineButton = document.getElementById('lineButton');
+        const rectangleButton = document.getElementById('rectangleButton');
+        const circleButton = document.getElementById('circleButton');
+        const symmetryButton = document.getElementById('symmetryButton');
+        const shapeSize = document.getElementById('shapeSize');
+        const brushSize = document.getElementById('brushSize');
+        const canvasWidthInput = document.getElementById('canvasWidthInput');
+        const canvasHeightInput = document.getElementById('canvasHeightInput');
+        const resizeButton = document.getElementById('resizeButton');
+        const moveLeftButton = document.getElementById('moveLeftButton');
+        const moveUpButton = document.getElementById('moveUpButton');
+        const moveDownButton = document.getElementById('moveDownButton');
+        const moveRightButton = document.getElementById('moveRightButton');
+        const saveButton = document.getElementById('saveButton');
+        const loadButton = document.getElementById('loadButton');
+        const colorPalette = document.getElementById('colorPalette');
+        const addLayerButton = document.getElementById('addLayerButton');
+        const layersList = document.getElementById('layersList');
+        const zoomInButton = document.getElementById('zoomInButton');
+        const zoomOutButton = document.getElementById('zoomOutButton');
+        const zoomLevelInput = document.getElementById('zoomLevel');
+        const eyedropperButton = document.getElementById('eyedropperButton');
 
-        // Asegúrate de que los archivos de audio estén en la misma carpeta que el HTML
-        const damageSound = new Audio('damage.mp3');
-        const healSound = new Audio('heal.mp3');
-        const destroySound = new Audio('destroy.mp3');
 
-        // Función para reproducir el sonido de daño
-        document.getElementById('playDamage').addEventListener('click', () => {
-            damageSound.play().catch(error => {
-                console.error('Error al reproducir el sonido de daño:', error);
+        let pixelSize = 10;
+        let gridWidth = 32;
+        let gridHeight = 32;
+        let canvasWidth = 320;
+        let canvasHeight = 320;
+        let isDrawing = false;
+        let currentTool = 'pencil';
+        let startX, startY;
+        let undoStack = [];
+        let redoStack = [];
+        let importedImage = null;
+        let symmetryEnabled = false;
+        let zoomLevel = 100;
+
+
+
+        let layers = [
+            {
+                name: 'Background',
+                visible: true,
+                pixelData: Array(gridHeight).fill().map(() => Array(gridWidth).fill(0))
+            }
+        ];
+        let currentLayerIndex = 0;
+
+        const defaultPalette = [
+            '#000000', '#FFFFFF', '#FF0000', '#00FF00', '#0000FF',
+            '#FFFF00', '#FF00FF', '#00FFFF', '#800000', '#008000',
+            '#000080', '#808000', '#800080', '#008080', '#C0C0C0'
+        ];
+
+        function initializeCanvas() {
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            pixelSize = Math.min(canvasWidth / gridWidth, canvasHeight / gridHeight);
+            redrawCanvas();
+            updateLayersList();
+        }
+
+
+
+        function drawPixel(x, y, color = colorPicker.value, size = parseInt(brushSize.value), layerIndex = currentLayerIndex) {
+            const gridX = Math.floor(x / pixelSize);
+            const gridY = Math.floor(y / pixelSize);
+
+            if (!layers[layerIndex].visible) return;
+
+            for (let offsetY = 0; offsetY < size; offsetY++) {
+                for (let offsetX = 0; offsetX < size; offsetX++) {
+                    const currentX = gridX + offsetX;
+                    const currentY = gridY + offsetY;
+
+                    if (currentX >= 0 && currentX < gridWidth && currentY >= 0 && currentY < gridHeight) {
+                        if (currentTool === 'eraser') {
+                            if (layers[layerIndex].pixelData[currentY][currentX] !== 0) {
+                                undoStack.push({ x: currentX, y: currentY, color: layers[layerIndex].pixelData[currentY][currentX], layerIndex });
+                                layers[layerIndex].pixelData[currentY][currentX] = 0;
+                                ctx.clearRect(currentX * pixelSize, currentY * pixelSize, pixelSize, pixelSize); // Borra el píxel
+                            }
+                        } else if (layers[layerIndex].pixelData[currentY][currentX] !== color) {
+                            undoStack.push({ x: currentX, y: currentY, color: layers[layerIndex].pixelData[currentY][currentX], layerIndex });
+                            ctx.fillStyle = color;
+                            ctx.fillRect(currentX * pixelSize, currentY * pixelSize, pixelSize, pixelSize);
+                            layers[layerIndex].pixelData[currentY][currentX] = color;
+                        }
+
+                        if (symmetryEnabled) {
+                            const symmetryX = gridWidth - 1 - currentX;
+                            if (currentTool === 'eraser') {
+                                if (layers[layerIndex].pixelData[currentY][symmetryX] !== 0) {
+                                    undoStack.push({ x: symmetryX, y: currentY, color: layers[layerIndex].pixelData[currentY][symmetryX], layerIndex });
+                                    layers[layerIndex].pixelData[currentY][symmetryX] = 0;
+                                    ctx.clearRect(symmetryX * pixelSize, currentY * pixelSize, pixelSize, pixelSize); // Borra el píxel en simetría
+                                }
+                            } else if (layers[layerIndex].pixelData[currentY][symmetryX] !== color) {
+                                undoStack.push({ x: symmetryX, y: currentY, color: layers[layerIndex].pixelData[currentY][symmetryX], layerIndex });
+                                ctx.fillStyle = color;
+                                ctx.fillRect(symmetryX * pixelSize, currentY * pixelSize, pixelSize, pixelSize);
+                                layers[layerIndex].pixelData[currentY][symmetryX] = color;
+                            }
+                        }
+                    }
+                }
+            }
+
+            drawGrid(); // Redibujar la cuadrícula después de dibujar el píxel
+            redoStack = [];
+        }
+
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            layers.forEach((layer, index) => {
+                if (layer.visible) {
+                    for (let y = 0; y < gridHeight; y++) {
+                        for (let x = 0; x < gridWidth; x++) {
+                            if (layer.pixelData[y][x] !== 0) {
+                                ctx.fillStyle = layer.pixelData[y][x];
+                                ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            }
+                        }
+                    }
+                }
             });
+            drawGrid(); // Redibuja la cuadrícula
+        }
+
+        function drawGrid() {
+            ctx.strokeStyle = '#CCCCCC';
+            ctx.lineWidth = 0.5; // Ajusta el grosor de la cuadrícula a 0.5px para hacerla más delgada
+
+            for (let i = 0; i <= gridWidth; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * pixelSize, 0);
+                ctx.lineTo(i * pixelSize, canvas.height);
+                ctx.stroke();
+            }
+            for (let i = 0; i <= gridHeight; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, i * pixelSize);
+                ctx.lineTo(canvas.width, i * pixelSize);
+                ctx.stroke();
+            }
+        }
+
+        function extractColorsFromCanvas() {
+            const colorSet = new Set();
+
+            // Recorre todas las capas y píxeles para extraer los colores únicos
+            layers.forEach((layer) => {
+                for (let y = 0; y < gridHeight; y++) {
+                    for (let x = 0; x < gridWidth; x++) {
+                        const color = layer.pixelData[y][x];
+                        if (color !== 0) {
+                            colorSet.add(color);
+                        }
+                    }
+                }
+            });
+
+            // Convierte el Set a un array y lo ordena alfabéticamente
+            return Array.from(colorSet).sort();
+        }
+
+        // Función para mostrar la lista de colores
+        function displayColorList() {
+            const colorArray = extractColorsFromCanvas();
+            const colorList = document.getElementById('colorList');
+            colorList.innerHTML = '';  // Limpiamos la lista de colores actual
+
+            colorArray.forEach(color => {
+                const listItem = document.createElement('li');
+                listItem.style.display = 'flex';
+                listItem.style.alignItems = 'center';
+
+                // Previsualización del color
+                const colorPreview = document.createElement('div');
+                colorPreview.style.backgroundColor = color;
+                colorPreview.style.width = '20px';
+                colorPreview.style.height = '20px';
+                colorPreview.style.borderRadius = '50%';
+                colorPreview.style.border = '1px solid #ccc';
+                colorPreview.style.marginRight = '10px';
+
+                // Etiqueta del color
+                const colorLabel = document.createElement('span');
+                colorLabel.textContent = color;
+
+                // Botón para eliminar el color
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.marginLeft = '10px';
+                deleteButton.style.backgroundColor = '#f44336';
+                deleteButton.style.color = 'white';
+                deleteButton.style.borderRadius = '4px';
+                deleteButton.style.padding = '5px 8px';
+                deleteButton.addEventListener('click', () => {
+                    deleteColor(color);
+                });
+
+                // Botón para modificar el color
+                const modifyButton = document.createElement('button');
+                modifyButton.textContent = 'Modify';
+                modifyButton.style.marginLeft = '5px';
+                modifyButton.style.backgroundColor = '#4CAF50';
+                modifyButton.style.color = 'white';
+                modifyButton.style.borderRadius = '4px';
+                modifyButton.style.padding = '5px 8px';
+                modifyButton.addEventListener('click', () => {
+                    modifyColor(color);
+                });
+
+                // Agregar elementos al item de la lista
+                listItem.appendChild(colorPreview);
+                listItem.appendChild(colorLabel);
+                listItem.appendChild(deleteButton);
+                listItem.appendChild(modifyButton);
+
+                // Agregar el item a la lista
+                colorList.appendChild(listItem);
+            });
+        }
+
+
+
+        // Función para eliminar un color del canvas y del sistema
+        function deleteColor(colorToDelete) {
+            layers.forEach((layer) => {
+                for (let y = 0; y < gridHeight; y++) {
+                    for (let x = 0; x < gridWidth; x++) {
+                        if (layer.pixelData[y][x] === colorToDelete) {
+                            layer.pixelData[y][x] = 0; // Borra el color, se asigna como "0" (vacío)
+                        }
+                    }
+                }
+            });
+
+            redrawCanvas(); // Redibuja el canvas después de eliminar el color
+            displayColorList(); // Actualiza la lista de colores
+        }
+
+
+        // Función para modificar un color en el canvas
+        function modifyColor(oldColor) {
+            const newColor = prompt(`Enter the new color for ${oldColor}:`, oldColor);
+            if (!newColor || !/^#[0-9A-F]{6}$/i.test(newColor)) {
+                alert('Invalid color format. Please enter a valid hexadecimal color code.');
+                return;
+            }
+
+            layers.forEach((layer) => {
+                for (let y = 0; y < gridHeight; y++) {
+                    for (let x = 0; x < gridWidth; x++) {
+                        if (layer.pixelData[y][x] === oldColor) {
+                            layer.pixelData[y][x] = newColor; // Cambia el color en todos los píxeles donde se encuentre el color antiguo
+                        }
+                    }
+                }
+            });
+
+            redrawCanvas(); // Redibuja el canvas después de modificar el color
+            displayColorList(); // Actualiza la lista de colores
+        }
+
+        // Inicializar la lista de colores al cargar la página
+        window.onload = () => {
+            displayColorList();
+        };
+
+
+
+
+        function floodFill(x, y, targetColor, fillColor) {
+            if (x < 0 || x >= gridWidth || y < 0 || y >= gridHeight) return;
+            if (targetColor === fillColor) return;
+
+            const stack = [{ x, y }];
+            while (stack.length > 0) {
+                const { x, y } = stack.pop();
+                if (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight && layers[currentLayerIndex].pixelData[y][x] === targetColor) {
+                    drawPixel(x * pixelSize, y * pixelSize, fillColor);
+                    stack.push({ x: x + 1, y });
+                    stack.push({ x: x - 1, y });
+                    stack.push({ x, y: y + 1 });
+                    stack.push({ x, y: y - 1 });
+                }
+            }
+        }
+
+
+        function drawLine(x0, y0, x1, y1) {
+            const dx = Math.abs(x1 - x0);
+            const dy = Math.abs(y1 - y0);
+            const sx = (x0 < x1) ? 1 : -1;
+            const sy = (y0 < y1) ? 1 : -1;
+            let err = dx - dy;
+
+            while (true) {
+                drawPixel(x0 * pixelSize, y0 * pixelSize);
+                if (x0 === x1 && y0 === y1) break;
+                const e2 = 2 * err;
+                if (e2 > -dy) {
+                    err -= dy;
+                    x0 += sx;
+                }
+                if (e2 < dx) {
+                    err += dx;
+                    y0 += sy;
+                }
+            }
+        }
+
+        function drawRectangle(x0, y0, x1, y1) {
+            const minX = Math.min(x0, x1);
+            const maxX = Math.max(x0, x1);
+            const minY = Math.min(y0, y1);
+            const maxY = Math.max(y0, y1);
+
+            for (let x = minX; x <= maxX; x++) {
+                for (let y = minY; y <= maxY; y++) {
+                    drawPixel(x * pixelSize, y * pixelSize);
+                }
+            }
+        }
+
+        function pickColor(x, y) {
+            const gridX = Math.floor(x / pixelSize);
+            const gridY = Math.floor(y / pixelSize);
+
+            if (gridX >= 0 && gridX < gridWidth && gridY >= 0 && gridY < gridHeight) {
+                const color = layers[currentLayerIndex].pixelData[gridY][gridX];
+                if (color !== 0) {
+                    colorPicker.value = color;
+                }
+            }
+        }
+
+
+        function drawCircle(x0, y0, radius) {
+            let x = radius;
+            let y = 0;
+            let decisionOver2 = 1 - x;
+
+            while (y <= x) {
+                drawPixel((x0 + x) * pixelSize, (y0 + y) * pixelSize);
+                drawPixel((x0 + y) * pixelSize, (y0 + x) * pixelSize);
+                drawPixel((x0 - x) * pixelSize, (y0 + y) * pixelSize);
+                drawPixel((x0 - y) * pixelSize, (y0 + x) * pixelSize);
+                drawPixel((x0 - x) * pixelSize, (y0 - y) * pixelSize);
+                drawPixel((x0 - y) * pixelSize, (y0 - x) * pixelSize);
+                drawPixel((x0 + x) * pixelSize, (y0 - y) * pixelSize);
+                drawPixel((x0 + y) * pixelSize, (y0 - x) * pixelSize);
+                y++;
+                if (decisionOver2 <= 0) {
+                    decisionOver2 += 2 * y + 1;
+                } else {
+                    x--;
+                    decisionOver2 += 2 * (y - x) + 1;
+                }
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((e.clientX - rect.left) / pixelSize);
+            const y = Math.floor((e.clientY - rect.top) / pixelSize);
+
+            if (currentTool === 'pencil') {
+                drawPixel(e.offsetX, e.offsetY);
+            } else if (currentTool === 'eraser') {
+                // Utiliza clearRect para borrar en lugar de pintar de blanco
+                const gridX = Math.floor(e.offsetX / pixelSize);
+                const gridY = Math.floor(e.offsetY / pixelSize);
+
+                // Borra el píxel en la posición calculada
+                layers[currentLayerIndex].pixelData[gridY][gridX] = 0; // Actualiza el estado de los datos de píxeles
+                ctx.clearRect(gridX * pixelSize, gridY * pixelSize, pixelSize, pixelSize);
+
+                // Redibuja la cuadrícula para mantenerla visible
+                drawGrid();
+            } else if (currentTool === 'fill') {
+                const targetColor = layers[currentLayerIndex].pixelData[y][x];
+                floodFill(x, y, targetColor, colorPicker.value);
+            } else if (currentTool === 'eyedropper') {
+                pickColor(e.offsetX, e.offsetY);  // Usa la función del gotero
+            } else if (['line', 'rectangle', 'circle'].includes(currentTool)) {
+                startX = x;
+                startY = y;
+            }
         });
 
-        // Función para reproducir el sonido de curación
-        document.getElementById('playHeal').addEventListener('click', () => {
-            healSound.play().catch(error => {
-                console.error('Error al reproducir el sonido de curación:', error);
-            });
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) {
+                if (currentTool === 'pencil') {
+                    drawPixel(e.offsetX, e.offsetY);
+                } else if (currentTool === 'eraser') {
+                    const gridX = Math.floor(e.offsetX / pixelSize);
+                    const gridY = Math.floor(e.offsetY / pixelSize);
+
+                    layers[currentLayerIndex].pixelData[gridY][gridX] = 0;
+                    ctx.clearRect(gridX * pixelSize, gridY * pixelSize, pixelSize, pixelSize);
+
+                    drawGrid(); // Redibuja la cuadrícula
+                }
+            }
         });
 
-        // Función para reproducir el sonido de destrucción
-        document.getElementById('playDestroy').addEventListener('click', () => {
-            destroySound.play().catch(error => {
-                console.error('Error al reproducir el sonido de destrucción:', error);
-            });
+
+        canvas.addEventListener('mouseup', (e) => {
+            if (isDrawing) {
+                const rect = canvas.getBoundingClientRect();
+                const x = Math.floor((e.clientX - rect.left) / pixelSize);
+                const y = Math.floor((e.clientY - rect.top) / pixelSize);
+
+                if (currentTool === 'line') {
+                    drawLine(startX, startY, x, y);
+                } else if (currentTool === 'rectangle') {
+                    drawRectangle(startX, startY, x, y);
+                } else if (currentTool === 'circle') {
+                    const radius = Math.floor(Math.sqrt(Math.pow(x - startX, 2) + Math.pow(y - startY, 2)));
+                    drawCircle(startX, startY, radius);
+                }
+            }
+            isDrawing = false;
         });
 
+        canvas.addEventListener('mouseleave', () => {
+            isDrawing = false;
+        });
+
+        function undo() {
+            if (undoStack.length > 0) {
+                const lastAction = undoStack.pop();
+                redoStack.push({ ...lastAction, color: layers[lastAction.layerIndex].pixelData[lastAction.y][lastAction.x] });
+                layers[lastAction.layerIndex].pixelData[lastAction.y][lastAction.x] = lastAction.color;
+                redrawCanvas();
+            }
+        }
+
+        function redo() {
+            if (redoStack.length > 0) {
+                const lastAction = redoStack.pop();
+                undoStack.push({ ...lastAction, color: layers[lastAction.layerIndex].pixelData[lastAction.y][lastAction.x] });
+                layers[lastAction.layerIndex].pixelData[lastAction.y][lastAction.x] = lastAction.color;
+                redrawCanvas();
+            }
+        }
+
+        undoButton.addEventListener('click', undo);
+        redoButton.addEventListener('click', redo);
+        eyedropperButton.addEventListener('click', () => setActiveTool('eyedropper'));
+
+        clearButton.addEventListener('click', () => {
+            layers.forEach(layer => {
+                layer.pixelData = Array(gridHeight).fill().map(() => Array(gridWidth).fill(0));
+            });
+            undoStack = [];
+            redoStack = [];
+            redrawCanvas();
+        });
+
+        exportButton.addEventListener('click', () => {
+            const colorMap = {};
+            let colorIndex = 1;
+
+            // Función para obtener o asignar un índice para un color
+            function getColorIndex(color) {
+                if (!colorMap[color]) {
+                    colorMap[color] = colorIndex.toString();
+                    colorIndex++;
+                }
+                return colorMap[color];
+            }
+
+            // Convertir las capas a un formato de índices
+            const indexedPixelArtData = layers.map(layer =>
+                layer.pixelData.map(row =>
+                    row.map(pixel => pixel === 0 ? 0 : getColorIndex(pixel))
+                )
+            );
+
+            // Generar el código de exportación
+            const exportedJS = `
+const pixelArtData = ${JSON.stringify(indexedPixelArtData)};
+const colorMap = ${JSON.stringify(colorMap)};
+
+function drawPixelArt(ctx, pixelSize = 10) {
+    const height = pixelArtData.length;
+    const width = pixelArtData[0].length;
+  
+    pixelArtData.forEach((row, y) => {
+        row.forEach((colorIndex, x) => {
+            if (colorIndex) {
+                ctx.fillStyle = colorMap[colorIndex];
+                ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+            }
+        });
+    });
+}
+    `;
+            exportedCode.value = exportedJS;
+        });
+
+
+        importButton.addEventListener('click', () => {
+            imageImport.click();
+        });
+
+        imageImport.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    importedImage = new Image();
+                    importedImage.onload = () => {
+                        imageControls.style.display = 'flex';
+                        imagePreview.src = importedImage.src;
+                        imageWidth.value = importedImage.width;
+                        imageHeight.value = importedImage.height;
+                        updateImportedImage();
+                    };
+                    importedImage.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateImportedImage() {
+            const width = parseInt(imageWidth.value);
+            const height = parseInt(imageHeight.value);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(importedImage, 0, 0, width, height);
+            pixelizeImage(width, height);
+            drawGrid();
+        }
+
+        function pixelizeImage(width, height) {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.drawImage(importedImage, 0, 0, width, height);
+            const imageData = tempCtx.getImageData(0, 0, width, height);
+
+            // Asegúrate de que pixelData se inicializa correctamente
+            layers[currentLayerIndex].pixelData = Array(gridHeight).fill().map(() => Array(gridWidth).fill(0));
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const i = (y * width + x) * 4;
+                    const r = imageData.data[i];
+                    const g = imageData.data[i + 1];
+                    const b = imageData.data[i + 2];
+                    const a = imageData.data[i + 3];
+
+                    if (a > 0) {
+                        const color = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+                        // Verifica que y y x estén dentro de los límites de pixelData
+                        if (y < gridHeight && x < gridWidth) {
+                            layers[currentLayerIndex].pixelData[y][x] = color;
+                            ctx.fillStyle = color;
+                            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        imageWidth.addEventListener('input', updateImportedImage);
+        imageHeight.addEventListener('input', updateImportedImage);
+
+        applyImageButton.addEventListener('click', () => {
+            imageControls.style.display = 'none';
+            redrawCanvas();
+        });
+
+        function setActiveTool(tool) {
+            currentTool = tool;
+            [pencilButton, eraserButton, fillButton, lineButton, rectangleButton, circleButton].forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${tool}Button`).classList.add('active');
+        }
+
+        pencilButton.addEventListener('click', () => setActiveTool('pencil'));
+        eraserButton.addEventListener('click', () => setActiveTool('eraser'));
+        fillButton.addEventListener('click', () => setActiveTool('fill'));
+        lineButton.addEventListener('click', () => setActiveTool('line'));
+        rectangleButton.addEventListener('click', () => setActiveTool('rectangle'));
+        circleButton.addEventListener('click', () => setActiveTool('circle'));
+
+        resizeButton.addEventListener('click', () => {
+            gridWidth = parseInt(canvasWidthInput.value);
+            gridHeight = parseInt(canvasHeightInput.value);
+            canvasWidth = gridWidth * pixelSize;
+            canvasHeight = gridHeight * pixelSize;
+            layers.forEach(layer => {
+                const newPixelData = Array(gridHeight).fill().map(() => Array(gridWidth).fill(0));
+                for (let y = 0; y < Math.min(layer.pixelData.length, gridHeight); y++) {
+                    for (let x = 0; x < Math.min(layer.pixelData[0].length, gridWidth); x++) {
+                        newPixelData[y][x] = layer.pixelData[y][x];
+                    }
+                }
+                layer.pixelData = newPixelData;
+            });
+            initializeCanvas();
+        });
+
+        function moveImage(dx, dy) {
+            layers.forEach(layer => {
+                const newPixelData = Array(gridHeight).fill().map(() => Array(gridWidth).fill(0));
+
+                for (let y = 0; y < gridHeight; y++) {
+                    for (let x = 0; x < gridWidth; x++) {
+                        const newX = x + dx;
+                        const newY = y + dy;
+
+                        if (newX >= 0 && newX < gridWidth && newY >= 0 && newY < gridHeight) {
+                            newPixelData[newY][newX] = layer.pixelData[y][x];
+                        }
+                    }
+                }
+
+                layer.pixelData = newPixelData;
+            });
+            redrawCanvas();
+        }
+
+        moveLeftButton.addEventListener('click', () => moveImage(-1, 0));
+        moveUpButton.addEventListener('click', () => moveImage(0, -1));
+        moveDownButton.addEventListener('click', () => moveImage(0, 1));
+        moveRightButton.addEventListener('click', () => moveImage(1, 0));
+
+        symmetryButton.addEventListener('click', () => {
+            symmetryEnabled = !symmetryEnabled;
+            symmetryButton.classList.toggle('active', symmetryEnabled);
+        });
+
+        function saveProject() {
+            const projectData = {
+                layers: layers,
+                gridWidth: gridWidth,
+                gridHeight: gridHeight
+            };
+            const projectString = JSON.stringify(projectData);
+            const blob = new Blob([projectString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pixel_art_project.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadProject() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (event) => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const projectData = JSON.parse(e.target.result);
+                    layers = projectData.layers;
+                    gridWidth = projectData.gridWidth;
+                    gridHeight = projectData.gridHeight;
+                    canvasWidth = gridWidth * pixelSize;
+                    canvasHeight = gridHeight * pixelSize;
+                    initializeCanvas();
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        saveButton.addEventListener('click', saveProject);
+        loadButton.addEventListener('click', loadProject);
+
+        function createColorPalette() {
+            defaultPalette.forEach(color => {
+                const colorButton = document.createElement('div');
+                colorButton.className = 'palette-color';
+                colorButton.style.backgroundColor = color;
+                colorButton.addEventListener('click', () => {
+                    colorPicker.value = color;
+                    document.querySelectorAll('.palette-color').forEach(btn => btn.classList.remove('active'));
+                    colorButton.classList.add('active');
+                });
+                colorPalette.appendChild(colorButton);
+            });
+        }
+
+        function addLayer() {
+            const newLayer = {
+                name: `Layer ${layers.length + 1}`,
+                visible: true,
+                pixelData: Array(gridHeight).fill().map(() => Array(gridWidth).fill(0))
+            };
+            layers.push(newLayer);
+            currentLayerIndex = layers.length - 1;
+            updateLayersList();
+        }
+
+        function updateLayersList() {
+            layersList.innerHTML = '';
+            layers.forEach((layer, index) => {
+                const li = document.createElement('li');
+                li.className = 'layer-item';
+                li.innerHTML = `
+                <span class="layer-visibility" data-index="${index}">👁</span>
+                <span>${layer.name}</span>
+                <button class="delete-layer" data-index="${index}">Delete</button>
+            `;
+                li.addEventListener('click', () => {
+                    currentLayerIndex = index;
+                    updateLayersList();
+                });
+                if (index === currentLayerIndex) {
+                    li.classList.add('active');
+                }
+                layersList.appendChild(li);
+            });
+
+            const visibilityButtons = document.querySelectorAll('.layer-visibility');
+            visibilityButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const index = parseInt(button.getAttribute('data-index'));
+                    layers[index].visible = !layers[index].visible;
+                    updateLayersList();
+                    redrawCanvas();
+                });
+            });
+
+            const deleteButtons = document.querySelectorAll('.delete-layer');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const index = parseInt(button.getAttribute('data-index'));
+                    if (layers.length > 1) {
+                        layers.splice(index, 1);
+                        if (currentLayerIndex >= index) {
+                            currentLayerIndex = Math.max(0, currentLayerIndex - 1);
+                        }
+                        updateLayersList();
+                        redrawCanvas();
+                    } else {
+                        alert('Cannot delete the last layer');
+                    }
+                });
+            });
+        }
+
+        addLayerButton.addEventListener('click', addLayer);
+
+        function setZoom(newZoom) {
+            zoomLevel = Math.max(10, Math.min(500, newZoom));
+            zoomLevelInput.value = zoomLevel;
+            canvas.style.transform = `scale(${zoomLevel / 100})`;
+            canvas.style.transformOrigin = 'top left';
+        }
+
+        zoomInButton.addEventListener('click', () => setZoom(zoomLevel + 10));
+        zoomOutButton.addEventListener('click', () => setZoom(zoomLevel - 10));
+
+        zoomLevelInput.addEventListener('change', () => {
+            setZoom(parseInt(zoomLevelInput.value));
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 'z') {
+                    e.preventDefault();
+                    if (e.shiftKey) {
+                        redo();
+                    } else {
+                        undo();
+                    }
+                }
+            }
+        });
+
+        // Initialize the canvas and tools
+        initializeCanvas();
+        createColorPalette();
+        setActiveTool('pencil');
     </script>
 </body>
 

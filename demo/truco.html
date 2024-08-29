@@ -1,0 +1,221 @@
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personaje Animado Hablando con Fondo Dramático</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            background-color: #f0f0f0;
+        }
+
+        #changeButton {
+            font-size: 18px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            z-index: 20;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        #changeButton:hover {
+            background-color: #45a049;
+        }
+
+        #character {
+            position: fixed;
+            right: -100vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 80vmin;
+            height: 80vmin;
+            transition: right 1s ease;
+            z-index: 15;
+        }
+
+        #characterImage {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #speechBubble {
+            position: absolute;
+            top: 1%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border-radius: 20px;
+            padding: 15px;
+            max-width: 200px;
+            text-align: center;
+            font-size: 18px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 16;
+        }
+
+        #speechBubble:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-top-color: white;
+            border-bottom: 0;
+            margin-left: -20px;
+            margin-bottom: -20px;
+        }
+
+        #dramaticBackground {
+            position: fixed;
+            right: 100vw;
+            /* Cambia 'left: 100vw;' por 'right: 100vw;' */
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            opacity: 0.8;
+            transition: right 1s ease;
+            /* Cambia 'left' por 'right' */
+            z-index: 10;
+        }
+
+        #dramaticBackground.active {
+            animation: dramatic-bg 10s ease infinite;
+            background-size: 400% 400%;
+        }
+
+
+        @keyframes dramatic-bg {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+
+
+        @keyframes talking {
+
+            0%,
+            100% {
+                content: url("goku2.png");
+            }
+
+            50% {
+                content: url("goku1.png");
+            }
+        }
+
+        .talking #characterImage {
+            animation: talking 0.1s steps(1) infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="changeButton">Mostrar Personaje y Fondo</button>
+    <div id="dramaticBackground"></div>
+    <div id="character">
+        <div id="speechBubble"></div>
+        <img id="characterImage" src="goku1.png" alt="Personaje de anime con cabello negro puntiagudo y expresión seria"
+            width="800" height="800">
+
+    </div>
+
+
+    <script>
+        const button = document.getElementById('changeButton');
+        const character = document.getElementById('character');
+        const characterImage = document.getElementById('characterImage');
+        const speechBubble = document.getElementById('speechBubble');
+        const dramaticBackground = document.getElementById('dramaticBackground');
+        let isActive = false;
+
+        const groserias = [
+            "¡Me cago en la leche!",
+            "¡Hostia puta!",
+            "¡Joder, tío!",
+            "¡Me cago en todo!",
+            "¡Mierda!",
+            "¡Coño!",
+            "¡Vete a la mierda!"
+        ];
+
+        function getRandomGroseria() {
+            return groserias[Math.floor(Math.random() * groserias.length)];
+        }
+
+        function startTalking() {
+            character.classList.add('talking');
+        }
+
+        function stopTalking() {
+            character.classList.remove('talking');
+        }
+
+        button.addEventListener('click', () => {
+            if (!isActive) {
+                dramaticBackground.style.right = '0';
+                dramaticBackground.classList.add('active');
+
+                setTimeout(() => {
+                    character.style.right = '50vw';
+                }, 25);
+
+                setTimeout(() => {
+                    const groseria = getRandomGroseria();
+                    speechBubble.textContent = groseria;
+                    speechBubble.style.opacity = '1';
+                    startTalking();
+
+                    // Detener la animación de la boca después de un tiempo basado en la longitud del texto
+                    setTimeout(() => {
+                        stopTalking();
+                    }, groseria.length * 100 + 2000); // Añadimos 2 segundos extra para que se vea más la animación
+                }, 1250);
+
+                button.textContent = 'Restaurar';
+                button.style.backgroundColor = '#f44336';
+                isActive = true;
+            } else {
+                dramaticBackground.style.left = '100vw';
+                dramaticBackground.classList.remove('active');
+                character.style.right = '-100vw';
+                speechBubble.style.opacity = '0';
+                stopTalking();
+
+                button.textContent = 'Mostrar Personaje y Fondo';
+                button.style.backgroundColor = '#4CAF50';
+                isActive = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

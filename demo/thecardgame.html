@@ -540,10 +540,24 @@
         }
 
 
+        /* Breakpoint para tablets */
+        @media (max-width: 1024px) {
+            .card {
+                width: calc(33.33% - 15px);
+                max-width: 140px;
+            }
+
+            .button {
+                font-size: 16px;
+            }
+        }
+
+        /* Breakpoint para móviles */
         @media (max-width: 768px) {
             .card {
                 width: calc(33.33% - 20px);
                 max-width: 120px;
+                margin: 10px 5px;
             }
 
             .card-type {
@@ -557,6 +571,21 @@
             .button {
                 padding: 10px 20px;
                 font-size: 16px;
+            }
+        }
+
+        /* Breakpoint para móviles pequeños */
+        @media (max-width: 480px) {
+            .card {
+                width: calc(50% - 10px);
+                max-width: 100px;
+                margin: 5px 5px;
+            }
+
+            .button {
+                width: 100%;
+                padding: 8px 16px;
+                font-size: 14px;
             }
         }
     </style>
@@ -623,6 +652,24 @@
 
         const pixelSize = 2;
 
+
+        const swordtPixels = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 5, 7, 8], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 5, 7, 7, 8], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 5, 7, 7, 8, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 5, 7, 7, 8, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 5, 7, 7, 8, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 8, 5, 7, 7, 8, 0, 0, 0, 0], [0, 0, 0, 8, 8, 0, 0, 8, 5, 7, 7, 8, 0, 0, 0, 0, 0], [0, 0, 0, 8, 4, 8, 8, 5, 7, 7, 8, 0, 0, 0, 0, 0, 0], [0, 0, 0, 8, 8, 4, 4, 3, 7, 8, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 8, 4, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 8, 3, 8, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 8, 3, 8, 0, 8, 4, 8, 0, 0, 0, 0, 0, 0, 0], [0, 0, 8, 3, 8, 0, 0, 0, 8, 8, 0, 0, 0, 0, 0, 0, 0], [8, 8, 3, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [8, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
+        const colorMap = { "1": "#FF0000", "2": "#f2d00d", "3": "#f1850e", "4": "#fcdd03", "5": "#ffffff", "6": "#88807d", "7": "#797979", "8": "#000000" };
+
+        function drawPixelArt(ctx, pixelSize = 10) {
+            const width = heartPixels[0].length;
+            const height = heartPixels.length;
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    if (heartPixels[y][x] !== 0) {
+                        ctx.fillStyle = colorMap[heartPixels[y][x]];
+                        ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                    }
+                }
+            }
+        }
 
 
 
@@ -988,20 +1035,7 @@
                 this.heart.updateLife(this.health); // Asegúrate de que el corazón se actualiza
             }
 
-            updateParticles() {
-                const cardElement = document.getElementById(this.id);
-                if (cardElement) {
-                    const ctx = cardElement.querySelector('.heart-canvas').getContext('2d');
-                    ctx.clearRect(0, 0, cardElement.clientWidth, cardElement.clientHeight);
-                    this.particles.forEach((particle, index) => {
-                        particle.update();
-                        particle.draw(ctx);
-                        if (particle.life <= 0 || particle.size <= 0) {
-                            this.particles.splice(index, 1);
-                        }
-                    });
-                }
-            }
+
 
             takeDamage(damage) {
                 if (this.type === 'Defender' && this.shield > 0) {
@@ -1017,21 +1051,21 @@
                 }
                 this.health = Math.max(0, this.health);
                 this.updateHealth(this.health);
-
-                // Efecto de partículas y destello
-                this.triggerDamageEffect();
+                this.triggerDamageEffect(); // Efecto visual
             }
+
 
             heal() {
-                if (this.type === 'Healer') {
+                // Solo curar si la salud actual es menor que la salud máxima
+                if (this.type === 'Healer' && this.health < this.maxHealth) {
                     this.health = Math.min(this.health + this.healAmount, this.maxHealth);
+                    this.updateHealth(this.health);
+
+                    // Efecto de curación
+                    this.triggerHealEffect();
                 }
-                this.updateHealth(this.health);
-
-
-                // Efecto de curación
-                this.triggerHealEffect();
             }
+
 
             triggerDamageEffect() {
                 const cardElement = document.getElementById(this.id);
@@ -1104,6 +1138,21 @@
                 }
             }
 
+            // updateParticles() {
+            //     const cardElement = document.getElementById(this.id);
+            //     if (cardElement) {
+            //         const ctx = cardElement.querySelector('.heart-canvas').getContext('2d');
+            //         ctx.clearRect(0, 0, cardElement.clientWidth, cardElement.clientHeight);
+            //         this.particles.forEach((particle, index) => {
+            //             particle.update();
+            //             particle.draw(ctx);
+            //             if (particle.life <= 0 || particle.size <= 0) {
+            //                 this.particles.splice(index, 1);
+            //             }
+            //         });
+            //     }
+            // }
+
 
             applyPoison(amount) {
                 this.poison += amount;
@@ -1120,9 +1169,10 @@
 
             regenerateShield() {
                 if (this.type === 'Defender') {
-                    this.shield = Math.min(this.shield + 1, 2);
+                    this.shield = Math.min(this.shield + 1, 2); // Regenera hasta un máximo de 2
                 }
             }
+
         }
 
         class Player {
@@ -1367,6 +1417,19 @@
                         this.player.removeDeadCards();
                         this.opponent.removeDeadCards();
 
+                        // Verificar la mano del jugador y robar cartas si es necesario
+                        while (this.player.hand.length < 3 && this.player.deck.length > 0) {
+                            this.player.drawCard();
+                        }
+
+                        // Verificar la mano del oponente y robar cartas si es necesario
+                        while (this.opponent.hand.length < 3 && this.opponent.deck.length > 0) {
+                            this.opponent.drawCard();
+                        }
+
+                        // Actualizar los contadores de mazo y mano después de robar cartas
+                        this.updateDeckCounts();
+
                         if (this.opponent.hand.length === 0 && this.opponent.deck.length === 0) {
                             this.endGame("Player wins!");
                             return;
@@ -1379,16 +1442,7 @@
 
                         // Manejar la destrucción de cartas y reemplazo
                         this.handleCardDestruction(playerCardElement, opponentCardElement, playerCardDestroyed, opponentCardDestroyed).then(() => {
-                            while (this.opponent.hand.length < 3 && this.opponent.deck.length > 0) {
-                                this.opponent.drawCard();
-                            }
-
-                            while (this.player.hand.length < 3 && this.player.deck.length > 0) {
-                                this.player.drawCard();
-                            }
-
                             this.renderHands();
-                            this.updateDeckCounts();
                             this.player.selectedCard = null;
                             this.opponent.selectedCard = null;
                             this.battleButton.disabled = true;
@@ -1397,6 +1451,7 @@
                     });
                 }
             }
+
 
 
 
